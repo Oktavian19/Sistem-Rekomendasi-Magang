@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lowongan', function (Blueprint $table) {
-            $table->id('id_lowongan')->primary();
+            $table->id('id_lowongan');
             $table->unsignedBigInteger('id_perusahaan');
             $table->string('nama_posisi', 100);
             $table->text('deskripsi');
