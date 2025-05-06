@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kriteria_rekomendasi', function (Blueprint $table) {
-            $table->bigIncrements('id_kriteria_rekomendasi');
+            $table->id('id_kriteria_rekomendasi')->primary();
             $table->string('nama_kriteria', 100);
             $table->enum('jenis_kriteria', ['benefit', 'cost']);
             $table->timestamps();

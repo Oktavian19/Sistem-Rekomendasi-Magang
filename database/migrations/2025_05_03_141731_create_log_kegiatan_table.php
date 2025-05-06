@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('log_kegiatan', function (Blueprint $table) {
-            $table->id('id_log');
+            $table->id('id_log')->primary();
             $table->foreignId('id_magang')->constrained('magang')->onDelete('cascade');
             $table->date('tanggal');
             $table->text('deskripsi_kegiatan');

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('preferensi_lokasi', function (Blueprint $table) {
-            $table->id('id_preferensi_lokasi');
+            $table->id('id_preferensi_lokasi')->primary();
             $table->string('nama_lokasi', 100);
         });
     }

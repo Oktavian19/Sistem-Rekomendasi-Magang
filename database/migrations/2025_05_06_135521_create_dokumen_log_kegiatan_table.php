@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dokumen_log_kegiatan', function (Blueprint $table) {
-            $table->id('id_dokumen_log_kegiatan');
+            $table->id('id_dokumen_log_kegiatan')->primary();
             $table->unsignedBigInteger('id_log');
             $table->string('path_file', 100);
             $table->timestamps();

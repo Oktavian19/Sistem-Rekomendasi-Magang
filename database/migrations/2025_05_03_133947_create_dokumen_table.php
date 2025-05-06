@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dokumen', function (Blueprint $table) {
-            $table->id('id_dokumen');
+            $table->id('id_dokumen')->primary();
             $table->unsignedBigInteger('id_user');
             $table->enum('jenis_dokumen', ['cv', 'sertifikat', 'surat_pengantar', 'lainnya']);
             $table->string('path_file', 255);

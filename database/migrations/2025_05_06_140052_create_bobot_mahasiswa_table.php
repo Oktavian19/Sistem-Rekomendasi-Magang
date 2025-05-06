@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bobot_mahasiswa', function (Blueprint $table) {
-            $table->bigIncrements('id_bobot_mahasiswa');
+            $table->id('id_bobot_mahasiswa')->primary();
             $table->unsignedBigInteger('id_mahasiswa');
             $table->unsignedBigInteger('id_kriteria_rekomendasi');
             $table->float('nilai_bobot');
