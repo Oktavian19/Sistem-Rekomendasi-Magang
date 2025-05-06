@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id('id_feedback'); 
 
-            $table->unsignedBigInteger('id_user'); 
+            $table->unsignedBiidgInteger('id_user'); 
             $table->unsignedBigInteger('id_magang'); 
 
             $table->text('komentar');
@@ -20,7 +20,6 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // Foreign keys dengan cascade
             $table->foreign('id_user')
                 ->references('id')->on('users')
                 ->onDelete('cascade');

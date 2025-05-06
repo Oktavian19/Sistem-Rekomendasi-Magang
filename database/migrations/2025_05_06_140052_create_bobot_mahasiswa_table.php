@@ -8,21 +8,20 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('lamaran', function (Blueprint $table) {
-            $table->id('id_lamaran');
+        Schema::create('bobot_mahasiswa', function (Blueprint $table) {
+            $table->bigIncrements('id_bobot_mahasiswa');
             $table->unsignedBigInteger('id_mahasiswa');
-            $table->unsignedBigInteger('id_lowongan');
-            $table->date('tanggal_lamaran');
-            $table->enum('status_lamaran', ['menunggu', 'diterima', 'ditolak']);
+            $table->unsignedBigInteger('id_kriteria_rekomendasi');
+            $table->float('nilai_bobot');
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')
-                ->references('id')->on('mahasiswa')
+                ->references('id_mahasiswa')->on('mahasiswa')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreign('id_lowongan')
-                ->references('id')->on('lowongan')
+            $table->foreign('id_kriteria_rekomendasi')
+                ->references('id_kriteria_rekomendasi')->on('kriteria_rekomendasi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -30,6 +29,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('lamaran');
+        Schema::dropIfExists('bobot_mahasiswa');
     }
 };
