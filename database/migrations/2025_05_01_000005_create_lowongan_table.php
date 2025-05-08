@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggal_buka');
             $table->date('tanggal_tutup');
             $table->string('durasi_magang', 50);
+            $table->timestamps(); 
 
             $table->foreign('id_perusahaan')
                   ->references('id_perusahaan')

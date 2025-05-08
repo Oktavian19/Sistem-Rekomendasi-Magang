@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('nama_sertifikasi', 100);
             $table->string('penerbit', 100)->nullable();
             $table->date('tanggal_diterbitkan')->nullable();
+            $table->timestamps(); 
 
             $table->foreign('id_mahasiswa')
                   ->references('id')

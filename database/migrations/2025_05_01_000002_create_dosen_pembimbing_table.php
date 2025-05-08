@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('no_hp', 20);
             $table->string('bidang_minat', 100)->nullable();
+            $table->timestamps(); 
 
             $table->foreign('id_dosen')
                   ->references('id')

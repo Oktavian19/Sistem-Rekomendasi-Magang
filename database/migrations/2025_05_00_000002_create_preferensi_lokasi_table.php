@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('preferensi_lokasi', function (Blueprint $table) {
             $table->id('id_preferensi_lokasi');
             $table->string('nama_lokasi', 100);
+            $table->timestamps(); 
         });
     }
 

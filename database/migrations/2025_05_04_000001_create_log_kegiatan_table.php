@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('id_magang')->constrained('magang')->onDelete('cascade');
             $table->date('tanggal');
             $table->text('deskripsi_kegiatan');
+            $table->timestamps(); 
         });
     }
 

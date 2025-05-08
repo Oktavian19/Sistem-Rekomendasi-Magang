@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('tanggal_mulai')->nullable();
             $table->date('tanggal_selesai')->nullable();
             $table->text('deskripsi')->nullable();
+            $table->timestamps(); 
 
             $table->foreign('id_mahasiswa')
                   ->references('id')
