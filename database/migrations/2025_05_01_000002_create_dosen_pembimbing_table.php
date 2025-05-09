@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('dosen_pembimbing', function (Blueprint $table) {
             $table->id('id_dosen');
             $table->string('nidn', 20)->unique();
-            $table->string('nama', 100);
-            $table->string('email', 100);
-            $table->string('no_hp', 20);
+            $table->string('nama', 100)->nullable();
+            $table->string('email', 100)->nullable();
+            $table->string('no_hp', 20)->nullable();
             $table->string('bidang_minat', 100)->nullable();
             $table->timestamps(); 
 
