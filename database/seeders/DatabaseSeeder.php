@@ -18,5 +18,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+         $this->call([
+        ProgramStudiSeeder::class,
+        MahasiswaSeeder::class,
+        // tambahkan seeder lain di sini
+    ]);
     }
 }
