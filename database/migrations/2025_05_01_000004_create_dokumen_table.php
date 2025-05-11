@@ -14,9 +14,9 @@ return new class extends Migration
             $table->enum('jenis_dokumen', ['cv', 'sertifikat', 'surat_pengantar', 'lainnya']);
             $table->string('path_file', 255);
             $table->dateTime('tanggal_upload');
-            $table->timestamps(); 
+            $table->timestamps();
 
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

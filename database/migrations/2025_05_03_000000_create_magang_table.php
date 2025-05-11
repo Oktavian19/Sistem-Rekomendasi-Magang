@@ -30,7 +30,7 @@ return new class extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('id_periode')
-                ->references('id_periode')->on('periode')
+                ->references('id_periode')->on('periode_magang')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

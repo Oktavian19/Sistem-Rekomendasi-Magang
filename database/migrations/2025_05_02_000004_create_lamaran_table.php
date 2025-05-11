@@ -17,12 +17,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')
-                ->references('id')->on('mahasiswa')
+                ->references('id_mahasiswa')->on('mahasiswa')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreign('id_lowongan')
-                ->references('id')->on('lowongan')
+                ->references('id_lowongan')->on('lowongan')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
