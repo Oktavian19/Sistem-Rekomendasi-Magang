@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DosenPembimbing;
 use Illuminate\Http\Request;
 
-class DosenPembimbingController extends Controller
+class MonitoringController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +33,7 @@ class DosenPembimbingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DosenPembimbing $dosenPembimbing)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +41,7 @@ class DosenPembimbingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DosenPembimbing $dosenPembimbing)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +49,7 @@ class DosenPembimbingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DosenPembimbing $dosenPembimbing)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +57,7 @@ class DosenPembimbingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DosenPembimbing $dosenPembimbing)
+    public function destroy(string $id)
     {
         //
     }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisMagang;
 use Illuminate\Http\Request;
 
-class JenisMagangController extends Controller
+class MonitoringController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +33,7 @@ class JenisMagangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(JenisMagang $jenisMagang)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +41,7 @@ class JenisMagangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JenisMagang $jenisMagang)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +49,7 @@ class JenisMagangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JenisMagang $jenisMagang)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +57,7 @@ class JenisMagangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JenisMagang $jenisMagang)
+    public function destroy(string $id)
     {
         //
     }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PreferensiLokasi;
+use App\Models\KriteriaRekomendasi;
 use Illuminate\Http\Request;
 
-class PreferensiLokasiController extends Controller
+class RekomendasiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class PreferensiLokasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PreferensiLokasi $preferensiLokasi)
+    public function show(KriteriaRekomendasi $kriteriaRekomendasi)
     {
         //
     }
@@ -42,7 +42,7 @@ class PreferensiLokasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PreferensiLokasi $preferensiLokasi)
+    public function edit(KriteriaRekomendasi $kriteriaRekomendasi)
     {
         //
     }
@@ -50,7 +50,7 @@ class PreferensiLokasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PreferensiLokasi $preferensiLokasi)
+    public function update(Request $request, KriteriaRekomendasi $kriteriaRekomendasi)
     {
         //
     }
@@ -58,7 +58,7 @@ class PreferensiLokasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PreferensiLokasi $preferensiLokasi)
+    public function destroy(KriteriaRekomendasi $kriteriaRekomendasi)
     {
         //
     }

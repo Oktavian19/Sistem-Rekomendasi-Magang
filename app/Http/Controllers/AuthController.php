@@ -4,64 +4,112 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Users;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Menampilkan form login
-    public function showLoginForm()
+    public function login()
     {
+        // Jika sudah login, redirect ke halaman home
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
         return view('auth.login');
     }
 
-    // Menampilkan form register
-    public function showRegisterForm()
+    public function postlogin(Request $request)
     {
-        return view('auth.register');
-    }
+        if ($request->ajax() || $request->wantsJson()) {
+            $credentials = $request->only('username', 'password');
 
-    public function redirectTo()
-    {
-        if (auth()->check()) {
-            return redirect('/dashboard');
+            if (Auth::attempt($credentials)) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Login Berhasil',
+                    'redirect' => url('/')
+                ]);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Login Gagal'
+            ]);
         }
-        return redirect('/login');
+
+        return redirect('login');
     }
 
-    // Proses login
-    public function login(Request $request)
-    {
-        // NUNGGU TABEL
-        // $credentials = $request->validate([
-        //     'username' => 'required',
-        //     'password' => 'required',
-        // ]);
-
-        // if (Auth::attempt($credentials)) {
-        //     $request->session()->regenerate();
-            
-        //     return redirect()->intended('/dashboard');
-        // }
-
-        // return back()->withErrors([
-        //     'username' => 'Username atau password salah.',
-        // ]);
-        $request->session()->regenerate();
-        return redirect()->intended('/dashboard');
-    }
-
-    // Proses register
-    public function register(Request $request)
-    {
-        return redirect('/dashboard');
-    }
-
-    // Proses logout
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/');
+
+        return redirect('login');
+    }
+
+    public function register()
+    {
+        // Jika sudah login, redirect ke halaman home
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
+        return view('auth.register');
+    }
+
+    public function postregister(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $validator = Validator::make($request->all(), [
+                'username' => 'required|string|min:4|max:50|unique:users,username',
+                'password' => 'required|string|min:6',
+                'role' => 'required|in:admin,mahasiswa,dosen_pembimbing'
+            ], [
+                // Custom error messages
+                'username.required' => 'Username harus diisi',
+                'username.min' => 'Username minimal 4 karakter',
+                'username.max' => 'Username maksimal 50 karakter',
+                'username.unique' => 'Username sudah digunakan',
+
+                'password.required' => 'Password harus diisi',
+                'password.min' => 'Password minimal 6 karakter',
+
+                'role.required' => 'Role harus dipilih',
+                'role.in' => 'Role tidak valid'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            try {
+                Users::create([
+                    'username' => $request->username,
+                    'password' => Hash::make($request->password),
+                    'role' => $request->role
+                ]);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Registrasi berhasil, silakan login',
+                    'redirect' => url('login')
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                ]);
+            }
+        }
+
+        return redirect('register');
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PerusahaanMitra;
+use App\Models\Magang;
 use Illuminate\Http\Request;
 
-class PerusahaanMitraController extends Controller
+class MagangController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class PerusahaanMitraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PerusahaanMitra $perusahaanMitra)
+    public function show(Magang $magang)
     {
         //
     }
@@ -42,7 +42,7 @@ class PerusahaanMitraController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PerusahaanMitra $perusahaanMitra)
+    public function edit(Magang $magang)
     {
         //
     }
@@ -50,7 +50,7 @@ class PerusahaanMitraController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PerusahaanMitra $perusahaanMitra)
+    public function update(Request $request, Magang $magang)
     {
         //
     }
@@ -58,7 +58,7 @@ class PerusahaanMitraController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PerusahaanMitra $perusahaanMitra)
+    public function destroy(Magang $magang)
     {
         //
     }

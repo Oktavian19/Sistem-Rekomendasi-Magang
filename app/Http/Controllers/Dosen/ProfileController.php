@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BobotMahasiswa;
+use App\Models\DosenPembimbing;
 use Illuminate\Http\Request;
 
-class BobotMahasiswaController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class BobotMahasiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(BobotMahasiswa $bobotMahasiswa)
+    public function show(DosenPembimbing $dosenPembimbing)
     {
         //
     }
@@ -42,7 +42,7 @@ class BobotMahasiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BobotMahasiswa $bobotMahasiswa)
+    public function edit(DosenPembimbing $dosenPembimbing)
     {
         //
     }
@@ -50,7 +50,7 @@ class BobotMahasiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BobotMahasiswa $bobotMahasiswa)
+    public function update(Request $request, DosenPembimbing $dosenPembimbing)
     {
         //
     }
@@ -58,7 +58,7 @@ class BobotMahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BobotMahasiswa $bobotMahasiswa)
+    public function destroy(DosenPembimbing $dosenPembimbing)
     {
         //
     }

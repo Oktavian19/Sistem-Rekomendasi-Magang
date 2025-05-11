@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pengalaman;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
-class PengalamanController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class PengalamanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pengalaman $pengalaman)
+    public function show(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -42,7 +42,7 @@ class PengalamanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Pengalaman $pengalaman)
+    public function edit(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -50,7 +50,7 @@ class PengalamanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pengalaman $pengalaman)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
         //
     }
@@ -58,7 +58,7 @@ class PengalamanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pengalaman $pengalaman)
+    public function destroy(Mahasiswa $mahasiswa)
     {
         //
     }

@@ -17,4 +17,22 @@ class Users extends Model
         'password',
         'role',
     ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $casts = [
+        'password' => 'hashed'
+    ];
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
 }

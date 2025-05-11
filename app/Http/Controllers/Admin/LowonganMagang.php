@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KriteriaRekomendasi;
+use App\Models\Lowongan;
 use Illuminate\Http\Request;
 
-class KriteriaRekomendasiController extends Controller
+class LowonganMagang extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class KriteriaRekomendasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(KriteriaRekomendasi $kriteriaRekomendasi)
+    public function show(Lowongan $lowongan)
     {
         //
     }
@@ -42,7 +42,7 @@ class KriteriaRekomendasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(KriteriaRekomendasi $kriteriaRekomendasi)
+    public function edit(Lowongan $lowongan)
     {
         //
     }
@@ -50,7 +50,7 @@ class KriteriaRekomendasiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, KriteriaRekomendasi $kriteriaRekomendasi)
+    public function update(Request $request, Lowongan $lowongan)
     {
         //
     }
@@ -58,7 +58,7 @@ class KriteriaRekomendasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(KriteriaRekomendasi $kriteriaRekomendasi)
+    public function destroy(Lowongan $lowongan)
     {
         //
     }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dokumen;
+use App\Models\PeriodeMagang;
 use Illuminate\Http\Request;
 
-class DokumenController extends Controller
+class PeriodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class DokumenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dokumen $dokumen)
+    public function show(PeriodeMagang $periodeMagang)
     {
         //
     }
@@ -42,7 +42,7 @@ class DokumenController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Dokumen $dokumen)
+    public function edit(PeriodeMagang $periodeMagang)
     {
         //
     }
@@ -50,7 +50,7 @@ class DokumenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dokumen $dokumen)
+    public function update(Request $request, PeriodeMagang $periodeMagang)
     {
         //
     }
@@ -58,7 +58,7 @@ class DokumenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dokumen $dokumen)
+    public function destroy(PeriodeMagang $periodeMagang)
     {
         //
     }

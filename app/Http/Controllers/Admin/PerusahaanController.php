@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogKegiatan;
+use App\Models\PerusahaanMitra;
 use Illuminate\Http\Request;
 
-class LogKegiatanController extends Controller
+class PerusahaanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class LogKegiatanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LogKegiatan $logKegiatan)
+    public function show(PerusahaanMitra $perusahaanMitra)
     {
         //
     }
@@ -42,7 +42,7 @@ class LogKegiatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LogKegiatan $logKegiatan)
+    public function edit(PerusahaanMitra $perusahaanMitra)
     {
         //
     }
@@ -50,7 +50,7 @@ class LogKegiatanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LogKegiatan $logKegiatan)
+    public function update(Request $request, PerusahaanMitra $perusahaanMitra)
     {
         //
     }
@@ -58,7 +58,7 @@ class LogKegiatanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LogKegiatan $logKegiatan)
+    public function destroy(PerusahaanMitra $perusahaanMitra)
     {
         //
     }

@@ -13,14 +13,25 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::pattern('id', '[0-9]+');
 
-Route::get('/', [AuthController::class, 'redirectTo']);
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'postlogin']);
+Route::get('register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'postregister']);
+Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
+Route::middleware('auth')->group(function () {
+    
+    Route::middleware('authorize:admin')->group(function () {
+      
+    });
+    
+    Route::middleware('authorize:mahasiswa')->group(function () {
+        
+    });
+
+    Route::middleware('authorize:dosen_pembimbing')->group(function () {
+        
+    });
 });

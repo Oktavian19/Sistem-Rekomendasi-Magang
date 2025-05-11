@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lowongan;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
-class LowonganController extends Controller
+class ManajemenMahasiswaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class LowonganController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Lowongan $lowongan)
+    public function show(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -42,7 +42,7 @@ class LowonganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Lowongan $lowongan)
+    public function edit(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -50,7 +50,7 @@ class LowonganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Lowongan $lowongan)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
         //
     }
@@ -58,7 +58,7 @@ class LowonganController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Lowongan $lowongan)
+    public function destroy(Mahasiswa $mahasiswa)
     {
         //
     }
