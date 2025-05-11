@@ -15,9 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_dosen_pembimbing');
             $table->unsignedBigInteger('id_periode');
 
-            $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
             $table->enum('status_magang', ['aktif', 'selesai', 'batal']);
+            $table->string('path_sertifikat', 100)->nullable();
 
             $table->timestamps();
 
