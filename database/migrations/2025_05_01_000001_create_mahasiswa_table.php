@@ -14,17 +14,17 @@ return new class extends Migration
             $table->string('nama', 100)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('no_hp', 20)->nullable();
-            $table->unsignedInteger('id_program_studi')->nullable();
+            $table->unsignedBigInteger('id_program_studi')->nullable();
             $table->timestamps(); 
 
             $table->foreign('id_mahasiswa')
-                  ->references('id')
+                  ->references('id_user')
                   ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
 
             $table->foreign('id_program_studi')
-                  ->references('id')
+                  ->references('id_program_studi')
                   ->on('program_studi')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');

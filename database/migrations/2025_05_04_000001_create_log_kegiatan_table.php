@@ -10,11 +10,17 @@ return new class extends Migration
     {
         Schema::create('log_kegiatan', function (Blueprint $table) {
             $table->id('id_log');
-            $table->foreignId('id_magang')->constrained('magang')->onDelete('cascade');
+            $table->unsignedBigInteger('id_magang');
             $table->date('tanggal');
             $table->text('deskripsi_kegiatan');
             $table->timestamps(); 
+
+             $table->foreign('id_magang')
+                ->references('id_magang')->on('magang')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
+
+        
     }
 
     public function down(): void

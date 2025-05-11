@@ -16,13 +16,13 @@ return new class extends Migration
             $table->primary(['id_mahasiswa', 'id_preferensi_lokasi']);
 
             $table->foreign('id_mahasiswa')
-                  ->references('id')
+                  ->references('id_mahasiswa')
                   ->on('mahasiswa')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
 
             $table->foreign('id_preferensi_lokasi')
-                  ->references('id')
+                  ->references('id_preferensi_lokasi')
                   ->on('preferensi_lokasi')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');

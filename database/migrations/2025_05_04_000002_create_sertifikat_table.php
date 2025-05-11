@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps(); 
 
             $table->foreign('id_mahasiswa')
-                  ->references('id')
+                  ->references('id_mahasiswa')
                   ->on('mahasiswa')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');

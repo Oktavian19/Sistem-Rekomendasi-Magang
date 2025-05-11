@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dosen_pembimbing', function (Blueprint $table) {
-            $table->id('id_dosen');
+            $table->id('id_dosen_pembimbing');
             $table->string('nidn', 20)->unique();
             $table->string('nama', 100)->nullable();
             $table->string('email', 100)->nullable();
@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('bidang_minat', 100)->nullable();
             $table->timestamps(); 
 
-            $table->foreign('id_dosen')
-                  ->references('id')
+            $table->foreign('id_dosen_pembimbing')
+                  ->references('id_user')
                   ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');

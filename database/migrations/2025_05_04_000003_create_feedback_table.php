@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id('id_feedback'); 
 
-            $table->unsignedBiidgInteger('id_user'); 
+            $table->unsignedBigInteger('id_user'); 
             $table->unsignedBigInteger('id_magang'); 
 
             $table->text('komentar');
@@ -21,11 +21,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_user')
-                ->references('id')->on('users')
+                ->references('id_user')->on('users')
                 ->onDelete('cascade');
 
             $table->foreign('id_magang')
-                ->references('id')->on('magang')
+                ->references('id_magang')->on('magang')
                 ->onDelete('cascade');
         });
         
