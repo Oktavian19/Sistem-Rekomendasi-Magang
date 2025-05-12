@@ -28,4 +28,9 @@ class Lamaran extends Model
     {
         return $this->belongsTo(Lowongan::class, 'id_lowongan', 'id_lowongan');
     }
+
+    public function magang()
+    {
+        return $this->hasOne(Magang::class, 'id_lamaran');
+    }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class KelolaPenggunaController extends Controller
 {
     /**
      * Display a listing of the resource.

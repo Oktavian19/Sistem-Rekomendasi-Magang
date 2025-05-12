@@ -2,64 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lamaran;
+use App\Models\DosenPembimbing;
 use App\Models\Magang;
+use App\Models\PeriodeMagang;
 use Illuminate\Http\Request;
+use App\Models\Feedback;
 
 class MagangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        // Ambil semua lamaran, lengkap dengan relasi mahasiswa dan lowongan
+        $lamarans = Lamaran::with(['mahasiswa', 'lowongan'])->get();
+
+        return view('magang.index', compact('lamarans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function show($id)
     {
-        //
+        $lamaran = Lamaran::with('mahasiswa')->findOrFail($id);
+        $dosen = DosenPembimbing::all();
+        $periodeAktif = PeriodeMagang::where('status', 'aktif')->first();
+
+        return view('magang.show', compact('lamaran', 'dosen', 'periodeAktif'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_lamaran' => 'required|exists:lamaran,id_lamaran',
+            'id_dosen_pembimbing' => 'required|exists:dosen_pembimbing,id_dosen_pembimbing',
+            'id_periode' => 'required|exists:periode_magang,id_periode',
+        ]);
+
+        Magang::create([
+            'id_lamaran' => $request->id_lamaran,
+            'id_dosen_pembimbing' => $request->id_dosen_pembimbing,
+            'id_periode' => $request->id_periode,
+            'status_magang' => 'aktif',
+        ]);
+
+        return redirect()->route('magang.index')->with('success', 'Ploting berhasil dilakukan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Magang $magang)
+    public function feedback()
     {
-        //
-    }
+        // Ambil semua feedback beserta relasi user (untuk tahu siapa pengirimnya) dan data magang terkait
+        $feedbacks = Feedback::with(['user', 'magang.lamaran.mahasiswa'])->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Magang $magang)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Magang $magang)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Magang $magang)
-    {
-        //
+        return view('magang.feedback', compact('feedbacks'));
     }
 }
