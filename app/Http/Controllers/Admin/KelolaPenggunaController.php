@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -39,94 +40,6 @@ class KelolaPenggunaController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('admin.user.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|min:3|unique:users,username',
-            'password' => 'required|min:5',
-            'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing'
-        ]);
-
-        Users::create([
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'role'     => $request->role
-        ]);
-
-
-        return redirect('/admin/user')->with('success', 'Data user berhasil disimpan');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Users $users)
-    {
-        $user = Users::find($users->id_user);
-        return view('admin.user.show', compact('user'));
-    }
-
-    public function edit(Users $users)
-    {
-        $user = Users::find($users->id_user);
-        return view('admin.user.edit', compact('user'));
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Users $users)
-    {
-        $request->validate([
-            'username' => 'required|string|min:3|unique:users,username,' . $users->id_user . ',id_user',
-            'password' => 'nullable|min:5',
-            'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing'
-        ]);
-
-        Users::find($users->id_user)->update([
-            'username' => $request->username,
-            'password' => $request->password ? bcrypt($request->password) : Users::find($users->id_user)->password,
-            'role'     => $request->role
-        ]);
-
-
-        return redirect('/admin/user')->with('success', 'Data user berhasil diubah');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Users $users)
-    {
-        // Mengecek apakah data user dengan ID yang dimaksud ada atau tidak
-        $check = Users::find($users->id_user);
-        if (!$check) {
-            return redirect('/admin/user')->with('error', 'Data user tidak ditemukan');
-        }
-
-        try {
-            // Hapus data user
-            Users::destroy($users->id_user);
-
-            return redirect('/admin/user')->with('success', 'Data user berhasil dihapus');
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Jika terjadi error saat menghapus, redirect dengan pesan error
-            return redirect('/admin/user')->with('error', 'Data user gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
-        }
-    }
-
     public function create_ajax()
     {
         $roles = ['admin', 'mahasiswa', 'dosen_pembimbing'];
@@ -135,36 +48,32 @@ class KelolaPenggunaController extends Controller
 
     public function store_ajax(Request $request)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'username' => 'required|string|min:3|unique:users,username',
-                'password' => 'required|min:6',
-                'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
-            ];
+        $rules = [
+            'username' => 'required|string|min:3|unique:users,username',
+            'password' => 'required|min:6',
+            'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
+        ];
 
-            $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status'   => false,
-                    'message'  => 'Validasi gagal',
-                    'msgField' => $validator->errors(),
-                ]);
-            }
-
-            Users::create([
-                'username' => $request->username,
-                'password' => bcrypt($request->password),
-                'role'     => $request->role
-            ]);
-
+        if ($validator->fails()) {
             return response()->json([
-                'status'  => true,
-                'message' => 'Data user berhasil disimpan',
-            ]);
+                'status'   => false,
+                'message'  => 'Validasi gagal',
+                'msgField' => $validator->errors(),
+            ], 422);
         }
 
-        return redirect('/admin/user');
+        Users::create([
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'role'     => $request->role
+        ]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data user berhasil disimpan',
+        ]);
     }
 
     public function edit_ajax(string $id)
@@ -172,55 +81,65 @@ class KelolaPenggunaController extends Controller
         $user = Users::find($id);
         $roles = ['admin', 'mahasiswa', 'dosen_pembimbing'];
 
+        if (!$user) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+
         return view('admin.user.edit_ajax', compact('user', 'roles'));
     }
 
     public function update_ajax(Request $request, $id)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'username' => 'required|max:50|unique:users,username,' . $id . ',id_user',
-                'password' => 'nullable|min:6|max:100',
-                'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
-            ];
+        $rules = [
+            'username' => 'required|max:50|unique:users,username,' . $id . ',id_user',
+            'password' => 'nullable|min:6|max:100',
+            'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
+        ];
 
-            $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status'   => false,
-                    'message'  => 'Validasi gagal.',
-                    'msgField' => $validator->errors(),
-                ]);
-            }
+        if ($validator->fails()) {
+            return response()->json([
+                'status'   => false,
+                'message'  => 'Validasi gagal.',
+                'msgField' => $validator->errors(),
+            ], 422);
+        }
 
-            $user = Users::find($id);
+        $user = Users::find($id);
 
-            if ($user) {
-                $data = [
-                    'username' => $request->username,
-                    'role'     => $request->role,
-                ];
-
-                if ($request->filled('password')) {
-                    $data['password'] = bcrypt($request->password);
-                }
-
-                $user->update($data);
-
-                return response()->json([
-                    'status'  => true,
-                    'message' => 'Data berhasil diupdate',
-                ]);
-            }
-
+        if (!$user) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+
+        if ($user) {
+            $data = [
+                'username' => $request->username,
+                'role'     => $request->role,
+            ];
+
+            if ($request->filled('password')) {
+                $data['password'] = bcrypt($request->password);
+            }
+
+            $user->update($data);
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Data berhasil diupdate',
             ]);
         }
 
-        return redirect('/admin/user');
+        return response()->json([
+            'status'  => false,
+            'message' => 'Data tidak ditemukan',
+        ]);
     }
 
     public function show_ajax(string $id)
@@ -231,7 +150,7 @@ class KelolaPenggunaController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 404);
         }
 
         return view('admin.user.show_ajax', compact('user'));
@@ -240,30 +159,34 @@ class KelolaPenggunaController extends Controller
     public function confirm_ajax(string $id)
     {
         $user = Users::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+
         return view('admin.user.confirm_ajax', compact('user'));
     }
 
     public function delete_ajax(Request $request, $id)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $user = Users::find($id);
+        $user = Users::find($id);
 
-            if ($user) {
-                $user->delete();
-
-                return response()->json([
-                    'status'  => true,
-                    'message' => 'Data berhasil dihapus',
-                ]);
-            }
-
+        if (!$user) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 404);
         }
 
-        return redirect('/admin/user');
+        $user->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data berhasil dihapus',
+        ]);
     }
 
     public function resetPasswordForm($id)

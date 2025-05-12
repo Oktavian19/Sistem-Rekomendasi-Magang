@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\PeriodeMagang;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,67 +20,20 @@ class PeriodeController extends Controller
     {
         $periode = PeriodeMagang::select('id_periode', 'nama_periode', 'tanggal_mulai', 'tanggal_selesai');
 
+        if ($request->has('id_periode')) {
+            $periode->where('id_periode', $request->id_periode);
+        }
+
         return DataTables::of($periode)
             ->addIndexColumn()
-            ->addColumn('aksi', function ($item) {
-                $btn  = '<button onclick="modalAction(\'' . url('/admin/periode/' . $item->id_periode . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $item->id_periode . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $item->id_periode . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+            ->addColumn('aksi', function ($periode) {
+                $btn  = '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             ->rawColumns(['aksi'])
             ->make(true);
-    }
-
-    public function create()
-    {
-        return view('admin.periode.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_periode'     => 'required|string|max:100',
-            'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
-        ]);
-
-        PeriodeMagang::create($request->all());
-
-        return redirect('/admin/periode')->with('success', 'Periode berhasil ditambahkan');
-    }
-
-    public function show(PeriodeMagang $periode)
-    {
-        return view('admin.periode.show', compact('periode'));
-    }
-
-    public function edit(PeriodeMagang $periode)
-    {
-        return view('admin.periode.edit', compact('periode'));
-    }
-
-    public function update(Request $request, PeriodeMagang $periode)
-    {
-        $request->validate([
-            'nama_periode'     => 'required|string|max:100',
-            'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
-        ]);
-
-        $periode->update($request->all());
-
-        return redirect('/admin/periode')->with('success', 'Periode berhasil diperbarui');
-    }
-
-    public function destroy(PeriodeMagang $periode)
-    {
-        try {
-            $periode->delete();
-            return redirect('/admin/periode')->with('success', 'Periode berhasil dihapus');
-        } catch (\Exception $e) {
-            return redirect('/admin/periode')->with('error', 'Gagal menghapus karena data terkait');
-        }
     }
 
     // === AJAX ===
@@ -90,72 +44,84 @@ class PeriodeController extends Controller
 
     public function store_ajax(Request $request)
     {
-        if ($request->ajax()) {
-            $validator = Validator::make($request->all(), [
-                'nama_periode'     => 'required|string|max:100',
-                'tanggal_mulai'    => 'required|date',
-                'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
-            ]);
+        $rules = [
+            'nama_periode'     => 'required|string|max:100',
+            'tanggal_mulai'    => 'required|date',
+            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
+        ];
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status'   => false,
-                    'message'  => 'Validasi gagal',
-                    'msgField' => $validator->errors(),
-                ]);
-            }
+        $validator = Validator::make($request->all(), $rules);
 
-            PeriodeMagang::create($request->all());
-
+        if ($validator->fails()) {
             return response()->json([
-                'status'  => true,
-                'message' => 'Periode berhasil disimpan',
-            ]);
+                'status'   => false,
+                'message'  => 'Validasi gagal',
+                'msgField' => $validator->errors(),
+            ], 422);
         }
 
-        return redirect('/admin/periode');
+        PeriodeMagang::create($request->only([
+            'nama_periode',
+            'tanggal_mulai',
+            'tanggal_selesai',
+        ]));
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Periode berhasil disimpan',
+        ]);
     }
 
     public function edit_ajax(string $id)
     {
         $periode = PeriodeMagang::find($id);
+
+        if (!$periode) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
         return view('admin.periode.edit_ajax', compact('periode'));
     }
 
     public function update_ajax(Request $request, string $id)
     {
-        if ($request->ajax()) {
-            $validator = Validator::make($request->all(), [
-                'nama_periode'     => 'required|string|max:100',
-                'tanggal_mulai'    => 'required|date',
-                'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
-            ]);
+        $rules = [
+            'nama_periode'     => 'required|string|max:100',
+            'tanggal_mulai'    => 'required|date',
+            'tanggal_selesai'  => 'required|date|after_or_equal:tanggal_mulai',
+        ];
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status'   => false,
-                    'message'  => 'Validasi gagal',
-                    'msgField' => $validator->errors(),
-                ]);
-            }
+        $validator = Validator::make($request->all(), $rules);
 
-            $periode = PeriodeMagang::find($id);
+        if ($validator->fails()) {
+            return response()->json([
+                'status'   => false,
+                'message'  => 'Validasi gagal',
+                'msgField' => $validator->errors(),
+            ], 422);
+        }
 
-            if ($periode) {
-                $periode->update($request->all());
-                return response()->json([
-                    'status'  => true,
-                    'message' => 'Data berhasil diupdate',
-                ]);
-            }
+        $periode = PeriodeMagang::find($id);
 
+        if (!$periode) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 404);
         }
 
-        return redirect('/admin/periode');
+        $periode->update($request->only([
+            'nama_periode',
+            'tanggal_mulai',
+            'tanggal_selesai',
+        ]));
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data berhasil diupdate',
+        ]);
     }
 
     public function show_ajax(string $id)
@@ -166,31 +132,42 @@ class PeriodeController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 404);
         }
 
         return view('admin.periode.show_ajax', compact('periode'));
     }
 
-    public function delete_ajax(Request $request, string $id)
+    public function confirm_ajax($id)
     {
-        if ($request->ajax()) {
-            $periode = PeriodeMagang::find($id);
+        $periode = PeriodeMagang::find($id);
 
-            if ($periode) {
-                $periode->delete();
-                return response()->json([
-                    'status'  => true,
-                    'message' => 'Data berhasil dihapus',
-                ]);
-            }
-
+        if (!$periode) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Data tidak ditemukan',
-            ]);
+            ], 404);
         }
 
-        return redirect('/admin/periode');
+        return view('admin.perusahaan.confirm_ajax', compact('perusahaan'));
+    }
+
+    public function delete_ajax($id)
+    {
+        $periode = PeriodeMagang::find($id);
+
+        if (!$periode) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+
+        $periode->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data berhasil dihapus',
+        ]);
     }
 }
