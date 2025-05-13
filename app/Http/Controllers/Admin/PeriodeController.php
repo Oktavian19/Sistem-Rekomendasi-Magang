@@ -27,9 +27,25 @@ class PeriodeController extends Controller
         return DataTables::of($periode)
             ->addIndexColumn()
             ->addColumn('aksi', function ($periode) {
-                $btn  = '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/periode/' . $periode->id_periode . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn  = '<div class="dropdown">';
+                $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';  
+                $btn .= '</a>';
+                $btn .= '<ul class="dropdown-menu">';
+                
+                // Edit link
+                $btn .= '<li><a class="dropdown-item" href="' . url('periode/' . $periode->id_periode . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+                $btn .= '</a></li>';
+                
+                // Delete link
+                $btn .= '<li><a class="dropdown-item" href="' . url('periode/' . $periode->id_periode . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-trash"></i> Hapus';
+                $btn .= '</a></li>';
+                
+                $btn .= '</ul>';
+                $btn .= '</div>';
+    
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -149,7 +165,7 @@ class PeriodeController extends Controller
             ], 404);
         }
 
-        return view('admin.perusahaan.confirm_ajax', compact('perusahaan'));
+        return view('admin.periode.confirm_ajax', compact('periode'));
     }
 
     public function delete_ajax($id)

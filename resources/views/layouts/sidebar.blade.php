@@ -24,16 +24,16 @@
     </li>
 
     <!-- Manajemen Magang -->
-    <li class="menu-item">
+    <li class="menu-item {{ request()->is('perusahaan*') || request()->is('program-studi*') || request()->is('periode*') || request()->is('lowongan*') ? 'active open' : '' }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-briefcase"></i>
         <div>Manajemen Magang</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item"><a href="#" class="menu-link">Perusahaan Mitra</a></li>
-        <li class="menu-item"><a href="#" class="menu-link">Program Studi</a></li>
-        <li class="menu-item"><a href="#" class="menu-link">Periode Magang</a></li>
-        <li class="menu-item"><a href="#" class="menu-link">Lowongan Magang</a></li>
+        <li class="menu-item {{ request()->is('perusahaan*') ? 'active' : '' }}"><a href="#" class="menu-link">Perusahaan Mitra</a></li>
+        <li class="menu-item {{ request()->is('program-studi*') ? 'active' : '' }}"><a href="#" class="menu-link">Program Studi</a></li>
+        <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}"><a href="#" class="menu-link">Periode Magang</a></li>
+        <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}"><a href="#" class="menu-link">Lowongan Magang</a></li>
       </ul>
     </li>
 

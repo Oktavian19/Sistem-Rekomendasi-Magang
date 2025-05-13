@@ -16,7 +16,7 @@
 
   <!-- Iconify / Boxicons / Icon CSS -->
   <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/fonts/iconify-icons.css') }}">
-  {{-- <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/fonts/boxicons.css') }}"> --}}
+  <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/fonts/boxicons.css') }}">
 
   <!-- Core CSS -->
   <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/core.css') }}">
@@ -95,6 +95,10 @@
 
 <!-- Github Widget (optional) -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 <!-- Optional: Your custom page-specific scripts -->
 @stack('scripts')

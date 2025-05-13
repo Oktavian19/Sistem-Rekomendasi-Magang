@@ -25,15 +25,32 @@ class ProgramStudiController extends Controller
         }
 
         return DataTables::of($programStudi)
-            ->addIndexColumn()
-            ->addColumn('aksi', function ($programStudi) {
-                $btn  = '<button onclick="modalAction(\'' . url('/admin/program_studi/' . $programStudi->id_program_studi . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/program_studi/' . $programStudi->id_program_studi . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/program_studi/' . $programStudi->id_program_studi . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
-                return $btn;
-            })
-            ->rawColumns(['aksi'])
-            ->make(true);
+        ->addIndexColumn()
+        ->addColumn('aksi', function ($programStudi) {
+            $btn  = '<div class="dropdown">';
+            $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+            $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';  
+            $btn .= '</a>';
+            $btn .= '<ul class="dropdown-menu">';
+            
+            // Edit link
+            $btn .= '<li><a class="dropdown-item" href="' . url('program-studi/' . $programStudi->id_program_studi . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+            $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+            $btn .= '</a></li>';
+            
+            // Delete link
+            $btn .= '<li><a class="dropdown-item" href="' . url('program-studi/' . $programStudi->id_program_studi . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+            $btn .= '<i class="bx bx-trash"></i> Hapus';
+            $btn .= '</a></li>';
+            
+            $btn .= '</ul>';
+            $btn .= '</div>';
+
+            return $btn;
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+
     }
 
     public function create_ajax()

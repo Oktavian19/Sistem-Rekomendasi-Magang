@@ -36,7 +36,7 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::middleware('auth')->group(function () {
 
     // ===================== ADMIN ROUTES =====================
-    Route::middleware('authorize:admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -76,13 +76,14 @@ Route::middleware('auth')->group(function () {
         Route::get('magang-feedback', [MagangController::class, 'feedback'])->name('magang.feedback');
 
         // ===== PeriodeController Routes =====
+        Route::get('periode', [PeriodeController::class, 'index'])->name('periode.index');
         Route::get('periode/list', [PeriodeController::class, 'list'])->name('periode.list');
         Route::get('periode/create-ajax', [PeriodeController::class, 'create_ajax'])->name('periode.create_ajax');
         Route::post('periode/store-ajax', [PeriodeController::class, 'store_ajax'])->name('periode.store_ajax');
         Route::get('periode/{id}/edit-ajax', [PeriodeController::class, 'edit_ajax'])->name('periode.edit_ajax');
         Route::post('periode/{id}/update-ajax', [PeriodeController::class, 'update_ajax'])->name('periode.update_ajax');
         Route::get('periode/{id}/show-ajax', [PeriodeController::class, 'show_ajax'])->name('periode.show_ajax');
-        Route::get('periode/{id}/delete-ajax', [PeriodeController::class, 'delete_ajax'])->name('periode.delete_ajax');
+        Route::post('periode/{id}/delete-ajax', [PeriodeController::class, 'delete_ajax'])->name('periode.delete_ajax');
         Route::get('periode/{id}/confirm-ajax', [PeriodeController::class, 'confirm_ajax'])->name('periode.confirm_ajax');
 
         // ===== PerusahaanController Routes =====
@@ -96,13 +97,14 @@ Route::middleware('auth')->group(function () {
         Route::get('perusahaan/{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('perusahaan.confirm_ajax');
 
         // ===== ProgramStudiController Routes =====
+        Route::get('program-studi', [ProgramStudiController::class, 'index'])->name('programstudi.index');
         Route::get('program-studi/list', [ProgramStudiController::class, 'list'])->name('programstudi.list');
         Route::get('program-studi/create-ajax', [ProgramStudiController::class, 'create_ajax'])->name('programstudi.create_ajax');
         Route::post('program-studi/store-ajax', [ProgramStudiController::class, 'store_ajax'])->name('programstudi.store_ajax');
         Route::get('program-studi/{id}/edit-ajax', [ProgramStudiController::class, 'edit_ajax'])->name('programstudi.edit_ajax');
         Route::post('program-studi/{id}/update-ajax', [ProgramStudiController::class, 'update_ajax'])->name('programstudi.update_ajax');
         Route::get('program-studi/{id}/show-ajax', [ProgramStudiController::class, 'show_ajax'])->name('programstudi.show_ajax');
-        Route::get('program-studi/{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('programstudi.delete_ajax');
+        Route::post('program-studi/{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('programstudi.delete_ajax');
         Route::get('program-studi/{id}/confirm-ajax', [ProgramStudiController::class, 'confirm_ajax'])->name('programstudi.confirm_ajax');
     });
 
