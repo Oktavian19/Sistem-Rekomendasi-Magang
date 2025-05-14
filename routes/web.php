@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('lamaran/{id}', [LamaranController::class, 'destroy'])->name('lamaran.destroy');
 
         // ===== LowonganMagangController Routes =====
+        Route::get('lowongan', [LowonganMagangController::class, 'index'])->name('lowongan.index');
         Route::get('lowongan/list', [LowonganMagangController::class, 'list'])->name('lowongan.list');
         Route::get('lowongan/create-ajax', [LowonganMagangController::class, 'create_ajax'])->name('lowongan.create_ajax');
         Route::post('lowongan/store-ajax', [LowonganMagangController::class, 'store_ajax'])->name('lowongan.store_ajax');
@@ -87,13 +88,14 @@ Route::middleware('auth')->group(function () {
         Route::get('periode/{id}/confirm-ajax', [PeriodeController::class, 'confirm_ajax'])->name('periode.confirm_ajax');
 
         // ===== PerusahaanController Routes =====
+        Route::get('perusahaan', [PerusahaanController::class, 'index'])->name('perusahaan.index');
         Route::get('perusahaan/list', [PerusahaanController::class, 'list'])->name('perusahaan.list');
         Route::get('perusahaan/create-ajax', [PerusahaanController::class, 'create_ajax'])->name('perusahaan.create_ajax');
         Route::post('perusahaan/store-ajax', [PerusahaanController::class, 'store_ajax'])->name('perusahaan.store_ajax');
         Route::get('perusahaan/{id}/edit-ajax', [PerusahaanController::class, 'edit_ajax'])->name('perusahaan.edit_ajax');
         Route::post('perusahaan/{id}/update-ajax', [PerusahaanController::class, 'update_ajax'])->name('perusahaan.update_ajax');
         Route::get('perusahaan/{id}/show-ajax', [PerusahaanController::class, 'show_ajax'])->name('perusahaan.show_ajax');
-        Route::get('perusahaan/{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('perusahaan.delete_ajax');
+        Route::post('perusahaan/{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('perusahaan.delete_ajax');
         Route::get('perusahaan/{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('perusahaan.confirm_ajax');
 
         // ===== ProgramStudiController Routes =====

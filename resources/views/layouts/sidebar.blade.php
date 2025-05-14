@@ -30,10 +30,10 @@
         <div>Manajemen Magang</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {{ request()->is('perusahaan*') ? 'active' : '' }}"><a href="#" class="menu-link">Perusahaan Mitra</a></li>
-        <li class="menu-item {{ request()->is('program-studi*') ? 'active' : '' }}"><a href="#" class="menu-link">Program Studi</a></li>
-        <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}"><a href="#" class="menu-link">Periode Magang</a></li>
-        <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}"><a href="#" class="menu-link">Lowongan Magang</a></li>
+        <li class="menu-item {{ request()->is('perusahaan*') ? 'active' : '' }}"><a href="{{ url('perusahaan') }}" class="menu-link">Perusahaan Mitra</a></li>
+        <li class="menu-item {{ request()->is('program-studi*') ? 'active' : '' }}"><a href="{{ url('program-studi') }}" class="menu-link">Program Studi</a></li>
+        <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}"><a href="{{ url('periode') }}" class="menu-link">Periode Magang</a></li>
+        <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}"><a href="{{ url('lowongan') }}" class="menu-link">Lowongan Magang</a></li>
       </ul>
     </li>
 
