@@ -8,12 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class MahasiswaSeeder extends Seeder
 {
-
     public function run(): void
     {
         DB::table('mahasiswa')->insert([
             [
-                'id_user' => '2',
+                'id_mahasiswa' => '2',
                 'nim' => '2341720172',
                 'nama' => 'ACHMAD MAULANA HAMZAH',
                 'email' => '2341720172@example.com',
@@ -21,7 +20,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '3',
+                'id_mahasiswa' => '3',
                 'nim' => '2341720182',
                 'nama' => 'ALVANZA SAPUTRA YUDHA',
                 'email' => '2341720182@example.com',
@@ -29,7 +28,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '4',
+                'id_mahasiswa' => '4',
                 'nim' => '2341720234',
                 'nama' => 'ANYA CALLISSTA CHRISWANTARI',
                 'email' => '2341720234@example.com',
@@ -37,7 +36,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '5',
+                'id_mahasiswa' => '5',
                 'nim' => '2341720256',
                 'nama' => 'BERYL FUNKY MUBAROK',
                 'email' => '2341720256@example.com',
@@ -45,7 +44,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '6',
+                'id_mahasiswa' => '6',
                 'nim' => '2341720187',
                 'nama' => 'CANDRA AHMAD DANI',
                 'email' => '2341720187@example.com',
@@ -53,7 +52,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '7',
+                'id_mahasiswa' => '7',
                 'nim' => '2341720038',
                 'nama' => 'CINDY LAILI LARASATI',
                 'email' => '2341720038@example.com',
@@ -61,7 +60,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '8',
+                'id_mahasiswa' => '8',
                 'nim' => '2341720232',
                 'nama' => 'DIKA ARIE ARRIFKY',
                 'email' => '2341720232@example.com',
@@ -69,7 +68,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '9',
+                'id_mahasiswa' => '9',
                 'nim' => '2341720089',
                 'nama' => 'FAHMI YAHYA',
                 'email' => '2341720089@example.com',
@@ -77,7 +76,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '10',
+                'id_mahasiswa' => '10',
                 'nim' => '2341720042',
                 'nama' => 'GILANG PURNOMO',
                 'email' => '@example.com',
@@ -85,7 +84,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '11',
+                'id_mahasiswa' => '11',
                 'nim' => '2341720103',
                 'nama' => 'GWIDO PUTRA WIJAYA',
                 'email' => 'gwido.putra@example.com',
@@ -93,7 +92,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '12',
+                'id_mahasiswa' => '12',
                 'nim' => '2341720157',
                 'nama' => 'HIDAYAT WIDI SAPUTRA',
                 'email' => 'hidayat.widi@example.com',
@@ -101,7 +100,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '13',
+                'id_mahasiswa' => '13',
                 'nim' => '244107023001',
                 'nama' => 'ILHAM FATURACHMAN',
                 'email' => 'ilham.faturachman@example.com',
@@ -109,7 +108,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '14',
+                'id_mahasiswa' => '14',
                 'nim' => '2341720235',
                 'nama' => 'INNAMA MAESA PUTRI',
                 'email' => 'innama.maesa@example.com',
@@ -117,7 +116,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '15',
+                'id_mahasiswa' => '15',
                 'nim' => '2341720043',
                 'nama' => 'JIHA RAMDHAN',
                 'email' => 'jiha.ramadhan@example.com',
@@ -125,7 +124,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '16',
+                'id_mahasiswa' => '16',
                 'nim' => '2341720124',
                 'nama' => 'LELYTA MEYDA AYU BUDIYANTI',
                 'email' => 'lelyta.meyda@example.com',
@@ -133,7 +132,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '17',
+                'id_mahasiswa' => '17',
                 'nim' => '2341720194',
                 'nama' => 'M. FATIHI AL GHIFARY',
                 'email' => 'fatihi.ghifary@example.com',
@@ -141,7 +140,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '18',
+                'id_mahasiswa' => '18',
                 'nim' => '2341720099',
                 'nama' => 'M. FIRMANSYAH',
                 'email' => 'firmansyah@example.com',
@@ -149,7 +148,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '19',
+                'id_mahasiswa' => '19',
                 'nim' => '2341720024',
                 'nama' => 'MOCH. ALFIN BURHANUDIN ALQODRI',
                 'email' => 'alfin.burhanudin@example.com',
@@ -157,7 +156,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '20',
+                'id_mahasiswa' => '20',
                 'nim' => '2341720013',
                 'nama' => 'MUHAMAD SYAIFULLAH',
                 'email' => 'muhamad.syaifullah@example.com',
@@ -165,7 +164,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '21',
+                'id_mahasiswa' => '21',
                 'nim' => '2341720237',
                 'nama' => 'MUHAMMAD NUR AZIZ',
                 'email' => 'nur.aziz@example.com',
@@ -173,7 +172,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '22',
+                'id_mahasiswa' => '22',
                 'nim' => '2341720230',
                 'nama' => 'NAJWA ALYA NURIZZAH',
                 'email' => 'najwa.alya@example.com',
@@ -181,7 +180,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '23',
+                'id_mahasiswa' => '23',
                 'nim' => '2341720167',
                 'nama' => 'NECHA SYIFA SYAFITRI',
                 'email' => 'necha.syifa@example.com',
@@ -189,7 +188,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '24',
+                'id_mahasiswa' => '24',
                 'nim' => '2341720082',
                 'nama' => 'NOKLENT FARDIAN ERIX',
                 'email' => 'noklent.erix@example.com',
@@ -197,7 +196,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '25',
+                'id_mahasiswa' => '25',
                 'nim' => '2341720078',
                 'nama' => 'OCTRIAN ADILUHUNG TITO PUTRA',
                 'email' => 'octrian.putra@example.com',
@@ -205,7 +204,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '26',
+                'id_mahasiswa' => '26',
                 'nim' => '2341720163',
                 'nama' => 'SATRIO AHMAD RAMADHANI',
                 'email' => 'satrio.ramadhani@example.com',
@@ -213,7 +212,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '27',
+                'id_mahasiswa' => '27',
                 'nim' => '2341720029',
                 'nama' => 'SESY TANA LINA RAHMATIN',
                 'email' => 'sesy.rahmatin@example.com',
@@ -221,7 +220,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '28',
+                'id_mahasiswa' => '28',
                 'nim' => '2341720062',
                 'nama' => 'TAUFIK DIMAS EDYSTARA',
                 'email' => 'taufik.edystara@example.com',
@@ -229,7 +228,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '29',
+                'id_mahasiswa' => '29',
                 'nim' => '2341720149',
                 'nama' => 'VINCENTIUS LEONANDA PRABOWO',
                 'email' => 'vincentius.prabowo@example.com',
@@ -237,7 +236,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '30',
+                'id_mahasiswa' => '30',
                 'nim' => '2341720030',
                 'nama' => 'YANUAR RIZKI AMINUDIN',
                 'email' => 'yanuar.aminudin@example.com',
@@ -245,7 +244,7 @@ class MahasiswaSeeder extends Seeder
                 'id_program_studi' => 1
             ],
             [
-                'id_user' => '31',
+                'id_mahasiswa' => '31',
                 'nim' => '2341720018',
                 'nama' => 'ABDILLAH NOER SAID',
                 'email' => 'abdillah.noer@example.com',

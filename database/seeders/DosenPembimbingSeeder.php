@@ -32,7 +32,7 @@ class DosenPembimbingSeeder extends Seeder
             $id = DB::table('users')->where('username', $dsn['username'])->value('id_user');
 
             DB::table('dosen_pembimbing')->insert([
-                'id_dosen' => $id,
+                'id_dosen_pembimbing' => $id,
                 'nidn' => $dsn['nidn'],
                 'nama' => $dsn['nama'],
                 'email' => $dsn['email'],
