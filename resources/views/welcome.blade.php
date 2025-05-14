@@ -58,23 +58,23 @@
   <!-- Layout wrapper -->
   <div class="layout-content-navbar">
         {{-- Header --}}
-        <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm p-7">
+        <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm p-5">
           <div class="container d-flex justify-content-between align-items-center">
             
             <!-- Logo -->
             <a class="navbar-brand d-flex align-items-center" href="#">
               <img src="{{ asset('sneat/assets/img/logo.png') }}" alt="Logo" style="height: 30px;" class="me-2">
-              <span class="fw-bold mb-0" style="font-size: 2rem">SIMAGANG</span>
+              <span class="fw-bold mb-0" style="font-size: 1.5rem">SIMAGANG</span>
             </a>            
         
             <!-- Menu -->
             <div class="d-none d-lg-flex gap-9">
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Home</a>
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Lowongan</a>
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Virtual Internship</a>
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Mentor Class</a>
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Perusahaan</a>
-              <a class="nav-link text-dark" style="font-size: 1.2rem" href="#">Tentang</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Home</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Lowongan</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Virtual Internship</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Mentor Class</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Perusahaan</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Tentang</a>
             </div>
         
             <!-- Profile -->
@@ -88,7 +88,7 @@
                 <li><a class="dropdown-item" href="#">Logout</a></li>
               </ul>
             </div> --}}
-            <a href="#" class="btn btn-outline-primary" style="font-size: 1.2rem">Login</a>
+            <a href="#" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
         
           </div>
         </nav>
@@ -97,23 +97,10 @@
         <!-- Hero Section -->
         <section class="bg-primary" style="height: 60vh;">
           <div class="container h-100">
-            <div class="row h-100">
+            <div class="row h-100 ms-5 ps-5">
               <!-- Left Content - Tetap di tengah vertikal -->
               <div class="col-lg-5 text-white d-flex flex-column justify-content-center">
-                <div class="d-flex align-items-center mb-3">
-                  <div class="bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                    <i class="bx bx-play text-primary fs-3"></i>
-                  </div>
-                </div>
-                <h1 class="fw-bold text-white mb-3" style="font-size: 3rem;">Temukan<br>Pekerjaan impianmu<br>dan Talenta terbaik</h1>
-                
-                <!-- Search Box -->
-                <form class="d-flex mt-4">
-                  <input type="text" class="form-control rounded-start-pill py-3 px-4" placeholder="Cari lowongan">
-                  <button class="btn btn-white rounded-end-pill px-4" type="submit">
-                    <i class="bx bx-search text-white"></i>
-                  </button>
-                </form>
+                <h1 class="fw-bold text-white mb-3" style="font-size: 2.5rem;">Temukan<br>Pekerjaan impianmu<br>dan Talenta terbaik</h1>
               </div>
 
               <!-- Right Image - Rata bawah -->
@@ -124,7 +111,7 @@
           </div>
         </section>
 
-        <div class="container py-5" style="margin-top: 8vh">
+        <div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh">
           <!-- Header Section -->
           <div class="row justify-content-between align-items-center mb-4">
               <div class="col-auto">
@@ -224,7 +211,7 @@
           </div>
       </div>
   </div>
-  <div class="bg-light" style="width: 100vw; padding: 5vh 0; margin-top: 10vh">
+  <div class="bg-light" style="width: 100vw; padding: 3vw; margin-top: 10vh">
     <div class="container">
       <h4 class="fw-bold text-center">Lowongan Terbaru</h4>
     <p class="text-muted text-center fs-6">Tersedia 1001 lowongan dari berbagai perusahaan</p>
@@ -431,8 +418,8 @@
     </div>
   
 </div>
-<div class="container" style="margin-top: 8vh">
-  <h4 class="fw-bold">Eksplor fitur lebih lanjut</h4>
+<div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+  <h4 class="fw-bold">Eksplor Fitur Lebih Lanjut</h4>
   <div class="row mt-4 mt-md-5">
       <!-- Kartu Talenta -->
       <div class="col-lg-4 mb-5">
@@ -474,6 +461,69 @@
     </div>
   </div>
 </div>
+<div class="container" style="background-color: #DAD2FF; margin-top: 8vh; padding-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+    <h4 class="text-center mb-1">
+      Frequently asked
+      <span class="position-relative fw-extrabold z-1"
+        >questions
+      </span>
+    </h4>
+    <p class="text-center mb-12 pb-md-4">Browse through these FAQs to find answers to commonly asked questions.</p>
+    <div class="row gy-12 align-items-center">
+      <div class="col-lg-5">
+        <div class="text-center">
+          <img src="{{ asset('sneat/assets/img/faq.png') }}" alt="faq boy with logos" class="faq-image" style="max-width: 100%; height: auto;" />
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="accordion" id="accordionExample">
+          <div class="card accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">Do you charge for each upgrade?</button>
+            </h2>
+
+            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.</div>
+            </div>
+          </div>
+          <div class="card accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">Do I need to purchase a license for each website?</button>
+            </h2>
+            <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies. Jelly beans candy canes carrot cake. Fruitcake chocolate chupa chups.</div>
+            </div>
+          </div>
+          <div class="card accordion-item active">
+            <h2 class="accordion-header" id="headingThree">
+              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">What is regular license?</button>
+            </h2>
+            <div id="accordionThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                Regular license can be used for end products that do not charge users for access or service(access is free and there will be no monthly subscription fee). Single regular license can be used for single end product and end product can be used by you or your client. If you want to sell end product to multiple clients then you will need to purchase separate license for each client. The same rule applies if you want to use the same end product on multiple domains(unique setup).
+                For more info on regular license you can check official description.
+              </div>
+            </div>
+          </div>
+          <div class="card accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">What is extended license?</button>
+            </h2>
+            <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis et aliquid quaerat possimus maxime! Mollitia reprehenderit neque repellat deleniti delectus architecto dolorum maxime, blanditiis earum ea, incidunt quam possimus cumque.</div>
+            </div>
+          </div>
+          <div class="card accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">Which license is applicable for SASS application?</button>
+            </h2>
+            <div id="accordionFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi molestias exercitationem ab cum nemo facere voluptates veritatis quia, eveniet veniam at et repudiandae mollitia ipsam quasi labore enim architecto non!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
