@@ -20,6 +20,11 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function landing_page()
+    {
+        return view('welcome');
+    }
+
     public function postlogin(Request $request)
     {
         $credentials = $request->only('username', 'password');
