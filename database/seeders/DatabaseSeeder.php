@@ -13,10 +13,29 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            //BidangKeahlianSeeder::class,
+            //PreferensiLokasi::class,
+            //JenisMagangSeeder::class,
+            //KriteriaRekomendasiSeeder:class,
             ProgramStudiSeeder::class,
+            //PerusahaanMitraSeeder:class,
+            //PeriodeMagangSeeder:class,
             AdminSeeder::class,
             MahasiswaSeeder::class,
             DosenPembimbingSeeder::class,
+            //PengalamanSeeder:class,
+            //DokumenSeeder:class,
+            //LowonganSeeder:class,
+            //MahasiswaBidangKeahlianSeeder:class,
+            //MahasiswaPreferensiLokasiSeeder:class,
+            //MahasiswaJenisMagangSeeder::class,
+            //BobotMahasiswaSeederSeeder::class
+            //LamaranSeeder::class,
+            //MagangSeeder::class,
+            //LogKegiatanSeeder::class,
+            //FeedbackSeeder::class,
+            //SertifikatSeeder::class,
+            //DokumenLogKegiatanSeeder:class
         ]);
     }
 }
