@@ -3,11 +3,12 @@
     <div id="modal-lowongan" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Perusahaan</h5>
+                <h5 class="modal-title">Tambah Lowongan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group mb-3">
+                    <label>Nama Perusahaan</label>
                     <select name="id_perusahaan" id="id_perusahaan" class="form-control" required>
                         <option value="">Pilih Perusahaan</option>
                         @foreach ($perusahaans as $perusahaan)

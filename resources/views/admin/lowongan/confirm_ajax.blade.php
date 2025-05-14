@@ -30,7 +30,7 @@
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
-                            <th class="text-right col-3">Nama Lowongan:</th>
+                            <th class="text-right col-3">Nama Posisi:</th>
                             <td class="col-9">{{ $lowongan->nama_posisi }}</td>
                         </tr>
                     </table>

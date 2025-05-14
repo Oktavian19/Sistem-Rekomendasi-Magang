@@ -24,7 +24,7 @@ class Lowongan extends Model
         'durasi_magang'
     ];
 
-    public function perusahaanMitra()
+    public function perusahaan()
     {
         return $this->belongsTo(PerusahaanMitra::class, 'id_perusahaan', 'id_perusahaan');
     }

@@ -14,7 +14,8 @@ class LowonganMagangController extends Controller
     public function index()
     {
         $lowongan = Lowongan::with('perusahaan')->get();
-        return view('admin.lowongan.index', compact('lowongan'));
+        $perusahaan = PerusahaanMitra::all();
+        return view('admin.lowongan.index', compact('lowongan', 'perusahaan'));
     }
 
     public function list(Request $request)
@@ -27,6 +28,9 @@ class LowonganMagangController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('nama_perusahaan', function ($row) {
+                return $row->perusahaan->nama_perusahaan ?? '-';
+            })
             ->addColumn('aksi', function ($lowongan) {
                 $btn  = '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/show-ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/edit-ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
