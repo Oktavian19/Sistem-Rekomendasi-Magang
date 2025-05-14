@@ -12,13 +12,20 @@ class AuthController extends Controller
 {
     public function login()
     {
-        // Jika sudah login, redirect ke halaman home
+        // Jika sudah login, redirect berdasarkan role
         if (Auth::check()) {
-            return redirect('/admin/dashboard');
+            $user = Auth::user();
+
+            if ($user->role === 'mahasiswa') {
+                return redirect('/dashboard-mahasiswa');
+            }
+
+            return redirect('/dashboard'); // default untuk role lain
         }
 
         return view('auth.login');
     }
+
 
     public function landing_page()
     {
@@ -30,17 +37,28 @@ class AuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Menentukan URL redirect berdasarkan role
+            if ($user->role === 'mahasiswa') {
+                $redirectUrl = url('/dashboard-mahasiswa');
+            } else {
+                $redirectUrl = url('/dashboard'); // default untuk role lain
+            }
+
+            // Jika request dari AJAX
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => true,
                     'message' => 'Login Berhasil',
-                    'redirect' => url('/admin/dashboard')
+                    'redirect' => $redirectUrl
                 ]);
             }
 
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended($redirectUrl);
         }
 
+        // Jika login gagal
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'status' => false,
@@ -50,6 +68,7 @@ class AuthController extends Controller
 
         return back()->withErrors(['username' => 'Username atau password salah.'])->withInput();
     }
+
 
 
     public function logout(Request $request)

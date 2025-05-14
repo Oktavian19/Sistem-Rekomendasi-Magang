@@ -88,7 +88,7 @@
                 <li><a class="dropdown-item" href="#">Logout</a></li>
               </ul>
             </div> --}}
-            <a href="#" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
+            <a href="{{ url('/login') }}" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
         
           </div>
         </nav>
