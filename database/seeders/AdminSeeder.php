@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -17,6 +18,15 @@ class AdminSeeder extends Seeder
         ];
 
         foreach ($admins as $admin) {
+            DB::table('users')->insert([
+            [
+                'username' => $admin['username'],
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]]);
+
             $id = DB::table('users')->where('username', $admin['username'])->value('id_user');
 
             DB::table('admin')->insert([
