@@ -28,9 +28,9 @@ class LowonganMagangController extends Controller
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('aksi', function ($lowongan) {
-                $btn  = '<button onclick="modalAction(\'' . url('/admin/lowongan/' . $lowongan->id_lowongan . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/lowongan/' . $lowongan->id_lowongan . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/lowongan/' . $lowongan->id_lowongan . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
+                $btn  = '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/show-ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/edit-ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/confirm-ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
             ->rawColumns(['aksi'])

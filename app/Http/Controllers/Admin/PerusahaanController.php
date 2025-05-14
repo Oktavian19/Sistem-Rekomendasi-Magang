@@ -18,22 +18,39 @@ class PerusahaanController extends Controller
 
     public function list(Request $request)
     {
-        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'email', 'telepon');
+        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'email', 'telepon', 'alamat');
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
         }
 
         return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('aksi', function ($perusahaanMitra) {
-                $btn  = '<button onclick="modalAction(\'' . url('/admin/perusahaan/' . $perusahaanMitra->id_perusahaan . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/perusahaan/' . $perusahaanMitra->id_perusahaan . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/admin/perusahaan/' . $perusahaanMitra->id_perusahaan . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
-                return $btn;
-            })
-            ->rawColumns(['aksi'])
-            ->make(true);
+        ->addIndexColumn()
+        ->addColumn('aksi', function ($perusahaanMitra) {
+            $btn  = '<div class="dropdown">';
+            $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+            $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';  
+            $btn .= '</a>';
+            $btn .= '<ul class="dropdown-menu">';
+
+            // Edit link
+            $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+            $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+            $btn .= '</a></li>';
+
+            // Delete link
+            $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+            $btn .= '<i class="bx bx-trash"></i> Hapus';
+            $btn .= '</a></li>';
+
+            $btn .= '</ul>';
+            $btn .= '</div>';
+
+            return $btn;
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+
     }
 
     public function create_ajax()
