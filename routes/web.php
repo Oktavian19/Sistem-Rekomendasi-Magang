@@ -27,6 +27,7 @@ use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 Route::pattern('id', '[0-9]+');
 
 // Authentication Routes
+Route::get('/', [AuthController::class, 'landing_page'])->name('landing_page');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
@@ -38,7 +39,8 @@ Route::middleware('auth')->group(function () {
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard');
+        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user-list', [KelolaPenggunaController::class, 'list'])->name('user.list');

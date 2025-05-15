@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts-nav.app')
 
 @section('title', 'Dashboard | Sistem Rekomendasi Magang')
 

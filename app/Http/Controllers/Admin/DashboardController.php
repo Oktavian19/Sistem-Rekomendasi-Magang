@@ -13,24 +13,25 @@ use App\Models\Magang;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function dashboard_admin()
     {
-        $totalMahasiswaMagang = Magang::distinct('id_mahasiswa')->count();
-        $trenBidangMinat = Mahasiswa::select('bidang_minat', DB::raw('count(*) as total'))
-            ->groupBy('bidang_minat')
-            ->get();
-        $totalDosenPembimbing = DosenPembimbing::count();
-        $rasioDosenMahasiswa = $totalMahasiswaMagang / max($totalDosenPembimbing, 1);
+        // $totalMahasiswaMagang = Magang::distinct('id_mahasiswa')->count();
+        // $trenBidangMinat = Mahasiswa::select('bidang_minat', DB::raw('count(*) as total'))
+        //     ->groupBy('bidang_minat')
+        //     ->get();
+        // $totalDosenPembimbing = DosenPembimbing::count();
+        // $rasioDosenMahasiswa = $totalMahasiswaMagang / max($totalDosenPembimbing, 1);
 
-        // Asumsi: kamu punya evaluasi efektivitas (misalnya via feedback)
-        $efektivitas = Feedback::avg('skor');
+        // // Asumsi: kamu punya evaluasi efektivitas (misalnya via feedback)
+        // $efektivitas = Feedback::avg('skor');
 
-        return view('dashboard.index', compact(
-            'totalMahasiswaMagang',
-            'trenBidangMinat',
-            'totalDosenPembimbing',
-            'rasioDosenMahasiswa',
-            'efektivitas'
-        ));
+        // return view('dashboard.index', compact(
+        //     'totalMahasiswaMagang',
+        //     'trenBidangMinat',
+        //     'totalDosenPembimbing',
+        //     'rasioDosenMahasiswa',
+        //     'efektivitas'
+        // ));
+        return view('dashboard.admin');
     }
 }
