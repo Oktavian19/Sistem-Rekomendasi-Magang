@@ -57,11 +57,11 @@ class MahasiswaSeeder extends Seeder
             $id = DB::table('users')->where('username', $mhs['nim'])->value('id_user');
             
             DB::table('mahasiswa')->insert([
-                    'id_mahasiswa'  => $id,
-                    'nim'           => $mhs['nim'],
-                    'nama'          => $mhs['nama'],
-                    'program_studi' => 1,
-                    'created_at'    => now(),
+                    'id_mahasiswa'      => $id,
+                    'nim'               => $mhs['nim'],
+                    'nama'              => $mhs['nama'],
+                    'id_program_studi'  => 1,
+                    'created_at'        => now(),
             ]);
         }
     }
