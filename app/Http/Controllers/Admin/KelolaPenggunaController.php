@@ -3,26 +3,46 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Users;
+use App\Models\{Users, Admin, Mahasiswa, DosenPembimbing, ProgramStudi, BidangKeahlian, Pengalaman};
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class KelolaPenggunaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $users = Users::all();
-        return view('admin.user.index', compact('users'));
+        $programStudi = ProgramStudi::all();
+        return view('admin.user.index', compact('programStudi'));
     }
-
 
     public function list(Request $request)
     {
-        $users = Users::select('id_user', 'username', 'role');
+        $users = Users::select([
+            'users.id_user',
+            'users.username',
+            'users.role',
+            'admin.nama as admin_nama',
+            'admin.email as admin_email',
+            'mahasiswa.nama as mahasiswa_nama',
+            'mahasiswa.nim',
+            'mahasiswa.email as mahasiswa_email',
+            'dosen_pembimbing.nama as dosen_nama',
+            'dosen_pembimbing.nidn',
+            'dosen_pembimbing.email as dosen_email'
+        ])
+            ->leftJoin('admin', function ($join) {
+                $join->on('admin.id_admin', '=', 'users.id_user')
+                    ->where('users.role', '=', 'admin');
+            })
+            ->leftJoin('mahasiswa', function ($join) {
+                $join->on('mahasiswa.id_mahasiswa', '=', 'users.id_user')
+                    ->where('users.role', '=', 'mahasiswa');
+            })
+            ->leftJoin('dosen_pembimbing', function ($join) {
+                $join->on('dosen_pembimbing.id_dosen_pembimbing', '=', 'users.id_user')
+                    ->where('users.role', '=', 'dosen_pembimbing');
+            });
 
         if ($request->role) {
             $users->where('role', $request->role);
@@ -30,29 +50,75 @@ class KelolaPenggunaController extends Controller
 
         return DataTables::of($users)
             ->addIndexColumn()
+            ->addColumn('nama', function ($user) {
+                switch ($user->role) {
+                    case 'admin':
+                        return $user->admin_nama;
+                    case 'mahasiswa':
+                        return $user->mahasiswa_nama;
+                    case 'dosen_pembimbing':
+                        return $user->dosen_nama;
+                    default:
+                        return '-';
+                }
+            })
+            ->addColumn('detail', function ($user) {
+                switch ($user->role) {
+                    case 'admin':
+                        return 'Email: ' . $user->admin_email;
+                    case 'mahasiswa':
+                        return 'NIM: ' . $user->nim . '<br>Email: ' . $user->mahasiswa_email;
+                    case 'dosen_pembimbing':
+                        return 'NIDN: ' . $user->nidn . '<br>Email: ' . $user->dosen_email;
+                    default:
+                        return '-';
+                }
+            })
             ->addColumn('aksi', function ($user) {
                 $btn  = '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['detail', 'aksi'])
             ->make(true);
     }
 
     public function create_ajax()
     {
         $roles = ['admin', 'mahasiswa', 'dosen_pembimbing'];
-        return view('admin.user.create_ajax', compact('roles'));
+        $programStudi = ProgramStudi::all();
+
+        return view('admin.user.create_ajax', compact('roles', 'programStudi'));
     }
 
     public function store_ajax(Request $request)
     {
+        // Common validation rules
         $rules = [
             'username' => 'required|string|min:3|unique:users,username',
             'password' => 'required|min:6',
             'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
+            'nama'     => 'required|string|max:100',
+            'no_hp'    => 'required|string|max:20',
         ];
+
+        // Role-specific validation rules
+        switch ($request->role) {
+            case 'mahasiswa':
+                $rules['nim'] = 'required|string|unique:mahasiswa,nim';
+                $rules['id_program_studi'] = 'required|exists:program_studi,id_program_studi';
+                $rules['email'] = 'required|email|unique:mahasiswa,email';
+                break;
+            case 'dosen_pembimbing':
+                $rules['nidn'] = 'required|string|unique:dosen_pembimbing,nidn';
+                $rules['bidang_minat'] = 'required|string';
+                $rules['email'] = 'required|email|unique:dosen_pembimbing,email';
+                break;
+            case 'admin':
+                $rules['email'] = 'required|email|unique:admin,email';
+                break;
+        }
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -64,11 +130,46 @@ class KelolaPenggunaController extends Controller
             ], 422);
         }
 
-        Users::create([
+        // Create user first
+        $user = Users::create([
             'username' => $request->username,
             'password' => bcrypt($request->password),
             'role'     => $request->role
         ]);
+
+        switch ($request->role) {
+            case 'admin':
+                Admin::create([
+                    'id_admin' => $user->id_user,
+                    'nama' => $request->nama,
+                    'email' => $request->email,
+                    'no_hp' => $request->no_hp
+                ]);
+                break;
+
+            case 'mahasiswa':
+                Mahasiswa::create([
+                    'id_mahasiswa' => $user->id_user,
+                    'nim' => $request->nim,
+                    'nama' => $request->nama,
+                    'email' => $request->email,
+                    'no_hp' => $request->no_hp,
+                    'id_program_studi' => $request->id_program_studi
+                ]);
+                break;
+
+            case 'dosen_pembimbing':
+                DosenPembimbing::create([
+                    'id_dosen_pembimbing' => $user->id_user,
+                    'nidn' => $request->nidn,
+                    'nama' => $request->nama,
+                    'email' => $request->email,
+                    'no_hp' => $request->no_hp,
+                    'bidang_minat' => $request->bidang_minat
+                ]);
+                break;
+        }
+
 
         return response()->json([
             'status'  => true,
@@ -80,6 +181,8 @@ class KelolaPenggunaController extends Controller
     {
         $user = Users::find($id);
         $roles = ['admin', 'mahasiswa', 'dosen_pembimbing'];
+        $programStudi = ProgramStudi::all();
+        $bidangKeahlian = BidangKeahlian::all();
 
         if (!$user) {
             return response()->json([
@@ -88,16 +191,63 @@ class KelolaPenggunaController extends Controller
             ], 404);
         }
 
-        return view('admin.user.edit_ajax', compact('user', 'roles'));
+        switch ($user->role) {
+            case 'mahasiswa':
+                $detail = Mahasiswa::where('id_mahasiswa', $user->id_user)->first();
+                break;
+            case 'admin':
+                $detail = Admin::where('id_admin', $user->id_user)->first();
+                break;
+            case 'dosen_pembimbing':
+                $detail = DosenPembimbing::where('id_dosen_pembimbing', $user->id_user)->first();
+                break;
+        }
+
+        return view('admin.user.edit_ajax', compact(
+            'user',
+            'roles',
+            'detail',
+            'programStudi',
+            'bidangKeahlian',
+            'selectedBidangKeahlian'
+        ));
     }
 
     public function update_ajax(Request $request, $id)
     {
+        $user = Users::find($id);
+        if (!$user) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+
+        // Common validation rules
         $rules = [
             'username' => 'required|max:50|unique:users,username,' . $id . ',id_user',
             'password' => 'nullable|min:6|max:100',
             'role'     => 'required|in:admin,mahasiswa,dosen_pembimbing',
+            'nama'     => 'required|string|max:100',
+            'no_hp'    => 'required|string|max:20',
         ];
+
+        // Role-specific validation rules
+        switch ($request->role) {
+            case 'mahasiswa':
+                $rules['nim'] = 'required|string|unique:mahasiswa,nim,' . $user->id_user . ',id_mahasiswa';
+                $rules['id_program_studi'] = 'required|exists:program_studi,id_program_studi';
+                $rules['email'] = 'required|email|unique:mahasiswa,email,' . $user->id_user . ',id_mahasiswa';
+                break;
+            case 'dosen_pembimbing':
+                $rules['nidn'] = 'required|string|unique:dosen_pembimbing,nidn,' . $user->id_user . ',id_dosen_pembimbing';
+                $rules['bidang_minat'] = 'required|string';
+                $rules['email'] = 'required|email|unique:dosen_pembimbing,email,' . $user->id_user . ',id_dosen_pembimbing';
+                break;
+            case 'admin':
+                $rules['email'] = 'required|email|unique:admin,email,' . $user->id_user . ',id_admin';
+                break;
+        }
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -109,36 +259,56 @@ class KelolaPenggunaController extends Controller
             ], 422);
         }
 
-        $user = Users::find($id);
+        // Update user
+        $user->update([
+            'username' => $request->username,
+            'role'     => $request->role,
+            'password' => $request->filled('password') ? bcrypt($request->password) : $user->password,
+        ]);
 
-        if (!$user) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
-            ], 404);
-        }
+        // Update role-specific data
+        switch ($user->role) {
+            case 'mahasiswa':
+                $mahasiswa = Mahasiswa::updateOrCreate(
+                    ['id_mahasiswa' => $user->id_user],
+                    [
+                        'nim' => $request->nim,
+                        'nama' => $request->nama,
+                        'email' => $request->email,
+                        'no_hp' => $request->no_hp,
+                        'id_program_studi' => $request->id_program_studi
+                    ]
+                );
+                break;
 
-        if ($user) {
-            $data = [
-                'username' => $request->username,
-                'role'     => $request->role,
-            ];
+            case 'admin':
+                Admin::updateOrCreate(
+                    ['id_admin' => $user->id_user],
+                    [
+                        'nama' => $request->nama,
+                        'email' => $request->email,
+                        'no_hp' => $request->no_hp
+                    ]
+                );
+                break;
 
-            if ($request->filled('password')) {
-                $data['password'] = bcrypt($request->password);
-            }
-
-            $user->update($data);
-
-            return response()->json([
-                'status'  => true,
-                'message' => 'Data berhasil diupdate',
-            ]);
+            case 'dosen_pembimbing':
+                DosenPembimbing::updateOrCreate(
+                    ['id_dosen_pembimbing' => $user->id_user],
+                    [
+                        'nidn' => $request->nidn,
+                        'nama' => $request->nama,
+                        'email' => $request->email,
+                        'no_hp' => $request->no_hp,
+                        'bidang_minat' => $request->bidang_minat
+                    ]
+                );
+                break;
         }
 
         return response()->json([
-            'status'  => false,
-            'message' => 'Data tidak ditemukan',
+            'status'  => true,
+            'message' => 'Data berhasil diupdate',
         ]);
     }
 
@@ -153,8 +323,15 @@ class KelolaPenggunaController extends Controller
             ], 404);
         }
 
-        return view('admin.user.show_ajax', compact('user'));
+        $detail = null;
+
+        if ($user->role === 'mahasiswa') {
+            $detail = Mahasiswa::with(['bidangKeahlian', 'pengalaman'])->where('id_mahasiswa', $user->id_user)->first();
+        }
+
+        return view('admin.user.show_ajax', compact('user', 'detail'));
     }
+
 
     public function confirm_ajax(string $id)
     {

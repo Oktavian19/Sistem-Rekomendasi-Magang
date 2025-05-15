@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_lowongan');
             $table->date('tanggal_lamaran');
             $table->enum('status_lamaran', ['menunggu', 'diterima', 'ditolak']);
+            $table->boolean('dari_rekomendasi')->default(false);
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')
