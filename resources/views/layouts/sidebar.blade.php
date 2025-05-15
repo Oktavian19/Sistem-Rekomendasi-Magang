@@ -23,21 +23,44 @@
       </a>
     </li>
 
-    <!-- Manajemen Magang -->
-    <li class="menu-item {{ request()->is('perusahaan*') || request()->is('program-studi*') || request()->is('periode*') || request()->is('lowongan*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-briefcase"></i>
+    <li class="menu-item {{ request()->is('perusahaan*') ? 'active' : '' }}">
+      <a href="{{ url('perusahaan') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-building"></i>
+        <div>Perusahaan Mitra</div>
+      </a>
+    </li>
+    <li class="menu-item {{ request()->is('program-studi*') ? 'active' : '' }}">
+      <a href="{{ url('program-studi') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-book"></i>
+        <div>Program Studi</div>
+      </a>
+    </li>
+    <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
+      <a href="{{ url('periode') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-calendar"></i>
+        <div>Periode Magang</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="#" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user-plus"></i>
+        <div>Manajemen Akun</div>
+      </a>
+    </li>
+    <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
+      <a href="{{ url('lowongan') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-folder-open"></i>
         <div>Manajemen Magang</div>
       </a>
-      <ul class="menu-sub">
-        <li class="menu-item {{ request()->is('perusahaan*') ? 'active' : '' }}"><a href="{{ url('perusahaan') }}" class="menu-link">Perusahaan Mitra</a></li>
-        <li class="menu-item {{ request()->is('program-studi*') ? 'active' : '' }}"><a href="{{ url('program-studi') }}" class="menu-link">Program Studi</a></li>
-        <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}"><a href="{{ url('periode') }}" class="menu-link">Periode Magang</a></li>
-        <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}"><a href="{{ url('lowongan') }}" class="menu-link">Lowongan Magang</a></li>
-      </ul>
     </li>
 
     <!-- Proses Pengajuan -->
+    <li class="menu-item {{ request()->is('daftar-lowongan*') ? 'active' : '' }}">
+      <a href="{{ url('lowongan-magang') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-briefcase"></i>
+        <div>Lowongan Magang</div>
+      </a>
+    </li>
     <li class="menu-item">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-send"></i>
@@ -85,13 +108,7 @@
       </a>
     </li>
 
-    <!-- Manajemen Akun -->
-    <li class="menu-item">
-      <a href="#" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-user-plus"></i>
-        <div>Manajemen Akun</div>
-      </a>
-    </li>
+    
 
     <!-- Logout -->
     <li class="menu-item">

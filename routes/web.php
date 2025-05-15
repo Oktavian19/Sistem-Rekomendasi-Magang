@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
+use App\Http\Controllers\Mahasiswa\LowonganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +118,10 @@ Route::middleware('auth')->group(function () {
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
+        Route::get('/daftar-lowongan', function () {
+            return view('mahasiswa.magang.lowongan');
+        })->name('lowongan-magang');
+        
 
     });
 
