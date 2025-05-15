@@ -31,23 +31,23 @@ class DosenPembimbingSeeder extends Seeder
 
         foreach ($dosen as $dsn) {
             DB::table('users')->insert([
-            [
                 'username'  => $dsn['nidn'],
                 'password'  => Hash::make($dsn['nidn']),
                 'role'      => 'dosen_pembimbing',
                 'created_at' => now()
-            ]]);
+
+            ]);
 
             $id = DB::table('users')->where('username', $dsn['nidn'])->value('id_user');
 
             DB::table('dosen_pembimbing')->insert([
-                'id_dosen'      => $id,
-                'nidn'          => $dsn['nidn'],
-                'nama'          => $dsn['nama'],
-                'email'         => $dsn['email'],
-                'no_hp'         => '08123456789',
-                'bidang_minat'  => implode(', ', $dsn['bidang_minat']),
-                'created_at'    => now()
+                'id_dosen_pembimbing' => $id,
+                'nidn'                => $dsn['nidn'],
+                'nama'                => $dsn['nama'],
+                'email'               => $dsn['email'],
+                'no_hp'               => '08123456789',
+                'bidang_minat'        => implode(', ', $dsn['bidang_minat']),
+                'created_at'          => now()
             ]);
         }
     }

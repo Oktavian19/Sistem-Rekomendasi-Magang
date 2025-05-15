@@ -17,21 +17,18 @@ class MahasiswaSeeder extends Seeder
         
         foreach ($nim as $n) {
             DB::table('users')->insert([
-                [
                     'username'  => $n,
                     'password'  => Hash::make($n),
-                    'role'      => 'mahasiswa',
+                    'role' => 'mahasiswa',
                     'created_at' => now(),
-                ]]);
+            ]);
 
             $id = DB::table('users')->where('username', $n)->value('id_user');
             
             DB::table('mahasiswa')->insert([
-                [
                     'id_mahasiswa'  => $id,
                     'nim'           => $n,
                     'created_at'    => now(),
-                ]
             ]);
         }
     }
