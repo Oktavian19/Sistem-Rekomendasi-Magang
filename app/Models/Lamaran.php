@@ -17,6 +17,7 @@ class Lamaran extends Model
         'id_lowongan',
         'tanggal_lamaran',
         'status_lamaran',
+        'dari_rekomendasi',
     ];
 
     public function mahasiswa()

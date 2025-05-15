@@ -24,8 +24,31 @@ class Users extends Authenticatable
     ];
 
     protected $casts = [
-        'password' => 'hashed'
+        'password' => 'hashed',
     ];
+
+    // ========================
+    // Relasi
+    // ========================
+
+    public function mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class, 'id_mahasiswa', 'id_user');
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'id_admin', 'id_user');
+    }
+
+    public function dosenPembimbing()
+    {
+        return $this->hasOne(DosenPembimbing::class, 'id_dosen_pembimbing', 'id_user');
+    }
+
+    // ========================
+    // Helper role
+    // ========================
 
     public function getRole(): string
     {
@@ -36,5 +59,27 @@ class Users extends Authenticatable
     {
         return $this->role === $role;
     }
-}
 
+    // ========================
+    // Auto delete relasi saat user dihapus
+    // ========================
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            if ($user->role === 'mahasiswa' && $user->mahasiswa) {
+                $user->mahasiswa->delete();
+            }
+
+            if ($user->role === 'admin' && $user->admin) {
+                $user->admin->delete();
+            }
+
+            if ($user->role === 'dosen_pembimbing' && $user->dosenPembimbing) {
+                $user->dosenPembimbing->delete();
+            }
+        });
+    }
+}

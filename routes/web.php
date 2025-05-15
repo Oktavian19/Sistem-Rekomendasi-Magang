@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
 
         // ===== KelolaPenggunaController Routes =====
+        Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
         Route::get('user-list', [KelolaPenggunaController::class, 'list'])->name('user.list');
         Route::get('user/create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('user.create_ajax');
         Route::post('user/store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('user.store_ajax');
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::get('user/{id}/show-ajax', [KelolaPenggunaController::class, 'show_ajax'])->name('user.show_ajax');
         Route::get('user/{id}/confirm-ajax', [KelolaPenggunaController::class, 'confirm_ajax'])->name('user.confirm_ajax');
         Route::delete('user/{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('user.delete_ajax');
+        Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
+        Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
         // Reset password
         Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
         Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
