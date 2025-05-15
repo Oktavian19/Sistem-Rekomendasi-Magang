@@ -14,12 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             //BidangKeahlianSeeder::class,
-            //PreferensiLokasi::class,
-            //JenisMagangSeeder::class,
-            //KriteriaRekomendasiSeeder:class,
             ProgramStudiSeeder::class,
             //PerusahaanMitraSeeder:class,
-            //PeriodeMagangSeeder:class,
+            PeriodeMagangSeeder::class,
             AdminSeeder::class,
             MahasiswaSeeder::class,
             DosenPembimbingSeeder::class,
@@ -27,9 +24,7 @@ class DatabaseSeeder extends Seeder
             //DokumenSeeder:class,
             //LowonganSeeder:class,
             //MahasiswaBidangKeahlianSeeder:class,
-            //MahasiswaPreferensiLokasiSeeder:class,
-            //MahasiswaJenisMagangSeeder::class,
-            //BobotMahasiswaSeederSeeder::class
+            //BobotMahasiswaSeeder::class
             //LamaranSeeder::class,
             //MagangSeeder::class,
             //LogKegiatanSeeder::class,
