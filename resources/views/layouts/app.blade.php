@@ -17,6 +17,7 @@
   <!-- Iconify / Boxicons / Icon CSS -->
   <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/fonts/iconify-icons.css') }}">
   <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/fonts/boxicons.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- Core CSS -->
   <link rel="stylesheet" href="{{ asset('sneat/assets/vendor/css/core.css') }}">
@@ -51,7 +52,6 @@
         <div class="content-wrapper">
           <!-- Main content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-            
             @yield('content')
           </div>
 
@@ -69,6 +69,7 @@
 
 <!-- Load DataTables.js -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
 
 <!-- Load SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

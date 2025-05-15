@@ -34,4 +34,14 @@ class DashboardController extends Controller
         // ));
         return view('dashboard.admin');
     }
+
+    public function dashboard_dosen()
+    {
+        return view('dashboard.dosen');
+    }
+
+    public function dashboard_mahasiswa()
+    {
+        return view('dashboard.mahasiswa');
+    }
 }

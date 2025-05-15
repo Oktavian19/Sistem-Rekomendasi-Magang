@@ -95,7 +95,7 @@
         
         
         <!-- Hero Section -->
-        <section class="bg-primary" style="height: 60vh;">
+        <section style="height: 60vh; background-color: #27548A">
           <div class="container h-100">
             <div class="row h-100 ms-5 ps-5">
               <!-- Left Content - Tetap di tengah vertikal -->
@@ -461,7 +461,7 @@
     </div>
   </div>
 </div>
-<div class="container" style="background-color: #DAD2FF; margin-top: 8vh; padding-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="background-color: #9EC6F3; margin-top: 8vh; padding-top: 8vh; padding-left: 10vh; padding-right: 10vh">
     <h4 class="text-center mb-1">
       Frequently asked
       <span class="position-relative fw-extrabold z-1"
@@ -524,8 +524,50 @@
         </div>
       </div>
     </div>
+</div>
 
+    <footer id="footer" class="footer" style="padding: 7vh; background-color: #27548A">
+        <div class="footer-top">
+            <div class="container text-light">
+                <div class="row gy-4 justify-content-between">
+                    <div class="col-lg-4 col-md-6 footer-info">
+                        <a href="#" class="footer-logo d-flex align-items-center">
+                            <span class="text-light">SIMAGANG</span>
+                        </a>
+                        <p class="mt-3">Sistem Manajemen Magang Digital Mahasiswa yang dirancang untuk pencatatan
+                            dan pengelolaan magang mahasiswa secara terpusat.</p>
+                        <div class="footer-contact mt-4">
+                            <p><i class="bi bi-geo-alt-fill me-2"></i>Jl. Soekarno Hatta No.9, Jatimulyo, Kec.
+                                Lowokwaru, Kota Malang, Jawa Timur 65141</p>
+                        </div>
+                    </div>
 
+                    <div class="col-lg-3 col-md-6">
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4 class="text-light">Hubungi Kami</h4>
+                        <p class="mt-3">
+                            <i class="bi bi-telephone-fill me-2"></i> +62 878-6192-6248<br>
+                            <i class="bi bi-envelope-fill me-2"></i> info@simagang.ac.id<br>
+                        </p>
+                        <div class="social-links mt-4">
+                            <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <div class="copyright">
+                &copy; <span id="current-year">2024</span> <strong><span>STARS</span></strong>. All Rights Reserved
+            </div>
+        </div>
+    </footer>
 
 <!-- Load jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

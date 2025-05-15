@@ -99,7 +99,7 @@
         <i class="menu-icon tf-icons bx bx-log-out"></i>
         <div>Logout</div>
       </a>
-      <form id="logout-form" action="#" method="POST" style="display: none;">
+      <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
         @csrf
       </form>
     </li>
