@@ -8568,7 +8568,7 @@ textarea.form-control-lg {
 ******************************************************************************* */
 :root {
   --bs-primary: #27548A;
-  --bs-primary-rgb: 105, 108, 255;
+  --bs-primary-rgb: 39, 84, 138;
   --bs-secondary: #8592a3;
   --bs-secondary-rgb: 133, 146, 163;
   --bs-success: #71dd37;

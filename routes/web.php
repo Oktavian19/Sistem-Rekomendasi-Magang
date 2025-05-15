@@ -121,7 +121,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/daftar-lowongan', function () {
             return view('mahasiswa.magang.lowongan');
         })->name('lowongan-magang');
-        
+        Route::get('/daftar-lowongan/detail', function () {
+            return view('mahasiswa.magang.lowongan_detail');
+        })->name('lowongan-detail');
 
     });
 
