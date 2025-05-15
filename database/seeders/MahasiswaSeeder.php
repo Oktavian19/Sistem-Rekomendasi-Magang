@@ -217,8 +217,8 @@ class MahasiswaSeeder extends Seeder
         foreach ($mahasiswa as $mhs) {
             DB::table('users')->insert([
                 [
-                    'username' => $mhs,
-                    'password' => Hash::make($mhs),
+                    'username' => $mhs['username'],
+                    'password' => Hash::make($mhs['password']),
                     'role' => 'mahasiswa',
                     'created_at' => now(),
                     'updated_at' => now(),
