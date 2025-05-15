@@ -5,253 +5,31 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaSeeder extends Seeder
 {
 
     public function run(): void
     {
-        DB::table('mahasiswa')->insert([
-            [
-                'id_user' => '2',
-                'nim' => '2341720172',
-                'nama' => 'ACHMAD MAULANA HAMZAH',
-                'email' => '2341720172@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '3',
-                'nim' => '2341720182',
-                'nama' => 'ALVANZA SAPUTRA YUDHA',
-                'email' => '2341720182@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '4',
-                'nim' => '2341720234',
-                'nama' => 'ANYA CALLISSTA CHRISWANTARI',
-                'email' => '2341720234@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '5',
-                'nim' => '2341720256',
-                'nama' => 'BERYL FUNKY MUBAROK',
-                'email' => '2341720256@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '6',
-                'nim' => '2341720187',
-                'nama' => 'CANDRA AHMAD DANI',
-                'email' => '2341720187@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '7',
-                'nim' => '2341720038',
-                'nama' => 'CINDY LAILI LARASATI',
-                'email' => '2341720038@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '8',
-                'nim' => '2341720232',
-                'nama' => 'DIKA ARIE ARRIFKY',
-                'email' => '2341720232@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '9',
-                'nim' => '2341720089',
-                'nama' => 'FAHMI YAHYA',
-                'email' => '2341720089@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '10',
-                'nim' => '2341720042',
-                'nama' => 'GILANG PURNOMO',
-                'email' => '@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '11',
-                'nim' => '2341720103',
-                'nama' => 'GWIDO PUTRA WIJAYA',
-                'email' => 'gwido.putra@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '12',
-                'nim' => '2341720157',
-                'nama' => 'HIDAYAT WIDI SAPUTRA',
-                'email' => 'hidayat.widi@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '13',
-                'nim' => '244107023001',
-                'nama' => 'ILHAM FATURACHMAN',
-                'email' => 'ilham.faturachman@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '14',
-                'nim' => '2341720235',
-                'nama' => 'INNAMA MAESA PUTRI',
-                'email' => 'innama.maesa@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '15',
-                'nim' => '2341720043',
-                'nama' => 'JIHA RAMDHAN',
-                'email' => 'jiha.ramadhan@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '16',
-                'nim' => '2341720124',
-                'nama' => 'LELYTA MEYDA AYU BUDIYANTI',
-                'email' => 'lelyta.meyda@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '17',
-                'nim' => '2341720194',
-                'nama' => 'M. FATIHI AL GHIFARY',
-                'email' => 'fatihi.ghifary@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '18',
-                'nim' => '2341720099',
-                'nama' => 'M. FIRMANSYAH',
-                'email' => 'firmansyah@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '19',
-                'nim' => '2341720024',
-                'nama' => 'MOCH. ALFIN BURHANUDIN ALQODRI',
-                'email' => 'alfin.burhanudin@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '20',
-                'nim' => '2341720013',
-                'nama' => 'MUHAMAD SYAIFULLAH',
-                'email' => 'muhamad.syaifullah@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '21',
-                'nim' => '2341720237',
-                'nama' => 'MUHAMMAD NUR AZIZ',
-                'email' => 'nur.aziz@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '22',
-                'nim' => '2341720230',
-                'nama' => 'NAJWA ALYA NURIZZAH',
-                'email' => 'najwa.alya@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '23',
-                'nim' => '2341720167',
-                'nama' => 'NECHA SYIFA SYAFITRI',
-                'email' => 'necha.syifa@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '24',
-                'nim' => '2341720082',
-                'nama' => 'NOKLENT FARDIAN ERIX',
-                'email' => 'noklent.erix@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '25',
-                'nim' => '2341720078',
-                'nama' => 'OCTRIAN ADILUHUNG TITO PUTRA',
-                'email' => 'octrian.putra@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '26',
-                'nim' => '2341720163',
-                'nama' => 'SATRIO AHMAD RAMADHANI',
-                'email' => 'satrio.ramadhani@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '27',
-                'nim' => '2341720029',
-                'nama' => 'SESY TANA LINA RAHMATIN',
-                'email' => 'sesy.rahmatin@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '28',
-                'nim' => '2341720062',
-                'nama' => 'TAUFIK DIMAS EDYSTARA',
-                'email' => 'taufik.edystara@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '29',
-                'nim' => '2341720149',
-                'nama' => 'VINCENTIUS LEONANDA PRABOWO',
-                'email' => 'vincentius.prabowo@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '30',
-                'nim' => '2341720030',
-                'nama' => 'YANUAR RIZKI AMINUDIN',
-                'email' => 'yanuar.aminudin@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ],
-            [
-                'id_user' => '31',
-                'nim' => '2341720018',
-                'nama' => 'ABDILLAH NOER SAID',
-                'email' => 'abdillah.noer@example.com',
-                'no_hp' => '081234567890',
-                'id_program_studi' => 1
-            ]
-        ]);
+        $nim = ['2341720172','2341720182','2341720234','2341720256','2341720187','2341720038','2341720232','2341720089','2341720042','2341720103','2341720157','244107023001','2341720235','2341720043','2341720124','2341720194','2341720099','2341720013','2341720237','2341720230','2341720167','2341720082','2341720078','2341720163','2341720029','2341720062','2341720149','2341720030','2341720018','2341720083','2341720134','2241720106','2341720022','2341720084','2341720195','2341720224','2341720200','2341720041','2341720111','2341720202','2341720165','2341720184','2341720116','2341720113','2341720097','2341720009','2341720044','2341720214','2341720226','2341720079','2341720164','2341720143','2341720147','2341720178','2341720257','2341720016','244107023003','2341720105','2341720085','2341720153','2341720090','2241720179','2341720118','2341720212','2341720021','244107023004','2341720138','2341720109','2341720096','2341720001','2341720186','2341720185','2341720260','2341720074','2341720114','2341720091','2341720015','2341720141','2341720248','2341720010','2341720238','2341720129','2341720140','2341720249','2341720247','2341720161','2341720166','2341720020','2341720132','2341720131','244107023011','2341720169','2341720098','2341720073','2341720031','2341720244','2341720004','2341720229','2341720168','2341720033','2341720151','2341720053','2341720028','2341720181','2341720145','2341720227','2341720180','2341720173','2341720056','2341720197','2341720059','2341720019',    '2341720026','2341720142','2341720110','2341720045','2341720106','2341720080','2341720070','2341720215','2341720005','2341720058','244107023006','2341720061','2341720179','2341720258','2341720176','2341720150','2341720023','2341720092','2341720253','2341720136','2341720208','2341720025','2341720052','2341720252','2341720007','2341720122','2341720135','2341720125','2341720201','2341720236','2341720072','2341720137','2341720171','2341720130','2341720123','2341720250','2341720095','2341720032','2341720100','2341720162','2341720170','2341720198','2341720081','2341720054','2341720035','2341720175','2341720034','2341720060','2341720088','2341720158','2341720002','244107023008','2341720209','2341720152','2341720120','2341720191','2341720101','2341720159','2341720093','2341720051','2341720243','2341720112','244107023009','2341720206','2341720228','2341720046','2341720107','2341720047','2341720094','2341720027','2341720048','2341720196','2341720104','2341720218','2341720121','2341720251','2341720254','2341720049','2341720146','2341720077','2341720148','2341720177','2341720075','2341720102','2341720154','2341720117'];
+        
+        
+        foreach ($nim as $n) {
+            DB::table('users')->insert([
+                    'username'  => $n,
+                    'password'  => Hash::make($n),
+                    'role' => 'mahasiswa',
+                    'created_at' => now(),
+            ]);
+
+            $id = DB::table('users')->where('username', $n)->value('id_user');
+            
+            DB::table('mahasiswa')->insert([
+                    'id_mahasiswa'  => $id,
+                    'nim'           => $n,
+                    'created_at'    => now(),
+            ]);
+        }
     }
 }

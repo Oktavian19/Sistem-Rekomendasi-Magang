@@ -12,9 +12,9 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $admins = [
-            ['username' => 'admin01', 'nama' => 'Admin Satu', 'email' => 'admin01@example.com'],
-            ['username' => 'admin02', 'nama' => 'Admin Dua', 'email' => 'admin02@example.com'],
-            ['username' => 'admin03', 'nama' => 'Admin Tiga', 'email' => 'admin02@example.com'],
+            ['username' => 'admin01', 'nama' => 'Admin Satu',   'email' => 'admin01@example.com'],
+            ['username' => 'admin02', 'nama' => 'Admin Dua',    'email' => 'admin02@example.com'],
+            ['username' => 'admin03', 'nama' => 'Admin Tiga',   'email' => 'admin02@example.com'],
         ];
 
         foreach ($admins as $admin) {
@@ -24,7 +24,6 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
                 'created_at' => now(),
-                'updated_at' => now(),
             ]]);
 
             $id = DB::table('users')->where('username', $admin['username'])->value('id_user');
@@ -35,7 +34,6 @@ class AdminSeeder extends Seeder
                 'email' => $admin['email'],
                 'no_hp' => '08123456789',
                 'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }
