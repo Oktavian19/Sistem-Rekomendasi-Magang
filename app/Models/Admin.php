@@ -17,9 +17,4 @@ class Admin extends Model
         'email',
         'no_hp',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(Users::class, 'id_admin', 'id_user');
-    }
 }

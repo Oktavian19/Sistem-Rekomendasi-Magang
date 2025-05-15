@@ -20,11 +20,6 @@ class DosenPembimbing extends Model
         'bidang_minat',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(Users::class, 'id_dosen_pembimbing', 'id_user');
-    }
-
     public function magang()
     {
         return $this->hasMany(Magang::class, 'id_dosen_pembimbing');
