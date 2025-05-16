@@ -16,8 +16,8 @@
   <ul class="menu-inner py-1">
 
     <!-- Dashboard -->
-    <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-      <a href="{{ url('dashboard') }}" class="menu-link">
+    <li class="menu-item {{ request()->is('dashboard-admin') ? 'active' : '' }}">
+      <a href="{{ url('dashboard-admin') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
       </a>
@@ -55,8 +55,8 @@
     </li>
 
     <!-- Proses Pengajuan -->
-    <li class="menu-item {{ request()->is('daftar-lowongan') ? 'active' : '' }}">
-      <a href="{{ url('daftar-lowongan') }}" class="menu-link">
+    <li class="menu-item {{ request()->is('lowongan-mahasiswa*') ? 'active' : '' }}">
+      <a href="{{ url('lowongan-mahasiswa') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-briefcase"></i>
         <div>Lowongan Magang</div>
       </a>
