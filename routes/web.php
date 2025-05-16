@@ -133,12 +133,12 @@ Route::middleware('auth')->group(function () {
             return view('mahasiswa.profil.edit_profile');
         })->name('edit-profile');
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
-        Route::get('/log-magang', function () {
+        Route::get('magang-mahasiswa', function () {
             return view('mahasiswa.log.index');
         })->name('log-magang');
-        Route::get('/create-log', [LogController::class, 'create']);
-        Route::get('/edit-log', [LogController::class, 'create']);
-        Route::get('/confirm-delete', [LogController::class, 'confirm_delete']);
+        Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
     });
 
     // ===================== DOSEN ROUTES =====================

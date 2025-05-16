@@ -8,7 +8,7 @@
     <div class="container">
         <div class="d-flex align-items-center justify-content-between my-6">
             <h4 class="mb-0">Log Magang</h4>
-            <a href="#" class="btn btn-primary" onclick="modalAction('{{ url('create-log') }}')">+ Tambah Log</a>
+            <a href="#" class="btn btn-primary" onclick="modalAction('{{ url('magang-mahasiswa/create-log') }}')">+ Tambah Log</a>
           </div>
           
         <div class="row">
@@ -20,10 +20,10 @@
                             <div class="card-body position-relative">
                                 <!-- Action Buttons -->
                                 <div class="position-absolute top-0 end-0 mt-2 me-2">
-                                    <a href="#" class="btn btn-sm btn-icon text-warning" title="Edit" onclick="modalAction('{{ url('edit-log') }}')">
+                                    <a href="#" class="btn btn-sm btn-icon text-warning" title="Edit" onclick="modalAction('{{ url('magang-mahasiswa/edit-log') }}')">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-icon text-danger" title="Delete">
+                                    <a href="#" class="btn btn-sm btn-icon text-danger" title="Delete" onclick="modalAction('{{ url('magang-mahasiswa/confirm-delete') }}')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
