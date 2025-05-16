@@ -12,8 +12,8 @@ class KelolaPenggunaController extends Controller
 {
     public function index()
     {
-        $programStudi = ProgramStudi::all();
-        return view('admin.user.index', compact('programStudi'));
+        $pengguna = Users::all();
+        return view('admin.user.index', compact('pengguna'));
     }
 
     public function list(Request $request)

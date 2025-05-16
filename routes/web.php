@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
-        Route::get('user-list', [KelolaPenggunaController::class, 'list'])->name('user.list');
+        Route::get('user/list', [KelolaPenggunaController::class, 'list'])->name('user.list');
         Route::get('user/create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('user.create_ajax');
         Route::post('user/store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('user.store_ajax');
         Route::get('user/{id}/edit-ajax', [KelolaPenggunaController::class, 'edit_ajax'])->name('user.edit_ajax');
@@ -120,9 +120,8 @@ Route::middleware('auth')->group(function () {
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
-        Route::get('/daftar-lowongan', function () {
-            return view('mahasiswa.magang.lowongan');
-        })->name('lowongan-magang');
+            Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
+    // Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.detail');
         Route::get('/daftar-lowongan/detail', function () {
             return view('mahasiswa.magang.lowongan_detail');
         })->name('lowongan-detail');

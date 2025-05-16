@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\Feature\\PerusahaanControllerTest::it_can_store_perusahaan_data":7},"times":{"Tests\\Unit\\ExampleTest::test_that_true_is_true":0.008,"Tests\\Feature\\ExampleTest::test_the_application_returns_a_successful_response":0.051,"Tests\\Feature\\PerusahaanControllerTest::it_can_store_perusahaan_data":0.153}}

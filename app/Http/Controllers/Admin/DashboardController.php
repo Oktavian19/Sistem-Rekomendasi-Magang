@@ -87,4 +87,8 @@ class DashboardController extends Controller
     {
         return view('dashboard.mahasiswa');
     }
+    public function dashboard_admin()
+    {
+        return view('dashboard.admin');
+    }
 }
