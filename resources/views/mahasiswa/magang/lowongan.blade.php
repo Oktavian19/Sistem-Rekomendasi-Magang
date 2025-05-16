@@ -67,28 +67,30 @@
                                 </div>
                             </div>
                         
-                            <span class="mt-5 text-black">Tingkat Pengalaman</span>
-                            <div class="list-group mt-2">
-                                <label class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="job_level_id[]" value="2" checked>
-                                        Entry Level
-                                    </span>
-                                </label>
-                                <label class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="job_level_id[]" value="1" checked>
-                                        Intermediate Level
-                                    </span>
-                                </label>
-                                <label class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="job_level_id[]" value="1" checked>
-                                        Senior Level
-                                    </span>
-                                </label>
-                                <!-- Other experience levels -->
-                            </div>
+                            <span class="mt-5 text-black">Kuota</span>
+                                <div class="list-group mt-2">
+                                    <label class="list-group-item d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]" value="1-5">
+                                        1–5 orang
+                                    </label>
+                                    <label class="list-group-item d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]" value="6-10">
+                                        6–10 orang
+                                    </label>
+                                    <label class="list-group-item d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]" value="11-20">
+                                        11–20 orang
+                                    </label>
+                                    <label class="list-group-item d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]" value="21-50">
+                                        21–50 orang
+                                    </label>
+                                    <label class="list-group-item d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]" value="51+">
+                                        >50 orang
+                                    </label>
+                                </div>
+
                         
                             <button type="submit" class="btn btn-primary w-100 mt-4">Filter</button>
                         </form>                        
@@ -112,7 +114,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -139,7 +141,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -165,7 +167,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -191,7 +193,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -217,7 +219,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -243,7 +245,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -269,7 +271,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
@@ -295,7 +297,7 @@
                                         </p>
                                         <p class="card-text text-muted small">
                                             <i class="bi bi-geo-alt me-1"></i>Jakarta Pusat
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Intermediate Level
+                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 10 orang
                                         </p>
                                     </div>
                                 </div>
