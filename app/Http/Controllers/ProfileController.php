@@ -62,4 +62,9 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function create_pengalaman()
+    {
+        return view('mahasiswa.profil.create_pengalaman');
+    }
 }
