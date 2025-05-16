@@ -17,7 +17,7 @@
 
     <!-- Dashboard -->
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-      <a href="#" class="menu-link">
+      <a href="{{ url('dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
       </a>
@@ -50,13 +50,13 @@
     <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
       <a href="{{ url('lowongan') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-folder-open"></i>
-        <div>Manajemen Magang</div>
+        <div>Manajemen Lowongan Magang</div>
       </a>
     </li>
 
     <!-- Proses Pengajuan -->
-    <li class="menu-item {{ request()->is('daftar-lowongan*') ? 'active' : '' }}">
-      <a href="{{ url('lowongan-magang') }}" class="menu-link">
+    <li class="menu-item {{ request()->is('daftar-lowongan') ? 'active' : '' }}">
+      <a href="{{ url('daftar-lowongan') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-briefcase"></i>
         <div>Lowongan Magang</div>
       </a>

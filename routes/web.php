@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
+use App\Models\Lowongan;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
-        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard');
+        Route::get('/dashboard-admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard-admin');
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
@@ -117,16 +118,15 @@ Route::middleware('auth')->group(function () {
 
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
-        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
-        Route::get('/daftar-lowongan', function () {
-            return view('mahasiswa.magang.lowongan');
-        })->name('lowongan-magang');
-        
-
+        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard-mahasiswa');
+    Route::get('/lowongan-mahasiswa', [LowonganController::class, 'index'])->name('lowongan-mahasiswa');
+    Route::get('/lowongan-mahasiswa/list', [LowonganController::class, 'list'])->name('lowongan-mahasiswa.list');
+    Route::get('/lowongan-mahasiswa/{id}/show-ajax', [LowonganController::class, 'show_ajax'])->name('lowongan-mahasiswa.show_ajax');
     });
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->group(function () {
-        // Dosen routes can be added here
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard-dosen');
+
     });
 });
