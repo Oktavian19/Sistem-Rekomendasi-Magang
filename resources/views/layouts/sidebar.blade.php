@@ -41,8 +41,8 @@
         <div>Periode Magang</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="#" class="menu-link">
+    <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+      <a href="{{ url('user') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user-plus"></i>
         <div>Manajemen Akun</div>
       </a>

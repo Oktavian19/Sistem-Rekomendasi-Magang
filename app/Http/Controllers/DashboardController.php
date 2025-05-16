@@ -32,6 +32,11 @@ class DashboardController extends Controller
             : 0;
 
         // 5. Statistik Tren Bidang Industri (Peminatan vs Realisasi)
+        $peminatan = DB::table('mahasiswa_bidang_keahlian')
+            ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
+            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
+            ->groupBy('bidang_keahlian.nama_bidang');
+
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
@@ -39,27 +44,18 @@ class DashboardController extends Controller
             ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
             ->groupBy('perusahaan_mitra.bidang_industri');
 
-        $peminatan = DB::table('mahasiswa_bidang_keahlian')
-            ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
-            ->groupBy('bidang_keahlian.nama_bidang');
-
-        // Jadikan subquery:
-        $peminatanSub = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
-            ->mergeBindings($peminatan); // penting untuk bawa binding
-
-        $trenBidangIndustri = $peminatanSub
+        $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
+            ->mergeBindings($peminatan)
             ->leftJoinSub($realisasi, 'realisasi', function ($join) {
                 $join->on('peminatan.nama_bidang', '=', 'realisasi.nama_bidang');
             })
             ->select(
                 'peminatan.nama_bidang',
-                'total_peminat',
-                DB::raw('COALESCE(total_magang, 0) as total_magang')
+                'peminatan.total_peminat',
+                DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
-            ->orderByDesc('total_peminat')
+            ->orderByDesc('peminatan.total_peminat')
             ->get();
-
 
         // 6. Evaluasi Efektivitas Rekomendasi
         $mengikutiRekomendasi = DB::table('lamaran')

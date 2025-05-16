@@ -7,13 +7,14 @@ use App\Models\{Users, Admin, Mahasiswa, DosenPembimbing, ProgramStudi, BidangKe
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class KelolaPenggunaController extends Controller
 {
     public function index()
     {
-        $programStudi = ProgramStudi::all();
-        return view('admin.user.index', compact('programStudi'));
+        $pengguna = Users::all();
+        return view('admin.user.index', compact('pengguna'));
     }
 
     public function list(Request $request)
@@ -22,65 +23,32 @@ class KelolaPenggunaController extends Controller
             'users.id_user',
             'users.username',
             'users.role',
-            'admin.nama as admin_nama',
-            'admin.email as admin_email',
-            'mahasiswa.nama as mahasiswa_nama',
-            'mahasiswa.nim',
-            'mahasiswa.email as mahasiswa_email',
-            'dosen_pembimbing.nama as dosen_nama',
-            'dosen_pembimbing.nidn',
-            'dosen_pembimbing.email as dosen_email'
+            DB::raw("
+        CASE 
+            WHEN users.role = 'admin' THEN admin.nama
+            WHEN users.role = 'mahasiswa' THEN mahasiswa.nama
+            WHEN users.role = 'dosen_pembimbing' THEN dosen_pembimbing.nama
+            ELSE NULL
+        END as nama
+    ")
         ])
-            ->leftJoin('admin', function ($join) {
-                $join->on('admin.id_admin', '=', 'users.id_user')
-                    ->where('users.role', '=', 'admin');
-            })
-            ->leftJoin('mahasiswa', function ($join) {
-                $join->on('mahasiswa.id_mahasiswa', '=', 'users.id_user')
-                    ->where('users.role', '=', 'mahasiswa');
-            })
-            ->leftJoin('dosen_pembimbing', function ($join) {
-                $join->on('dosen_pembimbing.id_dosen_pembimbing', '=', 'users.id_user')
-                    ->where('users.role', '=', 'dosen_pembimbing');
-            });
+            ->leftJoin('admin', 'admin.id_admin', '=', 'users.id_user')
+            ->leftJoin('mahasiswa', 'mahasiswa.id_mahasiswa', '=', 'users.id_user')
+            ->leftJoin('dosen_pembimbing', 'dosen_pembimbing.id_dosen_pembimbing', '=', 'users.id_user');
 
         if ($request->role) {
-            $users->where('role', $request->role);
+            $users->where('users.role', $request->role);
         }
 
         return DataTables::of($users)
             ->addIndexColumn()
-            ->addColumn('nama', function ($user) {
-                switch ($user->role) {
-                    case 'admin':
-                        return $user->admin_nama;
-                    case 'mahasiswa':
-                        return $user->mahasiswa_nama;
-                    case 'dosen_pembimbing':
-                        return $user->dosen_nama;
-                    default:
-                        return '-';
-                }
-            })
-            ->addColumn('detail', function ($user) {
-                switch ($user->role) {
-                    case 'admin':
-                        return 'Email: ' . $user->admin_email;
-                    case 'mahasiswa':
-                        return 'NIM: ' . $user->nim . '<br>Email: ' . $user->mahasiswa_email;
-                    case 'dosen_pembimbing':
-                        return 'NIDN: ' . $user->nidn . '<br>Email: ' . $user->dosen_email;
-                    default:
-                        return '-';
-                }
-            })
             ->addColumn('aksi', function ($user) {
                 $btn  = '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
-            ->rawColumns(['detail', 'aksi'])
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
