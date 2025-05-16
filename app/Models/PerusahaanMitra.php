@@ -17,6 +17,9 @@ class PerusahaanMitra extends Model
         'bidang_industri',
         'alamat',
         'email',
-        'telepon'
+        'telepon',
+        'path_logo',
+        'latitude',
+        'longitude'
     ];
 }
