@@ -7,6 +7,8 @@ use App\Models\PerusahaanMitra;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class PerusahaanController extends Controller
 {
@@ -63,9 +65,11 @@ class PerusahaanController extends Controller
             'nama_perusahaan' => 'required|string|max:100',
             'bidang_industri' => 'required|string|max:100',
             'alamat'          => 'required|string',
-            'email'           => 'required|email|max:100|unique:perusahaan_mitra,email',
+            'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $request->id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
+
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -77,6 +81,12 @@ class PerusahaanController extends Controller
             ], 422);
         }
 
+        $pathLogo = null;
+        if ($request->hasFile('logo')) {
+            $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
+        }
+
+
         // Geocoding berdasarkan alamat
         $geo = $this->getCoordinates($request->alamat);
 
@@ -86,9 +96,11 @@ class PerusahaanController extends Controller
             'alamat'          => $request->alamat,
             'email'           => $request->email,
             'telepon'         => $request->telepon,
+            'path_logo'       => $pathLogo,
             'latitude'        => $geo['lat'] ?? null,
             'longitude'       => $geo['lon'] ?? null,
         ]);
+
 
         return response()->json([
             'status'  => true,
@@ -119,7 +131,9 @@ class PerusahaanController extends Controller
             'alamat'          => 'required|string',
             'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
+
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -139,6 +153,20 @@ class PerusahaanController extends Controller
             ], 404);
         }
 
+        if ($request->hasFile('logo')) {
+            // Hapus logo lama jika ada
+            if ($perusahaan->path_logo && Storage::disk('public')->exists($perusahaan->path_logo)) {
+                Storage::disk('public')->delete($perusahaan->path_logo);
+            }
+
+            // Simpan logo baru
+            $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
+        } else {
+            $pathLogo = $perusahaan->path_logo;
+        }
+
+
+
         // Geocode alamat baru
         $geo = $this->getCoordinates($request->alamat);
 
@@ -148,9 +176,11 @@ class PerusahaanController extends Controller
             'alamat'          => $request->alamat,
             'email'           => $request->email,
             'telepon'         => $request->telepon,
+            'path_logo'       => $pathLogo ?? $perusahaan->path_logo,
             'latitude'        => $geo['lat'] ?? null,
             'longitude'       => $geo['lon'] ?? null,
         ]);
+
 
         return response()->json([
             'status'  => true,
@@ -207,31 +237,22 @@ class PerusahaanController extends Controller
     }
 
     private function getCoordinates($alamat)
-{
-    $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query([
-        'q' => $alamat,
-        'format' => 'json',
-        'limit' => 1
-    ]);
+    {
+        $response = Http::withHeaders([
+            'User-Agent' => 'MyApp/1.0 (your.email@example.com)',
+        ])->get('https://nominatim.openstreetmap.org/search', [
+            'q' => $alamat,
+            'format' => 'json',
+            'limit' => 1,
+        ]);
 
-    $opts = [
-        "http" => [
-            "header" => "User-Agent: MyApp/1.0 (your.email@example.com)\r\n"
-        ]
-    ];
+        if ($response->successful() && !empty($response[0])) {
+            return [
+                'lat' => $response[0]['lat'],
+                'lon' => $response[0]['lon'],
+            ];
+        }
 
-    $context = stream_context_create($opts);
-    $response = @file_get_contents($url, false, $context);
-
-    $data = json_decode($response, true);
-    if (!empty($data)) {
-        return [
-            'lat' => $data[0]['lat'],
-            'lon' => $data[0]['lon'],
-        ];
+        return null;
     }
-
-    return null;
-}
-
 }
