@@ -61,7 +61,7 @@
       @if(auth()->user()->role === 'mahasiswa')
         <!-- Mahasiswa Menu Items -->
         <li class="menu-item {{ request()->is('daftar-lowongan*') ? 'active' : '' }}">
-          <a href="{{ url('lowongan-magang') }}" class="menu-link">
+          <a href="{{ url('daftar-lowongan') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-briefcase"></i>
             <div>Lowongan Magang</div>
           </a>
