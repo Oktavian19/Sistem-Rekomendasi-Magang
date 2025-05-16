@@ -46,7 +46,7 @@
             serverSide: true,
             ajax: "{{ url('user/list') }}",
             columnDefs: [
-                { targets: 5, width: '200px' }
+                { targets: [4], orderable: false, width: '200px' }
             ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
