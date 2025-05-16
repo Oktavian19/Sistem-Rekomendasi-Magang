@@ -14,6 +14,7 @@ use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardCont
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LogController;
 
 
 /*
@@ -132,6 +133,12 @@ Route::middleware('auth')->group(function () {
             return view('mahasiswa.profil.edit_profile');
         })->name('edit-profile');
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
+        Route::get('/log-magang', function () {
+            return view('mahasiswa.log.index');
+        })->name('log-magang');
+        Route::get('/create-log', [LogController::class, 'create']);
+        Route::get('/edit-log', [LogController::class, 'create']);
+        Route::get('/confirm-delete', [LogController::class, 'confirm_delete']);
     });
 
     // ===================== DOSEN ROUTES =====================
