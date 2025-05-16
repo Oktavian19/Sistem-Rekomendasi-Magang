@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('id_lowongan');
             $table->unsignedBigInteger('id_perusahaan');
             $table->string('nama_posisi', 100);
+            $table->enum('jenis_magang', ['WFO', 'WFH', 'Hybrid']);
             $table->text('deskripsi');
             $table->string('kategori_keahlian', 100);
             $table->integer('kuota');

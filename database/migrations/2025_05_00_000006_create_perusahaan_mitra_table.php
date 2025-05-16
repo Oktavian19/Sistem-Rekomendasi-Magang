@@ -15,6 +15,8 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('email', 100);
             $table->string('telepon', 20);
+            $table->decimal('latitude', 9, 6);
+            $table->decimal('longitude', 9, 6);
             $table->timestamps();
         });
     }

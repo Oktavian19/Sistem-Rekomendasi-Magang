@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
+use App\Http\Controllers\Mahasiswa\LowonganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,7 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
-Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
 
 Route::middleware('auth')->group(function () {
 
@@ -40,9 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
         Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard');
-        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
 
         // ===== KelolaPenggunaController Routes =====
+        Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
         Route::get('user-list', [KelolaPenggunaController::class, 'list'])->name('user.list');
         Route::get('user/create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('user.create_ajax');
         Route::post('user/store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('user.store_ajax');
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::get('user/{id}/show-ajax', [KelolaPenggunaController::class, 'show_ajax'])->name('user.show_ajax');
         Route::get('user/{id}/confirm-ajax', [KelolaPenggunaController::class, 'confirm_ajax'])->name('user.confirm_ajax');
         Route::delete('user/{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('user.delete_ajax');
+        Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
+        Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
         // Reset password
         Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
         Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
@@ -114,7 +117,14 @@ Route::middleware('auth')->group(function () {
 
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
-        // Mahasiswa routes can be added here
+        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
+        Route::get('/daftar-lowongan', function () {
+            return view('mahasiswa.magang.lowongan');
+        })->name('lowongan-magang');
+        Route::get('/daftar-lowongan/detail', function () {
+            return view('mahasiswa.magang.lowongan_detail');
+        })->name('lowongan-detail');
+
     });
 
     // ===================== DOSEN ROUTES =====================
