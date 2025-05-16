@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
-        Route::get('user-list', [KelolaPenggunaController::class, 'list'])->name('user.list');
+        Route::get('user/list', [KelolaPenggunaController::class, 'list'])->name('user.list');
         Route::get('user/create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('user.create_ajax');
         Route::post('user/store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('user.store_ajax');
         Route::get('user/{id}/edit-ajax', [KelolaPenggunaController::class, 'edit_ajax'])->name('user.edit_ajax');
