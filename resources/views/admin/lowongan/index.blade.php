@@ -38,11 +38,7 @@
 
 @push('scripts')
 <script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function () {
-            $('#myModal').modal('show');
-        });
-    }
+    
 
     $(document).ready(function () {
         $('#table-lowongan').DataTable({

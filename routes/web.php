@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LogController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +43,7 @@ Route::middleware('auth')->group(function () {
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
-        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
@@ -123,7 +126,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/daftar-lowongan/detail', function () {
             return view('mahasiswa.magang.lowongan_detail');
         })->name('lowongan-detail');
-
+        Route::get('/profile', function () {
+            return view('mahasiswa.profil.index');
+        })->name('profile');
+        Route::get('/profile/edit', function () {
+            return view('mahasiswa.profil.edit_profile');
+        })->name('edit-profile');
+        Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
+        Route::get('magang-mahasiswa', function () {
+            return view('mahasiswa.log.index');
+        })->name('log-magang');
+        Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
     });
 
     // ===================== DOSEN ROUTES =====================
