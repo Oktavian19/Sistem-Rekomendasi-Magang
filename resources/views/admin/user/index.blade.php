@@ -11,7 +11,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table id="table-user" class="table table-bordered table-striped w-100">
+            <table id="table-periode" class="table table-bordered table-striped w-100">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -41,7 +41,7 @@
     }
 
     $(document).ready(function () {
-        $('#table-user').DataTable({
+        $('#table-periode').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('user/list') }}",

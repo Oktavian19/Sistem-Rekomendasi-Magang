@@ -280,25 +280,26 @@ class KelolaPenggunaController extends Controller
         ]);
     }
 
-    public function show_ajax(string $id)
+    public function show_ajax($id)
     {
-        $user = Users::find($id);
-
-        if (!$user) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
-            ], 404);
-        }
-
+        $user = Users::findOrFail($id);
         $detail = null;
 
-        if ($user->role === 'mahasiswa') {
-            $detail = Mahasiswa::with(['bidangKeahlian', 'pengalaman'])->where('id_mahasiswa', $user->id_user)->first();
+        switch ($user->role) {
+            case 'admin':
+                $detail = Admin::where('id_admin', $user->id_user)->first();
+                break;
+            case 'mahasiswa':
+                $detail = Mahasiswa::where('id_mahasiswa', $user->id_user)->first();
+                break;
+            case 'dosen_pembimbing':
+                $detail = DosenPembimbing::where('id_dosen_pembimbing', $user->id_user)->first();
+                break;
         }
 
         return view('admin.user.show_ajax', compact('user', 'detail'));
     }
+
 
 
     public function confirm_ajax(string $id)

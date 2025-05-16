@@ -13,7 +13,13 @@ use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
+<<<<<<< HEAD
 use App\Models\Lowongan;
+=======
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LogController;
+
+>>>>>>> origin/main
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +47,11 @@ Route::middleware('auth')->group(function () {
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard Controller
+<<<<<<< HEAD
         Route::get('/dashboard-admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard-admin');
+=======
+        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
+>>>>>>> origin/main
 
         // ===== KelolaPenggunaController Routes =====
         Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
@@ -118,15 +128,47 @@ Route::middleware('auth')->group(function () {
 
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
+<<<<<<< HEAD
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard-mahasiswa');
     Route::get('/lowongan-mahasiswa', [LowonganController::class, 'index'])->name('lowongan-mahasiswa');
     Route::get('/lowongan-mahasiswa/list', [LowonganController::class, 'list'])->name('lowongan-mahasiswa.list');
     Route::get('/lowongan-mahasiswa/{id}/show-ajax', [LowonganController::class, 'show_ajax'])->name('lowongan-mahasiswa.show_ajax');
+=======
+        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
+            Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
+    // Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.detail');
+        Route::get('/daftar-lowongan/detail', function () {
+            return view('mahasiswa.magang.lowongan_detail');
+        })->name('lowongan-detail');
+        Route::get('/profile', function () {
+            return view('mahasiswa.profil.index');
+        })->name('profile');
+        Route::get('/profile/edit', function () {
+            return view('mahasiswa.profil.edit_profile');
+        })->name('edit-profile');
+        Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
+        Route::get('magang-mahasiswa', function () {
+            return view('mahasiswa.log.index');
+        })->name('log-magang');
+        Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
+        Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
+>>>>>>> origin/main
     });
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->group(function () {
+<<<<<<< HEAD
         Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard-dosen');
 
+=======
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
+        Route::get('dosen/list-mahasiswa', function () {
+            return view('dosen.monitoring.list_mahasiswa');
+        })->name('list-mahasiswa');
+        Route::get('dosen/log-mahasiswa', function () {
+            return view('dosen.monitoring.log_mahasiswa');
+        })->name('log-mahasiswa');
+>>>>>>> origin/main
     });
 });
