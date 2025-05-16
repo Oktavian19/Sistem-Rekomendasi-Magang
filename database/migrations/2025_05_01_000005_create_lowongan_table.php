@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nama_posisi', 100);
             $table->enum('jenis_magang', ['WFO', 'WFH', 'Hybrid']);
             $table->text('deskripsi');
-            $table->string('kategori_keahlian', 100);
+            $table->unsignedBigInteger('id_bidang_keahlian');
             $table->integer('kuota');
             $table->text('persyaratan');
             $table->date('tanggal_buka');
@@ -27,6 +27,12 @@ return new class extends Migration
                   ->on('perusahaan_mitra')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
+                  
+            $table->foreign('id_bidang_keahlian')
+                ->references('id_bidang_keahlian')
+                ->on('bidang_keahlian')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
