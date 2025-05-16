@@ -118,9 +118,8 @@ Route::middleware('auth')->group(function () {
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
-        Route::get('/daftar-lowongan', function () {
-            return view('mahasiswa.magang.lowongan');
-        })->name('lowongan-magang');
+            Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
+    // Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.detail');
         Route::get('/daftar-lowongan/detail', function () {
             return view('mahasiswa.magang.lowongan_detail');
         })->name('lowongan-detail');

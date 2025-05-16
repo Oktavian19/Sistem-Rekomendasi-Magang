@@ -7,6 +7,8 @@ use App\Models\PerusahaanMitra;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class PerusahaanController extends Controller
 {
@@ -25,32 +27,31 @@ class PerusahaanController extends Controller
         }
 
         return DataTables::of($query)
-        ->addIndexColumn()
-        ->addColumn('aksi', function ($perusahaanMitra) {
-            $btn  = '<div class="dropdown">';
-            $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
-            $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';  
-            $btn .= '</a>';
-            $btn .= '<ul class="dropdown-menu">';
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($perusahaanMitra) {
+                $btn  = '<div class="dropdown">';
+                $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';
+                $btn .= '</a>';
+                $btn .= '<ul class="dropdown-menu">';
 
-            // Edit link
-            $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
-            $btn .= '<i class="bx bx-edit-alt"></i> Edit';
-            $btn .= '</a></li>';
+                // Edit link
+                $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+                $btn .= '</a></li>';
 
-            // Delete link
-            $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
-            $btn .= '<i class="bx bx-trash"></i> Hapus';
-            $btn .= '</a></li>';
+                // Delete link
+                $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-trash"></i> Hapus';
+                $btn .= '</a></li>';
 
-            $btn .= '</ul>';
-            $btn .= '</div>';
+                $btn .= '</ul>';
+                $btn .= '</div>';
 
-            return $btn;
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
-
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     public function create_ajax()
@@ -64,9 +65,11 @@ class PerusahaanController extends Controller
             'nama_perusahaan' => 'required|string|max:100',
             'bidang_industri' => 'required|string|max:100',
             'alamat'          => 'required|string',
-            'email'           => 'required|email|max:100|unique:perusahaan_mitra,email',
+            'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $request->id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
+
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -78,19 +81,33 @@ class PerusahaanController extends Controller
             ], 422);
         }
 
-        PerusahaanMitra::create($request->only([
-            'nama_perusahaan',
-            'bidang_industri',
-            'alamat',
-            'email',
-            'telepon'
-        ]));
+        $pathLogo = null;
+        if ($request->hasFile('logo')) {
+            $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
+        }
+
+
+        // Geocoding berdasarkan alamat
+        $geo = $this->getCoordinates($request->alamat);
+
+        PerusahaanMitra::create([
+            'nama_perusahaan' => $request->nama_perusahaan,
+            'bidang_industri' => $request->bidang_industri,
+            'alamat'          => $request->alamat,
+            'email'           => $request->email,
+            'telepon'         => $request->telepon,
+            'path_logo'       => $pathLogo,
+            'latitude'        => $geo['lat'] ?? null,
+            'longitude'       => $geo['lon'] ?? null,
+        ]);
+
 
         return response()->json([
             'status'  => true,
             'message' => 'Data perusahaan berhasil disimpan',
         ]);
     }
+
 
     public function edit_ajax($id)
     {
@@ -114,7 +131,9 @@ class PerusahaanController extends Controller
             'alamat'          => 'required|string',
             'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
+            'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
+
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -127,7 +146,6 @@ class PerusahaanController extends Controller
         }
 
         $perusahaan = PerusahaanMitra::find($id);
-
         if (!$perusahaan) {
             return response()->json([
                 'status'  => false,
@@ -135,19 +153,41 @@ class PerusahaanController extends Controller
             ], 404);
         }
 
-        $perusahaan->update($request->only([
-            'nama_perusahaan',
-            'bidang_industri',
-            'alamat',
-            'email',
-            'telepon'
-        ]));
+        if ($request->hasFile('logo')) {
+            // Hapus logo lama jika ada
+            if ($perusahaan->path_logo && Storage::disk('public')->exists($perusahaan->path_logo)) {
+                Storage::disk('public')->delete($perusahaan->path_logo);
+            }
+
+            // Simpan logo baru
+            $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
+        } else {
+            $pathLogo = $perusahaan->path_logo;
+        }
+
+
+
+        // Geocode alamat baru
+        $geo = $this->getCoordinates($request->alamat);
+
+        $perusahaan->update([
+            'nama_perusahaan' => $request->nama_perusahaan,
+            'bidang_industri' => $request->bidang_industri,
+            'alamat'          => $request->alamat,
+            'email'           => $request->email,
+            'telepon'         => $request->telepon,
+            'path_logo'       => $pathLogo ?? $perusahaan->path_logo,
+            'latitude'        => $geo['lat'] ?? null,
+            'longitude'       => $geo['lon'] ?? null,
+        ]);
+
 
         return response()->json([
             'status'  => true,
             'message' => 'Data berhasil diupdate',
         ]);
     }
+
 
     public function show_ajax($id)
     {
@@ -194,5 +234,25 @@ class PerusahaanController extends Controller
             'status'  => true,
             'message' => 'Data berhasil dihapus',
         ]);
+    }
+
+    private function getCoordinates($alamat)
+    {
+        $response = Http::withHeaders([
+            'User-Agent' => 'MyApp/1.0 (your.email@example.com)',
+        ])->get('https://nominatim.openstreetmap.org/search', [
+            'q' => $alamat,
+            'format' => 'json',
+            'limit' => 1,
+        ]);
+
+        if ($response->successful() && !empty($response[0])) {
+            return [
+                'lat' => $response[0]['lat'],
+                'lon' => $response[0]['lon'],
+            ];
+        }
+
+        return null;
     }
 }
