@@ -74,10 +74,10 @@
         </li>
       @endif
 
-      @if(auth()->user()->role === 'dosen')
+      @if(auth()->user()->role === 'dosen_pembimbing')
         <!-- Dosen Menu Items -->
-        <li class="menu-item">
-          <a href="#" class="menu-link">
+        <li class="menu-item {{ request()->is('dosen*') ? 'active' : '' }}">
+          <a href="{{ url('dosen/list-mahasiswa') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-bar-chart"></i>
             <div>Monitoring & Statistik</div>
           </a>

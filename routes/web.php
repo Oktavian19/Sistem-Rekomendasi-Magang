@@ -143,6 +143,12 @@ Route::middleware('auth')->group(function () {
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->group(function () {
-        // Dosen routes can be added here
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
+        Route::get('dosen/list-mahasiswa', function () {
+            return view('dosen.monitoring.list_mahasiswa');
+        })->name('list-mahasiswa');
+        Route::get('dosen/log-mahasiswa', function () {
+            return view('dosen.monitoring.log_mahasiswa');
+        })->name('log-mahasiswa');
     });
 });
