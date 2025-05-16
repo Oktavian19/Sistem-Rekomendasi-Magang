@@ -17,7 +17,7 @@
   <ul class="menu-inner py-1" style="height: calc(100% - 70px); overflow-y: auto;">
     <!-- Dashboard (Visible to all roles) -->
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-      <a href="#" class="menu-link">
+      <a href="{{ url('dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
       </a>

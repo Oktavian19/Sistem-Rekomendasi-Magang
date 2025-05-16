@@ -10,31 +10,13 @@ use App\Http\Controllers\Admin\LowonganMagangController;
 use App\Http\Controllers\Admin\PerusahaanController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
-use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
-use App\Http\Controllers\Dosen\DashboardController as DosenDashboardController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
-<<<<<<< HEAD
-use App\Models\Lowongan;
-=======
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LogController;
 
->>>>>>> origin/main
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::pattern('id', '[0-9]+');
 
-// Authentication Routes
+// ===================== AUTH ROUTES =====================
 Route::get('/', [AuthController::class, 'landing_page'])->name('landing_page');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
@@ -42,133 +24,116 @@ Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
 
+// ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
 
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
-        // Dashboard Controller
-<<<<<<< HEAD
-        Route::get('/dashboard-admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard-admin');
-=======
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
->>>>>>> origin/main
 
-        // ===== KelolaPenggunaController Routes =====
-        Route::get('user', [KelolaPenggunaController::class, 'index'])->name('user.index');
-        Route::get('user/list', [KelolaPenggunaController::class, 'list'])->name('user.list');
-        Route::get('user/create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('user.create_ajax');
-        Route::post('user/store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('user.store_ajax');
-        Route::get('user/{id}/edit-ajax', [KelolaPenggunaController::class, 'edit_ajax'])->name('user.edit_ajax');
-        Route::post('user/{id}/update-ajax', [KelolaPenggunaController::class, 'update_ajax'])->name('user.update_ajax');
-        Route::get('user/{id}/show-ajax', [KelolaPenggunaController::class, 'show_ajax'])->name('user.show_ajax');
-        Route::get('user/{id}/confirm-ajax', [KelolaPenggunaController::class, 'confirm_ajax'])->name('user.confirm_ajax');
-        Route::delete('user/{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('user.delete_ajax');
-        Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
-        Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
-        // Reset password
-        Route::get('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('user.reset_password_form');
-        Route::post('user/{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('user.reset_password');
+        // Kelola Pengguna
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::get('/', [KelolaPenggunaController::class, 'index'])->name('index');
+            Route::get('list', [KelolaPenggunaController::class, 'list'])->name('list');
+            Route::get('create-ajax', [KelolaPenggunaController::class, 'create_ajax'])->name('create_ajax');
+            Route::post('store-ajax', [KelolaPenggunaController::class, 'store_ajax'])->name('store_ajax');
+            Route::get('{id}/edit-ajax', [KelolaPenggunaController::class, 'edit_ajax'])->name('edit_ajax');
+            Route::post('{id}/update-ajax', [KelolaPenggunaController::class, 'update_ajax'])->name('update_ajax');
+            Route::get('{id}/show-ajax', [KelolaPenggunaController::class, 'show_ajax'])->name('show_ajax');
+            Route::get('{id}/confirm-ajax', [KelolaPenggunaController::class, 'confirm_ajax'])->name('confirm_ajax');
+            Route::delete('{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
+            Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
+        });
 
-        // ===== LamaranController Routes =====
-        Route::get('lamaran', [LamaranController::class, 'index'])->name('lamaran.index');
-        Route::get('lamaran/{id}', [LamaranController::class, 'show'])->name('lamaran.show');
-        Route::put('lamaran/{id}/status', [LamaranController::class, 'updateStatus'])->name('lamaran.updateStatus');
-        Route::delete('lamaran/{id}', [LamaranController::class, 'destroy'])->name('lamaran.destroy');
+        // Lamaran
+        Route::prefix('lamaran')->name('lamaran.')->group(function () {
+            Route::get('/', [LamaranController::class, 'index'])->name('index');
+            Route::get('{id}', [LamaranController::class, 'show'])->name('show');
+            Route::put('{id}/status', [LamaranController::class, 'updateStatus'])->name('updateStatus');
+            Route::delete('{id}', [LamaranController::class, 'destroy'])->name('destroy');
+        });
 
-        // ===== LowonganMagangController Routes =====
-        Route::get('lowongan', [LowonganMagangController::class, 'index'])->name('lowongan.index');
-        Route::get('lowongan/list', [LowonganMagangController::class, 'list'])->name('lowongan.list');
-        Route::get('lowongan/create-ajax', [LowonganMagangController::class, 'create_ajax'])->name('lowongan.create_ajax');
-        Route::post('lowongan/store-ajax', [LowonganMagangController::class, 'store_ajax'])->name('lowongan.store_ajax');
-        Route::get('lowongan/{id}/edit-ajax', [LowonganMagangController::class, 'edit_ajax'])->name('lowongan.edit_ajax');
-        Route::post('lowongan/{id}/update-ajax', [LowonganMagangController::class, 'update_ajax'])->name('lowongan.update_ajax');
-        Route::get('lowongan/{id}/show-ajax', [LowonganMagangController::class, 'show_ajax'])->name('lowongan.show_ajax');
-        Route::get('lowongan/{id}/confirm-ajax', [LowonganMagangController::class, 'confirm_ajax'])->name('lowongan.confirm_ajax');
-        Route::delete('lowongan/{id}/delete-ajax', [LowonganMagangController::class, 'delete_ajax'])->name('lowongan.delete_ajax');
+        // Lowongan Magang
+        Route::prefix('lowongan')->name('lowongan.')->group(function () {
+            Route::get('/', [LowonganMagangController::class, 'index'])->name('index');
+            Route::get('list', [LowonganMagangController::class, 'list'])->name('list');
+            Route::get('create-ajax', [LowonganMagangController::class, 'create_ajax'])->name('create_ajax');
+            Route::post('store-ajax', [LowonganMagangController::class, 'store_ajax'])->name('store_ajax');
+            Route::get('{id}/edit-ajax', [LowonganMagangController::class, 'edit_ajax'])->name('edit_ajax');
+            Route::post('{id}/update-ajax', [LowonganMagangController::class, 'update_ajax'])->name('update_ajax');
+            Route::get('{id}/show-ajax', [LowonganMagangController::class, 'show_ajax'])->name('show_ajax');
+            Route::get('{id}/confirm-ajax', [LowonganMagangController::class, 'confirm_ajax'])->name('confirm_ajax');
+            Route::delete('{id}/delete-ajax', [LowonganMagangController::class, 'delete_ajax'])->name('delete_ajax');
+        });
 
-        // ===== MagangController Routes =====
-        Route::get('magang', [MagangController::class, 'index'])->name('magang.index');
-        Route::get('magang/{id}', [MagangController::class, 'show'])->name('magang.show');
-        Route::post('magang', [MagangController::class, 'store'])->name('magang.store');
-        Route::get('magang-feedback', [MagangController::class, 'feedback'])->name('magang.feedback');
+        // Magang
+        Route::prefix('magang')->name('magang.')->group(function () {
+            Route::get('/', [MagangController::class, 'index'])->name('index');
+            Route::get('{id}', [MagangController::class, 'show'])->name('show');
+            Route::post('/', [MagangController::class, 'store'])->name('store');
+            Route::get('feedback', [MagangController::class, 'feedback'])->name('feedback');
+        });
 
-        // ===== PeriodeController Routes =====
-        Route::get('periode', [PeriodeController::class, 'index'])->name('periode.index');
-        Route::get('periode/list', [PeriodeController::class, 'list'])->name('periode.list');
-        Route::get('periode/create-ajax', [PeriodeController::class, 'create_ajax'])->name('periode.create_ajax');
-        Route::post('periode/store-ajax', [PeriodeController::class, 'store_ajax'])->name('periode.store_ajax');
-        Route::get('periode/{id}/edit-ajax', [PeriodeController::class, 'edit_ajax'])->name('periode.edit_ajax');
-        Route::post('periode/{id}/update-ajax', [PeriodeController::class, 'update_ajax'])->name('periode.update_ajax');
-        Route::get('periode/{id}/show-ajax', [PeriodeController::class, 'show_ajax'])->name('periode.show_ajax');
-        Route::post('periode/{id}/delete-ajax', [PeriodeController::class, 'delete_ajax'])->name('periode.delete_ajax');
-        Route::get('periode/{id}/confirm-ajax', [PeriodeController::class, 'confirm_ajax'])->name('periode.confirm_ajax');
+        // Periode
+        Route::prefix('periode')->name('periode.')->group(function () {
+            Route::get('/', [PeriodeController::class, 'index'])->name('index');
+            Route::get('list', [PeriodeController::class, 'list'])->name('list');
+            Route::get('create-ajax', [PeriodeController::class, 'create_ajax'])->name('create_ajax');
+            Route::post('store-ajax', [PeriodeController::class, 'store_ajax'])->name('store_ajax');
+            Route::get('{id}/edit-ajax', [PeriodeController::class, 'edit_ajax'])->name('edit_ajax');
+            Route::post('{id}/update-ajax', [PeriodeController::class, 'update_ajax'])->name('update_ajax');
+            Route::get('{id}/show-ajax', [PeriodeController::class, 'show_ajax'])->name('show_ajax');
+            Route::post('{id}/delete-ajax', [PeriodeController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::get('{id}/confirm-ajax', [PeriodeController::class, 'confirm_ajax'])->name('confirm_ajax');
+        });
 
-        // ===== PerusahaanController Routes =====
-        Route::get('perusahaan', [PerusahaanController::class, 'index'])->name('perusahaan.index');
-        Route::get('perusahaan/list', [PerusahaanController::class, 'list'])->name('perusahaan.list');
-        Route::get('perusahaan/create-ajax', [PerusahaanController::class, 'create_ajax'])->name('perusahaan.create_ajax');
-        Route::post('perusahaan/store-ajax', [PerusahaanController::class, 'store_ajax'])->name('perusahaan.store_ajax');
-        Route::get('perusahaan/{id}/edit-ajax', [PerusahaanController::class, 'edit_ajax'])->name('perusahaan.edit_ajax');
-        Route::post('perusahaan/{id}/update-ajax', [PerusahaanController::class, 'update_ajax'])->name('perusahaan.update_ajax');
-        Route::get('perusahaan/{id}/show-ajax', [PerusahaanController::class, 'show_ajax'])->name('perusahaan.show_ajax');
-        Route::post('perusahaan/{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('perusahaan.delete_ajax');
-        Route::get('perusahaan/{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('perusahaan.confirm_ajax');
+        // Perusahaan
+        Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
+            Route::get('/', [PerusahaanController::class, 'index'])->name('index');
+            Route::get('list', [PerusahaanController::class, 'list'])->name('list');
+            Route::get('create-ajax', [PerusahaanController::class, 'create_ajax'])->name('create_ajax');
+            Route::post('store-ajax', [PerusahaanController::class, 'store_ajax'])->name('store_ajax');
+            Route::get('{id}/edit-ajax', [PerusahaanController::class, 'edit_ajax'])->name('edit_ajax');
+            Route::post('{id}/update-ajax', [PerusahaanController::class, 'update_ajax'])->name('update_ajax');
+            Route::get('{id}/show-ajax', [PerusahaanController::class, 'show_ajax'])->name('show_ajax');
+            Route::post('{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::get('{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('confirm_ajax');
+        });
 
-        // ===== ProgramStudiController Routes =====
-        Route::get('program-studi', [ProgramStudiController::class, 'index'])->name('programstudi.index');
-        Route::get('program-studi/list', [ProgramStudiController::class, 'list'])->name('programstudi.list');
-        Route::get('program-studi/create-ajax', [ProgramStudiController::class, 'create_ajax'])->name('programstudi.create_ajax');
-        Route::post('program-studi/store-ajax', [ProgramStudiController::class, 'store_ajax'])->name('programstudi.store_ajax');
-        Route::get('program-studi/{id}/edit-ajax', [ProgramStudiController::class, 'edit_ajax'])->name('programstudi.edit_ajax');
-        Route::post('program-studi/{id}/update-ajax', [ProgramStudiController::class, 'update_ajax'])->name('programstudi.update_ajax');
-        Route::get('program-studi/{id}/show-ajax', [ProgramStudiController::class, 'show_ajax'])->name('programstudi.show_ajax');
-        Route::post('program-studi/{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('programstudi.delete_ajax');
-        Route::get('program-studi/{id}/confirm-ajax', [ProgramStudiController::class, 'confirm_ajax'])->name('programstudi.confirm_ajax');
+        // Program Studi
+        Route::prefix('program-studi')->name('programstudi.')->group(function () {
+            Route::get('/', [ProgramStudiController::class, 'index'])->name('index');
+            Route::get('list', [ProgramStudiController::class, 'list'])->name('list');
+            Route::get('create-ajax', [ProgramStudiController::class, 'create_ajax'])->name('create_ajax');
+            Route::post('store-ajax', [ProgramStudiController::class, 'store_ajax'])->name('store_ajax');
+            Route::get('{id}/edit-ajax', [ProgramStudiController::class, 'edit_ajax'])->name('edit_ajax');
+            Route::post('{id}/update-ajax', [ProgramStudiController::class, 'update_ajax'])->name('update_ajax');
+            Route::get('{id}/show-ajax', [ProgramStudiController::class, 'show_ajax'])->name('show_ajax');
+            Route::post('{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::get('{id}/confirm-ajax', [ProgramStudiController::class, 'confirm_ajax'])->name('confirm_ajax');
+        });
     });
 
     // ===================== MAHASISWA ROUTES =====================
     Route::middleware('authorize:mahasiswa')->group(function () {
-<<<<<<< HEAD
-        Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard-mahasiswa');
-    Route::get('/lowongan-mahasiswa', [LowonganController::class, 'index'])->name('lowongan-mahasiswa');
-    Route::get('/lowongan-mahasiswa/list', [LowonganController::class, 'list'])->name('lowongan-mahasiswa.list');
-    Route::get('/lowongan-mahasiswa/{id}/show-ajax', [LowonganController::class, 'show_ajax'])->name('lowongan-mahasiswa.show_ajax');
-=======
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
-            Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
-    // Route::get('/lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.detail');
-        Route::get('/daftar-lowongan/detail', function () {
-            return view('mahasiswa.magang.lowongan_detail');
-        })->name('lowongan-detail');
-        Route::get('/profile', function () {
-            return view('mahasiswa.profil.index');
-        })->name('profile');
-        Route::get('/profile/edit', function () {
-            return view('mahasiswa.profil.edit_profile');
-        })->name('edit-profile');
+        Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
+        Route::get('/daftar-lowongan/detail', fn () => view('mahasiswa.magang.lowongan_detail'))->name('lowongan-detail');
+        Route::get('/profile', fn () => view('mahasiswa.profil.index'))->name('profile');
+        Route::get('/profile/edit', fn () => view('mahasiswa.profil.edit_profile'))->name('edit-profile');
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
-        Route::get('magang-mahasiswa', function () {
-            return view('mahasiswa.log.index');
-        })->name('log-magang');
+        Route::get('magang-mahasiswa', fn () => view('mahasiswa.log.index'))->name('log-magang');
         Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
->>>>>>> origin/main
     });
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->group(function () {
-<<<<<<< HEAD
-        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard-dosen');
-
-=======
         Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
-        Route::get('dosen/list-mahasiswa', function () {
-            return view('dosen.monitoring.list_mahasiswa');
-        })->name('list-mahasiswa');
-        Route::get('dosen/log-mahasiswa', function () {
-            return view('dosen.monitoring.log_mahasiswa');
-        })->name('log-mahasiswa');
->>>>>>> origin/main
+        Route::get('dosen/list-mahasiswa', fn () => view('dosen.monitoring.list_mahasiswa'))->name('list-mahasiswa');
+        Route::get('dosen/log-mahasiswa', fn () => view('dosen.monitoring.log_mahasiswa'))->name('log-mahasiswa');
     });
 });

@@ -11,39 +11,38 @@ use App\Models\DosenPembimbing;
 class DashboardController extends Controller
 {
     public function dashboard_admin()
-    public function dashboard_admin()
     {
-        // // 1. Jumlah Mahasiswa
-        // $jumlahMahasiswa = Mahasiswa::count();
+        // 1. Jumlah Mahasiswa
+        $jumlahMahasiswa = Mahasiswa::count();
 
-        // // 2. Statistik Status Magang
-        // $statusMagang = [
-        //     'aktif'   => Magang::where('status_magang', 'aktif')->count(),
-        //     'selesai' => Magang::where('status_magang', 'selesai')->count(),
-        //     'belum'   => Magang::where('status_magang', 'belum')->count(),
-        // ];
+        // 2. Statistik Status Magang
+        $statusMagang = [
+            'aktif'   => Magang::where('status_magang', 'aktif')->count(),
+            'selesai' => Magang::where('status_magang', 'selesai')->count(),
+            'belum'   => Magang::where('status_magang', 'belum')->count(),
+        ];
 
-        // // 3. Jumlah Dosen Pembimbing
-        // $jumlahDosen = DosenPembimbing::count();
+        // 3. Jumlah Dosen Pembimbing
+        $jumlahDosen = DosenPembimbing::count();
 
-        // // 4. Rasio Mahasiswa Magang Aktif : Dosen Pembimbing
-        // $jumlahMahasiswaMagangAktif = Magang::where('status_magang', 'aktif')->count();
-        // $rasioDosenMahasiswa = $jumlahDosen > 0
-        //     ? round($jumlahMahasiswaMagangAktif / $jumlahDosen, 2)
-        //     : 0;
+        // 4. Rasio Mahasiswa Magang Aktif : Dosen Pembimbing
+        $jumlahMahasiswaMagangAktif = Magang::where('status_magang', 'aktif')->count();
+        $rasioDosenMahasiswa = $jumlahDosen > 0
+            ? round($jumlahMahasiswaMagangAktif / $jumlahDosen, 2)
+            : 0;
 
-        // // 5. Statistik Tren Bidang Industri (Peminatan vs Realisasi)
-        // $peminatan = DB::table('mahasiswa_bidang_keahlian')
-        //     ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-        //     ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
-        //     ->groupBy('bidang_keahlian.nama_bidang');
+        // 5. Statistik Tren Bidang Industri (Peminatan vs Realisasi)
+        $peminatan = DB::table('mahasiswa_bidang_keahlian')
+            ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
+            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
+            ->groupBy('bidang_keahlian.nama_bidang');
 
-        // $realisasi = DB::table('magang')
-        //     ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
-        //     ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-        //     ->join('perusahaan_mitra', 'lowongan.id_perusahaan', '=', 'perusahaan_mitra.id_perusahaan')
-        //     ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
-        //     ->groupBy('perusahaan_mitra.bidang_industri');
+        $realisasi = DB::table('magang')
+            ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
+            ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
+            ->join('perusahaan_mitra', 'lowongan.id_perusahaan', '=', 'perusahaan_mitra.id_perusahaan')
+            ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
+            ->groupBy('perusahaan_mitra.bidang_industri');
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
@@ -58,14 +57,14 @@ class DashboardController extends Controller
             ->orderByDesc('peminatan.total_peminat')
             ->get();
 
-        // // 6. Evaluasi Efektivitas Rekomendasi
-        // $mengikutiRekomendasi = DB::table('lamaran')
-        //     ->where('dari_rekomendasi', true)
-        //     ->count();
+        // 6. Evaluasi Efektivitas Rekomendasi
+        $mengikutiRekomendasi = DB::table('lamaran')
+            ->where('dari_rekomendasi', true)
+            ->count();
 
-        // $tidakMengikutiRekomendasi = DB::table('lamaran')
-        //     ->where('dari_rekomendasi', false)
-        //     ->count();
+        $tidakMengikutiRekomendasi = DB::table('lamaran')
+            ->where('dari_rekomendasi', false)
+            ->count();
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
