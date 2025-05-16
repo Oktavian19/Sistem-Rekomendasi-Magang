@@ -12,20 +12,75 @@ class PerusahaanMitraSeeder extends Seeder
     {
         $data = [
             [
-                'nama_perusahaan' => 'PT Nusantara Teknologi',
-                'bidang_industri' => 'Teknologi Informasi',
-                'alamat'          => 'Malang, Jawa Timur',
-                'email'           => 'info@nusantarateknologi.com',
-                'telepon'         => '0341-123456',
+                'nama_perusahaan' => 'PT. Multi Spunindo Jaya, Tbk',
+                'bidang_industri' => 'Manufaktur',
+                'alamat'          => 'Krian, Sidoarjo, Jawa Timur',
+                'email'           => 'info@spuindo.com',
+                'telepon'         => '031-8975555',
             ],
             [
-                'nama_perusahaan' => 'CV Maju Jaya',
-                'bidang_industri' => 'Manufaktur',
-                'alamat'          => 'Surabaya, Jawa Timur',
-                'email'           => 'contact@majujaya.co.id',
+                'nama_perusahaan' => 'PT Lesaffre Sari Nusa',
+                'bidang_industri' => 'Fermentasi',
+                'alamat'          => 'Krebet, Bululawang, Kabupaten Malang, Jawa Timur 65163',
+                'email'           => 'contact@lesaffre.co.id',
                 'telepon'         => '0341-654321',
             ],
-            // Tambahkan data perusahaan lainnya sesuai kebutuhan
+            [
+                'nama_perusahaan' => 'PT. Satoria Aneka Industri',
+                'bidang_industri' => 'Farmasi',
+                'alamat'          => 'Wonorejo, Pasuruan, Jawa Timur 67173',
+                'email'           => 'contact@satoria.co.id',
+                'telepon'         => '0343-6752123',
+            ],
+            [
+                'nama_perusahaan' => 'PT Rapidplast Indonesia',
+                'bidang_industri' => 'Manufaktur',
+                'alamat'          => 'Sukorejo, Pasuruan',
+                'email'           => 'contact@rapidplast.co.id',
+                'telepon'         => '0341-654321',
+            ],
+            [
+                'nama_perusahaan' => 'PT. Amerta Indah Otsuka',
+                'bidang_industri' => 'Farmasi',
+                'alamat'          => 'Kejayan, Pasuruan, Jawa Timur 67172',
+                'email'           => 'contact@otsuka.co.id',
+                'telepon'         => '0343-414200',
+            ],
+            [
+                'nama_perusahaan' => 'PT. Schneider Indonesia',
+                'bidang_industri' => 'Elektronika',
+                'alamat'          => 'Jakarta',
+                'email'           => 'contact@schneider.co.id',
+                'telepon'         => '021-8970203',
+            ],
+            [
+                'nama_perusahaan' => 'PT. Borwita Citra Prima',
+                'bidang_industri' => 'Layanan Distribusi',
+                'alamat'          => 'Pakis, Kabupaten Malang, Jawa Timur',
+                'email'           => 'contact@borwitacitra.co.id',
+                'telepon'         => '031-7889777',
+            ],
+            [
+                'nama_perusahaan' => 'PT. Bangun Arta Hutama',
+                'bidang_industri' => 'Manufaktur',
+                'alamat'          => 'Driyorejo, Kabupaten Gresik, Jawa Timur 61177',
+                'email'           => 'contact@bangunarta.co.id',
+                'telepon'         => '0341-654321',
+            ],
+            [
+                'nama_perusahaan' => 'PT. Viktori Profindo Automation',
+                'bidang_industri' => 'Supplier Peralatan Industri',
+                'alamat'          => 'Semolowaru, Sukolilo, Surabaya, East Java 60119',
+                'email'           => 'contact@viktori.co.id',
+                'telepon'         => '031-5944555',
+            ],
+            [
+                'nama_perusahaan' => 'Golden Tulip Holland Resort Batu',
+                'bidang_industri' => 'Hotel',
+                'alamat'          => 'Temas, Batu, Jawa Timur 65314',
+                'email'           => 'contact@goldentuliphollandresort.co.id',
+                'telepon'         => '0341-3302000',
+            ],
         ];
 
         foreach ($data as $item) {
