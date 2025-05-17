@@ -12,7 +12,9 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa';
     protected $primaryKey = 'id_mahasiswa';
 
+
     protected $fillable = [
+        'id_mahasiswa',
         'nim',
         'nama',
         'email',
@@ -25,7 +27,7 @@ class Mahasiswa extends Model
         return $this->belongsTo(ProgramStudi::class, 'id_program_studi', 'id_program_studi');
     }
 
-  public function bidangKeahlian()
+    public function bidangKeahlian()
     {
         return $this->belongsToMany(
             BidangKeahlian::class,           // Model target
@@ -35,7 +37,7 @@ class Mahasiswa extends Model
         )->withTimestamps();                 // Jika perlu akses timestamps
     }
 
-        public function preferensiLokasi()
+    public function preferensiLokasi()
     {
         return $this->belongsToMany(
             PreferensiLokasi::class,
@@ -45,7 +47,7 @@ class Mahasiswa extends Model
         )->withTimestamps();
     }
 
-        public function jenisMagang()
+    public function jenisMagang()
     {
         return $this->belongsToMany(
             JenisMagang::class,
@@ -56,7 +58,7 @@ class Mahasiswa extends Model
     }
 
     public function bobotKriteria()
-{
-    return $this->hasMany(BobotMahasiswa::class, 'id_mahasiswa');
-}
+    {
+        return $this->hasMany(BobotMahasiswa::class, 'id_mahasiswa');
+    }
 }

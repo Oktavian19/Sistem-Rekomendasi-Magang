@@ -13,6 +13,7 @@ class DosenPembimbing extends Model
     protected $primaryKey = 'id_dosen_pembimbing';
 
     protected $fillable = [
+        'id_dosen_pembimbing',
         'nidn',
         'nama',
         'email',
