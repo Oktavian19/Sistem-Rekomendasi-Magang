@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PerusahaanMitra extends Model
 {
@@ -22,4 +23,9 @@ class PerusahaanMitra extends Model
         'latitude',
         'longitude'
     ];
+
+    public function lowongan(): HasMany
+    {
+        return $this->hasMany(Lowongan::class, 'id_perusahaan', 'id_perusahaan');
+    }
 }

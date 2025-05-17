@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('authorize:mahasiswa')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
         Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
-        Route::get('/daftar-lowongan/detail', fn () => view('mahasiswa.magang.lowongan_detail'))->name('lowongan-detail');
+        Route::get('/daftar-lowongan/{id}', [LowonganController::class, 'show'])->name('lowongan.show');
         Route::get('/profile', fn () => view('mahasiswa.profil.index'))->name('profile');
         Route::get('/profile/edit', fn () => view('mahasiswa.profil.edit_profile'))->name('edit-profile');
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
