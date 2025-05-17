@@ -17,7 +17,6 @@
                         <th>No</th>
                         <th>Username</th>
                         <th>Nama</th>
-                        <th>Detail</th>
                         <th>Role</th>
                         <th>Aksi</th>
                     </tr>
@@ -47,13 +46,12 @@
             serverSide: true,
             ajax: "{{ url('user/list') }}",
             columnDefs: [
-                { targets: 5, width: '200px' }
+                { targets: [4], orderable: false, width: '200px' }
             ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'username', name: 'username' },
                 { data: 'nama', name: 'nama' },
-                { data: 'detail', name: 'detail' },
                 { data: 'role', name: 'role' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]

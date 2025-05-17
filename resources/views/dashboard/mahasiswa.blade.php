@@ -96,8 +96,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">120</h4>
-                                <p class="mb-0">Jumlah Lamaran</p>
+                                <h5 class="mb-0">PT. Tech Indonesia</h5>
+                                <p class="mb-0">Perusahaan</p>
                             </div>
                             <div class="avatar me-sm-4">
                                 <span class="avatar-initial rounded bg-label-secondary text-heading">
@@ -110,8 +110,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">45</h4>
-                                <p class="mb-0">Lamaran Diproses</p>
+                                <h5 class="mb-0">Teknologi Informasi</h5>
+                                <p class="mb-0">Bidang Industri</p>
                             </div>
                             <div class="avatar me-lg-4">
                                 <span class="avatar-initial rounded bg-label-warning text-heading">
@@ -124,8 +124,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">30</h4>
-                                <p class="mb-0">Lamaran Ditolak</p>
+                                <h5 class="mb-0">Fullstack Developer</h5>
+                                <p class="mb-0">Posisi Magang</p>
                             </div>
                             <div class="avatar me-sm-4">
                                 <span class="avatar-initial rounded bg-label-danger text-heading">
@@ -137,8 +137,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h4 class="mb-0">45</h4>
-                                <p class="mb-0">Lamaran Disetujui</p>
+                                <h5 class="mb-0">1 Januari 2023</h5>
+                                <p class="mb-0">Tanggal Dikirim</p>
                             </div>
                             <div class="avatar">
                                 <span class="avatar-initial rounded bg-label-success text-heading">

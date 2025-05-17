@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DosenPembimbing;
+use App\Http\Controllers\Controller;
+use App\Models\Mahasiswa;
+use App\Models\PerusahaanMitra;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +36,7 @@ class DashboardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DosenPembimbing $dosenPembimbing)
+    public function show(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -42,7 +44,7 @@ class DashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(DosenPembimbing $dosenPembimbing)
+    public function edit(Mahasiswa $mahasiswa)
     {
         //
     }
@@ -50,7 +52,7 @@ class DashboardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DosenPembimbing $dosenPembimbing)
+    public function update(Request $request, Mahasiswa $mahasiswa)
     {
         //
     }
@@ -58,8 +60,13 @@ class DashboardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DosenPembimbing $dosenPembimbing)
+    public function destroy(Mahasiswa $mahasiswa)
     {
         //
+    }
+
+    public function create_pengalaman()
+    {
+        return view('mahasiswa.profil.create_pengalaman');
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Mahasiswa;
@@ -11,7 +10,7 @@ use App\Models\DosenPembimbing;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function dashboard_admin()
     {
         // 1. Jumlah Mahasiswa
         $jumlahMahasiswa = Mahasiswa::count();
@@ -45,16 +44,17 @@ class DashboardController extends Controller
             ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
             ->groupBy('perusahaan_mitra.bidang_industri');
 
-        $trenBidangIndustri = $peminatan
+        $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
+            ->mergeBindings($peminatan)
             ->leftJoinSub($realisasi, 'realisasi', function ($join) {
-                $join->on('bidang_keahlian.nama_bidang', '=', 'realisasi.nama_bidang');
+                $join->on('peminatan.nama_bidang', '=', 'realisasi.nama_bidang');
             })
             ->select(
-                'bidang_keahlian.nama_bidang',
-                'total_peminat',
-                DB::raw('COALESCE(total_magang, 0) as total_magang')
+                'peminatan.nama_bidang',
+                'peminatan.total_peminat',
+                DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
-            ->orderByDesc('total_peminat')
+            ->orderByDesc('peminatan.total_peminat')
             ->get();
 
         // 6. Evaluasi Efektivitas Rekomendasi
@@ -66,7 +66,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', false)
             ->count();
 
-        return view('admin.dashboard.index', compact(
+        return view('dashboard.admin', compact(
             'jumlahMahasiswa',
             'statusMagang',
             'jumlahDosen',
@@ -85,9 +85,5 @@ class DashboardController extends Controller
     public function dashboard_mahasiswa()
     {
         return view('dashboard.mahasiswa');
-    }
-    public function dashboard_admin()
-    {
-        return view('dashboard.admin');
     }
 }
