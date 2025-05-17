@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PerusahaanMitra;
-use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -57,8 +56,7 @@ class PerusahaanController extends Controller
 
     public function create_ajax()
     {
-        $programStudi = ProgramStudi::all();
-        return view('admin.perusahaan.create_ajax', compact('programStudi'));
+        return view('admin.perusahaan.create_ajax');
     }
 
     public function store_ajax(Request $request)
