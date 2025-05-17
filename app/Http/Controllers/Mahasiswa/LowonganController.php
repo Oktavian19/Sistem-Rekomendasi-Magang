@@ -92,4 +92,10 @@ class LowonganController extends Controller
 
         return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians', 'filters'));
     }
+
+    public function show($id)
+    {
+        $lowongan = Lowongan::with(['perusahaan', 'bidangKeahlian'])->findOrFail($id);
+        return view('mahasiswa.magang.lowongan_detail', compact('lowongan'));
+    }
 }
