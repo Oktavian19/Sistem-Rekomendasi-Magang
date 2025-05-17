@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id('id_mahasiswa');
+            $table->unsignedBigInteger('id_mahasiswa')->primary();
             $table->string('nim', 20)->unique();
             $table->string('nama', 100);
             $table->string('email', 100)->nullable();

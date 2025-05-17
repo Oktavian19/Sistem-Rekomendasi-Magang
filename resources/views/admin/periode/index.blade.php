@@ -40,8 +40,9 @@
         });
     }
 
+    var dataPeriode;
     $(document).ready(function () {
-        $('#table-periode').DataTable({
+        dataPeriode = $('#table-periode').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('periode/list') }}",
@@ -82,9 +83,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2100);
+                    dataPeriode.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',

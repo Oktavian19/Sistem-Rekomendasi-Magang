@@ -42,8 +42,9 @@
         });
     }
 
+    var dataPerusahaan;
     $(document).ready(function () {
-        $('#table-periode').DataTable({
+        dataPerusahaan = $('#table-periode').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('perusahaan/list') }}",
@@ -86,9 +87,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2100);
+                    dataPerusahaan.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',

@@ -13,6 +13,7 @@ class Admin extends Model
     protected $primaryKey = 'id_admin';
 
     protected $fillable = [
+        'id_admin',
         'nama',
         'email',
         'no_hp',
