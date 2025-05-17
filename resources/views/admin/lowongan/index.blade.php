@@ -39,9 +39,9 @@
 @push('scripts')
 <script>
     
-
+    var dataLowongan;
     $(document).ready(function () {
-        $('#table-lowongan').DataTable({
+        dataLowongan = $('#table-lowongan').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('lowongan/list') }}",
@@ -86,9 +86,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2100);
+                    dataLowongan.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',

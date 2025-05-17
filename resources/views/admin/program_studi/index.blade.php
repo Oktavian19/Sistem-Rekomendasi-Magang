@@ -38,8 +38,9 @@
         });
     }
 
+    var dataProgramStudi;
     $(document).ready(function () {
-        $('#table-program-studi').DataTable({
+        dataProgramStudi = $('#table-program-studi').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('program-studi/list') }}",
@@ -78,9 +79,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2100);
+                    dataProgramStudi.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',
