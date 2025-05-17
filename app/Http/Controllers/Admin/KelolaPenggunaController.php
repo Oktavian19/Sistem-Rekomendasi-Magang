@@ -36,8 +36,8 @@ class KelolaPenggunaController extends Controller
             ->leftJoin('mahasiswa', 'mahasiswa.id_mahasiswa', '=', 'users.id_user')
             ->leftJoin('dosen_pembimbing', 'dosen_pembimbing.id_dosen_pembimbing', '=', 'users.id_user');
 
-        if ($request->role) {
-            $users->where('users.role', $request->role);
+        if ($request->has('id_user')) {
+            $users->where('id_user', $request->id_user);
         }
 
         return DataTables::of($users)
@@ -47,6 +47,22 @@ class KelolaPenggunaController extends Controller
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/admin/user/' . $user->id_user . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
+            })
+            ->filterColumn('nama', function ($query, $keyword) {
+                $query->whereRaw("LOWER(
+            CASE 
+                WHEN users.role = 'admin' THEN admin.nama
+                WHEN users.role = 'mahasiswa' THEN mahasiswa.nama
+                WHEN users.role = 'dosen_pembimbing' THEN dosen_pembimbing.nama
+                ELSE ''
+            END
+        ) LIKE ?", ["%" . strtolower($keyword) . "%"]);
+            })
+            ->filterColumn('role', function ($query, $keyword) {
+                $query->whereRaw("LOWER(users.role) LIKE ?", ["%" . strtolower($keyword) . "%"]);
+            })
+            ->filterColumn('username', function ($query, $keyword) {
+                $query->whereRaw("LOWER(users.username) LIKE ?", ["%" . strtolower($keyword) . "%"]);
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -104,6 +120,13 @@ class KelolaPenggunaController extends Controller
             'password' => bcrypt($request->password),
             'role'     => $request->role
         ]);
+
+        if (!$user) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Gagal menyimpan user',
+            ]);
+        }
 
         switch ($request->role) {
             case 'admin':
