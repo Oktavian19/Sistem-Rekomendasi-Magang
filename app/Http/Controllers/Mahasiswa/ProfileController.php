@@ -154,18 +154,7 @@ class ProfileController extends Controller
     // Tampilkan form tambah dokumen
     public function createDokumen()
     {
-        return view('mahasiswa.profile.form_dokumen'); // Buat view form upload dokumen
-    }
-
-    // Tampilkan form edit dokumen
-    public function editDokumen($id)
-    {
-        $mahasiswa = Mahasiswa::where('id_mahasiswa', Auth::id())->firstOrFail();
-        $dokumen = Dokumen::where('id_dokumen', $id)
-            ->where('id_user', $mahasiswa->id_mahasiswa)
-            ->firstOrFail();
-
-        return view('mahasiswa.profile.edit_dokumen', compact('dokumen'));
+        return view('mahasiswa.profile.create_dokumen'); // Buat view form upload dokumen
     }
 
     // Simpan dokumen baru
@@ -207,6 +196,16 @@ class ProfileController extends Controller
 
 
         return redirect()->back()->with('success', 'Dokumen berhasil diunggah.');
+    }
+    // Tampilkan form edit dokumen
+    public function editDokumen($id)
+    {
+        $mahasiswa = Mahasiswa::where('id_mahasiswa', Auth::id())->firstOrFail();
+        $dokumen = Dokumen::where('id_dokumen', $id)
+            ->where('id_user', $mahasiswa->id_mahasiswa)
+            ->firstOrFail();
+
+        return view('mahasiswa.profile.edit_dokumen', compact('dokumen'));
     }
 
     // Update dokumen (misal ganti file atau jenis dokumen)
