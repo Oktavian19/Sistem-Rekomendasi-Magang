@@ -145,6 +145,7 @@ Route::middleware('auth')->group(function () {
         // Tambahan lainnya
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
         Route::get('magang-mahasiswa', fn() => view('mahasiswa.log.index'))->name('log-magang');
+        Route::get('riwayat-magang', fn() => view('mahasiswa.magang.history_magang'))->name('history-magang');
         Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);

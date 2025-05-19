@@ -17,11 +17,16 @@
   <ul class="menu-inner py-1" style="height: calc(100% - 70px); overflow-y: auto;">
     <!-- Dashboard (Visible to all roles) -->
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-      <a href="{{ url('dashboard') }}" class="menu-link">
+      <a href="{{ 
+          auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
+          (auth()->user()->role === 'dosen' ? url('dashboard-dosen') : 
+          url('dashboard')) 
+        }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
       </a>
     </li>
+    
 
     @auth
       @if(auth()->user()->role === 'admin')
@@ -70,6 +75,12 @@
           <a href="{{ url('magang-mahasiswa') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-clipboard"></i>
             <div>Log Magang</div>
+          </a>
+        </li>
+        <li class="menu-item {{ request()->is('riwayat-magang*') ? 'active' : '' }}">
+          <a href="{{ url('riwayat-magang') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-history"></i>
+            <div>Riwayat Magang</div>
           </a>
         </li>
       @endif
