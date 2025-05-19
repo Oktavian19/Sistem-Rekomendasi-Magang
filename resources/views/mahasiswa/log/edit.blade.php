@@ -12,14 +12,21 @@
             <div class="modal-body">
                 <!-- Date Input -->
                 <div class="form-group mb-4">
-                    <label>Tanggal</label>
+                    <label>Minggu Ke-</label>
                     <div class="input-group">
-                        <input type="date" name="tanggal" id="edit_tanggal" 
-                               class="form-control" value="{{ \Carbon\Carbon::parse($log->tanggal)->format('Y-m-d') }}" required>
-                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                        <select name="minggu" id="minggu" class="form-control" required>
+                            <option value="" disabled selected>Pilih minggu</option>
+                            <option value="1">Minggu ke-1</option>
+                            <option value="2">Minggu ke-2</option>
+                            <option value="3">Minggu ke-3</option>
+                            <option value="4">Minggu ke-4</option>
+                            <option value="5">Minggu ke-5</option>
+                        </select>
+                        <span class="input-group-text"><i class="bi bi-calendar-week"></i></span>
                     </div>
-                    <small id="error-edit_tanggal" class="error-text form-text text-danger"></small>
+                    <small id="error-minggu" class="error-text form-text text-danger"></small>
                 </div>
+                
                 
                 <!-- Description Input -->
                 <div class="form-group mb-4">

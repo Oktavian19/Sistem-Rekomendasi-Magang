@@ -31,7 +31,7 @@
                                 <!-- Date Section -->
                                 <div class="mb-3">
                                     <p class="fw-semibold mb-1">
-                                        <i class="bi bi-calendar me-3"></i>01 Jun 2025
+                                        <i class="bi bi-calendar me-3"></i>Minggu ke-1
                                     </p>
                                 </div>
                                 
