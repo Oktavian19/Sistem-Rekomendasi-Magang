@@ -20,16 +20,19 @@ class LowonganMagangController extends Controller
 
     public function list(Request $request)
     {
-        $query = Lowongan::with('perusahaan')->select('lowongan.*');
+        $query = Lowongan::with(['perusahaan', 'bidangKeahlian'])->select('lowongan.*');
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
         }
-
+        
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_perusahaan', function ($row) {
                 return $row->perusahaan->nama_perusahaan ?? '-';
+            })
+            ->addColumn('kategori_keahlian', function ($row) {
+                return $row->bidangKeahlian->nama_bidang ?? '-';
             })
             ->addColumn('aksi', function ($lowongan) {
                 $btn  = '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/show-ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';

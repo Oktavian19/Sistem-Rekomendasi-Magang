@@ -31,6 +31,6 @@ class Lowongan extends Model
 
     public function bidangKeahlian()
     {
-        return $this->belongsTo(BidangKeahlian::class, 'id_bidang', 'id');
+        return $this->belongsTo(BidangKeahlian::class, 'id_bidang_keahlian', 'id_bidang_keahlian');
     }
 }

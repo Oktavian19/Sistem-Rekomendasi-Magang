@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class MahasiswaSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class MahasiswaSeeder extends Seeder
     public function run(): void
     {
         $mahasiswa = [
-            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH'],
+            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH', 'preferensi_lokasi' => 'Purwokerto'],
             ['nim' => '2341720182', 'nama' => 'ALVANZA SAPUTRA YUDHA'],
             ['nim' => '2341720234', 'nama' => 'ANYA CALLISSTA CHRISWANTARI'],
             ['nim' => '2341720256', 'nama' => 'BERYL FUNKY MUBAROK'],
@@ -42,27 +43,56 @@ class MahasiswaSeeder extends Seeder
             ['nim' => '2341720062', 'nama' => 'TAUFIK DIMAS EDYSTARA'],
             ['nim' => '2341720149', 'nama' => 'VINCENTIUS LEONANDA PRABOWO'],
             ['nim' => '2341720030', 'nama' => 'YANUAR RIZKI AMINUDIN'],
-            ['nim' => '2341720018', 'nama' => 'ABDILLAH NOER SAID' ]
+            ['nim' => '2341720018', 'nama' => 'ABDILLAH NOER SAID']
         ];
-        
-        
+
+
         foreach ($mahasiswa as $mhs) {
+            // Tambahkan user
             DB::table('users')->insert([
-                    'username'  => $mhs['nim'],
-                    'password'  => Hash::make($mhs['nim']),
-                    'role' => 'mahasiswa',
-                    'created_at' => now(),
+                'username' => $mhs['nim'],
+                'password' => Hash::make($mhs['nim']),
+                'role' => 'mahasiswa',
+                'created_at' => now(),
             ]);
 
             $id = DB::table('users')->where('username', $mhs['nim'])->value('id_user');
-            
+
+            // Cek dan ambil preferensi lokasi jika ada
+            $lokasi = $mhs['preferensi_lokasi'] ?? null;
+            $geo = $lokasi ? $this->getCoordinates($lokasi) : null;
+
+            // Masukkan ke tabel mahasiswa
             DB::table('mahasiswa')->insert([
-                    'id_mahasiswa'      => $id,
-                    'nim'               => $mhs['nim'],
-                    'nama'              => $mhs['nama'],
-                    'id_program_studi'  => 1,
-                    'created_at'        => now(),
+                'id_mahasiswa' => $id,
+                'nim' => $mhs['nim'],
+                'nama' => $mhs['nama'],
+                'id_program_studi' => 1,
+                'preferensi_lokasi' => $lokasi,
+                'latitude' => $geo['lat'] ?? null,
+                'longitude' => $geo['lon'] ?? null,
+                'created_at' => now(),
             ]);
         }
+    }
+
+    private function getCoordinates($preferensi_lokasi)
+    {
+        $response = Http::withHeaders([
+            'User-Agent' => 'LaravelSeeder/1.0 (your.email@example.com)',
+        ])->get('https://nominatim.openstreetmap.org/search', [
+            'q' => $preferensi_lokasi,
+            'format' => 'json',
+            'limit' => 1,
+        ]);
+
+        if ($response->successful() && !empty($response[0])) {
+            return [
+                'lat' => $response[0]['lat'],
+                'lon' => $response[0]['lon'],
+            ];
+        }
+
+        return null;
     }
 }
