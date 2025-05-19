@@ -35,17 +35,17 @@
                 @if ($user->role === 'admin')
                     <div class="form-group mb-3">
                         <label>Nama</label>
-                        <input type="text" name="nama" class="form-control" value="{{ $admin->nama }}" required>
+                        <input type="text" name="nama" class="form-control" value="{{ $detail->nama }}" required>
                         <small id="error-nama" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ $admin->email }}" required>
+                        <input type="email" name="email" class="form-control" value="{{ $detail->email }}" required>
                         <small id="error-email" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $admin->no_hp }}" required>
+                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
 
@@ -53,22 +53,22 @@
                 @elseif ($user->role === 'mahasiswa')
                     <div class="form-group mb-3">
                         <label>NIM</label>
-                        <input type="text" name="nim" class="form-control" value="{{ $mahasiswa->nim }}" required>
+                        <input type="text" name="nim" class="form-control" value="{{ $detail->nim }}" required>
                         <small id="error-nim" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Nama</label>
-                        <input type="text" name="nama" class="form-control" value="{{ $mahasiswa->nama }}" required>
+                        <input type="text" name="nama" class="form-control" value="{{ $detail->nama }}" required>
                         <small id="error-nama" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ $mahasiswa->email }}" required>
+                        <input type="email" name="email" class="form-control" value="{{ $detail->email }}" required>
                         <small id="error-email" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $mahasiswa->no_hp }}" required>
+                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
@@ -76,7 +76,7 @@
                         <select name="id_program_studi" class="form-control" required>
                             <option value="">Pilih Program Studi</option>
                             @foreach ($programStudi as $prodi)
-                                <option value="{{ $prodi->id_program_studi }}" {{ $prodi->id_program_studi == $mahasiswa->id_program_studi ? 'selected' : '' }}>
+                                <option value="{{ $prodi->id_program_studi }}" {{ $prodi->id_program_studi == $detail->id_program_studi ? 'selected' : '' }}>
                                     {{ $prodi->nama_program_studi }}
                                 </option>
                             @endforeach
@@ -88,27 +88,27 @@
                 @elseif ($user->role === 'dosen_pembimbing')
                     <div class="form-group mb-3">
                         <label>NIDN</label>
-                        <input type="text" name="nidn" class="form-control" value="{{ $dosen_pembimbing->nidn }}" required>
+                        <input type="text" name="nidn" class="form-control" value="{{ $detail->nidn }}" required>
                         <small id="error-nidn" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Nama</label>
-                        <input type="text" name="nama" class="form-control" value="{{ $dosen_pembimbing->nama }}" required>
+                        <input type="text" name="nama" class="form-control" value="{{ $detail->nama }}" required>
                         <small id="error-nama" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ $dosen_pembimbing->email }}" required>
+                        <input type="email" name="email" class="form-control" value="{{ $detail->email }}" required>
                         <small id="error-email" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $dosen_pembimbing->no_hp }}" required>
+                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label>Bidang Minat</label>
-                        <input type="text" name="bidang_minat" class="form-control" value="{{ $dosen_pembimbing->bidang_minat }}" required>
+                        <input type="text" name="bidang_minat" class="form-control" value="{{ $detail->bidang_minat }}" required>
                         <small id="error-bidang_minat" class="text-danger error-text"></small>
                     </div>
                 @endif
@@ -120,4 +120,15 @@
             </div>
         </div>
     </div>
+    <script>
+    $(document).on('click', '.btn-edit', function(e) {
+    e.preventDefault();
+    let url = $(this).attr('href');
+    $.get(url, function(response) {
+        $('#modal-content').html(response);
+        $('#editModal').modal('show');
+    });
+});
+
+    </script>
 </form>
