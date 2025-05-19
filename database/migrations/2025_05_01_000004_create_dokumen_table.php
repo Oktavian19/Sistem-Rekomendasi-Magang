@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('dokumen', function (Blueprint $table) {
             $table->id('id_dokumen');
             $table->unsignedBigInteger('id_user');
-            $table->enum('jenis_dokumen', ['cv', 'sertifikat', 'surat_pengantar', 'lainnya']);
+            $table->enum('jenis_dokumen', ['Curriculum Vitae (CV)', 'Ijazah', 'Transkrip Nilai', 'Sertifikat', 'KTP', 'NPWP', 'SIM', 'Lainnya']);
             $table->string('path_file', 255);
             $table->dateTime('tanggal_upload');
             $table->timestamps();

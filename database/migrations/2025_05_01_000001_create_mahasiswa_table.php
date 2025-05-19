@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('nim', 20)->unique();
             $table->string('nama', 100);
             $table->string('email', 100)->nullable();
+            $table->string('alamat', 500)->nullable();
             $table->string('no_hp', 20)->nullable();
             $table->string('preferensi_lokasi', 100)->nullable();
             $table->decimal('latitude', 9, 6)->nullable()->comment('GPS latitude (WGS84)');
