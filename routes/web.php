@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile/dokumen/create', [ProfileController::class, 'createDokumen'])->name('profile.dokumen.create');
         Route::post('/profile/dokumen/store', [ProfileController::class, 'storeDokumen'])->name('profile.dokumen.store');
         Route::get('/profile/dokumen/{id}/edit', [ProfileController::class, 'editDokumen'])->name('profile.dokumen.edit');
-        Route::post('/profile/dokumen/{id}', [ProfileController::class, 'updateDokumen'])->name('profile.dokumen.update');
+        Route::put('/profile/dokumen/{id}', [ProfileController::class, 'updateDokumen'])->name('profile.dokumen.update');
         Route::get('/profile/dokumen/download-cv', [ProfileController::class, 'downloadCV'])->name('profile.dokumen.downloadCV');
         Route::delete('/profile/dokumen/{id}', [ProfileController::class, 'destroyDokumen'])->name('profile.dokumen.destroy');
 

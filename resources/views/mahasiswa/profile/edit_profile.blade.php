@@ -92,6 +92,78 @@
     </div>
 
     <div class="card mb-5 border">
+        <div class="card mb-5 border">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="card-title">
+                        <h4 class="fw-bold m-0">
+                            <i class="bi bi-file-earmark-text text-dark fs-3 me-2"></i>Dokumen Pendukung
+                        </h4>
+                    </div>
+                    <div class="card-toolbar">
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            onclick="modalAction('{{ url('profile/dokumen/create') }}')">
+                            <i class="fa fa-plus me-2"></i>Tambah Dokumen
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents List -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        @php
+                            $dokumenNonCV = $mahasiswa->dokumen->filter(function ($dokumen) {
+                                return $dokumen->jenis_dokumen != 'cv';
+                            });
+                        @endphp
+
+                        @if ($dokumenNonCV->isEmpty())
+                            <div class="text-center py-4">
+                                <p class="text-muted">Belum ada dokumen yang diunggah</p>
+                            </div>
+                        @else
+                            @foreach ($dokumenNonCV as $dokumen)
+                                <!-- Document Item -->
+                                <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded">
+                                    <div>
+                                        <h5 class="fw-semibold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
+                                        <div class="d-flex align-items-center text-muted small">
+                                            <span>Diunggah:
+                                                {{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->format('d M Y') }}</span>
+                                            <span class="bullet bg-gray-400 mx-2"></span>
+                                            <span>
+                                                <a href="{{ asset('storage/' . $dokumen->path_file) }}" target="_blank"
+                                                    class="text-primary">
+                                                    Lihat Dokumen
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <button type="button"
+                                            class="btn btn-icon btn-light-primary btn-sm me-2 btnEditDocument"
+                                            onclick="modalAction('{{ url('profile/dokumen/' . $dokumen->id_dokumen . '/edit') }}')">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <form action="{{ url('profile/dokumen', $dokumen->id_dokumen) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="card-title">
@@ -136,7 +208,7 @@
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn btn-icon btn-light-primary btn-sm me-2 btnEdit"
-                                    onclick="modalAction('{{ url('profile/pengalaman/'. $pengalaman->id_pengalaman. '/edit') }}')">
+                                    onclick="modalAction('{{ url('profile/pengalaman/' . $pengalaman->id_pengalaman . '/edit') }}')">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <form action="{{ url('profile/pengalaman', $pengalaman->id_pengalaman) }}"
@@ -155,79 +227,6 @@
                             <p class="text-muted">Belum ada pengalaman kerja</p>
                         </div>
                     @endforelse
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-5 border">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="card-title">
-                    <h4 class="fw-bold m-0">
-                        <i class="bi bi-file-earmark-text text-dark fs-3 me-2"></i>Dokumen Pendukung
-                    </h4>
-                </div>
-                <div class="card-toolbar">
-                    <button type="button" class="btn btn-outline-primary btn-sm"
-                        onclick="modalAction('{{ url('profile/dokumen/create') }}')">
-                        <i class="fa fa-plus me-2"></i>Tambah Dokumen
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Documents List -->
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
-                    @php
-                        $dokumenNonCV = $mahasiswa->dokumen->filter(function ($dokumen) {
-                            return $dokumen->jenis_dokumen != 'cv';
-                        });
-                    @endphp
-
-                    @if ($dokumenNonCV->isEmpty())
-                        <div class="text-center py-4">
-                            <p class="text-muted">Belum ada dokumen yang diunggah</p>
-                        </div>
-                    @else
-                        @foreach ($dokumenNonCV as $dokumen)
-                            <!-- Document Item -->
-                            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded">
-                                <div>
-                                    <h5 class="fw-semibold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
-                                    <div class="d-flex align-items-center text-muted small">
-                                        <span>Diunggah:
-                                            {{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->format('d M Y') }}</span>
-                                        <span class="bullet bg-gray-400 mx-2"></span>
-                                        <span>
-                                            <a href="{{ asset('storage/' . $dokumen->path_file) }}" target="_blank"
-                                                class="text-primary">
-                                                Lihat Dokumen
-                                            </a>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <button type="button"
-                                        class="btn btn-icon btn-light-primary btn-sm me-2 btnEditDocument"
-                                        onclick="modalAction('{{ url('profile/dokumen/edit', $dokumen->id_dokumen) }}')">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <form action="{{ url('profile/dokumen', $dokumen->id_dokumen) }}"
-                                        method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
                 </div>
             </div>
         </div>
