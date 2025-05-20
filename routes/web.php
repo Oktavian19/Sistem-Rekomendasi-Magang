@@ -22,7 +22,7 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
