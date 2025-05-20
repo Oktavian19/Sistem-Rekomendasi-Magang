@@ -12,12 +12,10 @@
                 <div class="form-group">
                     <label>Kode Program Studi</label>
                     <input type="text" name="kode_program_studi" id="edit_kode_program_studi" 
-                           class="form-control" value="{{ $programStudi->kode_program_studi }}" readonly>
+                           class="form-control" value="{{ $programStudi->kode_program_studi }}" required>
                     <small id="error-edit_kode_program_studi" class="error-text form-text text-danger"></small>
                 </div>
-            </div>
-            
-            <div class="modal-body">
+          
                 <div class="form-group">
                     <label>Nama Program Studi</label>
                     <input type="text" name="nama_program_studi" id="edit_nama_program_studi" 

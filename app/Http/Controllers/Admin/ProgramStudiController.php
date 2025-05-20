@@ -18,7 +18,7 @@ class ProgramStudiController extends Controller
 
     public function list(Request $request)
     {
-        $programStudi = ProgramStudi::all();
+        $programStudi = ProgramStudi::select('id_program_studi', 'kode_program_studi', 'nama_program_studi');
 
         if ($request->has('id_program_studi')) {
             $programStudi->where('id_program_studi', $request->id_program_studi);
