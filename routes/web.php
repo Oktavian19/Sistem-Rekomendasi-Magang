@@ -17,7 +17,7 @@ use App\Http\Controllers\Mahasiswa\LogController;
 Route::pattern('id', '[0-9]+');
 
 // ===================== AUTH ROUTES =====================
-Route::get('/', [AuthController::class, 'landing_page'])->name('landing_page');
+Route::get('/', [AuthController::class, 'landingPage'])->name('landingPpage');
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard
-        Route::get('/dashboard', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
+        Route::get('/dashboard-admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
 
         // Kelola Pengguna
         Route::prefix('user')->name('user.')->group(function () {
