@@ -20,7 +20,7 @@
       <a href="{{ 
           auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
           (auth()->user()->role === 'dosen' ? url('dashboard-dosen') : 
-          url('dashboard')) 
+          (auth()->user()->role === 'admin' ? url('dashboard-admin') : url('dashboard'))) 
         }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
@@ -105,7 +105,7 @@
           <i class="menu-icon tf-icons bx bx-log-out"></i>
           <div>Logout</div>
         </a>
-        <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
+        <form id="logout-form" action="{{ url('/logout') }}" method="GET" style="display: none;">
           @csrf
         </form>
       </li>
