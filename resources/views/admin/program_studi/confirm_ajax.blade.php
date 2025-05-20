@@ -30,6 +30,10 @@
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
+                            <th class="text-right col-3">Kode Program Studi:</th>
+                            <td class="col-9">{{ $programStudi->kode_program_studi }}</td>
+                        </tr>
+                        <tr>
                             <th class="text-right col-3">Program Studi:</th>
                             <td class="col-9">{{ $programStudi->nama_program_studi }}</td>
                         </tr>

@@ -8,7 +8,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
           <li><a class="dropdown-item" href="{{ url('/profile') }}">Profil</a></li>
-          <li><a class="dropdown-item" href="#">Logout</a></li>
+          <li><a class="dropdown-item" href="{{ url('/logout') }}">Logout</a></li>
         </ul>
       </div>
     </div>

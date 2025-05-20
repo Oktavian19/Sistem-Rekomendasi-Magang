@@ -8,6 +8,13 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label>Kode Program Studi</label>
+                    <input type="text" name="kode_program_studi" id="kode_program_studi" class="form-control" required>
+                    <small id="error-kode_program_studi" class="error-text form-text text-danger"></small>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
                     <label>Nama Program Studi</label>
                     <input type="text" name="nama_program_studi" id="nama_program_studi" class="form-control" required>
                     <small id="error-nama_program_studi" class="error-text form-text text-danger"></small>

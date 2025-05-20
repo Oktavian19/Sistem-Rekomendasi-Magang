@@ -18,7 +18,7 @@ class ProgramStudiController extends Controller
 
     public function list(Request $request)
     {
-        $programStudi = ProgramStudi::select('id_program_studi', 'nama_program_studi');
+        $programStudi = ProgramStudi::all();
 
         if ($request->has('id_program_studi')) {
             $programStudi->where('id_program_studi', $request->id_program_studi);
@@ -61,6 +61,7 @@ class ProgramStudiController extends Controller
     public function store_ajax(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'kode_program_studi' => 'required|string|max:10|unique:program_studi,kode_program_studi',
             'nama_program_studi' => 'required|string|max:100|unique:program_studi,nama_program_studi',
         ]);
 
@@ -72,7 +73,7 @@ class ProgramStudiController extends Controller
             ], 422);
         }
 
-        ProgramStudi::create($request->only('nama_program_studi'));
+        ProgramStudi::create($request->only('kode_program_studi', 'nama_program_studi'));
 
         return response()->json([
             'status' => true,
@@ -97,6 +98,7 @@ class ProgramStudiController extends Controller
     public function update_ajax(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'kode_program_studi' => 'required|string|max:10|unique:program_studi,kode_program_studi,' . $id . ',id_program_studi',
             'nama_program_studi' => 'required|string|max:100|unique:program_studi,nama_program_studi,' . $id . ',id_program_studi',
         ]);
 
@@ -117,7 +119,7 @@ class ProgramStudiController extends Controller
             ], 404);
         }
 
-        $programStudi->update($request->only('nama_program_studi'));
+        $programStudi->update($request->only('kode_program_studi', 'nama_program_studi'));
 
         return response()->json([
             'status' => true,
