@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             LowonganSeeder::class,
             //MahasiswaBidangKeahlianSeeder:class,
             LamaranSeeder::class,
-            //MagangSeeder::class,
+            MagangSeeder::class,
             //LogKegiatanSeeder::class,
             //FeedbackSeeder::class,
             //SertifikatSeeder::class,
