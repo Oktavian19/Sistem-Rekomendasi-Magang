@@ -38,7 +38,11 @@
 
 @push('scripts')
 <script>
-    
+    function modalAction(url = '') {
+        $('#myModal').load(url, function () {
+            $('#myModal').modal('show');
+        });
+    }    
     var dataLowongan;
     $(document).ready(function () {
         dataLowongan = $('#table-lowongan').DataTable({
@@ -106,6 +110,7 @@
             },
             error: function(xhr) {
                 Swal.fire({
+                    $('#myModal').modal('hide');
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Terjadi kesalahan saat mengirim data.'

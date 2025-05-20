@@ -102,6 +102,7 @@
                 }
             },
             error: function(xhr) {
+                $('#myModal').modal('hide');
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

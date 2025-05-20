@@ -14,7 +14,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Password</label>
-                    <input type="text" name="password" id="password" class="form-control" required>
+                    <input type="password" name="password" id="password" class="form-control" required>
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>No HP</label>
-                    <input type="text" name="no_hp" id="no_hp" class="form-control" required>
+                    <input type="tel" name="no_hp" id="no_hp" class="form-control" required pattern="[0-9]*" inputmode="numeric" required>
                     <small id="error-no_hp" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
@@ -92,5 +92,8 @@
             $('#form-dosen').toggleClass('d-none', role !== 'dosen_pembimbing');
         });
     });
+    document.getElementById('no_hp').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
     </script>
 </form>

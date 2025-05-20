@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Role</label>
-                    <select name="role" class="form-control" id="edit_role" disabled>
+                    <select name="role" class="form-control" id="edit_role">
                         @foreach ($roles as $role)
                             <option value="{{ $role }}" {{ $role == $user->role ? 'selected' : '' }}>
                                 {{ ucfirst($role) }}
@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
+                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
 
@@ -68,7 +68,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
+                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="text" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required>
+                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
