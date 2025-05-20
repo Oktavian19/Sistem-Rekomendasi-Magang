@@ -45,6 +45,9 @@
             processing: true,
             serverSide: true,
             ajax: "{{ url('lowongan/list') }}",
+            columnDefs: [
+                { targets: [8], orderable: false, width: '200px' }
+            ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'nama_posisi', name: 'nama_posisi' },
