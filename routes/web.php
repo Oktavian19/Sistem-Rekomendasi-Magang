@@ -11,8 +11,8 @@ use App\Http\Controllers\Admin\PerusahaanController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\LogController;
+use App\Http\Controllers\Mahasiswa\ProfileController;
+use App\Http\Controllers\Mahasiswa\LogController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -117,23 +117,45 @@ Route::middleware('auth')->group(function () {
     });
 
     // ===================== MAHASISWA ROUTES =====================
-    Route::middleware('authorize:mahasiswa')->group(function () {
+    Route::middleware('authorize:mahasiswa')->name('mahasiswa.')->group(function () {
         Route::get('/dashboard-mahasiswa', [DashboardController::class, 'dashboard_mahasiswa'])->name('dashboard.mahasiswa');
-        Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('lowongan.index');
-        Route::get('/daftar-lowongan/detail', fn () => view('mahasiswa.magang.lowongan_detail'))->name('lowongan-detail');
-        Route::get('/profile', fn () => view('mahasiswa.profil.index'))->name('profile');
-        Route::get('/profile/edit', fn () => view('mahasiswa.profil.edit_profile'))->name('edit-profile');
+        Route::get('/daftar-lowongan', [LowonganController::class, 'index'])->name('daftar-lowongan.index');
+        Route::get('/daftar-lowongan/{id}', [LowonganController::class, 'show'])->name('daftar-lowongan.show');
+
+        // Profile routes
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+        // Pengalaman kerja
+        Route::get('/profile/pengalaman/create', [ProfileController::class, 'createPengalaman'])->name('profile.pengalaman.create');
+        Route::post('/profile/pengalaman/store', [ProfileController::class, 'storePengalaman'])->name('profile.pengalaman.store');
+        Route::get('/profile/pengalaman/{id}/edit', [ProfileController::class, 'editPengalaman'])->name('profile.pengalaman.edit');
+        Route::put('/profile/pengalaman/{id}', [ProfileController::class, 'updatePengalaman'])->name('profile.pengalaman.update');
+        Route::delete('/profile/pengalaman/{id}', [ProfileController::class, 'destroyPengalaman'])->name('profile.pengalaman.destroy');
+
+        // Dokumen
+        Route::get('/profile/dokumen/create', [ProfileController::class, 'createDokumen'])->name('profile.dokumen.create');
+        Route::post('/profile/dokumen/store', [ProfileController::class, 'storeDokumen'])->name('profile.dokumen.store');
+        Route::get('/profile/dokumen/{id}/edit', [ProfileController::class, 'editDokumen'])->name('profile.dokumen.edit');
+        Route::put('/profile/dokumen/{id}', [ProfileController::class, 'updateDokumen'])->name('profile.dokumen.update');
+        Route::get('/profile/dokumen/download-cv', [ProfileController::class, 'downloadCV'])->name('profile.dokumen.downloadCV');
+        Route::delete('/profile/dokumen/{id}', [ProfileController::class, 'destroyDokumen'])->name('profile.dokumen.destroy');
+
+        // Tambahan lainnya
         Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
-        Route::get('magang-mahasiswa', fn () => view('mahasiswa.log.index'))->name('log-magang');
+        Route::get('magang-mahasiswa', fn() => view('mahasiswa.log.index'))->name('log-magang');
+        Route::get('riwayat-magang', fn() => view('mahasiswa.magang.history_magang'))->name('history-magang');
         Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
         Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
     });
 
+
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->group(function () {
         Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
-        Route::get('dosen/list-mahasiswa', fn () => view('dosen.monitoring.list_mahasiswa'))->name('list-mahasiswa');
-        Route::get('dosen/log-mahasiswa', fn () => view('dosen.monitoring.log_mahasiswa'))->name('log-mahasiswa');
+        Route::get('dosen/list-mahasiswa', fn() => view('dosen.monitoring.list_mahasiswa'))->name('list-mahasiswa');
+        Route::get('dosen/log-mahasiswa', fn() => view('dosen.monitoring.log_mahasiswa'))->name('log-mahasiswa');
     });
 });

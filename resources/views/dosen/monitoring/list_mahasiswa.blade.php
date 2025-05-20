@@ -16,6 +16,7 @@
                         <th>NIM</th>
                         <th>Email</th>
                         <th>No. HP</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -24,7 +25,68 @@
     </div>
 </div>
 
+<!-- Rating Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">Beri Rating Mahasiswa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="ratingForm">
+                    <input type="hidden" id="studentId">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Mahasiswa</label>
+                        <input type="text" class="form-control" id="studentName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">NIM</label>
+                        <input type="text" class="form-control" id="studentNim" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Program Studi</label>
+                        <input type="text" class="form-control" value="Teknik Informatika" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Komentar</label>
+                        <textarea class="form-control" id="studentComment" rows="3" placeholder="Berikan komentar tentang mahasiswa ini"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <div class="rating-input">
+                            <i class="bi bi-star fs-3" data-value="1"></i>
+                            <i class="bi bi-star fs-3" data-value="2"></i>
+                            <i class="bi bi-star fs-3" data-value="3"></i>
+                            <i class="bi bi-star fs-3" data-value="4"></i>
+                            <i class="bi bi-star fs-3" data-value="5"></i>
+                            <input type="hidden" name="rating" id="ratingValue">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="submitRating">Kirim Rating</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('styles')
+<style>
+    .rating-input i {
+        cursor: pointer;
+        color: #ddd;
+        transition: color 0.2s;
+    }
+    .rating-input i.active {
+        color: #ffc107;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -81,7 +143,7 @@
                     data: 'nama', 
                     name: 'nama',
                     render: function(data, type, row) {
-                        return `<a href="{{ url('dosen/log-mahasiswa') }}" class="text-primary")">${data}</a>`;
+                        return `<a href="{{ url('dosen/log-mahasiswa') }}" class="text-primary">${data}</a>`;
                     }
                 },
                 { 
@@ -95,8 +157,122 @@
                 { 
                     data: 'no_hp', 
                     name: 'no_hp' 
+                },
+                { 
+                    data: null,
+                    name: 'aksi',
+                    className: 'text-center',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return `<button class="btn btn-sm btn-outline-primary btn-rate" 
+                                data-id="${row.DT_RowIndex}"
+                                data-nama="${row.nama}"
+                                data-nim="${row.nim}">
+                            <i class="bi bi-star me-1"></i> Beri Rating
+                        </button>`;
+                    }
                 }
             ]
+        });
+
+        // Initialize rating stars functionality
+        const stars = document.querySelectorAll('.rating-input i');
+        const ratingValue = document.getElementById('ratingValue');
+        
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                ratingValue.value = value;
+                
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.add('active');
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('active');
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseover', function() {
+                const value = parseInt(this.getAttribute('data-value'));
+                
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseout', function() {
+                const currentRating = parseInt(ratingValue.value) || 0;
+                
+                stars.forEach((s, index) => {
+                    if (index < currentRating) {
+                        s.classList.add('bi-star-fill');
+                    } else {
+                        s.classList.remove('bi-star-fill');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+        });
+
+        // Handle rating button click
+        $('#table-mahasiswa').on('click', '.btn-rate', function() {
+            const studentId = $(this).data('id');
+            const studentName = $(this).data('nama');
+            const studentNim = $(this).data('nim');
+            
+            $('#studentId').val(studentId);
+            $('#studentName').val(studentName);
+            $('#studentNim').val(studentNim);
+            
+            // Reset form
+            $('#ratingValue').val('');
+            $('#studentComment').val('');
+            stars.forEach(star => {
+                star.classList.remove('bi-star-fill', 'active');
+                star.classList.add('bi-star');
+            });
+            
+            // Show modal
+            var ratingModal = new bootstrap.Modal(document.getElementById('ratingModal'));
+            ratingModal.show();
+        });
+
+        // Handle submit rating
+        $('#submitRating').click(function() {
+            const studentId = $('#studentId').val();
+            const studentName = $('#studentName').val();
+            const rating = $('#ratingValue').val();
+            const comment = $('#studentComment').val();
+            
+            if (!rating) {
+                alert('Silakan beri rating terlebih dahulu');
+                return;
+            }
+            
+            // Here you would typically send the data to your server via AJAX
+            console.log('Rating submitted:', {
+                student_id: studentId,
+                student_name: studentName,
+                rating: rating,
+                comment: comment
+            });
+            
+            alert(`Rating ${rating} bintang untuk ${studentName} telah dikirim!`);
+            
+            // Close the modal
+            var modal = bootstrap.Modal.getInstance(document.getElementById('ratingModal'));
+            modal.hide();
         });
     });
 </script>

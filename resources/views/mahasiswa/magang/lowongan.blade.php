@@ -34,7 +34,7 @@
                             <button class="btn btn-sm ms-auto"><i class="bi bi-sliders"></i></button>
                         </div>
                         <div class="card-body">
-                            <form method="GET" action="{{ route('lowongan.index') }}">
+                            <form method="GET" action="{{ url('lowongan/index') }}">
                                 <span class="text-black">Kata Kunci</span>
                                 <div class="mb-5 mt-2">
                                     <div class="input-group">
