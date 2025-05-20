@@ -43,9 +43,30 @@ class KelolaPenggunaController extends Controller
         return DataTables::of($users)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
-                $btn  = '<button onclick="modalAction(\'' . url('user/' . $user->id_user . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('user/' . $user->id_user . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('user/' . $user->id_user . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn  = '<div class="dropdown">';
+                $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';
+                $btn .= '</a>';
+                $btn .= '<ul class="dropdown-menu">';
+
+                // Detail link
+                $btn .= '<li><a class="dropdown-item" href="' . url('user/' . $user->id_user . '/show-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-show-alt"></i> Detail';
+                $btn .= '</a></li>';
+
+                // Edit link
+                $btn .= '<li><a class="dropdown-item" href="' . url('user/' . $user->id_user . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+                $btn .= '</a></li>';
+
+                // Delete link
+                $btn .= '<li><a class="dropdown-item" href="' . url('user/' . $user->id_user  . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-trash"></i> Hapus';
+                $btn .= '</a></li>';
+
+                $btn .= '</ul>';
+                $btn .= '</div>';
+
                 return $btn;
             })
             ->filterColumn('nama', function ($query, $keyword) {
@@ -173,7 +194,6 @@ class KelolaPenggunaController extends Controller
         $user = Users::find($id);
         $roles = ['admin', 'mahasiswa', 'dosen_pembimbing'];
         $programStudi = ProgramStudi::all();
-        $bidangKeahlian = BidangKeahlian::all();
 
         if (!$user) {
             return response()->json([
@@ -199,8 +219,6 @@ class KelolaPenggunaController extends Controller
             'roles',
             'detail',
             'programStudi',
-            'bidangKeahlian',
-            'selectedBidangKeahlian'
         ));
     }
 

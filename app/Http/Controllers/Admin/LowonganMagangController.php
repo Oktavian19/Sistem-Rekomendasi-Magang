@@ -25,7 +25,7 @@ class LowonganMagangController extends Controller
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
         }
-        
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('nama_perusahaan', function ($row) {
@@ -35,9 +35,30 @@ class LowonganMagangController extends Controller
                 return $row->bidangKeahlian->nama_bidang ?? '-';
             })
             ->addColumn('aksi', function ($lowongan) {
-                $btn  = '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/show-ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/edit-ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('lowongan/' . $lowongan->id_lowongan . '/confirm-ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
+                $btn  = '<div class="dropdown">';
+                $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
+                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';
+                $btn .= '</a>';
+                $btn .= '<ul class="dropdown-menu">';
+
+                // Detail link
+                $btn .= '<li><a class="dropdown-item" href="' . url('lowongan/' . $lowongan->id_lowongan . '/show-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-show-alt"></i> Detail';
+                $btn .= '</a></li>';
+
+                // Edit link
+                $btn .= '<li><a class="dropdown-item" href="' . url('lowongan/' . $lowongan->id_lowongan . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-edit-alt"></i> Edit';
+                $btn .= '</a></li>';
+
+                // Delete link
+                $btn .= '<li><a class="dropdown-item" href="' . url('lowongan/' . $lowongan->id_lowongan  . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-trash"></i> Hapus';
+                $btn .= '</a></li>';
+
+                $btn .= '</ul>';
+                $btn .= '</div>';
+
                 return $btn;
             })
             ->rawColumns(['aksi'])
@@ -103,9 +124,9 @@ class LowonganMagangController extends Controller
             ], 404);
         }
 
-        $perusahaan = PerusahaanMitra::all();
+        $perusahaans = PerusahaanMitra::all();
 
-        return view('admin.lowongan.edit_ajax', compact('lowongan', 'perusahaan'));
+        return view('admin.lowongan.edit_ajax', compact('lowongan', 'perusahaans'));
     }
 
     public function update_ajax(Request $request, $id)
@@ -160,7 +181,7 @@ class LowonganMagangController extends Controller
 
     public function show_ajax($id)
     {
-        $lowongan = Lowongan::with('perusahaan')->find($id);
+        $lowongan = Lowongan::with('perusahaan', 'bidangKeahlian')->find($id);
 
         if (!$lowongan) {
             return response()->json([
