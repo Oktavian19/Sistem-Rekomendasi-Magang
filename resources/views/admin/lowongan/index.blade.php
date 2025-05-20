@@ -38,17 +38,16 @@
 
 @push('scripts')
 <script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function () {
-            $('#myModal').modal('show');
-        });
-    }
-
+    
+    var dataLowongan;
     $(document).ready(function () {
-        $('#table-lowongan').DataTable({
+        dataLowongan = $('#table-lowongan').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('lowongan/list') }}",
+            columnDefs: [
+                { targets: [8], orderable: false, width: '200px' }
+            ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'nama_posisi', name: 'nama_posisi' },
@@ -90,9 +89,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2100);
+                    dataLowongan.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',

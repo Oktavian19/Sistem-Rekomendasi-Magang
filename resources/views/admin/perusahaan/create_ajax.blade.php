@@ -32,6 +32,11 @@
                     <input type="text" name="telepon" id="telepon" class="form-control" required>
                     <small id="error-telepon" class="error-text form-text text-danger"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label>Logo (opsional)</label>
+                    <input type="file" name="logo" id="logo" class="form-control" accept=".jpg, .jpeg, .png">
+                    <small id="error-logo" class="error-text form-text text-danger"></small>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

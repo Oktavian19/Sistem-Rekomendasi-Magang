@@ -16,7 +16,7 @@ window.Apex = {
     },
     series: [{
       name: 'purple',
-      data: [25, 66, 41, 59, 25, 44, 12, 36, 9, 21]
+      data: [25, 66, 41, 59]
     }],
     stroke: {
       curve: 'smooth'
@@ -54,7 +54,7 @@ window.Apex = {
     },
     series: [{
       name: 'green',
-      data: [12, 14, 2, 47, 32, 44, 14, 55, 41, 69]
+      data: [12, 14, 2, 47]
     }],
     stroke: {
       curve: 'smooth'
@@ -92,7 +92,7 @@ window.Apex = {
     },
     series: [{
       name: 'red',
-      data: [47, 45, 74, 32, 56, 31, 44, 33, 45, 19]
+      data: [47, 45, 74, 32]
     }],
     stroke: {
       curve: 'smooth'
@@ -135,7 +135,7 @@ window.Apex = {
     },
     series: [{
       name: 'teal',
-      data: [15, 75, 47, 65, 14, 32, 19, 54, 44, 61]
+      data: [15, 75, 47, 65]
     }],
     stroke: {
       curve: 'smooth'
@@ -241,11 +241,11 @@ window.Apex = {
       offsetY: -36
     },
     title: {
-      text: 'Web Statistics',
+      text: 'Peminatan Bidang',
       align: 'left',
     },
     subtitle: {
-      text: 'Sessions and Views'
+      text: 'Peminatan Mahasiswa Bidang Tertentu'
     },
     tooltip: {
       shared: true,
@@ -289,7 +289,7 @@ window.Apex = {
       show: false
     },
     title: {
-      text: 'Bounce Rate',
+      text: 'Efektivitas Sistem Rekomendasi',
       align: 'left'
     }
   }
@@ -317,10 +317,10 @@ window.Apex = {
     },
     colors: ['#775DD0', '#00C8E1', '#FFB900'],
     title: {
-      text: 'Visitors Source'
+      text: 'Status Lamaran'
     },
     series: [2, 7, 5],
-    labels: ['Social Media', 'Blog', 'External'],
+    labels: ['Ditolak', 'Diproses', 'Diterima'],
     legend: {
       show: false
     }

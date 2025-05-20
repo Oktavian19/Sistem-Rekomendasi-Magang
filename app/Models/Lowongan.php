@@ -16,7 +16,7 @@ class Lowongan extends Model
         'id_perusahaan',
         'nama_posisi',
         'deskripsi',
-        'kategori_keahlian',
+        'id_bidang_keahlian',
         'kuota',
         'persyaratan',
         'tanggal_buka',
@@ -27,5 +27,10 @@ class Lowongan extends Model
     public function perusahaan()
     {
         return $this->belongsTo(PerusahaanMitra::class, 'id_perusahaan', 'id_perusahaan');
+    }
+
+    public function bidangKeahlian()
+    {
+        return $this->belongsTo(BidangKeahlian::class, 'id_bidang_keahlian', 'id_bidang_keahlian');
     }
 }

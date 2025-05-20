@@ -90,14 +90,58 @@
 @endpush
 <div class="col-12 mb-4">
     <div class="card">
-        <div class="card-widget-separator-wrapper">
+        <div class="">
             <div class="card-body card-widget-separator">
-                <div class="row gy-4 gy-sm-1">
+                <div class="d-flex justify-content-center align-items-center" style="padding: 20px">
+                    <ul>
+                        <li>
+                            <i class="icons fa-solid fa-user"></i>
+                            <div class="step first active">
+                                <p>1</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Profile</p>
+                        </li>
+                        <li>
+                            <i class="icons fa-solid fa-coins"></i>
+                            <div class="step second">
+                                <p>2</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Finances</p>
+                        </li>
+                        <li>
+                            <i class="icons fa-solid fa-house"></i>
+                            <div class="step third">
+                                <p>3</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Property</p>
+                        </li>
+                        <li>
+                            <i class="icons fa-regular fa-star-half-stroke"></i>
+                            <div class="step fourth">
+                                <p>4</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Evaluation</p>
+                        </li>
+                        <li>
+                            <i class="icons fa-solid fa-thumbs-up"></i>
+                            <div class="step fifth">
+                                <p>5</p>
+                                <i class="awesome fa-solid fa-check"></i>
+                            </div>
+                            <p class="label">Approval</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row gy-4 gy-sm-1 border rounded mx-4" style="padding: 3vh;">
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">120</h4>
-                                <p class="mb-0">Jumlah Lamaran</p>
+                                <h5 class="mb-0">PT. Tech Indonesia</h5>
+                                <p class="mb-0">Perusahaan</p>
                             </div>
                             <div class="avatar me-sm-4">
                                 <span class="avatar-initial rounded bg-label-secondary text-heading">
@@ -110,8 +154,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">45</h4>
-                                <p class="mb-0">Lamaran Diproses</p>
+                                <h5 class="mb-0">Teknologi Informasi</h5>
+                                <p class="mb-0">Bidang Industri</p>
                             </div>
                             <div class="avatar me-lg-4">
                                 <span class="avatar-initial rounded bg-label-warning text-heading">
@@ -124,8 +168,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                             <div>
-                                <h4 class="mb-0">30</h4>
-                                <p class="mb-0">Lamaran Ditolak</p>
+                                <h5 class="mb-0">Fullstack Developer</h5>
+                                <p class="mb-0">Posisi Magang</p>
                             </div>
                             <div class="avatar me-sm-4">
                                 <span class="avatar-initial rounded bg-label-danger text-heading">
@@ -137,8 +181,8 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h4 class="mb-0">45</h4>
-                                <p class="mb-0">Lamaran Disetujui</p>
+                                <h5 class="mb-0">1 Januari 2023</h5>
+                                <p class="mb-0">Tanggal Dikirim</p>
                             </div>
                             <div class="avatar">
                                 <span class="avatar-initial rounded bg-label-success text-heading">
@@ -153,109 +197,170 @@
     </div>    
 </div>
 
-<div class="card d-flex justify-content-center align-items-center" style="padding: 40px">
-    <ul>
-        <li>
-            <i class="icons fa-solid fa-user"></i>
-            <div class="step first active">
-                <p>1</p>
-                <i class="awesome fa-solid fa-check"></i>
+
+<div class="card d-flex justify-content-start align-items-start mt-4" style="padding: 5vh">
+    <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+        <h5 class="mb-0">Rekomendasi Lowongan Buat Kamu</h5>
+        <a href="{{ url('daftar-lowongan') }}" class="btn text-primary">Lihat Semua Lowongan</a>
+    </div> 
+    <div class="col-lg-12 col-xl-12">
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Software Engineer</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>PT Teknologi Hebat
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Jakarta
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 5 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 30 Jun 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="label">Profile</p>
-        </li>
-        <li>
-            <i class="icons fa-solid fa-coins"></i>
-            <div class="step second">
-                <p>2</p>
-                <i class="awesome fa-solid fa-check"></i>
+    
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Digital Marketing</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Bandung
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 15 Jul 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="label">Finances</p>
-        </li>
-        <li>
-            <i class="icons fa-solid fa-house"></i>
-            <div class="step third">
-                <p>3</p>
-                <i class="awesome fa-solid fa-check"></i>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Digital Marketing</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Bandung
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 15 Jul 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="label">Property</p>
-        </li>
-        <li>
-            <i class="icons fa-regular fa-star-half-stroke"></i>
-            <div class="step fourth">
-                <p>4</p>
-                <i class="awesome fa-solid fa-check"></i>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Digital Marketing</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Bandung
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 15 Jul 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="label">Evaluation</p>
-        </li>
-        <li>
-            <i class="icons fa-solid fa-thumbs-up"></i>
-            <div class="step fifth">
-                <p>5</p>
-                <i class="awesome fa-solid fa-check"></i>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Digital Marketing</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Bandung
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 15 Jul 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="label">Approval</p>
-        </li>
-    </ul>
-    <table id="lamaranTable" class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Perusahaan</th>
-                <th>Posisi</th>
-                <th>Tanggal Lamaran</th>
-                <th>Status Lamaran</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>PT. Tech Indonesia</td>
-                <td>Software Engineer</td>
-                <td>2025-05-01</td>
-                <td><span class="badge bg-label-danger">Ditolak</span></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>CV. Digital Kreatif</td>
-                <td>UI/UX Designer</td>
-                <td>2025-04-28</td>
-                <td><span class="badge bg-label-danger">Ditolak</span></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>PT. Global Solusi</td>
-                <td>Fullstack Developer</td>
-                <td>2025-04-25</td>
-                <td><span class="badge bg-label-danger">Ditolak</span></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>PT. Inovasi Nusantara</td>
-                <td>Software Engineer</td>
-                <td>2025-05-02</td>
-                <td><span class="badge bg-label-danger">Ditolak</span></td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>PT. Smart Solutions</td>
-                <td>UI/UX Designer</td>
-                <td>2025-04-30</td>
-                <td><span class="badge bg-label-danger">Ditolak</span></td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>CV. Web Inti</td>
-                <td>Fullstack Developer</td>
-                <td>2025-05-03</td>
-                <td><span class="badge bg-label-success">Disetujui</span></td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
+                            <div>
+                                <h5 class="card-title mb-1">Digital Marketing</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>Bandung
+                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            <p class="card-text small">
+                                <i class="bi bi-clock me-1"></i>Akhir Pendaftaran 15 Jul 2025
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more cards as needed -->
+        </div>
+    </div>
+    
 </div>
 @endsection
 
 @push('scripts')
-<script>
+{{-- <script>
     $(document).ready(function () {
         $('#lamaranTable').DataTable({
             paging: false,
@@ -266,6 +371,6 @@
             }
         });
     });
-</script>
+</script> --}}
 
 @endpush
