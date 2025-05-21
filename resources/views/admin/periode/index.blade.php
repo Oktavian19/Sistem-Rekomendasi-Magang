@@ -100,6 +100,7 @@
             },
             error: function(xhr) {
                 Swal.fire({
+                    $('#myModal').modal('hide');
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Terjadi kesalahan saat mengirim data.'

@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Telepon</label>
-                    <input type="text" name="telepon" id="telepon" class="form-control" required>
+                    <input type="tel" name="telepon" id="telepon" class="form-control" required pattern="[0-9]*" inputmode="numeric" required>
                     <small id="error-telepon" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
@@ -44,4 +44,9 @@
             </div>
         </div>
     </div>
+    <script>
+    document.getElementById('telepon').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+    </script>
 </form>
