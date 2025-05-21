@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
+                        <input type="tel" name="no_hp" id="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
 
@@ -68,7 +68,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
+                        <input type="tel" name="no_hp" id="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>No HP</label>
-                        <input type="tel" name="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
+                        <input type="tel" name="no_hp" id="no_hp" class="form-control" value="{{ $detail->no_hp }}" required pattern="[0-9]*" inputmode="numeric" required>
                         <small id="error-no_hp" class="text-danger error-text"></small>
                     </div>
                     <div class="form-group mb-3">
@@ -129,6 +129,8 @@
         $('#editModal').modal('show');
     });
 });
-
+    document.getElementById('no_hp').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
     </script>
 </form>
