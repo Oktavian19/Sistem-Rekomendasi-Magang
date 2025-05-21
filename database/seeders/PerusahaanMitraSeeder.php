@@ -85,6 +85,7 @@ class PerusahaanMitraSeeder extends Seeder
 
         foreach ($data as $item) {
             $geo = $this->getCoordinates($item['alamat']);
+            sleep(1);
 
             PerusahaanMitra::create([
                 'nama_perusahaan' => $item['nama_perusahaan'],

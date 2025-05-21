@@ -15,6 +15,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Kode Program Studi</th>
                         <th>Nama Program Studi</th>
                         <th>Aksi</th>
                     </tr>
@@ -46,6 +47,7 @@
             ajax: "{{ url('program-studi/list') }}",
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
+                { data: 'kode_program_studi', name: 'kode_program_studi' },
                 { data: 'nama_program_studi', name: 'nama_program_studi' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
@@ -95,6 +97,7 @@
                 }
             },
             error: function(xhr) {
+                $('#myModal').modal('hide');
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

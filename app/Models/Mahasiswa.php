@@ -18,7 +18,11 @@ class Mahasiswa extends Model
         'nim',
         'nama',
         'email',
+        'alamat',
         'no_hp',
+        'preferensi_lokasi',
+        'latitude',
+        'longitude',
         'id_program_studi',
     ];
 
@@ -37,16 +41,6 @@ class Mahasiswa extends Model
         )->withTimestamps();                 // Jika perlu akses timestamps
     }
 
-    public function preferensiLokasi()
-    {
-        return $this->belongsToMany(
-            PreferensiLokasi::class,
-            'mahasiswa_preferensi_lokasi',
-            'id_mahasiswa',
-            'id_preferensi_lokasi'
-        )->withTimestamps();
-    }
-
     public function jenisMagang()
     {
         return $this->belongsToMany(
@@ -60,5 +54,20 @@ class Mahasiswa extends Model
     public function bobotKriteria()
     {
         return $this->hasMany(BobotMahasiswa::class, 'id_mahasiswa');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'id_mahasiswa', 'id_user');
+    }
+
+    public function pengalamanKerja()
+    {
+        return $this->hasMany(Pengalaman::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
+
+    public function dokumen()
+    {
+        return $this->hasMany(Dokumen::class, 'id_user', 'id_mahasiswa');
     }
 }

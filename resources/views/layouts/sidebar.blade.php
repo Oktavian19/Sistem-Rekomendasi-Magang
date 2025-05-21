@@ -17,11 +17,16 @@
   <ul class="menu-inner py-1" style="height: calc(100% - 70px); overflow-y: auto;">
     <!-- Dashboard (Visible to all roles) -->
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-      <a href="{{ url('dashboard') }}" class="menu-link">
+      <a href="{{ 
+          auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
+          (auth()->user()->role === 'dosen' ? url('dashboard-dosen') : 
+          (auth()->user()->role === 'admin' ? url('dashboard-admin') : url('dashboard'))) 
+        }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
         <div>Dashboard</div>
       </a>
     </li>
+    
 
     @auth
       @if(auth()->user()->role === 'admin')
@@ -72,6 +77,12 @@
             <div>Log Magang</div>
           </a>
         </li>
+        <li class="menu-item {{ request()->is('riwayat-magang*') ? 'active' : '' }}">
+          <a href="{{ url('riwayat-magang') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-history"></i>
+            <div>Riwayat Magang</div>
+          </a>
+        </li>
       @endif
 
       @if(auth()->user()->role === 'dosen_pembimbing')
@@ -94,7 +105,7 @@
           <i class="menu-icon tf-icons bx bx-log-out"></i>
           <div>Logout</div>
         </a>
-        <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
+        <form id="logout-form" action="{{ url('/logout') }}" method="GET" style="display: none;">
           @csrf
         </form>
       </li>

@@ -12,7 +12,7 @@
                 </tr>
                 <tr>
                     <th width="30%">Perusahaan</th>
-                    <td>{{ $perusahaan->nama_perusahaan }}</td>
+                    <td>{{ $lowongan->perusahaan->nama_perusahaan }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Deskripsi</th>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <th width="30%">Kategori Keahlian</th>
-                    <td>{{ $lowongan->kategori_keahlian }}</td>
+                    <td>{{ $lowongan->bidangKeahlian->nama_bidang }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Kuota</th>

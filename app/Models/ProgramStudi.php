@@ -13,6 +13,7 @@ class ProgramStudi extends Model
     protected $primaryKey = 'id_program_studi';
 
     protected $fillable = [
+        'kode_program_studi',
         'nama_program_studi',
     ];
 

@@ -11,7 +11,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table id="table-periode" class="table table-bordered table-striped w-100">
+            <table id="table-perusahaan" class="table table-bordered table-striped w-100">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -44,7 +44,7 @@
 
     var dataPerusahaan;
     $(document).ready(function () {
-        dataPerusahaan = $('#table-periode').DataTable({
+        dataPerusahaan = $('#table-perusahaan').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('perusahaan/list') }}",
@@ -103,6 +103,7 @@
                 }
             },
             error: function(xhr) {
+                $('#myModal').modal('hide');
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

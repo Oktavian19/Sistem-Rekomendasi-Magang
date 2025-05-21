@@ -4,39 +4,46 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form id="formEditExperience" method="POST" action="">
-            <input type="hidden" name="_token" value="nGSD3veJkzgc2yJAowmJm0R1uJB4UKMKJ3jYINtT">
-            <input type="hidden" name="_method" value="PUT">
+        <form id="formEditExperience" method="POST" action="{{ url('profile/pengalaman', $pengalaman->id_pengalaman) }}">
+            @csrf
+            @method('PUT')
             <div class="row g-3">
                 <div class="col-12">
                     <div class="form-group">
                         <label class="required form-label">Nama Perusahaan</label>
-                        <input type="text" class="form-control form-control-sm" name="company_name" id="edit_company_name" placeholder="Masukkan Nama Perusahaan">
+                        <input type="text" class="form-control form-control-sm" name="perusahaan"
+                            id="edit_perusahaan" value="{{ old('perusahaan', $pengalaman->perusahaan) }}"
+                            placeholder="Masukkan Nama Perusahaan">
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
                         <label class="required form-label">Jabatan Terakhir</label>
-                        <input type="text" class="form-control form-control-sm" name="position" id="edit_position" placeholder="Masukkan Jabatan Terakhir">
+
+                        <input type="text" class="form-control form-control-sm" name="nama_posisi"
+                            id="edit_nama_posisi" value="{{ old('nama_posisi', $pengalaman->nama_posisi) }}"
+                            placeholder="Masukkan Jabatan Terakhir">
                     </div>
                 </div>
-                
+
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="required form-label">Waktu Mulai</label>
+                        <label class="required form-label">Tanggal Mulai</label>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control form-control-sm" name="start_date" id="edit_start_date" placeholder="MM/YYYY" autocomplete="off" data-inputmask="'mask': '99/9999'">
-                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control form-control-sm" name="tanggal_mulai"
+                                id="edit_tanggal_mulai" value="{{ old('tanggal_mulai', $pengalaman->tanggal_mulai) }}"
+                                required>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="required form-label">Waktu Selesai</label>
+                        <label class="required form-label">Tanggal Selesai</label>
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control form-control-sm f-endDate" name="end_date" id="edit_end_date" placeholder="MM/YYYY" autocomplete="off" data-inputmask="'mask': '99/9999'">
-                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                            <input type="date" class="form-control form-control-sm" name="tanggal_selesai"
+                                id="edit_tanggal_selesai"
+                                value="{{ old('tanggal_selesai', $pengalaman->tanggal_selesai) }}" required>
                         </div>
                     </div>
                 </div>

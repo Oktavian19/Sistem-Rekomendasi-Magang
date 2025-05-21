@@ -31,17 +31,25 @@
                                 <!-- Date Section -->
                                 <div class="mb-3">
                                     <p class="fw-semibold mb-1">
-                                        <i class="bi bi-calendar me-3"></i>01 Jun 2025
+                                        <i class="bi bi-calendar me-3"></i>Minggu ke-1
                                     </p>
-                                    <p class="fw-semibold mb-0"></p>
+                                </div>
+                                
+                                <!-- Image Gallery -->
+                                <div class="mb-3">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                    </div>
                                 </div>
                                 
                                 <!-- Description Section -->
                                 <div class="border-top pt-2">
                                     <p class="card-text small">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta libero eu dolor pellentesque auctor. Fusce volutpat rhoncus ante id elementum. Ut venenatis, turpis sed dapibus faucibus, velit mi convallis lectus, quis sagittis ipsum risus tincidunt neque. Phasellus erat elit, varius ac ex sed, pulvinar dictum arcu. Aliquam nisl lorem, condimentum quis nulla non, interdum mattis massa. Donec finibus, nisi in porta maximus, diam tortor venenatis nulla, sit amet viverra ligula quam vitae lacus. Curabitur maximus elit vitae ullamcorper ultricies. Donec facilisis bibendum erat nec finibus. Mauris molestie vehicula purus quis fermentum. Suspendisse sit amet turpis nibh. Mauris gravida ex id interdum egestas.
-                        
-                                        Praesent facilisis volutpat lorem sit amet suscipit. Duis malesuada, turpis ut placerat accumsan, sem augue egestas purus, eget fringilla ex orci tincidunt tellus. Quisque laoreet nunc et ligula vehicula fringilla. Ut ultricies cursus laoreet. Fusce scelerisque nisl in porttitor congue. Sed vel sapien non turpis consectetur tincidunt. Proin id tortor nec turpis eleifend fringilla. Nam porttitor felis nisl, quis tristique lorem ullamcorper vel. Donec feugiat ultricies elit, ac eleifend nibh lacinia sed. Pellentesque sit amet iaculis est. Integer tellus orci, faucibus vitae mi at, faucibus dignissim diam. Ut eget mi diam. Suspendisse potenti. Nunc sed sem sed massa posuere finibus eu quis eros. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquet volutpat mauris laoreet dictum. Praesent pharetra tellus ut justo posuere, quis feugiat urna pharetra. Etiam ut volutpat metus. In in quam posuere, sollicitudin lectus a, porttitor lectus. Praesent dignissim vulputate enim, sit amet congue eros commodo at. Integer lobortis molestie orci, a aliquam velit congue ac. Curabitur molestie eget tellus viverra molestie. Proin libero arcu, imperdiet sed neque quis, pellentesque suscipit leo. Donec pellentesque metus vitae orci tempus, id ultrices dolor congue. Proin imperdiet aliquam risus, et porttitor diam tincidunt sed.
+
+Aliquam eleifend, ex ut blandit finibus, tellus ante malesuada metus, at aliquam odio lectus dignissim mauris. In non accumsan magna. Aenean tincidunt eros sed malesuada facilisis. Aliquam erat volutpat. Fusce bibendum massa eu pharetra maximus. Praesent mattis risus id diam viverra suscipit. Phasellus vestibulum ex ipsum, et molestie tortor aliquam id. Donec mi massa, interdum quis lacus ut, sollicitudin feugiat libero. Proin pretium eget ante eget accumsan. Vestibulum non tincidunt tellus, sit amet facilisis justo. Nullam mattis vestibulum neque id ullamcorper. In feugiat dolor sapien, a pretium mauris ultricies et. Duis a ornare dui. In placerat odio sit amet purus aliquet, hendrerit cursus justo pretium. Pellentesque iaculis egestas lacus. Maecenas sit amet iaculis odio. 
                                     </p>
                                 </div>
                             </div>
@@ -52,10 +60,10 @@
                             <div class="card-body position-relative">
                                 <!-- Action Buttons -->
                                 <div class="position-absolute top-0 end-0 mt-2 me-2">
-                                    <a href="#" class="btn btn-sm btn-icon text-warning" title="Edit">
+                                    <a href="#" class="btn btn-sm btn-icon text-warning" title="Edit" onclick="modalAction('{{ url('magang-mahasiswa/edit-log') }}')">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-icon text-danger" title="Delete">
+                                    <a href="#" class="btn btn-sm btn-icon text-danger" title="Delete" onclick="modalAction('{{ url('magang-mahasiswa/confirm-delete') }}')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -63,17 +71,25 @@
                                 <!-- Date Section -->
                                 <div class="mb-3">
                                     <p class="fw-semibold mb-1">
-                                        <i class="bi bi-calendar me-3"></i>02 Jun 2025
+                                        <i class="bi bi-calendar me-3"></i>01 Jun 2025
                                     </p>
-                                    <p class="fw-semibold mb-0"></p>
+                                </div>
+                                
+                                <!-- Image Gallery -->
+                                <div class="mb-3">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                        <img src="https://cdn-brilio-net.akamaized.net/webp/photonews/2024/07/20/292638/750xauto-11-meme-lucu-pasrah-dengan-kehidupan-ini-relate-abis-bikin-angguk-setuju-2407206-001.jpg" class="img-thumbnail" style="max-height: 150px;">
+                                    </div>
                                 </div>
                                 
                                 <!-- Description Section -->
                                 <div class="border-top pt-2">
                                     <p class="card-text small">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta libero eu dolor pellentesque auctor. Fusce volutpat rhoncus ante id elementum. Ut venenatis, turpis sed dapibus faucibus, velit mi convallis lectus, quis sagittis ipsum risus tincidunt neque. Phasellus erat elit, varius ac ex sed, pulvinar dictum arcu. Aliquam nisl lorem, condimentum quis nulla non, interdum mattis massa. Donec finibus, nisi in porta maximus, diam tortor venenatis nulla, sit amet viverra ligula quam vitae lacus. Curabitur maximus elit vitae ullamcorper ultricies. Donec facilisis bibendum erat nec finibus. Mauris molestie vehicula purus quis fermentum. Suspendisse sit amet turpis nibh. Mauris gravida ex id interdum egestas.
-                        
-                                        Praesent facilisis volutpat lorem sit amet suscipit. Duis malesuada, turpis ut placerat accumsan, sem augue egestas purus, eget fringilla ex orci tincidunt tellus. Quisque laoreet nunc et ligula vehicula fringilla. Ut ultricies cursus laoreet. Fusce scelerisque nisl in porttitor congue. Sed vel sapien non turpis consectetur tincidunt. Proin id tortor nec turpis eleifend fringilla. Nam porttitor felis nisl, quis tristique lorem ullamcorper vel. Donec feugiat ultricies elit, ac eleifend nibh lacinia sed. Pellentesque sit amet iaculis est. Integer tellus orci, faucibus vitae mi at, faucibus dignissim diam. Ut eget mi diam. Suspendisse potenti. Nunc sed sem sed massa posuere finibus eu quis eros. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aliquet volutpat mauris laoreet dictum. Praesent pharetra tellus ut justo posuere, quis feugiat urna pharetra. Etiam ut volutpat metus. In in quam posuere, sollicitudin lectus a, porttitor lectus. Praesent dignissim vulputate enim, sit amet congue eros commodo at. Integer lobortis molestie orci, a aliquam velit congue ac. Curabitur molestie eget tellus viverra molestie. Proin libero arcu, imperdiet sed neque quis, pellentesque suscipit leo. Donec pellentesque metus vitae orci tempus, id ultrices dolor congue. Proin imperdiet aliquam risus, et porttitor diam tincidunt sed.
+
+Aliquam eleifend, ex ut blandit finibus, tellus ante malesuada metus, at aliquam odio lectus dignissim mauris. In non accumsan magna. Aenean tincidunt eros sed malesuada facilisis. Aliquam erat volutpat. Fusce bibendum massa eu pharetra maximus. Praesent mattis risus id diam viverra suscipit. Phasellus vestibulum ex ipsum, et molestie tortor aliquam id. Donec mi massa, interdum quis lacus ut, sollicitudin feugiat libero. Proin pretium eget ante eget accumsan. Vestibulum non tincidunt tellus, sit amet facilisis justo. Nullam mattis vestibulum neque id ullamcorper. In feugiat dolor sapien, a pretium mauris ultricies et. Duis a ornare dui. In placerat odio sit amet purus aliquet, hendrerit cursus justo pretium. Pellentesque iaculis egestas lacus. Maecenas sit amet iaculis odio. 
                                     </p>
                                 </div>
                             </div>

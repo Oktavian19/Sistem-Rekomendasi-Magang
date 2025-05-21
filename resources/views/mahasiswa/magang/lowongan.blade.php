@@ -34,7 +34,7 @@
                             <button class="btn btn-sm ms-auto"><i class="bi bi-sliders"></i></button>
                         </div>
                         <div class="card-body">
-                            <form method="GET" action="{{ route('lowongan.index') }}">
+                            <form method="GET" action="{{ url('lowongan/index') }}">
                                 <span class="text-black">Kata Kunci</span>
                                 <div class="mb-5 mt-2">
                                     <div class="input-group">
@@ -163,20 +163,7 @@
                     <!-- Pagination -->
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center mt-4">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">...</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">59</a></li>
-                            <li class="page-item"><a class="page-link" href="#">60</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
+                            {{ $lowongans->links() }}
                         </ul>
                     </nav>
                 </div>

@@ -1,50 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Data Lowongan</h5>
-        <button class="btn btn-primary" onclick="modalAction('{{ url('lowongan/create-ajax') }}')">
-            <i class="bx bx-plus"></i> Tambah Lowongan
-        </button>
-    </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Data Lowongan</h5>
+            <button class="btn btn-primary" onclick="modalAction('{{ url('lowongan/create-ajax') }}')">
+                <i class="bx bx-plus"></i> Tambah Lowongan
+            </button>
+        </div>
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="table-lowongan" class="table table-bordered table-striped w-100">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Posisi</th>
-                        <th>Perusahaan</th>
-                        <th>Kategori Keahlian</th>
-                        <th>Kuota</th>
-                        <th>Tanggal Buka</th>
-                        <th>Tanggal Tutup</th>
-                        <th>Durasi Magang</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table-lowongan" class="table table-bordered table-striped w-100">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Posisi</th>
+                            <th>Perusahaan</th>
+                            <th>Kategori Keahlian</th>
+                            <th>Kuota</th>
+                            <th>Tanggal Buka</th>
+                            <th>Tanggal Tutup</th>
+                            <th>Durasi Magang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog"
-     data-backdrop="static" data-keyboard="false" aria-hidden="true">
-</div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+        data-keyboard="false" aria-hidden="true">
+    </div>
 @endsection
 
 @push('scripts')
 <script>
-    
+    function modalAction(url = '') {
+        $('#myModal').load(url, function () {
+            $('#myModal').modal('show');
+        });
+    }
+
     var dataLowongan;
     $(document).ready(function () {
         dataLowongan = $('#table-lowongan').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ url('lowongan/list') }}",
+            columnDefs: [
+                { targets: [8], orderable: false, width: '200px' }
+            ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'nama_posisi', name: 'nama_posisi' },
@@ -103,6 +111,7 @@
             },
             error: function(xhr) {
                 Swal.fire({
+                    $('#myModal').modal('hide');
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Terjadi kesalahan saat mengirim data.'
@@ -112,3 +121,4 @@
     });
 </script>
 @endpush
+

@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-lg" role="document">
+<div id="modal-show-user" class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Detail Pengguna</h5>
@@ -10,7 +10,7 @@
                     <th>Username</th>
                     <td>{{ $user->username }}</td>
                 </tr>
-                <tr>
+                <tr>;
                     <th>Role</th>
                     <td>{{ ucfirst($user->role) }}</td>
                 </tr>
@@ -23,6 +23,10 @@
                     <tr>
                         <th>Email</th>
                         <td>{{ $detail->email }}</td>
+                    </tr>
+                    <tr>
+                        <th>No HP</th>
+                        <td>{{ $detail->no_hp }}</td>
                     </tr>
                 @elseif ($user->role === 'mahasiswa' && $detail)
                     <tr>
@@ -37,6 +41,14 @@
                         <th>Email</th>
                         <td>{{ $detail->email }}</td>
                     </tr>
+                    <tr>
+                        <th>No HP</th>
+                        <td>{{ $detail->no_hp }}</td>
+                    </tr>
+                    <tr>
+                        <th>Program Studi</th>
+                        <td>{{ $detail->programStudi->nama_program_studi ?? '-' }}</td>
+                    </tr>
                 @elseif ($user->role === 'dosen_pembimbing' && $detail)
                     <tr>
                         <th>Nama</th>
@@ -50,6 +62,14 @@
                         <th>Email</th>
                         <td>{{ $detail->email }}</td>
                     </tr>
+                    <tr>
+                        <th>No HP</th>
+                        <td>{{ $detail->no_hp }}</td>
+                    </tr>
+                    <tr>
+                        <th>Bidang Minat</th>
+                        <td>{{ $detail->bidang_minat }}</td>
+                    </tr>
                 @else
                     <tr>
                         <td colspan="2" class="text-center text-muted">Data detail tidak tersedia.</td>
@@ -62,3 +82,19 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).on('click', '.btn-detail', function () {
+        var id = $(this).data('id');
+        $.ajax({
+            url: '/admin/user/' + id + '/show-ajax',
+            type: 'GET',
+            success: function (response) {
+                $('#modalDetailUser .modal-content').html(response);
+                $('#modalDetailUser').modal('show');
+            },
+            error: function () {
+                alert('Gagal memuat detail pengguna.');
+            }
+        });
+    });
+</script>
