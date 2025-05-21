@@ -49,11 +49,13 @@ class MahasiswaBidangKeahlianSeeder extends Seeder
             
             $id = DB::table('users')->where('username', $mhsBK['nim'])->value('id_user');
 
-            DB::table('mahasiswa_bidang_keahlian')->insert([
-                'id_mahasiswa'          => $id,
-                'id_bidang_keahlian'    => $mhsBK,
-                'created_at'            => now(),
-            ]);
+            foreach ($mhsBK['id_bidang'] as $id_bidang) {
+                DB::table('mahasiswa_bidang_keahlian')->insert([
+                    'id_mahasiswa'       => $id,
+                    'id_bidang_keahlian' => $id_bidang,
+                    'created_at'         => now(),
+                ]);
+            }
         }
     }
 }
