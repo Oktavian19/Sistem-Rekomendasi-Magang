@@ -12,10 +12,10 @@ class ProgramStudiSeeder extends Seeder
     public function run(): void
     {
         DB::table('program_studi')->insert([
-            ['id_program_studi' => 1, 'nama_program_studi' => 'D-IV Teknik Informatika'],
-            ['id_program_studi' => 2, 'nama_program_studi' => 'D-IV Sistem Informasi Bisnis'],
-            ['id_program_studi' => 3, 'nama_program_studi' => 'D-II Pengembangan Piranti Lunak'],
-            ['id_program_studi' => 4, 'nama_program_studi' => 'S-2 Rekayasa Teknologi Informasi'],
+            ['kode_program_studi' => 'D4TI', 'nama_program_studi' => 'D-IV Teknik Informatika'],
+            ['kode_program_studi' => 'D4SIB', 'nama_program_studi' => 'D-IV Sistem Informasi Bisnis'],
+            ['kode_program_studi' => 'D2PPL', 'nama_program_studi' => 'D-II Pengembangan Piranti Lunak'],
+            ['kode_program_studi' => 'S2RTI', 'nama_program_studi' => 'S-2 Rekayasa Teknologi Informasi'],
         ]);
     }
 }

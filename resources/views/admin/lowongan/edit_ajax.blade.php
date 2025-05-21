@@ -35,7 +35,7 @@
                 <div class="form-group mb-3">
                     <label for="edit_kategori_keahlian">Kategori Keahlian</label>
                     <input type="text" name="kategori_keahlian" id="edit_kategori_keahlian" 
-                           class="form-control" value="{{ $lowongan->kategori_keahlian }}" required>
+                           class="form-control" value="{{ $lowongan->bidangKeahlian->nama_bidang }}" required>
                     <small id="error-edit_kategori_keahlian" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">

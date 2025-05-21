@@ -2,87 +2,101 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users; // Menggunakan model User (standar Laravel)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
+    /**
+     * Menampilkan halaman login
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function login()
     {
-        // Jika sudah login, redirect berdasarkan role
         if (Auth::check()) {
-            $user = Auth::user();
-
-            if ($user->role === 'mahasiswa') {
-                return redirect('/dashboard-mahasiswa');
-            }
-
-            return redirect('/dashboard'); // default untuk role lain
+            return $this->redirectToDashboard();
         }
 
         return view('auth.login');
     }
 
-
-    public function landing_page()
+    /**
+     * Menampilkan halaman landing page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function landingPage()
     {
         return view('welcome');
     }
 
-    public function postlogin(Request $request)
+    /**
+     * Proses login
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function postLogin(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $request->session()->regenerate();
 
-            // Menentukan URL redirect berdasarkan role
-            if ($user->role === 'mahasiswa') {
-                $redirectUrl = url('/dashboard-mahasiswa');
-            } else {
-                $redirectUrl = url('/dashboard'); // default untuk role lain
-            }
-
-            // Jika request dari AJAX
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => true,
-                    'message' => 'Login Berhasil',
-                    'redirect' => $redirectUrl
+                    'message' => 'Login berhasil',
+                    'redirect' => $this->getDashboardUrl()
                 ]);
             }
 
-            return redirect()->intended($redirectUrl);
+            return redirect()->intended($this->getDashboardUrl());
         }
 
-        // Jika login gagal
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Login Gagal'
-            ]);
+                'message' => 'Username atau password salah'
+            ], 401);
         }
 
-        return back()->withErrors(['username' => 'Username atau password salah.'])->withInput();
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ])->onlyInput('username');
     }
 
-
-
+    /**
+     * Proses logout
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect('/');
     }
 
+    /**
+     * Menampilkan halaman registrasi
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function register()
     {
-        // Jika sudah login, redirect ke halaman home
         if (Auth::check()) {
             return redirect('/');
         }
@@ -90,55 +104,98 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function postregister(Request $request)
+    /**
+     * Proses registrasi
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function postRegister(Request $request)
     {
-        if ($request->ajax() || $request->wantsJson()) {
-            $validator = Validator::make($request->all(), [
-                'username' => 'required|string|min:4|max:50|unique:users,username',
-                'password' => 'required|string|min:6',
-                'role' => 'required|in:admin,mahasiswa,dosen_pembimbing'
-            ], [
-                // Custom error messages
-                'username.required' => 'Username harus diisi',
-                'username.min' => 'Username minimal 4 karakter',
-                'username.max' => 'Username maksimal 50 karakter',
-                'username.unique' => 'Username sudah digunakan',
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|min:4|max:50|unique:users,username',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:admin,mahasiswa,dosen_pembimbing'
+        ], [
+            'username.required' => 'Username harus diisi',
+            'username.min' => 'Username minimal 4 karakter',
+            'username.max' => 'Username maksimal 50 karakter',
+            'username.unique' => 'Username sudah digunakan',
+            'password.required' => 'Password harus diisi',
+            'password.min' => 'Password minimal 6 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai',
+            'role.required' => 'Role harus dipilih',
+            'role.in' => 'Role tidak valid'
+        ]);
 
-                'password.required' => 'Password harus diisi',
-                'password.min' => 'Password minimal 6 karakter',
-
-                'role.required' => 'Role harus dipilih',
-                'role.in' => 'Role tidak valid'
-            ]);
-
-            if ($validator->fails()) {
+        if ($validator->fails()) {
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Validasi gagal',
-                    'msgField' => $validator->errors()
-                ]);
+                    'errors' => $validator->errors()
+                ], 422);
             }
 
-            try {
-                Users::create([
-                    'username' => $request->username,
-                    'password' => Hash::make($request->password),
-                    'role' => $request->role
-                ]);
+            return back()->withErrors($validator)->withInput();
+        }
 
+        try {
+            Users::create([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => $request->role
+            ]);
+
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => true,
                     'message' => 'Registrasi berhasil, silakan login',
-                    'redirect' => url('login')
+                    'redirect' => route('login')
                 ]);
-            } catch (\Exception $e) {
+            }
+
+            return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login');
+        } catch (\Exception $e) {
+            if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-                ]);
+                ], 500);
             }
-        }
 
-        return redirect('register');
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    /**
+     * Redirect ke dashboard berdasarkan role user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectToDashboard()
+    {
+        return redirect($this->getDashboardUrl());
+    }
+
+    /**
+     * Mendapatkan URL dashboard berdasarkan role user
+     *
+     * @return string
+     */
+    protected function getDashboardUrl()
+    {
+        $user = Auth::user();
+
+        switch ($user->role) {
+            case 'mahasiswa':
+                return '/dashboard-mahasiswa';
+            case 'dosen_pembimbing':
+                return '/dashboard-dosen';
+            case 'admin':
+                return '/dashboard-admin';
+            default:
+                return '/dashboard';
+        }
     }
 }
