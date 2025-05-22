@@ -18,7 +18,6 @@ class LamaranSeeder extends Seeder
             ['id_mahasiswa' => '5', 'id_lowongan' => '15', 'tanggal_lamaran' => '2025-06-10', 'status_lamaran' => 'ditolak'],
             ['id_mahasiswa' => '5', 'id_lowongan' => '1', 'tanggal_lamaran' => '2025-06-15', 'status_lamaran' => 'ditolak'],
             ['id_mahasiswa' => '5', 'id_lowongan' => '5', 'tanggal_lamaran' => '2025-06-16', 'status_lamaran' => 'diterima'],
-            ['id_mahasiswa' => '5', 'id_lowongan' => '3', 'tanggal_lamaran' => '2025-07-02', 'status_lamaran' => 'menunggu'],
             ['id_mahasiswa' => '6', 'id_lowongan' => '12', 'tanggal_lamaran' => '2025-06-26', 'status_lamaran' => 'ditolak'],
             ['id_mahasiswa' => '6', 'id_lowongan' => '2', 'tanggal_lamaran' => '2025-07-01', 'status_lamaran' => 'diterima'],
             ['id_mahasiswa' => '7', 'id_lowongan' => '12', 'tanggal_lamaran' => '2025-06-14', 'status_lamaran' => 'menunggu'],

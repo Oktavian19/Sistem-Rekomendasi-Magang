@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lowongan;
 use App\Models\Users; // Menggunakan model User (standar Laravel)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,12 @@ class AuthController extends Controller
      */
     public function landingPage()
     {
-        return view('welcome');
+        $lowongans = Lowongan::with('perusahaan')
+            ->orderBy('id_lowongan', 'desc')   // atau sesuai kebutuhan
+            ->take(9)
+            ->get();
+
+        return view('welcome', compact('lowongans'));
     }
 
     /**

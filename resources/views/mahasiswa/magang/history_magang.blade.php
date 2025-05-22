@@ -16,11 +16,11 @@
 
 <div class="card d-flex justify-content-start align-items-start" style="padding: 5vh">
     <div class="d-flex justify-content-between align-items-center mb-3 w-100">
-        <h4 class="mb-0">Histori Magang</h4>
+        <h4 class="mb-0">Riwayat Magang</h4>
     </div> 
     <div class="col-lg-12 col-xl-12">
         <div class="row">
-            <div class="col-md-4 mb-4">
+            {{-- <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="d-flex mb-3">
@@ -32,7 +32,6 @@
                                 </p>
                                 <p class="card-text text-muted small">
                                     <i class="bi bi-geo-alt me-1"></i>Bandung
-                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: 3 orang
                                 </p>
                             </div>
                         </div>
@@ -103,8 +102,63 @@
                         </div>                        
                     </div>
                 </div>
+            </div> --}}
+            @foreach($lamarans as $lamaran)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="{{ $lamaran->lowongan->perusahaan->logo_url ?? 'https://via.placeholder.com/60' }}" 
+                                 alt="Company Logo" 
+                                 class="rounded me-3" 
+                                 width="60" 
+                                 height="60">
+                            <div>
+                                <h5 class="card-title mb-1">{{ $lamaran->lowongan->nama_posisi }}</h5>
+                                <p class="card-text text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i>{{ $lamaran->lowongan->perusahaan->nama_perusahaan }}
+                                </p>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt me-1"></i>{{ $lamaran->lowongan->perusahaan->alamat }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2">
+                            @if($lamaran->status_lamaran == 'ditolak')
+                                <div class="d-flex justify-content-end">
+                                    <p class="card-text small text-danger mb-0 badge rounded-pill bg-label-danger">
+                                        <i class="bi bi-send-x me-1"></i>Ditolak
+                                    </p>
+                                </div>
+                            @elseif($lamaran->status_lamaran == 'menunggu')
+                                <div class="d-flex justify-content-end">
+                                    <p class="card-text small text-warning mb-0 badge rounded-pill bg-label-warning">
+                                        <i class="bi bi-hourglass-split me-1"></i>Menunggu
+                                    </p>
+                                </div>
+                            @elseif($lamaran->status_lamaran == 'diterima')
+                                @if($lamaran->magang->status_magang == 'aktif')
+                                    <div class="d-flex justify-content-end">
+                                        <p class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
+                                            <i class="bi bi-send-check me-1"></i>Diterima
+                                        </p>
+                                    </div>
+                                @elseif($lamaran->magang->status_magang == 'selesai')
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="#" class="small text-warning mb-0 badge rounded-pill bg-label-warning" role="button" data-bs-toggle="modal" data-bs-target="#ratingModal">
+                                            <i class="bi bi-star me-1"></i> Beri Rating
+                                        </a>
+                                        <p class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
+                                            <i class="bi bi-send-check me-1"></i>Diterima
+                                        </p>
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- Add more cards as needed -->
+        @endforeach
         </div>
     </div>
     
@@ -121,15 +175,15 @@
                 <form id="ratingForm">
                     <div class="mb-3">
                         <label class="form-label">Perusahaan</label>
-                        <input type="text" class="form-control" value="CV Media Kreatif" readonly>
+                        <input type="text" class="form-control" value="{{ $lamaran->lowongan->perusahaan->nama_perusahaan }}" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Posisi Magang</label>
-                        <input type="text" class="form-control" value="Digital Marketing" readonly>
+                        <input type="text" class="form-control" value="{{ $lamaran->lowongan->nama_posisi }}" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Durasi Magang</label>
-                        <input type="text" class="form-control" value="3 bulan" readonly>
+                        <input type="text" class="form-control" value="{{ $lamaran->lowongan->durasi_magang }} bulan" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Komentar</label>
