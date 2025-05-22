@@ -38,26 +38,25 @@
                                 <i class="bi bi-pencil me-1"></i>Edit
                             </a>
                         </div>
-                        <div class="d-flex mt-4 mb-3">
+                        <div class="d-flex gap-2 mt-4 mb-3 align-items-center">
                             <form id="formUploadCV" action="{{ url('profile/dokumen/store') }}" method="POST"
-                                enctype="multipart/form-data" class="d-flex mt-4 mb-3">
+                                enctype="multipart/form-data" class="m-0 p-0">
                                 @csrf
-                                <input type="hidden" name="jenis_dokumen" value="Curriculum Vitae (CV)"> <!-- Gunakan uppercase CV -->
-
+                                <input type="hidden" name="jenis_dokumen" value="Curriculum Vitae (CV)">
                                 <input type="file" id="inputCV" name="path_file" accept=".pdf" class="d-none"
                                     onchange="document.getElementById('formUploadCV').submit()" required>
-
+                        
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                     onclick="document.getElementById('inputCV').click()">
                                     <i class="bi bi-upload me-1"></i> Upload CV
                                 </button>
                             </form>
-
+                        
                             <a href="{{ url('profile/dokumen/download-cv') }}" class="btn btn-sm btn-primary">
                                 <i class="bi bi-download me-1"></i> Download CV
                             </a>
-
                         </div>
+                        
                     </div>
                 </div>
             </div>

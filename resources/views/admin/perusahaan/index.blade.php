@@ -50,7 +50,21 @@
             ajax: "{{ url('perusahaan/list') }}",
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
-                { data: 'nama_perusahaan', name: 'nama_perusahaan' },
+                { 
+                    data: 'nama_perusahaan', 
+                    name: 'nama_perusahaan',
+                    render: function(data, type, row) {
+                        // Jika ada logo, tampilkan logo dan nama
+                        if (row.logo) {
+                            return '<div class="d-flex align-items-center">' +
+                                   '<img src="' + row.logo + '" alt="Logo ' + data + '" class="rounded-circle me-2" width="30" height="30">' +
+                                   '<span>' + data + '</span>' +
+                                   '</div>';
+                        }
+                        // Jika tidak ada logo, tampilkan nama saja
+                        return data;
+                    }
+                },
                 { data: 'bidang_industri', name: 'bidang_industri' },
                 { data: 'alamat', name: 'alamat' },
                 { data: 'email', name: 'email' },

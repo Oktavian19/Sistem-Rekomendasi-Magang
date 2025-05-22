@@ -38,6 +38,11 @@
                            class="form-control" value="{{ $perusahaan->telepon }}" required>
                     <small id="error-edit_telepon" class="error-text form-text text-danger"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label>Logo (opsional)</label>
+                    <input type="file" name="logo" id="logo" class="form-control" accept=".jpg, .jpeg, .png">
+                    <small id="error-logo" class="error-text form-text text-danger"></small>
+                </div>
             </div>
             
             <div class="modal-footer">

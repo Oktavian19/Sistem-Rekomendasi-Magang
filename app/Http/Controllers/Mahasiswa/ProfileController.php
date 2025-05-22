@@ -71,6 +71,10 @@ class ProfileController extends Controller
         // Sync bidang keahlian
         $mahasiswa->bidangKeahlian()->sync($validated['bidang_keahlian'] ?? []);
 
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Profil berhasil diperbarui']);
+        }    
+
         return redirect()->back()->with('success', 'Data berhasil diperbarui');
     }
 
