@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\Mahasiswa\ProfileController;
-use App\Http\Controllers\Mahasiswa\LogController;
+use App\Http\Controllers\Mahasiswa\LogKegiatanController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -142,13 +142,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile/dokumen/download-cv', [ProfileController::class, 'downloadCV'])->name('profile.dokumen.downloadCV');
         Route::delete('/profile/dokumen/{id}', [ProfileController::class, 'destroyDokumen'])->name('profile.dokumen.destroy');
 
-        // Tambahan lainnya
-        Route::get('/create-pengalaman', [ProfileController::class, 'create_pengalaman']);
-        Route::get('magang-mahasiswa', fn() => view('mahasiswa.log.index'))->name('log-magang');
-        Route::get('riwayat-magang', fn() => view('mahasiswa.magang.history_magang'))->name('history-magang');
-        Route::get('magang-mahasiswa/create-log', [LogController::class, 'create']);
-        Route::get('magang-mahasiswa/edit-log', [LogController::class, 'create']);
-        Route::get('magang-mahasiswa/confirm-delete', [LogController::class, 'confirm_delete']);
+        // Log Kegiatan
+        Route::get('log-kegiatan', [LogKegiatanController::class, 'index'])->name('log-kegiatan.index');
+        Route::get('log-kegiatan/create', [LogKegiatanController::class, 'create'])->name('log-kegiatan.create');
+        Route::post('log-kegiatan', [LogKegiatanController::class, 'store'])->name('log-kegiatan.store');
+        Route::get('log-kegiatan/{id}/edit', [LogKegiatanController::class, 'edit'])->name('log-kegiatan.edit');
+        Route::put('log-kegiatan/{id}', [LogKegiatanController::class, 'update'])->name('log-kegiatan.update');
+        Route::delete('log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])->name('log-kegiatan.destroy');
     });
 
 

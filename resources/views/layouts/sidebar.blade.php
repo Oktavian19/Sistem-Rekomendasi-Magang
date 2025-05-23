@@ -71,8 +71,8 @@
             <div>Lowongan Magang</div>
           </a>
         </li>
-        <li class="menu-item {{ request()->is('magang-mahasiswa*') ? 'active' : '' }}">
-          <a href="{{ url('magang-mahasiswa') }}" class="menu-link">
+        <li class="menu-item {{ request()->is('log-kegiatan*') ? 'active' : '' }}">
+          <a href="{{ url('log-kegiatan') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-clipboard"></i>
             <div>Log Magang</div>
           </a>

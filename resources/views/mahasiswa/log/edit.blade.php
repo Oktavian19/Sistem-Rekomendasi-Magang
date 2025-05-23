@@ -1,50 +1,58 @@
-<form action="{{ url('log-magang/' . $log->id . '/update') }}" method="POST" id="form-edit" enctype="multipart/form-data">
+<form action="{{ route('log-kegiatan.update', $log->id) }}" method="POST" id="form-edit" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div id="modal-edit-log" class="modal-dialog modal-lg" role="document">
         <input type="hidden" name="id" id="edit_id" value="{{ $log->id }}">
         <div class="modal-content">            
             <div class="modal-header">
-                <h5 class="modal-title">Edit Log Magang</h5>
+                <h5 class="modal-title">Edit Log Kegiatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
             <div class="modal-body">
                 <!-- Date Input -->
                 <div class="form-group mb-4">
-                    <label>Minggu Ke-</label>
+                    <label>Tanggal Kegiatan</label>
                     <div class="input-group">
-                        <select name="minggu" id="minggu" class="form-control" required>
-                            <option value="" disabled selected>Pilih minggu</option>
-                            <option value="1">Minggu ke-1</option>
-                            <option value="2">Minggu ke-2</option>
-                            <option value="3">Minggu ke-3</option>
-                            <option value="4">Minggu ke-4</option>
-                            <option value="5">Minggu ke-5</option>
+                        <input type="date" name="tanggal" id="edit_tanggal" class="form-control" value="{{ $log->tanggal }}" required>
+                        <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+                    </div>
+                    <small id="error-tanggal" class="error-text form-text text-danger"></small>
+                </div>
+                
+                <!-- Week Selector (Optional) -->
+                <div class="form-group mb-4">
+                    <label>Minggu Ke- (Opsional)</label>
+                    <div class="input-group">
+                        <select name="minggu" id="edit_minggu" class="form-control">
+                            <option value="" disabled>Pilih minggu</option>
+                            @for($i = 1; $i <= $jumlahMinggu; $i++)
+                                <option value="{{ $i }}" {{ $log->minggu == $i ? 'selected' : '' }}>
+                                    Minggu ke-{{ $i }}
+                                </option>
+                            @endfor
                         </select>
                         <span class="input-group-text"><i class="bi bi-calendar-week"></i></span>
                     </div>
-                    <small id="error-minggu" class="error-text form-text text-danger"></small>
                 </div>
-                
                 
                 <!-- Description Input -->
                 <div class="form-group mb-4">
-                    <label>Deskripsi</label>
-                    <textarea name="deskripsi" id="edit_deskripsi" class="form-control" rows="8" required>{{ $log->deskripsi }}</textarea>
-                    <small id="error-edit_deskripsi" class="error-text form-text text-danger"></small>
+                    <label>Deskripsi Kegiatan</label>
+                    <textarea name="deskripsi_kegiatan" id="edit_deskripsi_kegiatan" class="form-control" rows="8" required>{{ $log->deskripsi_kegiatan }}</textarea>
+                    <small id="error-deskripsi" class="error-text form-text text-danger"></small>
                 </div>
                 
                 <!-- Existing Images -->
                 <div class="form-group mb-4">
                     <label>Gambar Saat Ini</label>
                     <div class="row" id="existing-images">
-                        @if($log->images && is_array(json_decode($log->images)))
-                            @foreach(json_decode($log->images) as $image)
+                        @if($log->images && $log->images->count() > 0)
+                            @foreach($log->images as $image)
                             <div class="col-md-4 mb-2">
                                 <div class="position-relative">
-                                    <img src="{{ asset('storage/log-images/' . $image) }}" class="img-thumbnail" style="max-height: 150px;">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image" data-image="{{ $image }}">
+                                    <img src="{{ asset('storage/' . $image->path) }}" class="img-thumbnail" style="max-height: 150px;">
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image" data-image-id="{{ $image->id }}">
                                         <i class="bi bi-x"></i>
                                     </button>
                                 </div>
@@ -60,7 +68,7 @@
                 <div class="form-group">
                     <label for="edit_images">Upload Gambar Tambahan (Maksimal 5)</label>
                     <input type="file" name="images[]" id="edit_images" class="form-control" multiple accept="image/*">
-                    <small class="text-muted">Anda bisa memilih lebih dari satu gambar</small>
+                    <small class="text-muted">Format: JPG, PNG (Maksimal 2MB per gambar)</small>
                     <small id="error-images" class="error-text form-text text-danger"></small>
                 </div>
                 
@@ -96,6 +104,11 @@
             const file = files[i];
             if (!file.type.match('image.*')) continue;
             
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                alert('File ' + file.name + ' melebihi ukuran maksimal 2MB');
+                continue;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const colDiv = document.createElement('div');
@@ -110,11 +123,20 @@
                 img.style.maxHeight = '150px';
                 
                 const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
                 removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
                 removeBtn.innerHTML = '<i class="bi bi-x"></i>';
                 removeBtn.onclick = function() {
                     colDiv.remove();
-                    // You might want to implement actual file removal logic here
+                    // Create a new DataTransfer object to remove the file
+                    const dataTransfer = new DataTransfer();
+                    const input = document.getElementById('edit_images');
+                    for (let j = 0; j < input.files.length; j++) {
+                        if (j !== i) {
+                            dataTransfer.items.add(input.files[j]);
+                        }
+                    }
+                    input.files = dataTransfer.files;
                 };
                 
                 imgDiv.appendChild(img);
@@ -129,11 +151,11 @@
     // Existing image removal
     document.querySelectorAll('.remove-image').forEach(button => {
         button.addEventListener('click', function() {
-            const imageName = this.getAttribute('data-image');
+            const imageId = this.getAttribute('data-image-id');
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'hidden';
-            hiddenInput.name = 'removed_images[]';
-            hiddenInput.value = imageName;
+            hiddenInput.name = 'removed_image_ids[]';
+            hiddenInput.value = imageId;
             document.getElementById('form-edit').appendChild(hiddenInput);
             
             this.closest('.col-md-4').remove();

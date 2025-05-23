@@ -33,4 +33,9 @@ class Magang extends Model
     {
         return $this->belongsTo(PeriodeMagang::class, 'id_periode', 'id_periode');
     }
+
+    public function logKegiatan()
+    {
+        return $this->hasMany(LogKegiatan::class, 'id_magang', 'id_magang');
+    }
 }
