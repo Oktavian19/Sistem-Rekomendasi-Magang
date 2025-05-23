@@ -16,7 +16,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Perusahaan</th>
-                        <th>Bidang Industri</th>
                         <th>Alamat</th>
                         <th>Email</th>
                         <th>Nomor Telepon</th>
@@ -54,18 +53,27 @@
                     data: 'nama_perusahaan', 
                     name: 'nama_perusahaan',
                     render: function(data, type, row) {
-                        // Jika ada logo, tampilkan logo dan nama
+                        let content = '<div class="d-flex align-items-center">';
+                        
+                        content += '<div class="avatar avatar-sm me-2">';
                         if (row.logo) {
-                            return '<div class="d-flex align-items-center">' +
-                                   '<img src="' + row.logo + '" alt="Logo ' + data + '" class="rounded-circle me-2" width="30" height="30">' +
-                                   '<span>' + data + '</span>' +
-                                   '</div>';
+                            content += '<img src="' + row.logo + '" alt="Logo ' + data + '" class="avatar-img rounded">';
+                        } else {
+                            content += '<span class="avatar-initial rounded bg-label-secondary">' +
+                                      '<i class="bx bx-buildings"></i>' +
+                                      '</span>';
                         }
-                        // Jika tidak ada logo, tampilkan nama saja
-                        return data;
+                        content += '</div>';
+                        
+                        content += '<div>' +
+                                  '<div class="fw-semibold">' + data + '</div>' +
+                                  '<small class="text-muted">Kode: ' + (row.bidang_industri || '-') + '</small>' +
+                                  '</div>' +
+                                  '</div>';
+                        
+                        return content;
                     }
                 },
-                { data: 'bidang_industri', name: 'bidang_industri' },
                 { data: 'alamat', name: 'alamat' },
                 { data: 'email', name: 'email' },
                 { data: 'telepon', name: 'telepon' },

@@ -70,9 +70,9 @@
             <!-- Menu -->
             <div class="d-none d-lg-flex gap-9">
               <a class="nav-link text-dark" style="font-size: 1rem" href="#">Home</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Lowongan</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Virtual Internship</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Mentor Class</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="{{ url('daftar-lowongan') }}">Lowongan</a>
+              {{-- <a class="nav-link text-dark" style="font-size: 1rem" href="#">Virtual Internship</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Mentor Class</a> --}}
               <a class="nav-link text-dark" style="font-size: 1rem" href="#">Perusahaan</a>
               <a class="nav-link text-dark" style="font-size: 1rem" href="#">Tentang</a>
             </div>
@@ -100,7 +100,7 @@
             <div class="row h-100 ms-5 ps-5">
               <!-- Left Content - Tetap di tengah vertikal -->
               <div class="col-lg-5 text-white d-flex flex-column justify-content-center">
-                <h1 class="fw-bold text-white mb-3" style="font-size: 2.5rem;">Temukan<br>Pekerjaan impianmu<br>dan Talenta terbaik</h1>
+                <h1 class="fw-bold text-white mb-3" style="font-size: 2.5rem;">Temukan<br>Magang impianmu<br>Bersama Kami</h1>
               </div>
 
               <!-- Right Image - Rata bawah -->
@@ -115,11 +115,11 @@
           <!-- Header Section -->
           <div class="row justify-content-between align-items-center mb-4">
               <div class="col-auto">
-                  <h3 class="fw-bold">Bidang Pekerjaan</h3>
-                  <p class="text-muted" style="font-size: 1.2rem">Temukan berbagai lowongan berdasarkan bidang pekerjaan</p>
+                  <h3 class="fw-bold">Bidang Keahlian</h3>
+                  <p class="text-muted" style="font-size: 1.2rem">Temukan berbagai lowongan berdasarkan bidang keahlian</p>
               </div>
               <div class="col-auto">
-                  <a href="https://diploy.id/kategori-list" class="btn btn-outline-primary fs-6">
+                  <a href="{{ url('daftar-lowongan') }}" class="btn btn-outline-primary fs-6">
                       Lihat Semua <i class="fa fa-angle-right ms-1"></i>
                   </a>
               </div>
@@ -215,205 +215,52 @@
     <div class="container">
       <h4 class="fw-bold text-center">Lowongan Terbaru</h4>
     <p class="text-muted text-center fs-6">Tersedia 1001 lowongan dari berbagai perusahaan</p>
-
-    <div class="row mt-4 mt-md-5 g-4">
-        <!-- Card Start -->
-        <div class="col-lg-4">
-            <div class="card border h-100 shadow-sm">
-                <div class="card-body d-flex">
-                    <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                    <div>
-                        <h5 class="card-title mb-1">
-                            <a href="https://diploy.id/jobs/1172" class="text-decoration-none text-dark">ERP Functional Consultant</a>
-                        </h5>
-                        <p class="mb-1 small text-muted">
-                            <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                        </p>
-                        <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                        <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-top-0">
-                    <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 01 Jun 2025</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card border h-100 shadow-sm">
-                <div class="card-body d-flex">
-                    <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                    <div>
-                        <h5 class="card-title mb-1">
-                            <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                        </h5>
-                        <p class="mb-1 small text-muted">
-                            <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                        </p>
-                        <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                        <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-top-0">
-                    <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card border h-100 shadow-sm">
-                <div class="card-body d-flex">
-                    <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                    <div>
-                        <h5 class="card-title mb-1">
-                            <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                        </h5>
-                        <p class="mb-1 small text-muted">
-                            <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                        </p>
-                        <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                        <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-top-0">
-                    <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tambahkan lagi card sesuai kebutuhan -->
-    </div>
     <div class="row mt-2 mt-md-1 g-4">
-      <!-- Card Start -->
-      <div class="col-lg-4">
-          <div class="card border h-100 shadow-sm">
-              <div class="card-body d-flex">
-                  <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                  <div>
-                      <h5 class="card-title mb-1">
-                          <a href="https://diploy.id/jobs/1172" class="text-decoration-none text-dark">ERP Functional Consultant</a>
-                      </h5>
-                      <p class="mb-1 small text-muted">
-                          <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                      </p>
-                      <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                      <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                  </div>
-              </div>
-              <div class="card-footer bg-white border-top-0">
-                  <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 01 Jun 2025</small>
-              </div>
-          </div>
-      </div>
-      <div class="col-lg-4">
-          <div class="card border h-100 shadow-sm">
-              <div class="card-body d-flex">
-                  <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                  <div>
-                      <h5 class="card-title mb-1">
-                          <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                      </h5>
-                      <p class="mb-1 small text-muted">
-                          <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                      </p>
-                      <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                      <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                  </div>
-              </div>
-              <div class="card-footer bg-white border-top-0">
-                  <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-              </div>
-          </div>
-      </div>
-      <div class="col-lg-4">
-          <div class="card border h-100 shadow-sm">
-              <div class="card-body d-flex">
-                  <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                  <div>
-                      <h5 class="card-title mb-1">
-                          <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                      </h5>
-                      <p class="mb-1 small text-muted">
-                          <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                      </p>
-                      <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                      <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                  </div>
-              </div>
-              <div class="card-footer bg-white border-top-0">
-                  <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-              </div>
-          </div>
-      </div>
+        @foreach($lowongans as $lowongan)
+            <div class="col-lg-4">
+                <div class="card border h-100 shadow-sm">
+                    <div class="card-body d-flex">
+                        <img src="{{ $lowongan->perusahaan->logo_url ?? 'https://via.placeholder.com/60' }}" 
+                             alt="Logo {{ $lowongan->perusahaan->nama_perusahaan }}" 
+                             class="me-3 rounded" 
+                             style="width: 60px; height: 60px; object-fit: cover;">
 
-      <!-- Tambahkan lagi card sesuai kebutuhan -->
+                        <div>
+                            <h5 class="card-title mb-1">
+                                <a href="#" 
+                                   class="text-decoration-none text-dark">
+                                    {{ $lowongan->nama_posisi }}
+                                </a>
+                            </h5>
+                            <p class="mb-1 small text-muted">
+                                <i class="bi bi-building"></i>
+                                <a href="#" 
+                                   class="text-decoration-none text-muted">
+                                    {{ $lowongan->perusahaan->nama_perusahaan }}
+                                </a>
+                            </p>
+                            <p class="mb-1 small text-muted">
+                                <i class="bi bi-geo-alt"></i> {{ $lowongan->perusahaan->alamat }}
+                            </p>
+                            <p class="mb-0 small text-muted">
+                                <i class="bi bi-briefcase"></i> Dibutuhkan {{ $lowongan->kuota }} orang
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>
+                            Akhir Pendaftaran {{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->format('d M Y') }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        @endforeach
   </div>
-  <div class="row mt-2 mt-md-1 g-4">
-    <!-- Card Start -->
-    <div class="col-lg-4">
-        <div class="card border h-100 shadow-sm">
-            <div class="card-body d-flex">
-                <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                <div>
-                    <h5 class="card-title mb-1">
-                        <a href="https://diploy.id/jobs/1172" class="text-decoration-none text-dark">ERP Functional Consultant</a>
-                    </h5>
-                    <p class="mb-1 small text-muted">
-                        <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                    </p>
-                    <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                    <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                </div>
-            </div>
-            <div class="card-footer bg-white border-top-0">
-                <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 01 Jun 2025</small>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card border h-100 shadow-sm">
-            <div class="card-body d-flex">
-                <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                <div>
-                    <h5 class="card-title mb-1">
-                        <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                    </h5>
-                    <p class="mb-1 small text-muted">
-                        <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                    </p>
-                    <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                    <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                </div>
-            </div>
-            <div class="card-footer bg-white border-top-0">
-                <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card border h-100 shadow-sm">
-            <div class="card-body d-flex">
-                <img src="https://bucket.sdmdigital.id/dts-simonas/perusahaan-logo/38ae1aab-0348-43ef-bae6-a55a7aa8c1dd.jpeg" alt="Logo" class="me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
-                <div>
-                    <h5 class="card-title mb-1">
-                        <a href="https://diploy.id/jobs/1171" class="text-decoration-none text-dark">Network Engineer</a>
-                    </h5>
-                    <p class="mb-1 small text-muted">
-                        <i class="bi bi-building"></i> <a href="https://diploy.id/companies/192" class="text-decoration-none text-muted">PT. Berca Hardayaperkasa</a>
-                    </p>
-                    <p class="mb-1 small text-muted"><i class="bi bi-geo-alt"></i> Jakarta Pusat</p>
-                    <p class="mb-0 small text-muted"><i class="bi bi-briefcase"></i> Karyawan Kontrak</p>
-                </div>
-            </div>
-            <div class="card-footer bg-white border-top-0">
-                <small class="text-muted"><i class="bi bi-clock me-1"></i> Akhir Pendaftaran 27 Jun 2025</small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tambahkan lagi card sesuai kebutuhan -->
 </div>
 
     <div class="text-center mt-5">
-        <a href="https://diploy.id/jobs" class="btn btn-outline-primary rounded-pill">Lihat Semua <i class="fa fa-angle-right"></i></a>
+        <a href="{{ url('daftar-lowongan') }}" class="btn btn-outline-primary rounded-pill">Lihat Semua <i class="fa fa-angle-right"></i></a>
     </div>
     </div>
   
@@ -461,14 +308,14 @@
     </div>
   </div>
 </div>
-<div class="container" style="background-color: #9EC6F3; margin-top: 8vh; padding-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="background-color: #9EC6F3; margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
     <h4 class="text-center mb-1">
-      Frequently asked
+      Soal sering
       <span class="position-relative fw-extrabold z-1"
-        >questions
+        >ditanya
       </span>
     </h4>
-    <p class="text-center mb-12 pb-md-4">Browse through these FAQs to find answers to commonly asked questions.</p>
+    <p class="text-center mb-12 pb-md-4">Telusuri SSD ini dan temukan jawaban atas pertanyaan yang sering ditanyakan.</p>
     <div class="row gy-12 align-items-center">
       <div class="col-lg-5">
         <div class="text-center">
@@ -479,46 +326,64 @@
         <div class="accordion" id="accordionExample">
           <div class="card accordion-item">
             <h2 class="accordion-header" id="headingOne">
-              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">Do you charge for each upgrade?</button>
+              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">Apa tujuan utama dari Sistem Rekomendasi Magang ini?</button>
             </h2>
 
             <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div class="accordion-body">Lemon drops chocolate cake gummies carrot cake chupa chups muffin topping. Sesame snaps icing marzipan gummi bears macaroon dragée danish caramels powder. Bear claw dragée pastry topping soufflé. Wafer gummi bears marshmallow pastry pie.</div>
+              <div class="accordion-body">Tujuan utama sistem ini adalah membantu mahasiswa menemukan tempat magang yang paling sesuai dengan profil akademik, keterampilan, dan preferensi pribadi secara otomatis, sehingga mempercepat dan mempermudah proses pencarian magang baik bagi mahasiswa maupun perusahaan mitra, serta meningkatkan efisiensi dan kualitas pengalaman magang. </div>
             </div>
           </div>
           <div class="card accordion-item">
             <h2 class="accordion-header" id="headingTwo">
-              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">Do I need to purchase a license for each website?</button>
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">Bagaimana cara mahasiswa mendaftar dan membuat profil di sistem?</button>
             </h2>
             <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-              <div class="accordion-body">Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies. Jelly beans candy canes carrot cake. Fruitcake chocolate chupa chups.</div>
+                <div class="accordion-body">
+                    <ol type="A">
+                        <li>Mahasiswa mengakses halaman registrasi dan melakukan pendaftaran dengan mengisi data dasar (NIM, nama, email, password).</li>
+                        <li>Setelah akun aktif, mahasiswa login ke dalam sistem.</li>
+                        <li>Mahasiswa melengkapi profil akademik dan keterampilan—termasuk bidang keahlian, sertifikasi, pengalaman, serta preferensi lokasi atau jenis magang—melalui menu “Kelola Profil”.</li>
+                    </ol>
+                </div>
             </div>
           </div>
           <div class="card accordion-item active">
             <h2 class="accordion-header" id="headingThree">
-              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">What is regular license?</button>
+              <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">Metode rekomendasi apa yang dipakai untuk mencocokkan mahasiswa dengan perusahaan mitra?</button>
             </h2>
             <div id="accordionThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                Regular license can be used for end products that do not charge users for access or service(access is free and there will be no monthly subscription fee). Single regular license can be used for single end product and end product can be used by you or your client. If you want to sell end product to multiple clients then you will need to purchase separate license for each client. The same rule applies if you want to use the same end product on multiple domains(unique setup).
-                For more info on regular license you can check official description.
+                    Sistem menggunakan <b>algoritma rekomendasi berbasis data</b> yang secara otomatis mencocokkan parameter profil mahasiswa (kompetensi, keahlian, dan preferensi) dengan kebutuhan dan kriteria yang ditentukan oleh perusahaan mitra. Dengan demikian, setiap mahasiswa akan memperoleh daftar lowongan magang yang paling relevan dengan profilnya.
               </div>
             </div>
           </div>
           <div class="card accordion-item">
             <h2 class="accordion-header" id="headingFour">
-              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">What is extended license?</button>
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">Dokumen apa saja yang harus diunggah mahasiswa saat mengajukan lamaran magang?</button>
             </h2>
             <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-              <div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis et aliquid quaerat possimus maxime! Mollitia reprehenderit neque repellat deleniti delectus architecto dolorum maxime, blanditiis earum ea, incidunt quam possimus cumque.</div>
+              <div class="accordion-body">Saat melakukan pengajuan lamaran, mahasiswa harus mengunggah dokumen pendukung berikut:</div>
+              <ul>
+                <li>Curriculum Vitae (CV)</li>
+                <li>Surat pengantar (cover letter)</li>
+                <li>Sertifikat pendukung (jika ada)</li>
+                <li>Dokumen lain yang diminta perusahaan (misalnya portofolio)</li>
+              </ul>
             </div>
           </div>
           <div class="card accordion-item">
             <h2 class="accordion-header" id="headingFive">
-              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">Which license is applicable for SASS application?</button>
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">Bagaimana proses persetujuan atau penolakan pengajuan magang di sistem?</button>
             </h2>
             <div id="accordionFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-              <div class="accordion-body">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi molestias exercitationem ab cum nemo facere voluptates veritatis quia, eveniet veniam at et repudiandae mollitia ipsam quasi labore enim architecto non!</div>
+              <div class="accordion-body">
+                <ol type="A">
+                    <li>Setelah mahasiswa mengajukan lamaran, Admin jurusan akan menerima notifikasi pengajuan tersebut di dashboard “Manajemen Kegiatan Magang”.</li>
+                    <li>Admin meninjau detail lamaran dan dokumen yang diunggah.</li>
+                    <li>Melalui sistem, Admin dapat memilih opsi “setuju” (approve) atau “tolak” (reject) untuk setiap pengajuan.</li>
+                    <li>Sistem kemudian mengirimkan notifikasi otomatis kepada mahasiswa tentang status pengajuan (diterima/ditolak), dan mahasiswa bisa memantau status ini di halaman “Status Pengajuan Magang”. </li>
+                </ol>
+              </div>
             </div>
           </div>
         </div>

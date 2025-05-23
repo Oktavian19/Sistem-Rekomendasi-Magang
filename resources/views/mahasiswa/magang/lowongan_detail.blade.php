@@ -121,6 +121,11 @@
                             </div>
                         </div>
                     </div>
+                    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}"
+                        class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
+                    </a>
+
                 </div>
             </div>
         </div>
