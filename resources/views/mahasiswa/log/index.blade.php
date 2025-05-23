@@ -8,8 +8,8 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between my-6">
                 <h4 class="mb-0">Log Magang</h4>
-                <a href="" class="btn btn-primary"
-                    onclick="modalAction('{{ url('log-kegiatan/create') }}')">+ Tambah Log</a>
+                <a href="{{ url('log-kegiatan/create') }}" class="btn btn-primary"
+                    onclick="modalAction(this.href); return false;">+ Tambah Log</a>
             </div>
 
             <div class="row">
