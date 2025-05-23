@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
             MahasiswaBidangKeahlianSeeder::class,
             LamaranSeeder::class,
             MagangSeeder::class,
-            //LogKegiatanSeeder::class,
-            //FeedbackSeeder::class,
-            //SertifikatSeeder::class,
-            //DokumenLogKegiatanSeeder::class
+            LogKegiatanSeeder::class,
+            FeedbackSeeder::class,
+            SertifikatSeeder::class,
+            DokumenLogKegiatanSeeder::class
         ]);
     }
 }
