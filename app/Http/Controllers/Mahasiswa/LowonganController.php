@@ -19,7 +19,7 @@ class LowonganController extends Controller
 
         // Filter: Keyword
         if ($request->filled('keyword')) {
-            $query->where('judul', 'like', '%' . $request->keyword . '%');
+            $query->where('nama_posisi', 'like', '%' . $request->keyword . '%');
         }
 
         // Filter: Lokasi (kota)
@@ -31,21 +31,18 @@ class LowonganController extends Controller
 
         // Filter: Bidang pekerjaan
         if ($request->filled('job_field_id')) {
-            $query->where('id_bidang_pekerjaan', $request->job_field_id);
+            $query->where('id_bidang_keahlian', $request->job_field_id);
         }
 
-        // Filter: Kuota
+        // Filter: Kuota (diubah untuk menerima single value)
         if ($request->filled('quota_range')) {
-            $query->where(function ($q) use ($request) {
-                foreach ($request->quota_range as $range) {
-                    if ($range === '51+') {
-                        $q->orWhere('kuota', '>', 50);
-                    } else {
-                        [$min, $max] = explode('-', $range);
-                        $q->orWhereBetween('kuota', [(int) $min, (int) $max]);
-                    }
-                }
-            });
+            $range = $request->quota_range;
+            if ($range === '51+') {
+                $query->where('kuota', '>', 50);
+            } else {
+                [$min, $max] = explode('-', $range);
+                $query->whereBetween('kuota', [(int) $min, (int) $max]);
+            }
         }
 
         // Sorting
@@ -81,16 +78,7 @@ class LowonganController extends Controller
         // Ambil bidang pekerjaan untuk filter
         $bidangKeahlians = BidangKeahlian::all();
 
-        // Untuk kebutuhan tampilan filter (optional)
-        $filters = [
-            'keyword' => $request->keyword,
-            'lokasi' => $request->lokasi,
-            'job_field_id' => $request->job_field_id,
-            'quota_range' => $request->quota_range,
-            'sort' => $request->sort,
-        ];
-
-        return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians', 'filters'));
+        return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
 
     public function show($id)

@@ -28,25 +28,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-xl-3 mb-4">
-                    <div class="card mb-4 py-5">
-                        <div class="card-header d-flex d-lg-none">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex d-lg-none align-items-center">
                             <div class="fw-bold">Filter</div>
-                            <button class="btn btn-sm ms-auto"><i class="bi bi-sliders"></i></button>
+                            <button class="btn btn-sm ms-auto" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+                                <i class="bi bi-sliders"></i>
+                            </button>
                         </div>
-                        <div class="card-body">
-                            <form method="GET" action="{{ url('lowongan/index') }}">
-                                <span class="text-black">Kata Kunci</span>
-                                <div class="mb-5 mt-2">
+                        <div class="card-body collapse d-lg-block" id="filterCollapse">
+                            <form method="GET" action="{{ url('/daftar-lowongan') }}">
+                                <span class="text-black fw-bold">Kata Kunci</span>
+                                <div class="mb-4 mt-2">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
                                         <input type="text" class="form-control" name="keyword" placeholder="Cari"
                                             value="{{ request('keyword') }}">
-
                                     </div>
                                 </div>
 
-                                <span class="mt-4 text-black">Lokasi</span>
-                                <div class="mb-5 mt-2">
+                                <span class="mt-4 text-black fw-bold">Lokasi</span>
+                                <div class="mb-4 mt-2">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
                                         <select name="lokasi" class="form-select">
@@ -61,68 +62,104 @@
                                     </div>
                                 </div>
 
-                                <span class="mt-4 text-black">Bidang Pekerjaan</span>
-                                <div class="mb-5 mt-2">
+                                <span class="mt-4 text-black fw-bold">Bidang Pekerjaan</span>
+                                <div class="mb-4 mt-2">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-folder"></i></span>
                                         <select class="form-select" name="job_field_id">
-                                            <option value="">Semua</option>
+                                            <option value="">Semua Bidang</option>
                                             @foreach ($bidangKeahlians as $bidang)
-                                                <option value="{{ $bidang->id }}"
+                                                <option value="{{ $bidang->id_bidang_keahlian }}"
                                                     {{ request('job_field_id') == $bidang->id_bidang_keahlian ? 'selected' : '' }}>
                                                     {{ $bidang->nama_bidang }}
                                                 </option>
                                             @endforeach
                                         </select>
-
                                     </div>
                                 </div>
 
-                                <span class="mt-5 text-black">Kuota</span>
-                                <div class="list-group mt-2">
-                                    <label class="list-group-item d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]"
-                                            value="1-5"
-                                            {{ in_array('1-5', request('quota_range', [])) ? 'checked' : '' }}>
-                                        1–5 orang
-                                    </label>
-                                    <label class="list-group-item d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]"
-                                            value="6-10"
-                                            {{ in_array('6-10', request('quota_range', [])) ? 'checked' : '' }}>
-
-                                        6–10 orang
-                                    </label>
-                                    <label class="list-group-item d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]"
-                                            value="11-20"
-                                            {{ in_array('11-20', request('quota_range', [])) ? 'checked' : '' }}>
-
-                                        11–20 orang
-                                    </label>
-                                    <label class="list-group-item d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]"
-                                            value="21-50"
-                                            {{ in_array('21-50', request('quota_range', [])) ? 'checked' : '' }}>
-
-                                        21–50 orang
-                                    </label>
-                                    <label class="list-group-item d-flex align-items-center">
-                                        <input type="checkbox" class="form-check-input me-2" name="quota_range[]"
-                                            value="51+"
-                                            {{ in_array('51+', request('quota_range', [])) ? 'checked' : '' }}>
-                                        >50 orang
-                                    </label>
+                                <span class="mt-4 text-black fw-bold">Kuota</span>
+                                <div class="mb-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="quota_range" value="1-5"
+                                            id="quota1-5" {{ request('quota_range') == '1-5' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="quota1-5">
+                                            1–5 orang
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="quota_range" value="6-10"
+                                            id="quota6-10" {{ request('quota_range') == '6-10' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="quota6-10">
+                                            6–10 orang
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="quota_range" value="11-20"
+                                            id="quota11-20" {{ request('quota_range') == '11-20' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="quota11-20">
+                                            11–20 orang
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="quota_range" value="21-50"
+                                            id="quota21-50" {{ request('quota_range') == '21-50' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="quota21-50">
+                                            21–50 orang
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="quota_range" value="51+"
+                                            id="quota51plus" {{ request('quota_range') == '51+' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="quota51plus">
+                                            >50 orang
+                                        </label>
+                                    </div>
                                 </div>
 
-
-                                <button type="submit" class="btn btn-primary w-100 mt-4">Filter</button>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                                    <a href="{{ url('/daftar-lowongan') }}" class="btn btn-outline-secondary me-md-2">
+                                        Reset Filter
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        Terapkan Filter
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-8 col-xl-9">
+                    @if (request()->has('keyword') ||
+                            request()->has('lokasi') ||
+                            request()->has('job_field_id') ||
+                            request()->has('quota_range'))
+                        <div class="alert alert-info mb-4">
+                            Menampilkan hasil filter:
+                            <ul class="mb-0">
+                                @if (request('keyword'))
+                                    <li>Kata kunci: "{{ request('keyword') }}"</li>
+                                @endif
+                                @if (request('lokasi'))
+                                    <li>Lokasi: {{ request('lokasi') }}</li>
+                                @endif
+                                @if (request('job_field_id'))
+                                    @php
+                                        $selectedField = $bidangKeahlians->firstWhere(
+                                            'id_bidang_keahlian',
+                                            request('job_field_id'),
+                                        );
+                                    @endphp
+                                    <li>Bidang: {{ $selectedField->nama_bidang ?? '' }}</li>
+                                @endif
+                                @if (request('quota_range'))
+                                    <li>Kuota: {{ request('quota_range') }}</li>
+                                @endif
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="row">
                         @forelse ($lowongans as $lowongan)
                             <div class="col-md-6 mb-4">
@@ -138,7 +175,7 @@
                                                         class="bi bi-building me-1"></i>{{ $lowongan->perusahaan->nama_perusahaan ?? '-' }}
                                                 </p>
                                                 <p class="card-text text-muted small">
-                                                    <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->lokasi }}
+                                                    <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->perusahaan->alamat }}
                                                     <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: {{ $lowongan->kuota }}
                                                     orang
                                                 </p>
@@ -151,11 +188,22 @@
                                             </p>
                                         </div>
                                     </div>
+                                    <div class="card-footer bg-transparent">
+                                        <a href="{{ url('daftar-lowongan', $lowongan->id_lowongan) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            Lihat Detail
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         @empty
                             <div class="col-12">
-                                <p class="text-muted">Tidak ada lowongan ditemukan.</p>
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-circle me-2"></i>
+                                    Tidak ada lowongan yang sesuai dengan kriteria filter Anda.
+                                    <a href="{{ url('/daftar-lowongan') }}" class="alert-link">Reset filter</a> untuk
+                                    melihat semua lowongan.
+                                </div>
                             </div>
                         @endforelse
                     </div>
@@ -163,7 +211,7 @@
                     <!-- Pagination -->
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-center mt-4">
-                            {{ $lowongans->links() }}
+                            {{ $lowongans->appends(request()->query())->links() }}
                         </ul>
                     </nav>
                 </div>
@@ -173,11 +221,28 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.getElementById('sort').addEventListener('change', function () {
-        const url = new URL(window.location.href);
-        url.searchParams.set('sort', this.value);
-        window.location.href = url.toString();
-    });
-</script>
+    <script>
+        document.getElementById('sort').addEventListener('change', function() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', this.value);
+            window.location.href = url.toString();
+        });
+
+        // Untuk tampilan mobile, buka filter secara default jika ada filter aktif
+        document.addEventListener('DOMContentLoaded', function() {
+            const hasActiveFilters = @json(request()->has('keyword') ||
+                    request()->has('lokasi') ||
+                    request()->has('job_field_id') ||
+                    request()->has('quota_range'));
+
+            if (hasActiveFilters && window.innerWidth < 992) {
+                const collapseElement = document.getElementById('filterCollapse');
+                if (collapseElement) {
+                    new bootstrap.Collapse(collapseElement, {
+                        toggle: true
+                    });
+                }
+            }
+        });
+    </script>
 @endpush

@@ -9,6 +9,7 @@ use App\Models\Magang;
 use App\Models\PeriodeMagang;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\Auth;
 
 class MagangController extends Controller
 {
@@ -54,5 +55,17 @@ class MagangController extends Controller
         $feedbacks = Feedback::with(['user', 'magang.lamaran.mahasiswa'])->get();
 
         return view('magang.feedback', compact('feedbacks'));
+    }
+
+    public function historyMagang() {
+
+        $userId = Auth::id();
+
+        $lamarans = Lamaran::with('lowongan.perusahaan', 'magang')
+            ->where('id_mahasiswa', $userId)
+            ->latest('tanggal_lamaran')
+            ->get();
+
+        return view('mahasiswa.magang.history_magang', compact('lamarans'));
     }
 }

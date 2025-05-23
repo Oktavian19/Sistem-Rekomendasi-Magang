@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Mahasiswa;
 use App\Models\Magang;
 use App\Models\DosenPembimbing;
+use App\Models\Lamaran;
 
 class DashboardController extends Controller
 {
@@ -20,6 +21,12 @@ class DashboardController extends Controller
             'aktif'   => Magang::where('status_magang', 'aktif')->count(),
             'selesai' => Magang::where('status_magang', 'selesai')->count(),
             'belum'   => Magang::where('status_magang', 'belum')->count(),
+        ];
+
+        $statusLamaran = [
+            'menunggu'   => Lamaran::where('status_lamaran', 'menunggu')->count(),
+            'diterima' => Lamaran::where('status_lamaran', 'diterima')->count(),
+            'ditolak'   => Lamaran::where('status_lamaran', 'ditolak')->count(),
         ];
 
         // 3. Jumlah Dosen Pembimbing
@@ -69,6 +76,7 @@ class DashboardController extends Controller
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
             'statusMagang',
+            'statusLamaran',
             'jumlahDosen',
             'rasioDosenMahasiswa',
             'trenBidangIndustri',
