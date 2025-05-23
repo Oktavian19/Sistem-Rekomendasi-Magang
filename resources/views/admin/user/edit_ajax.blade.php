@@ -132,5 +132,69 @@
     document.getElementById('no_hp').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+    (document).ready(function () {
+    $("#form-edit").validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 3
+            },
+            password: {
+                minlength: 6
+            },
+            nama: {
+                required: true,
+                maxlength: 100
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            no_hp: {
+                required: true,
+                digits: true,
+                maxlength: 20
+            },
+            nim: {
+                required: function () {
+                    return $("#edit_role").val() === "mahasiswa";
+                }
+            },
+            id_program_studi: {
+                required: function () {
+                    return $("#edit_role").val() === "mahasiswa";
+                }
+            },
+            nidn: {
+                required: function () {
+                    return $("#edit_role").val() === "dosen_pembimbing";
+                }
+            },
+            bidang_minat: {
+                required: function () {
+                    return $("#edit_role").val() === "dosen_pembimbing";
+                }
+            }
+        },
+        messages: {
+            username: "Username minimal 3 karakter",
+            password: "Minimal 6 karakter jika ingin diubah",
+            nama: "Nama wajib diisi",
+            email: "Email tidak valid",
+            no_hp: {
+                required: "Nomor HP wajib diisi",
+                digits: "Hanya boleh angka"
+            },
+            nim: "NIM wajib untuk mahasiswa",
+            id_program_studi: "Program studi wajib untuk mahasiswa",
+            nidn: "NIDN wajib untuk dosen pembimbing",
+            bidang_minat: "Bidang minat wajib untuk dosen pembimbing"
+        },
+        errorPlacement: function (error, element) {
+            let id = element.attr("id");
+            $("#error-" + id).html(error);
+        },
+    });
+});
     </script>
 </form>

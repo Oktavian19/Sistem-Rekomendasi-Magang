@@ -77,4 +77,105 @@
             </div>
         </div>
     </div>
+    <script>
+$(document).ready(function () {
+    // Tambahkan method untuk membandingkan tanggal tutup >= tanggal buka
+    $.validator.addMethod("greaterThanOrEqual", function (value, element, param) {
+        let startDate = $(param).val();
+        if (!value || !startDate) return true;
+        return new Date(value) >= new Date(startDate);
+    }, "Tanggal tutup harus setelah atau sama dengan tanggal buka.");
+
+    $("#form-edit").validate({
+        rules: {
+            id_perusahaan: {
+                required: true
+            },
+            nama_posisi: {
+                required: true,
+                maxlength: 100
+            },
+            deskripsi: {
+                required: true,
+                maxlength: 1000
+            },
+            kategori_keahlian: {
+                required: true,
+                maxlength: 100
+            },
+            kuota: {
+                required: true,
+                digits: true,
+                min: 1
+            },
+            persyaratan: {
+                required: true,
+                maxlength: 1000
+            },
+            tanggal_buka: {
+                required: true,
+                date: true
+            },
+            tanggal_tutup: {
+                required: true,
+                date: true,
+                greaterThanOrEqual: "#tanggal_buka"
+            },
+            durasi_magang: {
+                required: true,
+                maxlength: 50
+            }
+        },
+        messages: {
+            id_perusahaan: {
+                required: "Silakan pilih perusahaan."
+            },
+            nama_posisi: {
+                required: "Nama posisi wajib diisi.",
+                maxlength: "Maksimal 100 karakter."
+            },
+            deskripsi: {
+                required: "Deskripsi wajib diisi.",
+                maxlength: "Maksimal 1000 karakter."
+            },
+            kategori_keahlian: {
+                required: "Kategori keahlian wajib diisi.",
+                maxlength: "Maksimal 100 karakter."
+            },
+            kuota: {
+                required: "Kuota wajib diisi.",
+                digits: "Kuota harus berupa angka.",
+                min: "Minimal 1 kuota."
+            },
+            persyaratan: {
+                required: "Persyaratan wajib diisi.",
+                maxlength: "Maksimal 1000 karakter."
+            },
+            tanggal_buka: {
+                required: "Tanggal buka wajib diisi.",
+                date: "Format tanggal tidak valid."
+            },
+            tanggal_tutup: {
+                required: "Tanggal tutup wajib diisi.",
+                date: "Format tanggal tidak valid.",
+                greaterThanOrEqual: "Tanggal tutup harus setelah atau sama dengan tanggal buka."
+            },
+            durasi_magang: {
+                required: "Durasi magang wajib diisi.",
+                maxlength: "Maksimal 50 karakter."
+            }
+        },
+        errorPlacement: function (error, element) {
+            let id = element.attr('id');
+            $('#error-' + id).html(error);
+        },
+        highlight: function (element) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+});
+</script>
 </form>
