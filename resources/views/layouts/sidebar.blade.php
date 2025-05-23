@@ -19,7 +19,7 @@
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
       <a href="{{ 
           auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
-          (auth()->user()->role === 'dosen' ? url('dashboard-dosen') : 
+          (auth()->user()->role === 'dosen_pembimbing' ? url('dashboard-dosen') : 
           (auth()->user()->role === 'admin' ? url('dashboard-admin') : url('dashboard'))) 
         }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
