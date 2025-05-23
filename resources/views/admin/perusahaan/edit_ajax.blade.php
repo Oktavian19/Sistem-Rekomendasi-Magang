@@ -112,11 +112,15 @@
                 filesize: "Ukuran logo maksimal 2MB."
             }
         },
-        errorPlacement: function(error, element) {
-            $('#error-' + element.attr('id')).html(error);
+        errorPlacement: function (error, element) {
+            let id = element.attr("id");
+            $("#error-" + id).html(error);
         },
-        submitHandler: function(form) {
-            form.submit();
+        highlight: function (element) {
+            $(element).addClass("is-invalid");
+        },
+        unhighlight: function (element) {
+            $(element).removeClass("is-invalid");
         }
     });
 
