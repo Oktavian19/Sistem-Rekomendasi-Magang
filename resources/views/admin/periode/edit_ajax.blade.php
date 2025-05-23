@@ -34,4 +34,57 @@
             </div>
         </div>
     </div>
+    <script>
+    $(document).ready(function () {
+    $("#form-edit").validate({
+        rules: {
+            nama_periode: {
+                required: true,
+                maxlength: 100
+            },
+            tanggal_mulai: {
+                required: true,
+                date: true
+            },
+            tanggal_selesai: {
+                required: true,
+                date: true,
+                greaterThanOrEqual: "#tanggal_mulai"
+            }
+        },
+        messages: {
+            nama_periode: {
+                required: "Nama periode wajib diisi.",
+                maxlength: "Nama periode maksimal 100 karakter."
+            },
+            tanggal_mulai: {
+                required: "Tanggal mulai wajib diisi.",
+                date: "Format tanggal mulai tidak valid."
+            },
+            tanggal_selesai: {
+                required: "Tanggal selesai wajib diisi.",
+                date: "Format tanggal selesai tidak valid.",
+                greaterThanOrEqual: "Tanggal selesai harus setelah atau sama dengan tanggal mulai."
+            }
+        },
+        errorPlacement: function (error, element) {
+            let id = element.attr('id');
+            $('#error-' + id).html(error);
+        },
+        highlight: function (element) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).removeClass('is-invalid');
+        }        
+    });
+    
+    // Custom method untuk validasi tanggal_selesai >= tanggal_mulai
+    $.validator.addMethod("greaterThanOrEqual", function (value, element, param) {
+        let startDate = $(param).val();
+        if (!value || !startDate) return true;
+        return new Date(value) >= new Date(startDate);
+    }, "Tanggal harus lebih besar atau sama dengan tanggal mulai.");
+});        
+    </script>
 </form>

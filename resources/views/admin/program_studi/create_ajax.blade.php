@@ -26,4 +26,40 @@
             </div>
         </div>
     </div>
+    <script>
+    $(document).ready(function () {
+    $("#form-tambah").validate({
+        rules: {
+            kode_program_studi: {
+                required: true,
+                maxlength: 10
+            },
+            nama_program_studi: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        messages: {
+            kode_program_studi: {
+                required: "Kode program studi wajib diisi wajib diisi.",
+                maxlength: "Maksimal 10 karakter."
+            },
+            nama_program_studi: {
+                required: "Nama program studi wajib diisi wajib diisi.",
+                maxlength: "Maksimal 100 karakter."
+            }
+        },
+        errorPlacement: function (error, element) {
+            let id = element.attr('id');
+            $('#error-' + id).html(error);
+        },
+        highlight: function (element) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).removeClass('is-invalid');
+        }        
+    });
+});        
+    </script>
 </form>

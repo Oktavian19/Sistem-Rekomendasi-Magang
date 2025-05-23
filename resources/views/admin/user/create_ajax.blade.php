@@ -95,5 +95,74 @@
     document.getElementById('no_hp').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+    $(document).ready(function () {
+    $("#form-tambah").validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 3
+            },
+            password: {
+                required: true,
+                minlength: 6
+            },
+            role: {
+                required: true
+            },
+            nama: {
+                required: true,
+                maxlength: 100
+            },
+            no_hp: {
+                required: true,
+                maxlength: 20,
+                digits: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            nim: {
+                required: function () {
+                    return $("#role").val() === "mahasiswa";
+                }
+            },
+            id_program_studi: {
+                required: function () {
+                    return $("#role").val() === "mahasiswa";
+                }
+            },
+            nidn: {
+                required: function () {
+                    return $("#role").val() === "dosen_pembimbing";
+                }
+            },
+            bidang_minat: {
+                required: function () {
+                    return $("#role").val() === "dosen_pembimbing";
+                }
+            }
+        },
+        messages: {
+            username: "Username minimal 3 karakter",
+            password: "Password minimal 6 karakter",
+            role: "Role harus dipilih",
+            nama: "Nama wajib diisi",
+            no_hp: {
+                required: "Nomor HP wajib diisi",
+                digits: "Nomor HP hanya boleh angka"
+            },
+            email: "Masukkan email yang valid",
+            nim: "NIM wajib diisi untuk mahasiswa",
+            id_program_studi: "Program studi wajib dipilih untuk mahasiswa",
+            nidn: "NIDN wajib diisi untuk dosen pembimbing",
+            bidang_minat: "Bidang minat wajib diisi untuk dosen pembimbing"
+        },
+        errorPlacement: function (error, element) {
+            const id = element.attr("id");
+            $("#error-" + id).html(error);
+        }
+    });
+});
     </script>
 </form>

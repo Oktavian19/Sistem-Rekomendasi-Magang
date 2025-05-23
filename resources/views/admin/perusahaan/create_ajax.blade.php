@@ -48,5 +48,78 @@
     document.getElementById('telepon').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+    $(document).ready(function () {
+    $("#form-tambah").validate({
+        rules: {
+            nama_perusahaan: {
+                required: true,
+                maxlength: 100
+            },
+            bidang_industri: {
+                required: true,
+                maxlength: 100
+            },
+            alamat: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true,
+                maxlength: 100
+            },
+            telepon: {
+                required: true,
+                maxlength: 20,
+                digits: true
+            },
+            logo: {
+                required: false,
+                extension: "jpg|jpeg|png",
+                filesize: 2048000
+            }
+        },
+        messages: {
+            nama_perusahaan: {
+                required: "Nama perusahaan wajib diisi.",
+                maxlength: "Maksimal 100 karakter."
+            },
+            bidang_industri: {
+                required: "Bidang industri wajib diisi.",
+                maxlength: "Maksimal 100 karakter."
+            },
+            alamat: {
+                required: "Alamat wajib diisi."
+            },
+            email: {
+                required: "Email wajib diisi.",
+                email: "Format email tidak valid.",
+                maxlength: "Maksimal 100 karakter."
+            },
+            telepon: {
+                required: "Telepon wajib diisi.",
+                maxlength: "Maksimal 20 digit.",
+                digits: "Hanya angka yang diperbolehkan."
+            },
+            logo: {
+                extension: "Hanya file jpg, jpeg, atau png.",
+                filesize: "Ukuran maksimal 2MB."
+            }
+        },
+        errorPlacement: function(error, element) {
+            $('#error-' + element.attr('name')).html(error);
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+
+   // Custom rule: file size
+    $.validator.addMethod("filesize", function (value, element, param) {
+        if (element.files.length === 0) {
+            return true;
+        }
+        return element.files[0].size <= param;
+    }, "File terlalu besar.");
+});
     </script>
 </form>
