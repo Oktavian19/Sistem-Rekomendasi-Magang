@@ -20,7 +20,15 @@ class LamaranController extends Controller
 
     public function show($id)
     {
-        $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan'])->findOrFail($id);
+        $lamaran = Lamaran::with([
+            'mahasiswa.user',
+            'mahasiswa.programStudi',
+            'lowongan.perusahaan'
+        ])->findOrFail($id);
+
+        if(request()->ajax()) {
+            return view('admin.lamaran._detail', compact('lamaran'))->render();
+        }
 
         return view('admin.lamaran.show', compact('lamaran'));
     }
@@ -34,6 +42,13 @@ class LamaranController extends Controller
         $lamaran = Lamaran::findOrFail($id);
         $lamaran->status_lamaran = $request->status_lamaran;
         $lamaran->save();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Status lamaran berhasil diperbarui.'
+            ]);
+        }    
 
         return redirect()->back()->with('success', 'Status lamaran berhasil diperbarui.');
     }
