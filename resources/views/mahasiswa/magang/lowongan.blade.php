@@ -134,11 +134,10 @@
                                             <div>
                                                 <h5 class="card-title mb-1">{{ $lowongan->nama_posisi }}</h5>
                                                 <p class="card-text text-muted small mb-1">
-                                                    <i
-                                                        class="bi bi-building me-1"></i>{{ $lowongan->perusahaan->nama_perusahaan ?? '-' }}
+                                                    <i class="bi bi-building me-1"></i>{{ $lowongan->perusahaan->nama_perusahaan ?? '-' }}
                                                 </p>
                                                 <p class="card-text text-muted small">
-                                                    <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->lokasi }}
+                                                    <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->perusahaan->alamat }}
                                                     <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: {{ $lowongan->kuota }}
                                                     orang
                                                 </p>
