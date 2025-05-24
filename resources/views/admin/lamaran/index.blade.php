@@ -32,7 +32,7 @@
                                                     {{ $item->mahasiswa->nama }}
                                                 </a>
                                             </h6>
-                                            <small class="text-muted">NIM: {{ $item->mahasiswa->nim }}</small>
+                                            <small class="text-muted">{{ $item->mahasiswa->nim }}</small>
                                         </div>
                                     </div>
                                 </td>
@@ -49,9 +49,9 @@
                                         onclick="showDetailModal({{ $item->id_lamaran }}, 'lamaran')">
                                         <span
                                             class="badge 
-                                @if ($item->status_lamaran == 'diterima') bg-label-success 
-                                @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
-                                @else bg-label-warning @endif">
+                                            @if ($item->status_lamaran == 'diterima') bg-label-success 
+                                            @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
+                                            @else bg-label-warning @endif">
                                             {{ ucfirst($item->status_lamaran) }}
                                         </span>
                                     </a>
@@ -68,7 +68,7 @@
                                                 <option value="">-- Pilih Dosen --</option>
                                                 @foreach ($dosenList as $dosen)
                                                     <option value="{{ $dosen->id_dosen_pembimbing }}"
-                                                        {{ $item->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
+                                                        {{ optional($item->magang)->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
                                                         {{ $dosen->nama }}
                                                     </option>
                                                 @endforeach
@@ -80,10 +80,10 @@
                                         <button type="button" id="setujuiBtn-{{ $item->id_lamaran }}"
                                             onclick="handleStatusForm(this.form, 'menyetujui')"
                                             class="btn btn-sm btn-success"
-                                            {{ empty($item->id_dosen_pembimbing) ? 'disabled' : '' }}>
+                                            {{ empty(optional($item->magang)->id_dosen_pembimbing) ? 'disabled' : '' }}>
                                             <i class="bx bx-check"></i> Setujui
                                         </button>
-                                        </form> <!-- Penutup form pertama -->
+                                        </form>
 
                                         <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}"
                                             method="POST" class="d-inline">
@@ -103,15 +103,7 @@
                                         <span class="text-muted">Belum ada dosen</span>
                                     @endif
                                 @else
-                                    <select name="id_dosen_pembimbing" class="form-select form-select-sm" disabled>
-                                        <option value="">-- Pilih Dosen --</option>
-                                        @foreach ($dosenList as $dosen)
-                                            <option value="{{ $dosen->id_dosen_pembimbing }}"
-                                                {{ $item->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
-                                                {{ $dosen->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <span class="text-muted">-</span>
                         @endif
                         </td>
                         </tr>
@@ -173,7 +165,6 @@
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                // Reload halaman setelah alert ditutup
                                 location.reload();
                             });
                         },
@@ -197,13 +188,13 @@
 
         function showDetailModal(id, detail) {
             $('#modalBodyContent').html(`
-            <div class="text-center py-4">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Memuat data...</p>
                 </div>
-                <p>Memuat data...</p>
-            </div>
-        `);
+            `);
 
             $('#detailModal').modal('show');
 
@@ -211,10 +202,10 @@
                 $('#modalBodyContent').html(data);
             }).fail(function() {
                 $('#modalBodyContent').html(`
-                <div class="alert alert-danger">
-                    Gagal memuat data lamaran. Silakan coba lagi.
-                </div>
-            `);
+                    <div class="alert alert-danger">
+                        Gagal memuat data lamaran. Silakan coba lagi.
+                    </div>
+                `);
             });
         }
     </script>
