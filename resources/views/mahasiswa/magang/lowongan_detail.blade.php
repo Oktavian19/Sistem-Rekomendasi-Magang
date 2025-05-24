@@ -20,8 +20,11 @@
                         </div>
                         <div class="col-auto">
                             <div class="d-flex align-items-center mt-3">
-                                <button type="submit" class="btn btn-primary ms-2 rounded-pill"
-                                    data-bs-toggle="modal">Daftar</button>
+                                <form action="{{ url('lowongan/' . $lowongan->id_lowongan . '/daftar') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill">Daftar</button>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -131,3 +134,9 @@
         </div>
     </section>
 @endsection
+@if (session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+@if (session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
