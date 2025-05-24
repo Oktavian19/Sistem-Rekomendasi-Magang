@@ -15,7 +15,7 @@ class LamaranController extends Controller
     public function index()
     {
         // Tampilkan semua lamaran, lengkap dengan relasi mahasiswa dan lowongan
-        $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan'])->latest()->get();
+        $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan', 'magang.dosenPembimbing'])->latest()->get();
         
         // Ambil data dosen untuk dropdown
         $dosenList = DosenPembimbing::orderBy('nama')->get();
