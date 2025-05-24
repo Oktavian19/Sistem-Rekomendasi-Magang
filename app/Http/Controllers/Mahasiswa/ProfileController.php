@@ -11,6 +11,7 @@ use App\Models\Dokumen;
 use App\Models\ProgramStudi;
 use App\Models\BidangKeahlian;
 use App\Models\DosenPembimbing;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -39,6 +40,14 @@ class ProfileController extends Controller
             }
 
             return view('dosen.profile.index', compact('dosen'));
+        } else if ($role == 'admin') {
+            $admin = Admin::where('id_admin', $userId)->first();
+
+            if (!$admin) {
+                abort(404, 'Admin tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('admin.profile.index', compact('admin'));
         }
     }
 
