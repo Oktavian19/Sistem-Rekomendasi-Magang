@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('nama_periode', 100);
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
+            $table->enum('status', ['aktif', 'non-aktif'])->default('aktif');
             $table->timestamps();
         });
     }
