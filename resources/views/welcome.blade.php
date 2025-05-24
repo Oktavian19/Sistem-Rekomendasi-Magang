@@ -208,7 +208,7 @@
             <div class="col-lg-4">
                 <div class="card border h-100 shadow-sm">
                     <div class="card-body d-flex">
-                        <img src="{{ $lowongan->perusahaan->logo_url ?? 'https://via.placeholder.com/60' }}" 
+                        <img src="{{ $lowongan->perusahaan->path_logo ?? 'https://via.placeholder.com/60' }}" 
                              alt="Logo {{ $lowongan->perusahaan->nama_perusahaan }}" 
                              class="me-3 rounded" 
                              style="width: 60px; height: 60px; object-fit: cover;">
