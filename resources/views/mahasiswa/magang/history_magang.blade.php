@@ -20,99 +20,25 @@
     </div> 
     <div class="col-lg-12 col-xl-12">
         <div class="row">
-            {{-- <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex mb-3">
-                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
-                            <div>
-                                <h5 class="card-title mb-1">Digital Marketing</h5>
-                                <p class="card-text text-muted small mb-1">
-                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
-                                </p>
-                                <p class="card-text text-muted small">
-                                    <i class="bi bi-geo-alt me-1"></i>Bandung
-                                </p>
-                            </div>
-                        </div>
-                        <div class="border-top pt-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="#" class="small text-warning mb-0 badge rounded-pill bg-label-warning" role="button" data-bs-toggle="modal" data-bs-target="#ratingModal">
-                                    <i class="bi bi-star me-1"></i> Beri Rating
-                                </a>
-                                
-                                <p class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
-                                    <i class="bi bi-send-check me-1"></i>Diterima
-                                </p>
-                                
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
-            <!-- Card 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex mb-3">
-                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
-                            <div>
-                                <h5 class="card-title mb-1">Software Engineer</h5>
-                                <p class="card-text text-muted small mb-1">
-                                    <i class="bi bi-building me-1"></i>PT Teknologi Hebat
-                                </p>
-                                <p class="card-text text-muted small">
-                                    <i class="bi bi-geo-alt me-1"></i>Jakarta
-                                </p>
-                            </div>
-                        </div>
-                        <div class="border-top pt-2">
-                            <div class="d-flex justify-content-end">
-                                <p class="card-text small text-danger mb-0 badge rounded-pill bg-label-danger">
-                                    <i class="bi bi-send-x me-1"></i>Ditolak
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Card 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex mb-3">
-                            <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
-                            <div>
-                                <h5 class="card-title mb-1">Digital Marketing</h5>
-                                <p class="card-text text-muted small mb-1">
-                                    <i class="bi bi-building me-1"></i>CV Media Kreatif
-                                </p>
-                                <p class="card-text text-muted small">
-                                    <i class="bi bi-geo-alt me-1"></i>Bandung
-                                </p>
-                            </div>
-                        </div>
-                        <div class="border-top pt-2">
-                            <div class="d-flex justify-content-end">
-                                <p class="card-text small text-danger mb-0 badge rounded-pill bg-label-danger">
-                                    <i class="bi bi-send-x me-1"></i>Ditolak
-                                </p>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-            </div> --}}
             @foreach($lamarans as $lamaran)
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="d-flex mb-3">
-                            <img src="{{ $lamaran->lowongan->perusahaan->logo_url ?? 'https://via.placeholder.com/60' }}" 
-                                 alt="Company Logo" 
-                                 class="rounded me-3" 
-                                 width="60" 
-                                 height="60">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $lamaran->lowongan->perusahaan->logo_url }}" 
+                                     alt="Company Logo" 
+                                     class="rounded me-3" 
+                                     width="60" 
+                                     height="60"
+                                     onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none');">
+                                
+                                <div class="d-none rounded me-3 d-flex align-items-center justify-content-center bg-light" 
+                                     style="width: 60px; height: 60px;">
+                                    <i class="bi bi-building fs-3 text-muted"></i>
+                                </div>
+                            </div>
+                            
                             <div>
                                 <h5 class="card-title mb-1">{{ $lamaran->lowongan->nama_posisi }}</h5>
                                 <p class="card-text text-muted small mb-1">
