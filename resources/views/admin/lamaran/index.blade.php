@@ -44,12 +44,15 @@
                             </span>
                         </td>
                         <td>
-                            <form class="dosen-form" action="{{ url('lamaran/' . $item->id_lamaran . '/update-dosen') }}" method="POST">
+                            @if($item->status_lamaran == 'menunggu')
+                            <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('PUT')
-                                <select name="dosen_pembimbing" class="form-select form-select-sm" 
-                                    onchange="this.form.submit()"
-                                    {{ $item->status_lamaran != 'diterima' ? 'disabled' : '' }}>
+
+                                <select name="id_dosen_pembimbing" class="form-select form-select-sm" 
+                                    onchange="toggleSetujuiButton(this, {{ $item->id_lamaran }})"
+                                    id="dosenSelect-{{ $item->id_lamaran }}"
+                                    required>
                                     <option value="">-- Pilih Dosen --</option>
                                     @foreach($dosenList as $dosen)
                                         <option value="{{ $dosen->id_dosen_pembimbing }}" 
@@ -58,24 +61,21 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </form>
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
-                                    <i class="bx bx-show"></i> Detail
-                                </button>
-                                
-                                @if($item->status_lamaran == 'menunggu')
-                                    <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="status_lamaran" value="diterima">
-                                        <button type="button" onclick="handleStatusForm(this.form, 'menyetujui')" class="btn btn-sm btn-success">
-                                            <i class="bx bx-check"></i> Setujui
-                                        </button>
-                                    </form>
-
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
+                                        <i class="bx bx-show"></i> Detail
+                                    </button>
+                                    <input type="hidden" name="status_lamaran" value="diterima">
+                                    <button type="button" 
+                                    id="setujuiBtn-{{ $item->id_lamaran }}"
+                                    onclick="handleStatusForm(this.form, 'menyetujui')" 
+                                    class="btn btn-sm btn-success" 
+                                    {{ empty($item->id_dosen_pembimbing) ? 'disabled' : '' }}>
+                                        <i class="bx bx-check"></i> Setujui
+                                    </button>
+                                </form>
                                     <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('PUT')
@@ -84,6 +84,22 @@
                                             <i class="bx bx-x"></i> Tolak
                                         </button>
                                     </form>
+                                @else
+                                <select name="id_dosen_pembimbing" class="form-select form-select-sm" disabled>
+                                    <option value="">-- Pilih Dosen --</option>
+                                    @foreach($dosenList as $dosen)
+                                        <option value="{{ $dosen->id_dosen_pembimbing }}" 
+                                            {{-- {{ $item->id_dosen_pembimbing == $magang->dosen->id_dosen_pembimbing ? 'selected' : '' }}> --}}
+                                            {{ $item->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
+                                            {{ $dosen->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
+                                    <i class="bx bx-show"></i> Detail
+                                </button>
                                 @endif
                             </div>
                         </td>
@@ -162,39 +178,10 @@
         });
     }
 
-    // Handle form update dosen pembimbing
-    $(document).ready(function() {
-        $('.dosen-form').on('submit', function(e) {
-            e.preventDefault();
-            
-            const form = this;
-            const selectedDosen = $(form).find('select').val();
-            
-            $.ajax({
-                url: $(form).attr('action'),
-                type: 'POST',
-                data: $(form).serialize(),
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: 'Dosen pembimbing berhasil diperbarui',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: xhr.responseJSON?.message || 'Terjadi kesalahan saat memperbarui dosen pembimbing'
-                    }).then(() => {
-                        location.reload();
-                    });
-                }
-            });
-        });
-    });
+    function toggleSetujuiButton(selectEl, lamaranId) {
+        const btn = document.getElementById('setujuiBtn-' + lamaranId);
+        btn.disabled = !selectEl.value;
+    }
 
     function showDetailModal(id) {
         $('#modalBodyContent').html(`
