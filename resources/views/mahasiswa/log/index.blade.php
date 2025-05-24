@@ -8,8 +8,9 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between my-6">
                 <h4 class="mb-0">Log Magang</h4>
-                <a href="{{ url('log-kegiatan/create') }}" class="btn btn-primary"
-                    onclick="modalAction(this.href); return false;">+ Tambah Log</a>
+                <button class="btn btn-primary" onclick="modalAction('{{ url('log-kegiatan/create') }}')">
+                    <i class="bx bx-plus"></i> Tambah Log
+                </button>
             </div>
 
             <div class="row">
@@ -123,9 +124,25 @@
 @push('scripts')
     <script>
         function modalAction(url = '') {
-            $('#myModal').load(url, function() {
+            $('#myModal').load(url, function(response, status, xhr) {
+                if (status === "error") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Gagal Memuat',
+                        text: 'Kamu belum terdaftar magang.',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false 
+                    });
+                    return;
+                }
+
+
                 $('#myModal').modal('show');
             });
         }
+
     </script>
 @endpush

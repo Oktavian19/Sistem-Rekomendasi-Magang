@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-auto">
                             <div class="d-flex align-items-center mt-3">
-                                <button type="submit" class="btn btn-primary ms-2 rounded-pill" data-bs-target="#needLogin"
+                                <button type="submit" class="btn btn-primary ms-2 rounded-pill"
                                     data-bs-toggle="modal">Daftar</button>
                             </div>
                         </div>

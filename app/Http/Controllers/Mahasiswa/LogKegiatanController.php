@@ -30,14 +30,17 @@ class LogKegiatanController extends Controller
         $mahasiswa = Auth::user()->mahasiswa;
 
         if (!$mahasiswa || !$mahasiswa->lowongan) {
-            return redirect()->back()->with('error', 'Data lowongan tidak ditemukan.');
+            return response()->json([
+                'status' => 'error',
+            ], 422);            
         }
 
         $durasi = $mahasiswa->lowongan->durasi_magang;
-        $jumlahMinggu = $durasi * 4; // 1 bulan = 4 minggu
+        $jumlahMinggu = $durasi * 4;
 
         return view('mahasiswa.log.create', compact('jumlahMinggu'));
     }
+
 
     public function store(Request $request)
     {

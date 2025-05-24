@@ -45,8 +45,8 @@
         </div>
     </div>
     <script>
-    document.getElementById('telepon').addEventListener('input', function (e) {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
+        document.getElementById('telepon').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
     </script>
 </form>

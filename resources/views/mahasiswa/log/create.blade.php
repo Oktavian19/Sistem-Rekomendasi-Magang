@@ -1,6 +1,6 @@
 <form action="{{ route('log-kegiatan.store') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
     @csrf
-    <div id="modal-tanggal-deskripsi" class="modal-dialog modal-lg" role="document">
+    <div id="modal-log" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tambah Log Kegiatan</h5>
@@ -59,8 +59,7 @@
     </div>
 </form>
 
-@push('scripts')
-<script type="text/javascript">
+<script>
     // Image preview functionality
     document.getElementById('images').addEventListener('change', function(event) {
         const previewContainer = document.getElementById('image-preview-container');
@@ -127,4 +126,3 @@
         document.getElementById('tanggal').value = today;
     });
 </script>
-@endpush
