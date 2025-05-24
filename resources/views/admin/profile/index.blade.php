@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                    <h2 class="fw-bold">{{ $admin->nama }}</h2>
+                    <h2 class="fw-bold mt-3">{{ $admin->nama }}</h2>
                 </div>
 
                 <form>
@@ -24,14 +24,20 @@
                         <label class="form-label">
                             <i class="bi bi-envelope me-1"></i> Email
                         </label>
-                        <input type="text" class="form-control" value="{{ $admin->email }}">
+                        <input type="text" class="form-control" value="{{ $admin->email }}" disabled>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-telephone me-1"></i> No HP
                         </label>
-                        <input type="text" class="form-control" value="{{ $admin->no_hp ?? '-' }}">
+                        <input type="text" class="form-control" value="{{ $admin->no_hp ?? '-' }}" disabled>
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="bi bi-pencil-square me-1"></i> Update Profil
+                        </a>
                     </div>
                 </form>
             </div>

@@ -1,5 +1,4 @@
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
-  <div class="container-fluid">
     <div class="d-flex align-items-center ms-auto">
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -20,5 +19,4 @@
         </ul>
       </div>
     </div>
-  </div>
 </nav>

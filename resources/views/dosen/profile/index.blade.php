@@ -8,7 +8,7 @@
             <div class="card-body" style="padding-top: 8vh; padding-bottom: 8vh;">
                 <div class="d-flex flex-column align-items-center text-center mb-4">
                     @if (!empty($dosen->foto_profil))
-                        <img src="{{ $dosen->foto_profil }}" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
+                        <img src="{{ $dosen->foto_profil }}" class="rounded-circle" style="width: 100px; height: 100px;" alt="User">
                     @else
                         <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white"
                             style="width: 100px; height: 100px;">
@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                    <h2 class="fw-bold">{{ $dosen->nama }}</h2>
+                    <h2 class="fw-bold mt-3">{{ $dosen->nama }}</h2>
                 </div>
 
                 <form>
@@ -24,28 +24,34 @@
                         <label class="form-label">
                             <i class="bi bi-card-heading me-1"></i> NIDN
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->nidn }}">
+                        <input type="text" class="form-control" value="{{ $dosen->nidn }}" disabled>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-envelope me-1"></i> Email
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->email }}">
+                        <input type="text" class="form-control" value="{{ $dosen->email }}" disabled>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-telephone me-1"></i> No HP
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->no_hp ?? '-' }}">
+                        <input type="text" class="form-control" value="{{ $dosen->no_hp ?? '-' }}" disabled>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-mortarboard me-1"></i> Bidang Minat
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->bidang_minat ?? '-' }}">
+                        <input type="text" class="form-control" value="{{ $dosen->bidang_minat ?? '-' }}" disabled>
+                    </div>
+
+                    <div class="text-end mt-4">
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="bi bi-pencil-square me-1"></i> Update Profil
+                        </a>
                     </div>
                 </form>
             </div>
