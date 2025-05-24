@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Lamaran;
 use App\Models\Mahasiswa;
 use App\Models\Lowongan;
+use App\Models\DosenPembimbing; 
+use App\Models\Magang; 
 
 class LamaranController extends Controller
 {
@@ -14,8 +16,11 @@ class LamaranController extends Controller
     {
         // Tampilkan semua lamaran, lengkap dengan relasi mahasiswa dan lowongan
         $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan'])->latest()->get();
+        
+        // Ambil data dosen untuk dropdown
+        $dosenList = DosenPembimbing::orderBy('nama')->get();
 
-        return view('admin.lamaran.index', compact('lamaran'));
+        return view('admin.lamaran.index', compact('lamaran', 'dosenList'));
     }
 
     public function show($id)
@@ -23,7 +28,7 @@ class LamaranController extends Controller
         $lamaran = Lamaran::with([
             'mahasiswa.user',
             'mahasiswa.programStudi',
-            'lowongan.perusahaan'
+            'lowongan.perusahaan',
         ])->findOrFail($id);
 
         if(request()->ajax()) {
@@ -51,6 +56,22 @@ class LamaranController extends Controller
         }    
 
         return redirect()->back()->with('success', 'Status lamaran berhasil diperbarui.');
+    }
+
+    public function updateDosen(Request $request, $id)
+    {
+        Magang::where('id_lamaran', $id)->update([
+            'id_dosen_pembimbing' => $request->dosen_pembimbing,
+        ]);        
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Dosen pembimbing berhasil diperbarui.'
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Dosen pembimbing berhasil diperbarui.');
     }
 
     public function destroy($id)

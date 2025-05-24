@@ -22,10 +22,13 @@
                             <div class="d-flex align-items-center mt-3">
                                 <form action="{{ url('lowongan/' . $lowongan->id_lowongan . '/daftar') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill">Daftar</button>
+                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill" 
+                                        {{ $sudahDaftar ? 'disabled' : '' }}>
+                                        {{ $sudahDaftar ? 'Sudah Terdaftar' : 'Daftar' }}
+                                    </button>
                                 </form>
-
                             </div>
+                            
                         </div>
                     </div>
 
@@ -135,7 +138,17 @@
     </section>
 @endsection
 @if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+@push('scripts')
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#007bff',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endpush
 @endif
 @if (session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>

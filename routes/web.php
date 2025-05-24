@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}', [LamaranController::class, 'show'])->name('show');
             Route::put('{id}/status', [LamaranController::class, 'updateStatus'])->name('updateStatus');
             Route::delete('{id}', [LamaranController::class, 'destroy'])->name('destroy');
+            Route::put('{id}/update-dosen', [LamaranController::class, 'updateDosen'])->name('admin.lamaran.updateDosen');
         });
 
         // Lowongan Magang

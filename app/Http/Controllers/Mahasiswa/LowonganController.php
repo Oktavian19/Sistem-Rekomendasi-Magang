@@ -84,8 +84,16 @@ class LowonganController extends Controller
     public function show($id)
     {
         $lowongan = Lowongan::with(['perusahaan', 'bidangKeahlian'])->findOrFail($id);
-        return view('mahasiswa.magang.lowongan_detail', compact('lowongan'));
+
+        $mahasiswaId = Auth::id();
+
+        $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('id_lowongan', $id)
+            ->exists();
+
+        return view('mahasiswa.magang.lowongan_detail', compact('lowongan', 'sudahDaftar'));
     }
+
 
     public function daftarLamaran(Request $request, $id)
     {
@@ -108,6 +116,6 @@ class LowonganController extends Controller
             'dari_rekomendasi' => false,
         ]);
 
-        return back()->with('success', 'Lamaran berhasil dikirim.');
+        return redirect()->back()->with('success', 'Pendaftaran berhasil!');
     }
 }

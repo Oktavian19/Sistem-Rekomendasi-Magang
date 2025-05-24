@@ -14,9 +14,8 @@
                         <th>No</th>
                         <th>Mahasiswa</th>
                         <th>Lowongan</th>
-                        <th>Perusahaan</th>
-                        <th>Tanggal Lamar</th>
                         <th>Status</th>
+                        <th>Dosen Pembimbing</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -37,14 +36,6 @@
                             <small class="text-muted">{{ $item->lowongan->jenis_magang }} - {{ $item->lowongan->durasi_magang }}</small>
                         </td>
                         <td>
-                            @if($item->lowongan->perusahaan)
-                                {{ $item->lowongan->perusahaan->nama_perusahaan }}
-                            @else
-                                -
-                            @endif
-                        </td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_lamaran)->format('d M Y') }}</td>
-                        <td>
                             <span class="badge 
                                 @if($item->status_lamaran == 'diterima') bg-label-success 
                                 @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
@@ -53,8 +44,25 @@
                             </span>
                         </td>
                         <td>
+                            <form class="dosen-form" action="{{ url('lamaran/' . $item->id_lamaran . '/update-dosen') }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <select name="dosen_pembimbing" class="form-select form-select-sm" 
+                                    onchange="this.form.submit()"
+                                    {{ $item->status_lamaran != 'diterima' ? 'disabled' : '' }}>
+                                    <option value="">-- Pilih Dosen --</option>
+                                    @foreach($dosenList as $dosen)
+                                        <option value="{{ $dosen->id_dosen_pembimbing }}" 
+                                            {{ $item->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
+                                            {{ $dosen->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </td>
+                        <td>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-info" onclick="showDetailModal({{ $item->id_lamaran }})">
+                                <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
                                     <i class="bx bx-show"></i> Detail
                                 </button>
                                 
@@ -77,14 +85,6 @@
                                         </button>
                                     </form>
                                 @endif
-                                
-                                {{-- <form action="{{ route('admin.lamaran.destroy', $item->id_lamaran) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus?')">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form> --}}
                             </div>
                         </td>
                     </tr>
@@ -162,14 +162,40 @@
         });
     }
 
-    // Event listener untuk form setujui/tolak
+    // Handle form update dosen pembimbing
     $(document).ready(function() {
-        $('form[action*="updateStatus"]').submit(function(e) {
+        $('.dosen-form').on('submit', function(e) {
             e.preventDefault();
-            const action = $(this).find('input[name="status_lamaran"]').val() === 'diterima' ? 'menyetujui' : 'menolak';
-            handleStatusForm(this, action);
+            
+            const form = this;
+            const selectedDosen = $(form).find('select').val();
+            
+            $.ajax({
+                url: $(form).attr('action'),
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Dosen pembimbing berhasil diperbarui',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: xhr.responseJSON?.message || 'Terjadi kesalahan saat memperbarui dosen pembimbing'
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+            });
         });
     });
+
     function showDetailModal(id) {
         $('#modalBodyContent').html(`
             <div class="text-center py-4">
