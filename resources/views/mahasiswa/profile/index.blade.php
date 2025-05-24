@@ -97,7 +97,7 @@
         </div>
 
         <!-- Work Experience -->
-        <div class="card mb-4">
+        <div class="card mb-4 mt-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold mb-0">
                     Pengalaman Kerja

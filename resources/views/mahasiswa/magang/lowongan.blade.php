@@ -35,7 +35,7 @@
                                 <i class="bi bi-sliders"></i>
                             </button>
                         </div>
-                        <div class="card-body collapse d-lg-block" id="filterCollapse">
+                        <div class="card-body collapse d-lg-block pt-5" id="filterCollapse">
                             <form method="GET" action="{{ url('/daftar-lowongan') }}">
                                 <span class="text-black fw-bold">Kata Kunci</span>
                                 <div class="mb-4 mt-2">
@@ -119,10 +119,10 @@
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
                                     <a href="{{ url('/daftar-lowongan') }}" class="btn btn-outline-secondary me-md-2">
-                                        Reset Filter
+                                        Reset
                                     </a>
                                     <button type="submit" class="btn btn-primary">
-                                        Terapkan Filter
+                                        Terapkan
                                     </button>
                                 </div>
                             </form>

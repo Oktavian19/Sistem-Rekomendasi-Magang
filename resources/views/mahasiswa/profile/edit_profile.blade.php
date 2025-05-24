@@ -122,7 +122,7 @@
     </div>
 
     <div class="card mb-5 border">
-        <div class="card mb-5 border">
+        <div class="border">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="card-title">
@@ -180,10 +180,11 @@
                                         <form action="{{ url('profile/dokumen', $dokumen->id_dokumen) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
+                                            <button type="submit" class="btn btn-icon btn-light-danger btn-sm" 
+                                                    onclick="confirmDelete(event)">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+
                                         </form>
                                     </div>
                                 </div>
@@ -245,8 +246,8 @@
                                     method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus pengalaman ini?')">
+                                    <button type="submit" class="btn btn-icon btn-light-danger btn-sm" 
+                                            onclick="deleteExperience(event)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -319,27 +320,60 @@
         });
 
         function modalAction(url = '') {
-            // Get the modal element
             const modalEl = document.getElementById('myModal');
             const modalDialog = modalEl.querySelector('.modal-dialog');
 
-            // Clear previous content
             modalDialog.innerHTML = '';
 
-            // Fetch and load new content
             fetch(url)
                 .then(response => response.text())
                 .then(html => {
-                    // Insert the content
                     modalDialog.innerHTML = html;
 
-                    // Initialize Bootstrap modal
                     const modal = new bootstrap.Modal(modalEl);
                     modal.show();
                 })
                 .catch(error => {
                     console.error('Error loading modal content:', error);
                 });
+        }
+
+        function deleteExperience(event) {
+            event.preventDefault(); 
+            
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda ingin menghapus pengalaman ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.form.submit();
+                }
+            });
+        }
+
+        function confirmDelete(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Hapus Dokumen?',
+                text: "Apakah Anda yakin ingin menghapus dokumen ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Lanjutkan submit form jika dikonfirmasi
+                    event.target.closest('form').submit();
+                }
+            });
         }
     </script>
 @endpush
