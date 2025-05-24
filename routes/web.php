@@ -151,6 +151,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])->name('log-kegiatan.destroy');
 
         Route::get('riwayat-magang', [MagangController::class, 'historyMagang']);
+        Route::post('/lowongan/{id}/daftar', [LowonganController::class, 'daftarLamaran'])->name('lowongan.daftar');
     });
 
 

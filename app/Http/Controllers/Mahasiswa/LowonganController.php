@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\BidangKeahlian;
+use App\Models\Lamaran;
 use Illuminate\Http\Request;
 use App\Models\Lowongan;
-use App\Models\Provinsi;
-use App\Models\BidangPekerjaan;
+use Illuminate\Support\Facades\Auth;
 
 class LowonganController extends Controller
 {
@@ -85,5 +85,29 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::with(['perusahaan', 'bidangKeahlian'])->findOrFail($id);
         return view('mahasiswa.magang.lowongan_detail', compact('lowongan'));
+    }
+
+    public function daftarLamaran(Request $request, $id)
+    {
+        $mahasiswaId = Auth::id(); // Langsung pakai Auth default
+
+        // Cek apakah sudah pernah mendaftar
+        $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('id_lowongan', $id)
+            ->exists();
+
+        if ($sudahDaftar) {
+            return back()->with('error', 'Anda sudah mendaftar pada lowongan ini.');
+        }
+
+        Lamaran::create([
+            'id_mahasiswa'     => $mahasiswaId,
+            'id_lowongan'      => $id,
+            'tanggal_lamaran'  => now(),
+            'status_lamaran'   => 'Menunggu',
+            'dari_rekomendasi' => false,
+        ]);
+
+        return back()->with('success', 'Lamaran berhasil dikirim.');
     }
 }
