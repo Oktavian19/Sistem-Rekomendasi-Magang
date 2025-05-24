@@ -70,24 +70,12 @@
             <!-- Menu -->
             <div class="d-none d-lg-flex gap-9">
               <a class="nav-link text-dark" style="font-size: 1rem" href="#">Home</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="{{ url('daftar-lowongan') }}">Lowongan</a>
-              {{-- <a class="nav-link text-dark" style="font-size: 1rem" href="#">Virtual Internship</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Mentor Class</a> --}}
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Perusahaan</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Tentang</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Bidang Keahlian</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Lowongan Terbaru</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Fitur Kami</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">FAQ</a>
             </div>
-        
-            <!-- Profile -->
-            {{-- <div class="dropdown">
-              <a href="#" class="d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="path/to/user.jpg" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
-                <i class="bx bx-chevron-down ms-1"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="#">Profil</a></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-              </ul>
-            </div> --}}
+
             <a href="{{ url('/login') }}" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
         
           </div>
@@ -129,7 +117,7 @@
           <div class="row g-4 mt-5">
               <!-- Card Item -->
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=2" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2Fd3d019d1-8bbe-47ff-b8c8-9ead895744c1.png');"></div>
                           <div class="category-title">Programming & Software Development</div>
@@ -138,7 +126,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=16" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2Fdd44f13e-51df-4d33-9f2f-b389e9d91cd4.png');"></div>
                           <div class="category-title">IT Consultancy & Advisory</div>
@@ -147,7 +135,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=4" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2F6531cc18-faa3-457e-b18a-5458b410da80.png');"></div>
                           <div class="category-title">Network & Infrastructure</div>
@@ -156,7 +144,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=1" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2F2ddedfde-5022-4d8d-97ce-030d4a163abf.png');"></div>
                           <div class="category-title">Data Management System</div>
@@ -165,7 +153,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=10" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2Fd2e0eae8-0a6b-4e63-b3a4-dfcb607e38db.png');"></div>
                           <div class="category-title">IT Security & Compliance</div>
@@ -174,7 +162,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=58" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('images/icon/1.png');"></div>
                           <div class="category-title">Other</div>
@@ -183,7 +171,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=42" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2F4b0813f1-167c-41c6-bbd0-59f1ad735f8d.png');"></div>
                           <div class="category-title">Sales</div>
@@ -192,7 +180,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=37" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2F64f29e9a-269c-4ac4-a4c0-941c3c507ae7.png');"></div>
                           <div class="category-title">Administrasi</div>
@@ -201,7 +189,7 @@
               </div>
   
               <div class="col-lg-4">
-                  <a href="https://diploy.id/jobs?job_field_id=6" class="text-decoration-none text-dark">
+                  <a href="#" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('https://diploy.id/get-file?path=job-field%2Fddaa98d8-5bfe-42c3-bd5a-f90f79704288.png');"></div>
                           <div class="category-title">Information System & Technology Development</div>
@@ -308,7 +296,7 @@
     </div>
   </div>
 </div>
-<div class="container" style="background-color: #9EC6F3; margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
     <h4 class="text-center mb-1">
       Soal sering
       <span class="position-relative fw-extrabold z-1"
@@ -428,8 +416,8 @@
         </div>
 
         <div class="container footer-bottom">
-            <div class="copyright">
-                &copy; <span id="current-year">2024</span> <strong><span>STARS</span></strong>. All Rights Reserved
+            <div class="copyright text-white">
+                &copy; <span id="current-year">2024</span> <strong><span>SIMAGANG</span></strong>. All Rights Reserved
             </div>
         </div>
     </footer>
