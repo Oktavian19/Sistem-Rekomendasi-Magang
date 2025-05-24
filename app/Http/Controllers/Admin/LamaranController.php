@@ -23,7 +23,7 @@ class LamaranController extends Controller
         return view('admin.lamaran.index', compact('lamaran', 'dosenList'));
     }
 
-    public function show($id)
+    public function show($id, $detail)
     {
         $lamaran = Lamaran::with([
             'mahasiswa.user',
@@ -31,8 +31,19 @@ class LamaranController extends Controller
             'lowongan.perusahaan',
         ])->findOrFail($id);
 
-        if(request()->ajax()) {
-            return view('admin.lamaran._detail', compact('lamaran'))->render();
+        $allowed = [
+            'mahasiswa'  => 'admin.lamaran._detail_mahasiswa',
+            'lowongan'   => 'admin.lamaran._detail_lowongan',
+            'lamaran'     => 'admin.lamaran._detail_lamaran',
+        ];
+
+        if (! array_key_exists($detail, $allowed)) {
+            abort(404);
+        }
+        $partialView = $allowed[$detail];
+
+        if (request()->ajax()) {
+            return view($partialView, compact('lamaran'))->render();
         }
 
         return view('admin.lamaran.show', compact('lamaran'));

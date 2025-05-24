@@ -26,22 +26,33 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="ms-3">
-                                    <h6 class="mb-0">{{ $item->mahasiswa->nama }}</h6>
+                                    <h6 class="mb-0">
+                                        <a href="javascript:void(0)"
+                                            onclick="showDetailModal({{ $item->id_lamaran }}, 'mahasiswa')">
+                                            {{ $item->mahasiswa->nama }}
+                                        </a>
+                                    </h6>
                                     <small class="text-muted">NIM: {{ $item->mahasiswa->nim }}</small>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <strong>{{ $item->lowongan->nama_posisi }}</strong><br>
+                            <a href="javascript:void(0)"
+                                onclick="showDetailModal({{ $item->id_lamaran }}, 'lowongan')">
+                                <strong>{{ $item->lowongan->nama_posisi }}</strong><br>
+                            </a>
                             <small class="text-muted">{{ $item->lowongan->jenis_magang }} - {{ $item->lowongan->durasi_magang }}</small>
                         </td>
                         <td>
-                            <span class="badge 
+                            <a href="javascript:void(0)"
+                                onclick="showDetailModal({{ $item->id_lamaran }}, 'lamaran')">
+                                <span class="badge 
                                 @if($item->status_lamaran == 'diterima') bg-label-success 
                                 @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
                                 @else bg-label-warning @endif">
                                 {{ ucfirst($item->status_lamaran) }}
                             </span>
+                            </a>
                         </td>
                         <td>
                             @if($item->status_lamaran == 'menunggu')
@@ -64,9 +75,6 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
-                                        <i class="bx bx-show"></i> Detail
-                                    </button>
                                     <input type="hidden" name="status_lamaran" value="diterima">
                                     <button type="button" 
                                     id="setujuiBtn-{{ $item->id_lamaran }}"
@@ -96,10 +104,6 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" onclick="showDetailModal({{ $item->id_lamaran }})">
-                                    <i class="bx bx-show"></i> Detail
-                                </button>
                                 @endif
                             </div>
                         </td>
@@ -183,7 +187,7 @@
         btn.disabled = !selectEl.value;
     }
 
-    function showDetailModal(id) {
+    function showDetailModal(id, detail) {
         $('#modalBodyContent').html(`
             <div class="text-center py-4">
                 <div class="spinner-border text-primary" role="status">
@@ -195,7 +199,7 @@
         
         $('#detailModal').modal('show');
         
-        $.get(`/lamaran/${id}`, function(data) {
+        $.get(`/lamaran/${id}/${detail}`, function(data) {
             $('#modalBodyContent').html(data);
         }).fail(function() {
             $('#modalBodyContent').html(`
