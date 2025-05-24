@@ -149,6 +149,8 @@ Route::middleware('auth')->group(function () {
         Route::get('log-kegiatan/{id}/edit', [LogKegiatanController::class, 'edit'])->name('log-kegiatan.edit');
         Route::put('log-kegiatan/{id}', [LogKegiatanController::class, 'update'])->name('log-kegiatan.update');
         Route::delete('log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])->name('log-kegiatan.destroy');
+
+        Route::get('riwayat-magang', [MagangController::class, 'historyMagang']);
     });
 
 
