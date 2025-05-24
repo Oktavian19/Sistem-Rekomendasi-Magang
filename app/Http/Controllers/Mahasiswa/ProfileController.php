@@ -10,6 +10,7 @@ use App\Models\Pengalaman;
 use App\Models\Dokumen;
 use App\Models\ProgramStudi;
 use App\Models\BidangKeahlian;
+use App\Models\DosenPembimbing;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -18,15 +19,27 @@ class ProfileController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
-            ->where('id_mahasiswa', $userId)
-            ->first();
+        $role = Auth::user()->role;
 
-        if (!$mahasiswa) {
-            abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);
+        if ($role == 'mahasiswa') {
+            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
+                ->where('id_mahasiswa', $userId)
+                ->first();
+
+            if (!$mahasiswa) {
+                abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('mahasiswa.profile.index', compact('mahasiswa'));
+        } else if ($role == 'dosen_pembimbing') {
+            $dosen = DosenPembimbing::where('id_dosen_pembimbing', $userId)->first();
+
+            if (!$dosen) {
+                abort(404, 'Dosen tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('dosen.profile.index', compact('dosen'));
         }
-
-        return view('mahasiswa.profile.index', compact('mahasiswa'));
     }
 
     public function edit()

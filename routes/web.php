@@ -26,6 +26,7 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
@@ -123,7 +124,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/daftar-lowongan/{id}', [LowonganController::class, 'show'])->name('daftar-lowongan.show');
 
         // Profile routes
-        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
