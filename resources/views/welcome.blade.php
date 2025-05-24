@@ -308,7 +308,7 @@
     </div>
   </div>
 </div>
-<div class="container" style="background-color: #9EC6F3; margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
     <h4 class="text-center mb-1">
       Soal sering
       <span class="position-relative fw-extrabold z-1"
@@ -428,8 +428,8 @@
         </div>
 
         <div class="container footer-bottom">
-            <div class="copyright">
-                &copy; <span id="current-year">2024</span> <strong><span>STARS</span></strong>. All Rights Reserved
+            <div class="copyright text-white">
+                &copy; <span id="current-year">2024</span> <strong><span>SIMAGANG</span></strong>. All Rights Reserved
             </div>
         </div>
     </footer>

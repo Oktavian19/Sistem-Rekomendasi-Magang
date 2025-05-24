@@ -306,4 +306,12 @@ class ProfileController extends Controller
     {
         return $this->downloadDokumen('CV');
     }
+
+    public function update_dosen(Request $request){
+
+    }
+
+    public function update_admin(Request $request){
+        
+    }
 }

@@ -24,14 +24,14 @@
                         <label class="form-label">
                             <i class="bi bi-envelope me-1"></i> Email
                         </label>
-                        <input type="text" class="form-control" value="{{ $admin->email }}" disabled>
+                        <input type="text" class="form-control" value="{{ $admin->email }}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-telephone me-1"></i> No HP
                         </label>
-                        <input type="text" class="form-control" value="{{ $admin->no_hp ?? '-' }}" disabled>
+                        <input type="text" class="form-control" value="{{ $admin->no_hp ?? '-' }}">
                     </div>
                 </form>
             </div>

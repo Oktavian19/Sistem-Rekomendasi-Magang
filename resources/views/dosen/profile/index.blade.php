@@ -24,28 +24,28 @@
                         <label class="form-label">
                             <i class="bi bi-card-heading me-1"></i> NIDN
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->nidn }}" disabled>
+                        <input type="text" class="form-control" value="{{ $dosen->nidn }}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-envelope me-1"></i> Email
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->email }}" disabled>
+                        <input type="text" class="form-control" value="{{ $dosen->email }}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-telephone me-1"></i> No HP
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->no_hp ?? '-' }}" disabled>
+                        <input type="text" class="form-control" value="{{ $dosen->no_hp ?? '-' }}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="bi bi-mortarboard me-1"></i> Bidang Minat
                         </label>
-                        <input type="text" class="form-control" value="{{ $dosen->bidang_minat ?? '-' }}" disabled>
+                        <input type="text" class="form-control" value="{{ $dosen->bidang_minat ?? '-' }}">
                     </div>
                 </form>
             </div>
