@@ -71,7 +71,7 @@
             </div>
             <div class="card-body">
                 @foreach ($mahasiswa->dokumen as $dokumen)
-                    @if (!$dokumen->jenis_dokumen == 'CV')
+                    @if ($dokumen->jenis_dokumen !== 'Curriculum Vitae (CV)')
                         <div class="border rounded p-4 mb-3">
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-file-earmark-text-fill text-primary fs-1 me-3"></i>
@@ -79,8 +79,7 @@
                                     <h5 class="fw-bold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
                                     <div class="d-flex flex-wrap text-muted">
                                         <span class="me-3">
-                                            <i
-                                                class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d M Y') }}
+                                            <i class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d M Y') }}
                                         </span>
                                         <a href="{{ asset('storage/' . $dokumen->path_file) }}"
                                             class="btn btn-sm btn-outline-primary ms-3" target="_blank">
