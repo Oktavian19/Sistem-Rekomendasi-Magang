@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="{{ asset('sneat/assets') }}/" data-template="vertical-menu-template-free">
 <head>
+  <style>
+    @media (max-width: 1199.98px) {
+      .layout-menu {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1031;
+        transition: transform 0.3s ease;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+      }
+      
+      .layout-menu-expanded .layout-menu {
+        transform: translateX(0);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .layout-menu-expanded .layout-page {
+        margin-left: 260px;
+      }
+      
+      .layout-page {
+        transition: margin-left 0.3s ease;
+        width: 100%;
+      }
+    }
+  </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -109,10 +137,29 @@
 
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<!-- Optional: Your custom page-specific scripts -->
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 @stack('scripts')
+<script>
+  $(document).ready(function() {
+    $('.layout-menu-toggle').on('click', function(e) {
+      e.preventDefault();
+      $('body').toggleClass('layout-menu-expanded');
+    });
 
+    $(document).on('click', function(e) {
+      if ($(window).width() < 1200) {
+        if (!$(e.target).closest('#layout-menu, .layout-menu-toggle').length && $('body').hasClass('layout-menu-expanded')) {
+          $('body').removeClass('layout-menu-expanded');
+        }
+      }
+    });
+
+    $(window).on('resize', function() {
+      if ($(window).width() >= 1200) {
+        $('body').removeClass('layout-menu-expanded');
+      }
+    });
+  });
+</script>
 </body>
 </html>
