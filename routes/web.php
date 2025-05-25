@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\KelolaPenggunaController;
 use App\Http\Controllers\Admin\ProgramStudiController;
 use App\Http\Controllers\Admin\PeriodeController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Admin\PerusahaanController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
-use App\Http\Controllers\Mahasiswa\ProfileController;
 use App\Http\Controllers\Mahasiswa\LogKegiatanController;
 
 Route::pattern('id', '[0-9]+');
@@ -27,11 +27,15 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard-admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
+
+        // Profile routes
+        Route::put('/profile/update-admin', [ProfileController::class, 'updateAdmin'])->name('profile.update');
 
         // Kelola Pengguna
         Route::prefix('user')->name('user.')->group(function () {
@@ -125,7 +129,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/daftar-lowongan/{id}', [LowonganController::class, 'show'])->name('daftar-lowongan.show');
 
         // Profile routes
-        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
         // Pengalaman kerja
@@ -161,5 +164,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
         Route::get('dosen/list-mahasiswa', fn() => view('dosen.monitoring.list_mahasiswa'))->name('list-mahasiswa');
         Route::get('dosen/log-mahasiswa', fn() => view('dosen.monitoring.log_mahasiswa'))->name('log-mahasiswa');
+
+        // Profile routes
+        Route::put('/profile/update-dosen', [ProfileController::class, 'updateDosen'])->name('profile.update');
     });
 });

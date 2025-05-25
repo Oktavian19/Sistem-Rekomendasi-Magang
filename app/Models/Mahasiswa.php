@@ -24,6 +24,7 @@ class Mahasiswa extends Model
         'latitude',
         'longitude',
         'id_program_studi',
+        'foto_profil',
     ];
 
     public function programStudi()

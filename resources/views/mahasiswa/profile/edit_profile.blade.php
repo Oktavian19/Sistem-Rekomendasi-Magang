@@ -13,6 +13,22 @@
             <form method="POST" id="formUpdateProfile" action="{{ url('profile/update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+
+                <div class="col-lg-6 mb-4">
+                    @if (!empty($mahasiswa->foto_profil))
+                        <img src="{{ $mahasiswa->foto_profil }}" class="rounded-circle mb-2"
+                            style="width: 100px; height: 100px;" alt="User">
+                    @else
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white mb-2"
+                            style="width: 100px; height: 100px;">
+                            <i class="bi bi-person" style="font-size: 60px;"></i>
+                        </div>
+                    @endif
+                    <div>
+                        <label for="foto_profil" class="form-label">Ubah Foto Profil</label>
+                        <input type="file" class="form-control" name="foto_profil" id="foto_profil" accept="image/*">
+                    </div>
+                </div>
                 <div class="row">
                     <!-- Personal Information -->
                     <div class="col-lg-6 mb-4">
@@ -64,9 +80,8 @@
                     <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="required form-label">Bidang Keahlian</label>
-                            <select class="form-select form-select-sm" name="bidang_keahlian[]"
-                                data-control="select2" data-allow-clear="true"
-                                data-placeholder="Pilih Bidang Keahlian">
+                            <select class="form-select form-select-sm" name="bidang_keahlian[]" data-control="select2"
+                                data-allow-clear="true" data-placeholder="Pilih Bidang Keahlian">
                                 @foreach ($bidangKeahlian as $bidang)
                                     <option value="{{ $bidang->id_bidang_keahlian }}" @selected(in_array($bidang->id_bidang_keahlian, old('bidang_keahlian', $mahasiswa->bidangKeahlian->pluck('id_bidang_keahlian')->toArray() ?? [])))>
                                         {{ $bidang->nama_bidang }}
@@ -83,19 +98,24 @@
                         <div class="form-group">
                             <label class="required form-label">Preferensi Jenis Perusahaan</label>
                             <select name="preferensi_perusahaan" class="form-control form-control-sm" required>
-                                <option value="BUMN" {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'BUMN' ? 'selected' : '' }}>BUMN</option>
-                                <option value="Pemerintahan" {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Pemerintahan' ? 'selected' : '' }}>Pemerintahan</option>
-                                <option value="Swasta" {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Swasta' ? 'selected' : '' }}>Swasta</option>
+                                <option value="BUMN"
+                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'BUMN' ? 'selected' : '' }}>
+                                    BUMN</option>
+                                <option value="Pemerintahan"
+                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Pemerintahan' ? 'selected' : '' }}>
+                                    Pemerintahan</option>
+                                <option value="Swasta"
+                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Swasta' ? 'selected' : '' }}>
+                                    Swasta</option>
                             </select>
                         </div>
-                    </div>                    
+                    </div>
 
                     <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="required form-label">Preferensi Lokasi Magang</label>
                             <input type="text" class="form-control form-control-sm" name="preferensi_lokasi_magang"
-                                placeholder="Mis: Malang, Jawa Timur" value=""
-                                autocomplete="off" required>
+                                placeholder="Mis: Malang, Jawa Timur" value="" autocomplete="off" required>
                         </div>
                     </div>
 
@@ -103,16 +123,23 @@
                         <div class="form-group">
                             <label class="required form-label">Preferensi Jenis Magang</label>
                             <select name="preferensi_magang" class="form-control form-control-sm" required>
-                                <option value="WFO" {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFO' ? 'selected' : '' }}>WFO</option>
-                                <option value="WFH" {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFH' ? 'selected' : '' }}>WFH</option>
-                                <option value="Hybrid" {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'Hybrid' ? 'selected' : '' }}>Hybrid</option>
+                                <option value="WFO"
+                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFO' ? 'selected' : '' }}>
+                                    WFO</option>
+                                <option value="WFH"
+                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFH' ? 'selected' : '' }}>
+                                    WFH</option>
+                                <option value="Hybrid"
+                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'Hybrid' ? 'selected' : '' }}>
+                                    Hybrid</option>
                             </select>
                         </div>
                     </div>
-                    
+
 
                     <!-- Submit Buttons -->
                     <div class="col-lg-12 mt-4 text-end">
+                        <a href="{{ url('/profile') }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary px-4"><i
                                 class="fa fa-paper-plane me-2"></i>Update</button>
                     </div>
@@ -180,8 +207,8 @@
                                         <form action="{{ url('profile/dokumen', $dokumen->id_dokumen) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-icon btn-light-danger btn-sm" 
-                                                    onclick="confirmDelete(event)">
+                                            <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
+                                                onclick="confirmDelete(event)">
                                                 <i class="bi bi-trash"></i>
                                             </button>
 
@@ -246,8 +273,8 @@
                                     method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-icon btn-light-danger btn-sm" 
-                                            onclick="deleteExperience(event)">
+                                    <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
+                                        onclick="deleteExperience(event)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -274,7 +301,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#formUpdateProfile').submit(function (e) {
+            $('#formUpdateProfile').submit(function(e) {
                 e.preventDefault(); // Mencegah form submit default
 
                 var form = $(this)[0];
@@ -289,7 +316,7 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
@@ -298,13 +325,14 @@
                             showConfirmButton: false
                         });
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let errorMsg = 'Terjadi kesalahan.';
 
                         if (xhr.status === 422) {
                             // Validasi Laravel
                             const errors = xhr.responseJSON.errors;
-                            errorMsg = Object.values(errors).map(err => err.join(', ')).join('\n');
+                            errorMsg = Object.values(errors).map(err => err.join(', ')).join(
+                                '\n');
                         } else if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMsg = xhr.responseJSON.message;
                         }
@@ -339,8 +367,8 @@
         }
 
         function deleteExperience(event) {
-            event.preventDefault(); 
-            
+            event.preventDefault();
+
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: "Anda ingin menghapus pengalaman ini?",

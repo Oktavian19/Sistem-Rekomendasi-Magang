@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('nama', 100);
             $table->string('email', 100);
             $table->string('no_hp', 20);
+            $table->string('foto_profil', 255)->nullable();
             $table->timestamps();
 
             $table->foreign('id_admin')

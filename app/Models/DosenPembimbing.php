@@ -19,6 +19,7 @@ class DosenPembimbing extends Model
         'email',
         'no_hp',
         'bidang_minat',
+        'foto_profil',
     ];
 
     public function magang()

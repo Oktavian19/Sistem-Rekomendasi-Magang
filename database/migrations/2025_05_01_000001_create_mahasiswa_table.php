@@ -19,19 +19,20 @@ return new class extends Migration
             $table->decimal('latitude', 9, 6)->nullable()->comment('GPS latitude (WGS84)');
             $table->decimal('longitude', 9, 6)->nullable()->comment('GPS longitude (WGS84)');
             $table->unsignedBigInteger('id_program_studi');
-            $table->timestamps(); 
+            $table->string('foto_profil', 255)->nullable();
+            $table->timestamps();
 
             $table->foreign('id_mahasiswa')
-                  ->references('id_user')
-                  ->on('users')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                ->references('id_user')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('id_program_studi')
-                  ->references('id_program_studi')
-                  ->on('program_studi')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                ->references('id_program_studi')
+                ->on('program_studi')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
