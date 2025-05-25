@@ -10,8 +10,15 @@
                 <div class="d-flex justify-content-between">
                     <div class="me-4 mb-4">
                         <div class="position-relative">
-                            <img src="{{ $mahasiswa->foto_profil ?? asset('sneat/assets/img/avatars/1.png') }}"
-                                class="rounded-circle" width="120" height="120" alt="Profile Image">
+                            @if (!empty($mahasiswa->foto_profil))
+                                <img src="{{ $mahasiswa->foto_profil }}" class="rounded-circle mb-2"
+                                    style="width: 100px; height: 100px;" alt="User">
+                            @else
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white mb-2"
+                                    style="width: 100px; height: 100px;">
+                                    <i class="bi bi-person" style="font-size: 60px;"></i>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="flex-grow-1">
@@ -45,18 +52,18 @@
                                 <input type="hidden" name="jenis_dokumen" value="Curriculum Vitae (CV)">
                                 <input type="file" id="inputCV" name="path_file" accept=".pdf" class="d-none"
                                     onchange="document.getElementById('formUploadCV').submit()" required>
-                        
+
                                 <button type="button" class="btn btn-sm btn-outline-secondary"
                                     onclick="document.getElementById('inputCV').click()">
                                     <i class="bi bi-upload me-1"></i> Upload CV
                                 </button>
                             </form>
-                        
+
                             <a href="{{ url('profile/dokumen/download-cv') }}" class="btn btn-sm btn-primary">
                                 <i class="bi bi-download me-1"></i> Download CV
                             </a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -79,7 +86,8 @@
                                     <h5 class="fw-bold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
                                     <div class="d-flex flex-wrap text-muted">
                                         <span class="me-3">
-                                            <i class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d M Y') }}
+                                            <i
+                                                class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d M Y') }}
                                         </span>
                                         <a href="{{ asset('storage/' . $dokumen->path_file) }}"
                                             class="btn btn-sm btn-outline-primary ms-3" target="_blank">
