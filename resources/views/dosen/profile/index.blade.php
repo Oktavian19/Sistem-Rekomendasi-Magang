@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="text-end mt-4">
-                        <a href="#" class="btn btn-outline-primary">
+                        <a href="{{ url('/profile/edit') }}" class="btn btn-outline-primary">
                             <i class="bi bi-pencil-square me-1"></i> Update Profil
                         </a>
                     </div>

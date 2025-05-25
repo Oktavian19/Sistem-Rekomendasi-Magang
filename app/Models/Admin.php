@@ -17,5 +17,6 @@ class Admin extends Model
         'nama',
         'email',
         'no_hp',
+        'foto_profil',
     ];
 }

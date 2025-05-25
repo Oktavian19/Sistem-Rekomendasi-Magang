@@ -10,7 +10,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="me-4 mb-4">
                         <div class="position-relative">
-                            <img src="https://bucket.sdmdigital.id/dts-simonas/photo/a7c4e502-414b-4b2b-b130-ecdcb9a31a83.jpg"
+                            <img src="{{ $mahasiswa->foto_profil ?? asset('sneat/assets/img/avatars/1.png') }}"
                                 class="rounded-circle" width="120" height="120" alt="Profile Image">
                         </div>
                     </div>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
             $table->string('no_hp', 20)->nullable();
             $table->string('bidang_minat', 100)->nullable();
+              $table->string('foto_profil', 255)->nullable();
             $table->timestamps(); 
 
             $table->foreign('id_dosen_pembimbing')
