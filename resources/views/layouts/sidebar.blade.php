@@ -6,16 +6,14 @@
       </span>
       <span class="app-brand-text demo menu-text fw-bold ms-2">SIMAGANG</span>
     </a>
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-      <i class="bx bx-chevron-left d-block d-xl-none"></i>
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+      <i class="bx bx-chevron-left"></i>
     </a>
   </div>
 
   <div class="menu-inner-shadow"></div>
 
-  <!-- Menu Utama (Scrollable) -->
   <ul class="menu-inner py-1" style="height: calc(100% - 70px); overflow-y: auto;">
-    <!-- Dashboard (Visible to all roles) -->
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
       <a href="{{ 
           auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
