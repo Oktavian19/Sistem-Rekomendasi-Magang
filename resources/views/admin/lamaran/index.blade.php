@@ -8,7 +8,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-striped w-100">
+                <table id="lamaranTable" class="table table-bordered table-striped w-100">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -49,17 +49,17 @@
                                         onclick="showDetailModal({{ $item->id_lamaran }}, 'lamaran')">
                                         <span
                                             class="badge 
-                                            @if ($item->status_lamaran == 'diterima') bg-label-success 
-                                            @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
-                                            @else bg-label-warning @endif">
+                        @if ($item->status_lamaran == 'diterima') bg-label-success 
+                        @elseif($item->status_lamaran == 'ditolak') bg-label-danger 
+                        @else bg-label-warning @endif">
                                             {{ ucfirst($item->status_lamaran) }}
                                         </span>
                                     </a>
                                 </td>
                                 <td>
                                     @if ($item->status_lamaran == 'menunggu')
-                                        <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}"
-                                            method="POST" class="d-inline">
+                                        <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <select name="id_dosen_pembimbing" class="form-select form-select-sm"
@@ -73,42 +73,51 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                        @elseif($item->status_lamaran == 'diterima')
+                                            @if ($item->magang && $item->magang->dosenPembimbing)
+                                                {{ $item->magang->dosenPembimbing->nama }}
+                                            @else
+                                                <span class="text-muted">Belum ada dosen</span>
+                                            @endif
+                                        @else
+                                            <span class="text-muted">-</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div class="d-flex gap-2">
-                                        <input type="hidden" name="status_lamaran" value="diterima">
-                                        <button type="button" id="setujuiBtn-{{ $item->id_lamaran }}"
-                                            onclick="handleStatusForm(this.form, 'menyetujui')"
-                                            class="btn btn-sm btn-success"
-                                            {{ empty(optional($item->magang)->id_dosen_pembimbing) ? 'disabled' : '' }}>
-                                            <i class="bx bx-check"></i> Setujui
-                                        </button>
-                                        </form>
+                                    @if ($item->status_lamaran == 'menunggu')
+                                        <div class="d-flex gap-2">
+                                            {{-- Tombol Setujui --}}
+                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status_lamaran" value="diterima">
+                                                <button type="submit" class="btn btn-sm btn-success"
+                                                    id="setujuiBtn-{{ $item->id_lamaran }}"
+                                                    {{ empty(optional($item->magang)->id_dosen_pembimbing) ? 'disabled' : '' }}>
+                                                    <i class="bx bx-check"></i> Setujui
+                                                </button>
+                                            </form>
 
-                                        <form action="{{ route('admin.lamaran.updateStatus', $item->id_lamaran) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status_lamaran" value="ditolak">
-                                            <button type="button" onclick="handleStatusForm(this.form, 'menolak')"
-                                                class="btn btn-sm btn-danger">
-                                                <i class="bx bx-x"></i> Tolak
-                                            </button>
-                                        </form>
-                                    </div>
-                                @elseif($item->status_lamaran == 'diterima')
-                                    @if ($item->magang && $item->magang->dosenPembimbing)
-                                        {{ $item->magang->dosenPembimbing->nama }}
+                                            {{-- Tombol Tolak --}}
+                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status_lamaran" value="ditolak">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bx bx-x"></i> Tolak
+                                                </button>
+                                            </form>
+                                        </div>
                                     @else
-                                        <span class="text-muted">Belum ada dosen</span>
+                                        <span class="text-muted">-</span>
                                     @endif
-                                @else
-                                    <span class="text-muted">-</span>
-                        @endif
-                        </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -135,6 +144,24 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function() {
+            $('#lamaranTable').DataTable({
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "Tidak ada data tersedia",
+                    zeroRecords: "Tidak ada data ditemukan",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    },
+                }
+            });
+        });
+
         function handleStatusForm(form, action) {
             event.preventDefault();
 
@@ -183,7 +210,9 @@
 
         function toggleSetujuiButton(selectEl, lamaranId) {
             const btn = document.getElementById('setujuiBtn-' + lamaranId);
-            btn.disabled = !selectEl.value;
+            if (btn) {
+                btn.disabled = !selectEl.value;
+            }
         }
 
         function showDetailModal(id, detail) {
