@@ -158,21 +158,28 @@
                     data: 'no_hp', 
                     name: 'no_hp' 
                 },
-                { 
+                {
                     data: null,
                     name: 'aksi',
                     className: 'text-center',
                     orderable: false,
                     searchable: false,
                     render: function(data, type, row) {
-                        return `<button class="btn btn-sm btn-outline-primary btn-rate" 
+                        const detailUrl = `{{ url('dosen/log-mahasiswa') }}/${row.nim}`;
+                        return `
+                            <a href="${detailUrl}" class="btn btn-sm btn-outline-info me-2">
+                                <i class="bi bi-info-circle me-1"></i> Lihat Detail
+                            </a>
+                            <button class="btn btn-sm btn-outline-warning btn-rate" 
                                 data-id="${row.DT_RowIndex}"
                                 data-nama="${row.nama}"
                                 data-nim="${row.nim}">
-                            <i class="bi bi-star me-1"></i> Beri Rating
-                        </button>`;
+                                <i class="bi bi-star me-1"></i> Beri Rating
+                            </button>
+                        `;
                     }
                 }
+
             ]
         });
 

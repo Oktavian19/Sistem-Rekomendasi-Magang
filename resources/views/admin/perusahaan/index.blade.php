@@ -16,7 +16,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Perusahaan</th>
-                        <th>Bidang Industri</th>
                         <th>Alamat</th>
                         <th>Email</th>
                         <th>Nomor Telepon</th>
@@ -50,8 +49,31 @@
             ajax: "{{ url('perusahaan/list') }}",
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
-                { data: 'nama_perusahaan', name: 'nama_perusahaan' },
-                { data: 'bidang_industri', name: 'bidang_industri' },
+                { 
+                    data: 'nama_perusahaan', 
+                    name: 'nama_perusahaan',
+                    render: function(data, type, row) {
+                        let content = '<div class="d-flex align-items-center">';
+                        
+                        content += '<div class="avatar avatar-sm me-2">';
+                        if (row.logo) {
+                            content += '<img src="' + row.logo + '" alt="Logo ' + data + '" class="avatar-img rounded">';
+                        } else {
+                            content += '<span class="avatar-initial rounded bg-label-secondary">' +
+                                      '<i class="bx bx-buildings"></i>' +
+                                      '</span>';
+                        }
+                        content += '</div>';
+                        
+                        content += '<div>' +
+                                  '<div class="fw-semibold">' + data + '</div>' +
+                                  '<small class="text-muted">Kode: ' + (row.bidang_industri || '-') + '</small>' +
+                                  '</div>' +
+                                  '</div>';
+                        
+                        return content;
+                    }
+                },
                 { data: 'alamat', name: 'alamat' },
                 { data: 'email', name: 'email' },
                 { data: 'telepon', name: 'telepon' },

@@ -10,6 +10,8 @@ use App\Models\Pengalaman;
 use App\Models\Dokumen;
 use App\Models\ProgramStudi;
 use App\Models\BidangKeahlian;
+use App\Models\DosenPembimbing;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -18,15 +20,35 @@ class ProfileController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
-            ->where('id_mahasiswa', $userId)
-            ->first();
+        $role = Auth::user()->role;
 
-        if (!$mahasiswa) {
-            abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);
+        if ($role == 'mahasiswa') {
+            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
+                ->where('id_mahasiswa', $userId)
+                ->first();
+
+            if (!$mahasiswa) {
+                abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('mahasiswa.profile.index', compact('mahasiswa'));
+        } else if ($role == 'dosen_pembimbing') {
+            $dosen = DosenPembimbing::where('id_dosen_pembimbing', $userId)->first();
+
+            if (!$dosen) {
+                abort(404, 'Dosen tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('dosen.profile.index', compact('dosen'));
+        } else if ($role == 'admin') {
+            $admin = Admin::where('id_admin', $userId)->first();
+
+            if (!$admin) {
+                abort(404, 'Admin tidak ditemukan untuk user ID: ' . $userId);
+            }
+
+            return view('admin.profile.index', compact('admin'));
         }
-
-        return view('mahasiswa.profile.index', compact('mahasiswa'));
     }
 
     public function edit()
@@ -70,6 +92,10 @@ class ProfileController extends Controller
 
         // Sync bidang keahlian
         $mahasiswa->bidangKeahlian()->sync($validated['bidang_keahlian'] ?? []);
+
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Profil berhasil diperbarui']);
+        }    
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui');
     }
@@ -279,5 +305,13 @@ class ProfileController extends Controller
     public function downloadCV()
     {
         return $this->downloadDokumen('CV');
+    }
+
+    public function update_dosen(Request $request){
+
+    }
+
+    public function update_admin(Request $request){
+        
     }
 }

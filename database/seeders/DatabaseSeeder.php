@@ -20,16 +20,16 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             MahasiswaSeeder::class,
             DosenPembimbingSeeder::class,
-            //PengalamanSeeder::class,
-            //DokumenSeeder::class,
+            PengalamanSeeder::class,
+            DokumenSeeder::class,
             LowonganSeeder::class,
-            //MahasiswaBidangKeahlianSeeder:class,
+            MahasiswaBidangKeahlianSeeder::class,
             LamaranSeeder::class,
             MagangSeeder::class,
-            //LogKegiatanSeeder::class,
-            //FeedbackSeeder::class,
-            //SertifikatSeeder::class,
-            //DokumenLogKegiatanSeeder::class
+            LogKegiatanSeeder::class,
+            FeedbackSeeder::class,
+            SertifikatSeeder::class,
+            DokumenLogKegiatanSeeder::class
         ]);
     }
 }

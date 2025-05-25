@@ -20,9 +20,15 @@
                         </div>
                         <div class="col-auto">
                             <div class="d-flex align-items-center mt-3">
-                                <button type="submit" class="btn btn-primary ms-2 rounded-pill" data-bs-target="#needLogin"
-                                    data-bs-toggle="modal">Daftar</button>
+                                <form action="{{ url('lowongan/' . $lowongan->id_lowongan . '/daftar') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill" 
+                                        {{ $sudahDaftar ? 'disabled' : '' }}>
+                                        {{ $sudahDaftar ? 'Sudah Terdaftar' : 'Daftar' }}
+                                    </button>
+                                </form>
                             </div>
+                            
                         </div>
                     </div>
 
@@ -121,8 +127,29 @@
                             </div>
                         </div>
                     </div>
+                    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}"
+                        class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
+                    </a>
+
                 </div>
             </div>
         </div>
     </section>
 @endsection
+@if (session('success'))
+@push('scripts')
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#007bff',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endpush
+@endif
+@if (session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif

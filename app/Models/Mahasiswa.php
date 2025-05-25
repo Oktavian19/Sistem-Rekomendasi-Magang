@@ -70,4 +70,28 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Dokumen::class, 'id_user', 'id_mahasiswa');
     }
+
+    // User.php
+    public function mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class, 'user_id', 'id');
+    }
+
+    // Mahasiswa.php
+    public function lamaran()
+    {
+        return $this->hasMany(Lamaran::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
+
+    // Lamaran.php
+    public function lowongan()
+    {
+        return $this->belongsTo(Lowongan::class, 'id_lowongan', 'id_lowongan');
+    }
+
+    // Lowongan.php
+    public function magang()
+    {
+        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+    }
 }

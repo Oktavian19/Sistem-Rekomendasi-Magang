@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\BidangKeahlian;
+use App\Models\Lamaran;
 use Illuminate\Http\Request;
 use App\Models\Lowongan;
-use App\Models\Provinsi;
-use App\Models\BidangPekerjaan;
+use Illuminate\Support\Facades\Auth;
 
 class LowonganController extends Controller
 {
@@ -19,7 +19,7 @@ class LowonganController extends Controller
 
         // Filter: Keyword
         if ($request->filled('keyword')) {
-            $query->where('judul', 'like', '%' . $request->keyword . '%');
+            $query->where('nama_posisi', 'like', '%' . $request->keyword . '%');
         }
 
         // Filter: Lokasi (kota)
@@ -31,21 +31,18 @@ class LowonganController extends Controller
 
         // Filter: Bidang pekerjaan
         if ($request->filled('job_field_id')) {
-            $query->where('id_bidang_pekerjaan', $request->job_field_id);
+            $query->where('id_bidang_keahlian', $request->job_field_id);
         }
 
-        // Filter: Kuota
+        // Filter: Kuota (diubah untuk menerima single value)
         if ($request->filled('quota_range')) {
-            $query->where(function ($q) use ($request) {
-                foreach ($request->quota_range as $range) {
-                    if ($range === '51+') {
-                        $q->orWhere('kuota', '>', 50);
-                    } else {
-                        [$min, $max] = explode('-', $range);
-                        $q->orWhereBetween('kuota', [(int) $min, (int) $max]);
-                    }
-                }
-            });
+            $range = $request->quota_range;
+            if ($range === '51+') {
+                $query->where('kuota', '>', 50);
+            } else {
+                [$min, $max] = explode('-', $range);
+                $query->whereBetween('kuota', [(int) $min, (int) $max]);
+            }
         }
 
         // Sorting
@@ -81,21 +78,44 @@ class LowonganController extends Controller
         // Ambil bidang pekerjaan untuk filter
         $bidangKeahlians = BidangKeahlian::all();
 
-        // Untuk kebutuhan tampilan filter (optional)
-        $filters = [
-            'keyword' => $request->keyword,
-            'lokasi' => $request->lokasi,
-            'job_field_id' => $request->job_field_id,
-            'quota_range' => $request->quota_range,
-            'sort' => $request->sort,
-        ];
-
-        return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians', 'filters'));
+        return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
 
     public function show($id)
     {
         $lowongan = Lowongan::with(['perusahaan', 'bidangKeahlian'])->findOrFail($id);
-        return view('mahasiswa.magang.lowongan_detail', compact('lowongan'));
+
+        $mahasiswaId = Auth::id();
+
+        $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('id_lowongan', $id)
+            ->exists();
+
+        return view('mahasiswa.magang.lowongan_detail', compact('lowongan', 'sudahDaftar'));
+    }
+
+
+    public function daftarLamaran(Request $request, $id)
+    {
+        $mahasiswaId = Auth::id(); // Langsung pakai Auth default
+
+        // Cek apakah sudah pernah mendaftar
+        $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('id_lowongan', $id)
+            ->exists();
+
+        if ($sudahDaftar) {
+            return back()->with('error', 'Anda sudah mendaftar pada lowongan ini.');
+        }
+
+        Lamaran::create([
+            'id_mahasiswa'     => $mahasiswaId,
+            'id_lowongan'      => $id,
+            'tanggal_lamaran'  => now(),
+            'status_lamaran'   => 'Menunggu',
+            'dari_rekomendasi' => false,
+        ]);
+
+        return redirect()->back()->with('success', 'Pendaftaran berhasil!');
     }
 }

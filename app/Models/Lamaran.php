@@ -32,6 +32,6 @@ class Lamaran extends Model
 
     public function magang()
     {
-        return $this->hasOne(Magang::class, 'id_lamaran');
+        return $this->hasOne(Magang::class, 'id_lamaran', 'id_lamaran');
     }
 }

@@ -1,34 +1,40 @@
-<form action="{{ url('log-magang/store') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
+<form action="{{ route('log-kegiatan.store') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
     @csrf
-    <div id="modal-tanggal-deskripsi" class="modal-dialog modal-lg" role="document">
+    <div id="modal-log" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Log Magang</h5>
+                <h5 class="modal-title">Tambah Log Kegiatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Date Input -->
                 <div class="form-group mb-4">
-                    <label>Minggu Ke-</label>
+                    <label>Tanggal Kegiatan</label>
                     <div class="input-group">
-                        <select name="minggu" id="minggu" class="form-control" required>
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" required>
+                        <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
+                    </div>
+                    <small id="error-tanggal" class="error-text form-text text-danger"></small>
+                </div>
+                
+                <!-- Week Selector (Optional) -->
+                <div class="form-group mb-4">
+                    <label>Minggu Ke- (Opsional)</label>
+                    <div class="input-group">
+                        <select name="minggu" id="minggu" class="form-control">
                             <option value="" disabled selected>Pilih minggu</option>
-                            <option value="1">Minggu ke-1</option>
-                            <option value="2">Minggu ke-2</option>
-                            <option value="3">Minggu ke-3</option>
-                            <option value="4">Minggu ke-4</option>
-                            <option value="5">Minggu ke-5</option>
+                            @for($i = 1; $i <= $jumlahMinggu; $i++)
+                                <option value="{{ $i }}">Minggu ke-{{ $i }}</option>
+                            @endfor
                         </select>
                         <span class="input-group-text"><i class="bi bi-calendar-week"></i></span>
                     </div>
-                    <small id="error-minggu" class="error-text form-text text-danger"></small>
                 </div>
-                
                 
                 <!-- Description Input -->
                 <div class="form-group mb-4">
-                    <label>Deskripsi</label>
-                    <textarea name="deskripsi" id="deskripsi" class="form-control" rows="8" required></textarea>
+                    <label>Deskripsi Kegiatan</label>
+                    <textarea name="deskripsi_kegiatan" id="deskripsi_kegiatan" class="form-control" rows="8" required></textarea>
                     <small id="error-deskripsi" class="error-text form-text text-danger"></small>
                 </div>
                 
@@ -36,7 +42,7 @@
                 <div class="form-group">
                     <label for="images">Upload Gambar (Maksimal 5)</label>
                     <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
-                    <small class="text-muted">Anda bisa memilih lebih dari satu gambar</small>
+                    <small class="text-muted">Format: JPG, PNG (Maksimal 2MB per gambar)</small>
                     <small id="error-images" class="error-text form-text text-danger"></small>
                 </div>
                 
@@ -53,8 +59,7 @@
     </div>
 </form>
 
-@push('scripts')
-<script type="text/javascript">
+<script>
     // Image preview functionality
     document.getElementById('images').addEventListener('change', function(event) {
         const previewContainer = document.getElementById('image-preview-container');
@@ -71,6 +76,11 @@
             const file = files[i];
             if (!file.type.match('image.*')) continue;
             
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                alert('File ' + file.name + ' melebihi ukuran maksimal 2MB');
+                continue;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
                 const colDiv = document.createElement('div');
@@ -85,11 +95,20 @@
                 img.style.maxHeight = '150px';
                 
                 const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
                 removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
                 removeBtn.innerHTML = '<i class="bi bi-x"></i>';
                 removeBtn.onclick = function() {
                     colDiv.remove();
-                    // You might want to implement actual file removal logic here
+                    // Create a new DataTransfer object to remove the file
+                    const dataTransfer = new DataTransfer();
+                    const input = document.getElementById('images');
+                    for (let j = 0; j < input.files.length; j++) {
+                        if (j !== i) {
+                            dataTransfer.items.add(input.files[j]);
+                        }
+                    }
+                    input.files = dataTransfer.files;
                 };
                 
                 imgDiv.appendChild(img);
@@ -100,5 +119,10 @@
             reader.readAsDataURL(file);
         }
     });
+
+    // Set default date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('tanggal').value = today;
+    });
 </script>
-@endpush

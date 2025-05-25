@@ -20,6 +20,11 @@ class LogKegiatan extends Model
 
     public function magang()
     {
-        return $this->belongsTo(Magang::class, 'id_magang');
+        return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
+    }
+    // In LogKegiatan.php model
+    public function dokumen()
+    {
+        return $this->hasMany(DokumenLogKegiatan::class, 'id_log');
     }
 }

@@ -19,7 +19,7 @@
     <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
       <a href="{{ 
           auth()->user()->role === 'mahasiswa' ? url('dashboard-mahasiswa') : 
-          (auth()->user()->role === 'dosen' ? url('dashboard-dosen') : 
+          (auth()->user()->role === 'dosen_pembimbing' ? url('dashboard-dosen') : 
           (auth()->user()->role === 'admin' ? url('dashboard-admin') : url('dashboard'))) 
         }}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home"></i>
@@ -43,24 +43,47 @@
             <div>Program Studi</div>
           </a>
         </li>
-        <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
           <a href="{{ url('periode') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-calendar"></i>
             <div>Periode Magang</div>
           </a>
-        </li>
+        </li> --}}
         <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
           <a href="{{ url('user') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user-plus"></i>
             <div>Manajemen Akun</div>
           </a>
         </li>
-        <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
           <a href="{{ url('lowongan') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-folder-open"></i>
             <div>Manajemen Magang</div>
           </a>
-        </li>
+        </li> --}}
+        <li class="menu-item {{ request()->is(['periode*', 'lowongan*', 'lamaran*']) ? 'active open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons bx bx-folder-open"></i>
+          <div class="text-truncate" data-i18n="ManajemenMagang">Manajemen Magang</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
+            <a href="{{ url('periode') }}" class="menu-link">
+              <div class="text-truncate" data-i18n="Periode">Periode Magang</div>
+            </a>
+          </li>
+          <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
+            <a href="{{ url('lowongan') }}" class="menu-link">
+              <div class="text-truncate" data-i18n="Lowongan">Lowongan Magang</div>
+            </a>
+          </li>
+          <li class="menu-item {{ request()->is('lamaran*') ? 'active' : '' }}">
+            <a href="{{ url('lamaran') }}" class="menu-link">
+              <div class="text-truncate" data-i18n="Lamaran">Lamaran Magang</div>
+            </a>
+          </li>
+        </ul>
+      </li>
       @endif
 
       @if(auth()->user()->role === 'mahasiswa')
@@ -71,8 +94,8 @@
             <div>Lowongan Magang</div>
           </a>
         </li>
-        <li class="menu-item {{ request()->is('magang-mahasiswa*') ? 'active' : '' }}">
-          <a href="{{ url('magang-mahasiswa') }}" class="menu-link">
+        <li class="menu-item {{ request()->is('log-kegiatan*') ? 'active' : '' }}">
+          <a href="{{ url('log-kegiatan') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-clipboard"></i>
             <div>Log Magang</div>
           </a>
