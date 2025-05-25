@@ -51,10 +51,10 @@ Route::middleware('auth')->group(function () {
         // Lamaran
         Route::prefix('lamaran')->name('lamaran.')->group(function () {
             Route::get('/', [LamaranController::class, 'index'])->name('index');
+            Route::get('list', [LamaranController::class, 'list'])->name('list');
             Route::get('{id}/{detail}', [LamaranController::class, 'show'])->name('show');
-            Route::put('{id}/status', [LamaranController::class, 'updateStatus'])->name('updateStatus');
+            Route::put('{id}/status', [LamaranController::class, 'updateStatus'])->name('update-status');
             Route::delete('{id}', [LamaranController::class, 'destroy'])->name('destroy');
-            Route::put('{id}/update-dosen', [LamaranController::class, 'updateDosen'])->name('admin.lamaran.updateDosen');
         });
 
         // Lowongan Magang
