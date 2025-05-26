@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lowongan;
+use App\Models\Mahasiswa;
 use App\Models\Users; // Menggunakan model User (standar Laravel)
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -119,60 +121,71 @@ class AuthController extends Controller
     public function postRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|min:4|max:50|unique:users,username',
+            'nim' => 'required|string|min:8|max:20|unique:users,username',
+            'nama' => 'required|string|max:100',
+            'email' => 'required|email|unique:mahasiswa,email',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:15',
+            'id_program_studi' => 'required|exists:program_studi,id_program_studi',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|in:admin,mahasiswa,dosen_pembimbing'
         ], [
-            'username.required' => 'Username harus diisi',
-            'username.min' => 'Username minimal 4 karakter',
-            'username.max' => 'Username maksimal 50 karakter',
-            'username.unique' => 'Username sudah digunakan',
+            'nim.required' => 'NIM harus diisi',
+            'nim.unique' => 'NIM sudah digunakan sebagai username',
+            'nama.required' => 'Nama harus diisi',
+            'email.required' => 'Email harus diisi',
+            'email.unique' => 'Email sudah terdaftar',
+            'alamat.required' => 'Alamat harus diisi',
+            'no_hp.required' => 'Nomor HP harus diisi',
             'password.required' => 'Password harus diisi',
-            'password.min' => 'Password minimal 6 karakter',
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
-            'role.required' => 'Role harus dipilih',
-            'role.in' => 'Role tidak valid'
+            'id_program_studi.required' => 'Program studi harus dipilih',
         ]);
 
         if ($validator->fails()) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi gagal',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            return back()->withErrors($validator)->withInput();
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
 
         try {
-            Users::create([
-                'username' => $request->username,
+            DB::beginTransaction();
+
+            // Tambahkan user
+            $user = Users::create([
+                'username' => $request->nim,
                 'password' => Hash::make($request->password),
-                'role' => $request->role
+                'role' => 'mahasiswa'
             ]);
 
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Registrasi berhasil, silakan login',
-                    'redirect' => route('login')
-                ]);
-            }
+            // Tambahkan mahasiswa dengan relasi ke user
+            Mahasiswa::create([
+                'id_mahasiswa' => $user->id_user, // sesuaikan primary key user
+                'nim' => $request->nim,
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+                'id_program_studi' => $request->id_program_studi,
+            ]);
 
-            return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login');
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Registrasi mahasiswa berhasil',
+                'redirect' => route('login')
+            ]);
         } catch (\Exception $e) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-                ], 500);
-            }
+            DB::rollBack();
 
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
     }
+
 
     /**
      * Redirect ke dashboard berdasarkan role user
