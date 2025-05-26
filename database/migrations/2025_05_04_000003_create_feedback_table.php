@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id('id_feedback'); 
 
             $table->unsignedBigInteger('id_user'); 
-            $table->unsignedBigInteger('id_magang'); 
-
+            $table->unsignedBigInteger('id_magang')->nullable(); 
+            $table->unsignedBigInteger('id_log')->nullable();
             $table->text('komentar');
             $table->tinyInteger('rating')->nullable(); 
             $table->date('tanggal_feedback');
@@ -26,6 +26,10 @@ return new class extends Migration
 
             $table->foreign('id_magang')
                 ->references('id_magang')->on('magang')
+                ->onDelete('cascade');
+
+            $table->foreign('id_log')
+                ->references('id_log')->on('log_kegiatan')
                 ->onDelete('cascade');
         });
         

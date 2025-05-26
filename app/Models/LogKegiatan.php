@@ -22,9 +22,14 @@ class LogKegiatan extends Model
     {
         return $this->belongsTo(Magang::class, 'id_magang', 'id_magang');
     }
-    // In LogKegiatan.php model
+
     public function dokumen()
     {
-        return $this->hasMany(DokumenLogKegiatan::class, 'id_log');
+        return $this->hasMany(DokumenLogKegiatan::class, 'id_log', 'id_log');
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'id_log', 'id_log');
     }
 }
