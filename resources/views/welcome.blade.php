@@ -69,11 +69,11 @@
         
             <!-- Menu -->
             <div class="d-none d-lg-flex gap-9">
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Home</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Bidang Keahlian</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Lowongan Terbaru</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Fitur Kami</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#">FAQ</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#">Beranda</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#bidangKeahlian">Bidang Keahlian</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#lowonganTerbaru">Lowongan Terbaru</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#fiturKami">Fitur Kami</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="#ssd">SSD</a>
             </div>
 
             <a href="{{ url('/login') }}" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
@@ -99,7 +99,7 @@
           </div>
         </section>
 
-        <div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+        <div class="container" style="margin-top: 8vh; scroll-margin-top: 8vh; padding-left: 10vh; padding-right: 10vh" id="bidangKeahlian">
           <!-- Header Section -->
           <div class="row justify-content-between align-items-center mb-4">
               <div class="col-auto">
@@ -199,7 +199,7 @@
           </div>
       </div>
   </div>
-  <div class="bg-light" style="width: 100vw; padding: 3vw; margin-top: 10vh">
+  <div class="bg-light" style="width: 100vw; padding: 3vw; margin-top: 10vh;" id="lowonganTerbaru">
     <div class="container">
       <h4 class="fw-bold text-center">Lowongan Terbaru</h4>
     <p class="text-muted text-center fs-6">Tersedia 1001 lowongan dari berbagai perusahaan</p>
@@ -253,7 +253,7 @@
     </div>
   
 </div>
-<div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh; scroll-margin-top: 8vh;" id="fiturKami">
   <h4 class="fw-bold">Eksplor Fitur Lebih Lanjut</h4>
   <div class="row mt-4 mt-md-5">
       <!-- Kartu Talenta -->
@@ -296,7 +296,7 @@
     </div>
   </div>
 </div>
-<div class="container" style="margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh">
+<div class="container" style="margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh; scroll-margin-top: 10vh;" id="ssd">
     <h4 class="text-center mb-1">
       Soal sering
       <span class="position-relative fw-extrabold z-1"
@@ -339,7 +339,7 @@
             <h2 class="accordion-header" id="headingThree">
               <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">Metode rekomendasi apa yang dipakai untuk mencocokkan mahasiswa dengan perusahaan mitra?</button>
             </h2>
-            <div id="accordionThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+            <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                     Sistem menggunakan <b>algoritma rekomendasi berbasis data</b> yang secara otomatis mencocokkan parameter profil mahasiswa (kompetensi, keahlian, dan preferensi) dengan kebutuhan dan kriteria yang ditentukan oleh perusahaan mitra. Dengan demikian, setiap mahasiswa akan memperoleh daftar lowongan magang yang paling relevan dengan profilnya.
               </div>
