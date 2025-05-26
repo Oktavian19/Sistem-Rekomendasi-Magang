@@ -1,4 +1,4 @@
-<form action="{{ url('perusahaan/store-ajax') }}" method="POST" id="form-tambah">
+<form action="{{ url('perusahaan/store-ajax') }}" method="POST" id="form-tambah" class="validate">
     @csrf
     <div id="modal-perusahaan" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -105,12 +105,16 @@
                 filesize: "Ukuran maksimal 2MB."
             }
         },
-        errorPlacement: function(error, element) {
-            $('#error-' + element.attr('name')).html(error);
+        errorPlacement: function (error, element) {
+            let id = element.attr('id');
+            $('#error-' + id).html(error);
         },
-        submitHandler: function (form) {
-            form.submit();
-        }
+        highlight: function (element) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).removeClass('is-invalid');
+        }  
     });
 
    // Custom rule: file size
