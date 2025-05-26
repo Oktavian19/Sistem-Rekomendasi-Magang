@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lowongan;
 use App\Models\Mahasiswa;
 use App\Models\Users; // Menggunakan model User (standar Laravel)
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -109,7 +110,9 @@ class AuthController extends Controller
             return redirect('/');
         }
 
-        return view('auth.register');
+        $programStudi = ProgramStudi::all(); // ambil semua data prodi
+
+        return view('auth.register',  compact('programStudi'));
     }
 
     /**
