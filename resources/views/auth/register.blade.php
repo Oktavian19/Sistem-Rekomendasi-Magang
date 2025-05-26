@@ -67,32 +67,56 @@
               <form id="formAuthentication" class="mb-6" method="POST" action="{{ url('/register') }}">
                 @csrf
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Masukkan username"
-                    required autofocus />
+                  <label for="nim" class="form-label">NIM</label>
+                  <input type="tel" class="form-control" id="nim" name="nim" placeholder="Masukkan NIM" required autofocus />
+                  <small id="error-nim" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="mb-3">
+                  <label for="nama" class="form-label">Nama</label>
+                  <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan nama" required />
+                  <small id="error-nama" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required />
+                  <small id="error-email" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="mb-3">
+                  <label for="alamat" class="form-label">Alamat</label>
+                  <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Masukkan alamat" required />
+                  <small id="error-alamat" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="mb-3">
+                  <label for="no_hp" class="form-label">No HP</label>
+                  <input type="tel" class="form-control" id="no_hp" name="no_hp" placeholder="Masukkan Nomor HP" required />
+                  <small id="error-no_hp" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="mb-3">
+                  <label for="program_studi" class="form-label">Program Studi</label>
+                  <select name="id_program_studi" id="program_studi" class="form-control" required>
+                      <option value="">-- Pilih Prodi --</option>
+                      @foreach($programStudi as $prodi)
+                          <option value="{{ $prodi->id_program_studi }}">{{ $prodi->nama_program_studi }}</option>
+                      @endforeach
+                  </select>
+                  <small id="error-program_studi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-password-toggle">
                   <label class="form-label" for="password">Password</label>
                   <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="••••••••••"
-                      required />
+                    <input type="password" id="password" class="form-control" name="password" placeholder="••••••••••" required />
                     <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
                   </div>
+                  <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
+                  <div class="form-password-toggle mb-3">
+                    <label class="form-label" for="password_confirmation">Konfirmasi Password</label>
+                    <div class="input-group input-group-merge">
+                      <input type="password" id="password_confirmation" class="form-control" name="password_confirmation" placeholder="••••••••••" required />
+                      <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
+                    </div>
+                    <small id="error-password_confirmation" class="error-text form-text text-danger"></small>
+                  </div>
                 <button class="btn btn-primary d-grid w-100 mt-7" type="submit">Daftar</button>
               </form>
 
@@ -120,7 +144,156 @@
     <!-- Main JS -->
     <script src="{{ asset('sneat/assets/js/main.js') }}"></script>
 
+    <!-- Load SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
     <!-- Optional: GitHub button -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $('#formAuthentication').on('submit', function (e) {
+          e.preventDefault(); // Mencegah form submit biasa
+
+          const form = $(this);
+          const formData = form.serialize();
+
+          $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+              if (response.status) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Berhasil',
+                  text: response.message,
+                  timer: 2000,
+                  showConfirmButton: false
+                });
+                window.location.href = response.redirect;
+              } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: response.message
+                });
+              }
+            },
+            error: function (xhr) {
+              if (xhr.status === 422) {
+                // Validasi error dari server
+                const errors = xhr.responseJSON.errors;
+                let pesan = '';
+                $.each(errors, function (key, value) {
+                  pesan += `- ${value[0]}\n`;
+                });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Terjadi kesalahan:\n' + pesan
+                });
+              } else {
+                alert('Terjadi kesalahan server. Coba lagi nanti.');
+              }
+            }
+          });
+        });
+      });
+      document.getElementById('no_hp').addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });  
+      document.getElementById('nim').addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+      $(document).ready(function () {
+      $("#formAuthentication").validate({
+          rules: {
+              nim: {
+                  required: true,
+                  minlength: 8,
+                  maxlength: 20
+              },
+              nama: {
+                  required: true,
+                  maxlength: 100
+              },
+              email: {
+                  required: true,
+                  email: true
+              },
+              alamat: {
+                  required: true
+              },
+              no_hp: {
+                  required: true,
+                  maxlength: 15,
+                  digits: true
+              },
+              id_program_studi: {
+                  required: true
+              },
+              password: {
+                required: true,
+                minlength: 6
+              },
+              password_confirmation: {
+                required: true,
+                equalTo: "#password"
+              }              
+          },
+          messages: {
+              nim: {
+                  required: "NIM wajib diisi.",
+                  minlength: "Minimal 8 karakter.",
+                  maxlength: "Maksimal 20 karakter."
+              },
+              nama: {
+                  required: "Nama wajib diisi.",
+                  maxlength: "Maksimal 100 karakter."
+              },
+              email: {
+                  required: "Email wajib diisi.",
+                  email: "Format email tidak valid."
+              },
+              alamat: {
+                  required: "Alamat wajib diisi."
+              },
+              no_hp: {
+                  required: "No HP wajib diisi.",
+                  maxlength: "Maksimal 15 digit.",
+                  digits: "Hanya angka yang diperbolehkan."
+              },
+              id_program_studi: {
+                  required: "Program Studi wajib dipilih"
+              },
+              password: {
+              required: "Password wajib diisi.",
+              minlength: "Password minimal 6 karakter."
+              },
+              password_confirmation: {
+              required: "Konfirmasi password wajib diisi.",
+              equalTo: "Konfirmasi password tidak sesuai."
+              }
+          },
+          errorPlacement: function (error, element) {
+              const id = element.attr("id");
+              $("#error-" + id).html(error);
+          },
+          highlight: function (element) {
+              $(element).addClass('is-invalid');
+          },
+          unhighlight: function (element) {
+              $(element).removeClass('is-invalid');
+          }
+      });
+  });  
+    </script>
   </body>
 </html>
