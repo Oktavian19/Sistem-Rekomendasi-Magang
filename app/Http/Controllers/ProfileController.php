@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Mahasiswa;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
@@ -54,17 +53,40 @@ class ProfileController extends Controller
     public function edit()
     {
         $userId = Auth::id();
-        $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
-            ->where('id_mahasiswa', $userId)
-            ->first();
+        $role = Auth::user()->role;
 
-        if (!$mahasiswa) {
-            return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 404);
+        if ($role == 'mahasiswa') {
+            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
+                ->where('id_mahasiswa', $userId)
+                ->first();
+
+            if (!$mahasiswa) {
+                return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 404);
+            }
+
+            $programStudi = ProgramStudi::all();
+            $bidangKeahlian = BidangKeahlian::all();
+
+            return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'bidangKeahlian'));
+        } elseif ($role == 'dosen_pembimbing') {
+            $dosen = DosenPembimbing::where('id_dosen_pembimbing', $userId)->first();
+
+            if (!$dosen) {
+                return response()->json(['error' => 'Data dosen pembimbing tidak ditemukan.'], 404);
+            }
+
+            return view('dosen.profile.edit', compact('dosen'));
+        } elseif ($role == 'admin') {
+            $admin = Admin::where('id_admin', $userId)->first();
+
+            if (!$admin) {
+                return response()->json(['error' => 'Data admin tidak ditemukan.'], 404);
+            }
+
+            return view('admin.profile.edit', compact('admin'));
+        } else {
+            abort(403, 'Role tidak dikenali');
         }
-        $programStudi = ProgramStudi::all(); // ambil semua program studi
-        $bidangKeahlian = BidangKeahlian::all();
-
-        return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'bidangKeahlian'));
     }
 
     public function update(Request $request)
@@ -77,9 +99,21 @@ class ProfileController extends Controller
             'alamat' => 'nullable|string|max:500',
             'bidang_keahlian' => 'nullable|array',
             'bidang_keahlian.*' => 'exists:bidang_keahlian,id_bidang_keahlian',
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $mahasiswa = Mahasiswa::where('id_mahasiswa', Auth::id())->firstOrFail();
+
+        if ($request->hasFile('foto_profil')) {
+            if ($mahasiswa->foto_profil && Storage::exists(str_replace('/storage/', 'public/', $mahasiswa->foto_profil))) {
+                Storage::delete(str_replace('/storage/', 'public/', $mahasiswa->foto_profil));
+            }
+
+            $foto = $request->file('foto_profil');
+            $namaFile = time() . '_' . $foto->getClientOriginalName();
+            $path = $foto->storeAs('public/foto_profil/mahasiswa', $namaFile);
+            $validated['foto_profil'] = Storage::url($path);
+        }
 
         // Update data utama
         $mahasiswa->update([
@@ -88,14 +122,17 @@ class ProfileController extends Controller
             'no_hp' => $validated['no_hp'],
             'id_program_studi' => $validated['id_program_studi'],
             'alamat' => $validated['alamat'] ?? null,
+            'foto_profil' => $validated['foto_profil'] ?? null
         ]);
+
+
 
         // Sync bidang keahlian
         $mahasiswa->bidangKeahlian()->sync($validated['bidang_keahlian'] ?? []);
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Profil berhasil diperbarui']);
-        }    
+        }
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui');
     }
@@ -307,11 +344,63 @@ class ProfileController extends Controller
         return $this->downloadDokumen('CV');
     }
 
-    public function update_dosen(Request $request){
+    public function updateAdmin(Request $request)
+    {
+        $user = auth()->user();
+        $admin = $user->admin; // Relasi ke tabel admin
 
+        if (!$admin) {
+            abort(404, 'Data admin tidak ditemukan.');
+        }
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:100|unique:admin,email,' . $admin->id_admin . ',id_admin',
+            'no_hp' => 'nullable|string|max:20',
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('foto_profil')) {
+            if ($admin->foto_profil && Storage::exists(str_replace('/storage/', 'public/', $admin->foto_profil))) {
+                Storage::delete(str_replace('/storage/', 'public/', $admin->foto_profil));
+            }
+
+            $foto = $request->file('foto_profil');
+            $namaFile = time() . '_' . $foto->getClientOriginalName();
+            $path = $foto->storeAs('public/foto_profil/admin', $namaFile);
+            $validated['foto_profil'] = Storage::url($path);
+        }
+
+        $admin->update($validated);
+
+        return redirect()->route('profile.index')->with('success', 'Profil admin berhasil diperbarui.');
     }
 
-    public function update_admin(Request $request){
-        
+    public function updateDosen(Request $request)
+    {
+        $user = auth()->user();
+        $dosen = $user->dosenPembimbing;
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'email' => 'required|email|max:100|unique:dosen_pembimbing,email,' . $dosen->id_dosen_pembimbing . ',id_dosen_pembimbing',
+            'no_hp' => 'nullable|string|max:20',
+            'bidang_minat' => 'nullable|string|max:100',
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Handle upload foto profil
+        if ($request->hasFile('foto_profil')) {
+            $foto = $request->file('foto_profil');
+            $namaFile = time() . '_' . $foto->getClientOriginalName();
+            $path = $foto->storeAs('public/foto_profil/dosen', $namaFile);
+
+            // Simpan path relatif
+            $validated['foto_profil'] = Storage::url($path);
+        }
+
+        $dosen->update($validated);
+
+        return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui.');
     }
 }
