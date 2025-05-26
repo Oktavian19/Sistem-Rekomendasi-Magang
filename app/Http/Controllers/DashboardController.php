@@ -15,6 +15,7 @@ class DashboardController extends Controller
     {
         // 1. Jumlah Mahasiswa
         $jumlahMahasiswa = Mahasiswa::count();
+        $jumlahLamaran = Lamaran::count();
 
         // 2. Statistik Status Magang
         $statusMagang = [
@@ -47,9 +48,10 @@ class DashboardController extends Controller
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-            ->join('perusahaan_mitra', 'lowongan.id_perusahaan', '=', 'perusahaan_mitra.id_perusahaan')
-            ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
-            ->groupBy('perusahaan_mitra.bidang_industri');
+            ->join('bidang_keahlian', 'lowongan.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
+            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_magang'))
+            ->groupBy('bidang_keahlian.nama_bidang');
+
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
@@ -61,7 +63,6 @@ class DashboardController extends Controller
                 'peminatan.total_peminat',
                 DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
-            ->orderByDesc('peminatan.total_peminat')
             ->get();
 
         // 6. Evaluasi Efektivitas Rekomendasi
@@ -69,9 +70,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', true)
             ->count();
 
-        $tidakMengikutiRekomendasi = DB::table('lamaran')
-            ->where('dari_rekomendasi', false)
-            ->count();
+        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi/$jumlahLamaran*100;
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
@@ -80,8 +79,7 @@ class DashboardController extends Controller
             'jumlahDosen',
             'rasioDosenMahasiswa',
             'trenBidangIndustri',
-            'mengikutiRekomendasi',
-            'tidakMengikutiRekomendasi'
+            'persentaseMengikutiRekomendasi',
         ));
     }
 
