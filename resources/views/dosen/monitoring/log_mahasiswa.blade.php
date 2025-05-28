@@ -193,9 +193,7 @@
 
     <!-- Feedback Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <!-- Content will be loaded here dynamically -->
-        </div>
+        <div class="modal-dialog"></div>
     </div>
 
 @endsection
@@ -206,12 +204,7 @@
             // Handle feedback button clicks
             $(document).on('click', '.btn-feedback', function() {
                 var url = $(this).data('modal-action');
-                modalAction(url);
-            });
-
-            // Modal action function
-            function modalAction(url = '') {
-                $('#myModal').load(url, function(response, status, xhr) {
+                $('#myModal .modal-dialog').load(url, function(response, status, xhr) {
                     if (status === "error") {
                         Swal.fire({
                             icon: 'warning',
@@ -227,7 +220,7 @@
                     }
                     $('#myModal').modal('show');
                 });
-            }
+            });
 
             // Image modal function
             function showImageModal(imageUrl) {

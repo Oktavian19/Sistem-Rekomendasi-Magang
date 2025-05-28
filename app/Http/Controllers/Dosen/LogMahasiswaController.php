@@ -69,7 +69,6 @@ class LogMahasiswaController extends Controller
     {
         $request->validate([
             'komentar' => 'required|string',
-            'rating' => 'nullable|integer|min=1|max=5',
         ]);
 
         $log = LogKegiatan::with('magang')->findOrFail($id_log);
@@ -79,11 +78,31 @@ class LogMahasiswaController extends Controller
             'id_magang' => $log->id_magang,
             'id_log' => $id_log,
             'komentar' => $request->komentar,
-            'rating' => $request->rating,
             'tanggal_feedback' => now(),
         ]);
 
-        return redirect()->route('dosen.log-mahasiswa', ['id_mahasiswa' => $log->magang->lamaran->id_mahasiswa])
+        return redirect('/mahasiswa/' . $log->magang->lamaran->id_mahasiswa . '/logs')
             ->with('success', 'Feedback berhasil diberikan');
+    }
+
+    public function storeFeedbackMahasiswa(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'komentar' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5', // Kalau rating juga wajib
+        ]);
+
+        // Simpan feedback baru
+        Feedback::create([
+            'id_user' => auth()->id(),
+            'id_magang' => $request->id_magang,
+            'komentar' => $request->komentar,
+            'rating' => $request->rating, // Kalau kamu ada kolom rating di tabel feedback
+            'tanggal_feedback' => now(),
+        ]);
+
+        // Redirect ke halaman log dengan pesan sukses
+        return back()->with('success', 'Feedback berhasil dikirim.');
     }
 }
