@@ -27,16 +27,33 @@
                     <small id="error-edit_nama_posisi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label>Jenis Magang</label>
+                    <select name="jenis_magang" id="jenis_magang" class="form-control" required>
+                        @foreach ($jenis_magangs as $jenis_magang)
+                            <option value="{{ $jenis_magang }}" {{ $jenis_magang == $lowongan->jenis_magang ? 'selected' : '' }}>
+                                {{ ucfirst($jenis_magang) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small id="error-jenis_magang" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label for="edit_deskripsi">Deskripsi</label>
                     <textarea name="deskripsi" id="edit_deskripsi" 
                             class="form-control" required>{{ $lowongan->deskripsi }}</textarea>
                     <small id="error-edit_deskripsi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="edit_kategori_keahlian">Kategori Keahlian</label>
-                    <input type="text" name="kategori_keahlian" id="edit_kategori_keahlian" 
-                           class="form-control" value="{{ $lowongan->bidangKeahlian->nama_bidang }}" required>
-                    <small id="error-edit_kategori_keahlian" class="error-text form-text text-danger"></small>
+                    <label>Bidang Keahlian</label>
+                    <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
+                        <option value="">Pilih Bidang</option>
+                        @foreach ($bidang_keahlians as $bidang_keahlian)
+                            <option value="{{ $bidang_keahlian->id_bidang_keahlian }}" {{ $bidang_keahlian->id_bidang_keahlian == $lowongan->id_bidang_keahlian ? 'selected' : '' }}>
+                                {{ $bidang_keahlian->nama_bidang_keahlian }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small id="error-id_bidang_keahlian" class="text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="edit_kuota">Kuota</label>
@@ -95,13 +112,15 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100
             },
+            jenis_magang: {
+                required: true
+            },
             deskripsi: {
                 required: true,
                 maxlength: 1000
             },
-            kategori_keahlian: {
-                required: true,
-                maxlength: 100
+            id_bidang_keahlian: {
+                required: true
             },
             kuota: {
                 required: true,
@@ -119,7 +138,7 @@ $(document).ready(function () {
             tanggal_tutup: {
                 required: true,
                 date: true,
-                greaterThanOrEqual: "#tanggal_buka"
+                greaterThanOrEqual: "#edit_tanggal_buka"
             },
             durasi_magang: {
                 required: true,
@@ -134,13 +153,15 @@ $(document).ready(function () {
                 required: "Nama posisi wajib diisi.",
                 maxlength: "Maksimal 100 karakter."
             },
+            jenis_magang: {
+                required: "Silahkan pilih jenis magang."
+            },
             deskripsi: {
                 required: "Deskripsi wajib diisi.",
                 maxlength: "Maksimal 1000 karakter."
             },
-            kategori_keahlian: {
-                required: "Kategori keahlian wajib diisi.",
-                maxlength: "Maksimal 100 karakter."
+            id_bidang_keahlian: {
+                required: "Silahkan pilih bidang keahlian."
             },
             kuota: {
                 required: "Kuota wajib diisi.",
