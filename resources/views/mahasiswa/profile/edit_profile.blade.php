@@ -83,8 +83,8 @@
                             <select class="form-select form-select-sm" name="bidang_keahlian[]" data-control="select2"
                                 data-allow-clear="true" data-placeholder="Pilih Bidang Keahlian">
                                 @foreach ($bidangKeahlian as $bidang)
-                                    <option value="{{ $bidang->id_bidang_keahlian }}" @selected(in_array($bidang->id_bidang_keahlian, old('bidang_keahlian', $mahasiswa->bidangKeahlian->pluck('id_bidang_keahlian')->toArray() ?? [])))>
-                                        {{ $bidang->nama_bidang }}
+                                    <option value="{{ $bidang->id }}" @selected(in_array($bidang->id, old('bidang_keahlian', $mahasiswa->bidangKeahlian->pluck('id')->toArray() ?? [])))>
+                                        {{ $bidang->label }}
                                     </option>
                                 @endforeach
                             </select>

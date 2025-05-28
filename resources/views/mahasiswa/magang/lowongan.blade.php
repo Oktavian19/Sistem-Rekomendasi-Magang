@@ -69,9 +69,9 @@
                                         <select class="form-select" name="job_field_id">
                                             <option value="">Semua Bidang</option>
                                             @foreach ($bidangKeahlians as $bidang)
-                                                <option value="{{ $bidang->id_bidang_keahlian }}"
-                                                    {{ request('job_field_id') == $bidang->id_bidang_keahlian ? 'selected' : '' }}>
-                                                    {{ $bidang->nama_bidang }}
+                                                <option value="{{ $bidang->id }}"
+                                                    {{ request('job_field_id') == $bidang->id ? 'selected' : '' }}>
+                                                    {{ $bidang->label }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -147,11 +147,11 @@
                                 @if (request('job_field_id'))
                                     @php
                                         $selectedField = $bidangKeahlians->firstWhere(
-                                            'id_bidang_keahlian',
+                                            'id',
                                             request('job_field_id'),
                                         );
                                     @endphp
-                                    <li>Bidang: {{ $selectedField->nama_bidang ?? '' }}</li>
+                                    <li>Bidang: {{ $selectedField->label ?? '' }}</li>
                                 @endif
                                 @if (request('quota_range'))
                                     <li>Kuota: {{ request('quota_range') }}</li>

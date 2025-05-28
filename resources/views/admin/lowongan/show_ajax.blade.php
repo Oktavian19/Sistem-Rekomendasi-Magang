@@ -7,12 +7,16 @@
         <div class="modal-body">
             <table class="table table-bordered">
                 <tr>
+                    <th width="30%">Perusahaan</th>
+                    <td>{{ $lowongan->perusahaan->nama_perusahaan }}</td>
+                </tr>
+                <tr>
                     <th width="30%">Nama Posisi</th>
                     <td>{{ $lowongan->nama_posisi }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Perusahaan</th>
-                    <td>{{ $lowongan->perusahaan->nama_perusahaan }}</td>
+                    <th width="30%">Jenis Magang</th>
+                    <td>{{ ucfirst($lowongan->jenis_magang) }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Deskripsi</th>
@@ -20,7 +24,11 @@
                 </tr>
                 <tr>
                     <th width="30%">Kategori Keahlian</th>
-                    <td>{{ $lowongan->bidangKeahlian->nama_bidang }}</td>
+                    <td>{{ $lowongan->bidangKeahlian->label }}</td>
+                </tr>
+                <tr>
+                    <th width="30%">Bidang Keahlian</th>
+                    <td>{{ $lowongan->jenisPelaksanaan->label }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Kuota</th>
@@ -40,7 +48,7 @@
                 </tr>
                 <tr>
                     <th width="30%">Durasi Magang</th>
-                    <td>{{ $lowongan->durasi_magang }}</td>
+                    <td>{{ $lowongan->durasiMagang->label }}</td>
                 </tr>
             </table>
         </div>
