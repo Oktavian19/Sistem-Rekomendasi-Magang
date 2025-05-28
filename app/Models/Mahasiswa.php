@@ -32,14 +32,24 @@ class Mahasiswa extends Model
         return $this->belongsTo(ProgramStudi::class, 'id_program_studi', 'id_program_studi');
     }
 
-    public function bidangKeahlian()
+    // public function bidangKeahlian()
+    // {
+    //     return $this->belongsToMany(
+    //         BidangKeahlian::class,           // Model target
+    //         'mahasiswa_bidang_keahlian',     // Nama tabel pivot
+    //         'id_mahasiswa',                  // FK di pivot untuk mahasiswa
+    //         'id_bidang_keahlian'             // FK di pivot untuk bidang keahlian
+    //     )->withTimestamps();                 // Jika perlu akses timestamps
+    // }
+
+    public function opsiPreferensi()
     {
         return $this->belongsToMany(
-            BidangKeahlian::class,           // Model target
-            'mahasiswa_bidang_keahlian',     // Nama tabel pivot
+            OpsiPreferensi::class,           // Model target
+            'preferensi_pengguna',           // Nama tabel pivot
             'id_mahasiswa',                  // FK di pivot untuk mahasiswa
-            'id_bidang_keahlian'             // FK di pivot untuk bidang keahlian
-        )->withTimestamps();                 // Jika perlu akses timestamps
+            'id_opsi'                        // FK di pivot untuk bidang keahlian
+        )->withPivot('ranking', 'poin')->withTimestamps();                 // Jika perlu akses timestamps
     }
 
     public function jenisMagang()

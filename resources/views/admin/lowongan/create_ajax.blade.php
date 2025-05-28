@@ -40,12 +40,22 @@
                 <div class="form-group mb-3">
                     <label>Bidang Keahlian</label>
                     <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
-                        <option value="">Pilih Bidang</option>
-                        @foreach ($bidang_keahlians as $bidang_keahlian)
-                            <option value="{{ $bidang_keahlian->id_bidang_keahlian }}">{{ $bidang_keahlian->nama_bidang_keahlian }}</option>
+                        <option value="">Pilih Bidang Keahlian</option>
+                        @foreach ($bidangKeahlians as $bidangKeahlian)
+                            <option value="{{ $bidangKeahlian->id }}">{{ $bidangKeahlian->label }}</option>
                         @endforeach
                     </select>
-                    <small id="error-id_bidang_keahlian" class="text-danger"></small>
+                    <small id="error-kategori_keahlian" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Jenis Pelaksanaan</label>
+                    <select name="id_jenis_pelaksanaan" id="id_jenis_pelaksanaan" class="form-control" required>
+                        <option value="">Pilih Jenis Pelaksanaan</option>
+                        @foreach ($jenisPelaksanaans as $jenisPelaksanaan)
+                            <option value="{{ $jenisPelaksanaan->id }}">{{ $jenisPelaksanaan->label }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-jenis_pelaksanaan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label>Kuota</label>
@@ -69,7 +79,12 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Durasi Magang</label>
-                    <input type="text" name="durasi_magang" id="durasi_magang" class="form-control" required>
+                    <select name="id_durasi_magang" id="id_durasi_magang" class="form-control" required>
+                        <option value="">Pilih Durasi Magang</option>
+                        @foreach ($durasiMagang as $durasi)
+                            <option value="{{ $durasi->id }}">{{ $durasi->label }}</option>
+                        @endforeach
+                    </select>
                     <small id="error-durasi_magang" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -105,7 +120,10 @@ $(document).ready(function () {
                 maxlength: 1000
             },
             id_bidang_keahlian: {
-                required: true
+                required: true,
+            },
+            id_jenis_pelaksanaan: {
+                required: true,
             },
             kuota: {
                 required: true,
@@ -125,9 +143,8 @@ $(document).ready(function () {
                 date: true,
                 greaterThanOrEqual: "#tanggal_buka"
             },
-            durasi_magang: {
-                required: true,
-                maxlength: 50
+            id_durasi_magang: {
+                required: true
             }
         },
         messages: {
@@ -145,8 +162,8 @@ $(document).ready(function () {
                 required: "Deskripsi wajib diisi.",
                 maxlength: "Maksimal 1000 karakter."
             },
-            id_bidang_keahlian: {
-                required: "Silahkan pilih bidang keahlian."
+            kategori_keahlian: {
+                required: "Kategori keahlian wajib diisi.",
             },
             kuota: {
                 required: "Kuota wajib diisi.",
@@ -168,7 +185,6 @@ $(document).ready(function () {
             },
             durasi_magang: {
                 required: "Durasi magang wajib diisi.",
-                maxlength: "Maksimal 50 karakter."
             }
         },
         errorPlacement: function (error, element) {

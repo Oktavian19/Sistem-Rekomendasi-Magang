@@ -46,14 +46,22 @@
                 <div class="form-group mb-3">
                     <label>Bidang Keahlian</label>
                     <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
-                        <option value="">Pilih Bidang</option>
-                        @foreach ($bidang_keahlians as $bidang_keahlian)
-                            <option value="{{ $bidang_keahlian->id_bidang_keahlian }}" {{ $bidang_keahlian->id_bidang_keahlian == $lowongan->id_bidang_keahlian ? 'selected' : '' }}>
-                                {{ $bidang_keahlian->nama_bidang_keahlian }}
-                            </option>
+                        <option value="">Pilih Bidang Keahlian</option>
+                        @foreach ($bidangKeahlians as $bidang)
+                            <option value="{{ $bidang->id }}" {{ $bidang->id == $lowongan->id_bidang_keahlian ? 'selected' : '' }}>{{ $bidang->label }}</option>
                         @endforeach
                     </select>
                     <small id="error-id_bidang_keahlian" class="text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="edit_jenis_pelaksanaan">Jenis Pelaksanaan</label>
+                    <select name="id_jenis_pelaksanaan" id="id_jenis_pelaksanaan" class="form-control" required>
+                        <option value="">Pilih Jenis Pelaksanaan</option>
+                        @foreach ($jenisPelaksanaans as $jenisPelaksanaan)
+                            <option value="{{ $jenisPelaksanaan->id }}" {{ $jenisPelaksanaan->id == $lowongan->id_jenis_pelaksanaan ? 'selected' : '' }}>{{ $jenisPelaksanaan->label }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-edit_jenis_pelaksanaan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="edit_kuota">Kuota</label>
@@ -82,8 +90,12 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="edit_durasi_magang">Durasi Magang</label>
-                    <input type="text" name="durasi_magang" id="edit_durasi_magang" 
-                           class="form-control" value="{{ $lowongan->durasi_magang }}" required>
+                    <select name="id_durasi_magang" id="id_durasi_magang" class="form-control" required>
+                        <option value="">Pilih Durasi Magang</option>
+                        @foreach ($durasiMagangs as $durasi)
+                            <option value="{{ $durasi->id }}" {{ $durasi->id == $lowongan->id_durasi_magang ? 'selected' : '' }}>{{ $durasi->label }}</option>
+                        @endforeach
+                    </select>
                     <small id="error-edit_durasi_magang" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -122,6 +134,9 @@ $(document).ready(function () {
             id_bidang_keahlian: {
                 required: true
             },
+            jenis_pelaksanaan: {
+                required: true
+            },
             kuota: {
                 required: true,
                 digits: true,
@@ -141,8 +156,7 @@ $(document).ready(function () {
                 greaterThanOrEqual: "#edit_tanggal_buka"
             },
             durasi_magang: {
-                required: true,
-                maxlength: 50
+                required: true
             }
         },
         messages: {

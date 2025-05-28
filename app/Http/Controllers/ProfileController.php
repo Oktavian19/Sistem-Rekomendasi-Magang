@@ -8,9 +8,9 @@ use App\Models\Mahasiswa;
 use App\Models\Pengalaman;
 use App\Models\Dokumen;
 use App\Models\ProgramStudi;
-use App\Models\BidangKeahlian;
 use App\Models\DosenPembimbing;
 use App\Models\Admin;
+use App\Models\OpsiPreferensi;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -65,7 +65,9 @@ class ProfileController extends Controller
             }
 
             $programStudi = ProgramStudi::all();
-            $bidangKeahlian = BidangKeahlian::all();
+            $bidangKeahlian = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'bidang_keahlian');
+            })->get();
 
             return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'bidangKeahlian'));
         } elseif ($role == 'dosen_pembimbing') {

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\BidangKeahlian;
 use App\Models\Lamaran;
 use Illuminate\Http\Request;
 use App\Models\Lowongan;
+use App\Models\OpsiPreferensi;
 use Illuminate\Support\Facades\Auth;
 
 class LowonganController extends Controller
@@ -76,7 +76,9 @@ class LowonganController extends Controller
             ->values();
 
         // Ambil bidang pekerjaan untuk filter
-        $bidangKeahlians = BidangKeahlian::all();
+        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'bidang_keahlian');
+            })->get();
 
         return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
