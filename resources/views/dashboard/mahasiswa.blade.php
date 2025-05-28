@@ -95,36 +95,36 @@
                 <div class="d-flex justify-content-center align-items-center" style="padding: 20px">
                     <ul>
                         <li>
-                            <i class="icons fa-solid fa-user"></i>
+                            <i class="icons fa-solid fa-copy"></i>
                             <div class="step first active">
                                 <p>1</p>
                                 <i class="awesome fa-solid fa-check"></i>
                             </div>
-                            <p class="label">Profile</p>
+                            <p class="label">Lamaran Dikirim</p>
                         </li>
                         <li>
-                            <i class="icons fa-solid fa-coins"></i>
-                            <div class="step second">
+                            <i class="icons fa-solid fa-bars-progress"></i>
+                            <div class="step second active">
                                 <p>2</p>
                                 <i class="awesome fa-solid fa-check"></i>
                             </div>
-                            <p class="label">Finances</p>
+                            <p class="label">Diproses Admin</p>
                         </li>
                         <li>
-                            <i class="icons fa-solid fa-house"></i>
-                            <div class="step third">
+                            <i class="icons fa-solid fa-file-circle-check"></i>
+                            <div class="step third active">
                                 <p>3</p>
                                 <i class="awesome fa-solid fa-check"></i>
                             </div>
-                            <p class="label">Property</p>
+                            <p class="label">Lamaran Disetujui</p>
                         </li>
                         <li>
-                            <i class="icons fa-regular fa-star-half-stroke"></i>
-                            <div class="step fourth">
+                            <i class="icons fa-solid fa-person-walking-arrow-right"></i>
+                            <div class="step fourth active">
                                 <p>4</p>
                                 <i class="awesome fa-solid fa-check"></i>
                             </div>
-                            <p class="label">Evaluation</p>
+                            <p class="label">Magang Berlangsung</p>
                         </li>
                         <li>
                             <i class="icons fa-solid fa-thumbs-up"></i>
@@ -132,7 +132,7 @@
                                 <p>5</p>
                                 <i class="awesome fa-solid fa-check"></i>
                             </div>
-                            <p class="label">Approval</p>
+                            <p class="label">Magang Selesai</p>
                         </li>
                     </ul>
                 </div>
