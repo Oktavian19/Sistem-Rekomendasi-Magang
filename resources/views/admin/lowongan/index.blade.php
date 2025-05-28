@@ -18,6 +18,7 @@
                             <th>Nama Posisi</th>
                             <th>Perusahaan</th>
                             <th>Kategori Keahlian</th>
+                            <th>Jenis Pelaksanaan</th>
                             <th>Kuota</th>
                             <th>Tanggal Buka</th>
                             <th>Tanggal Tutup</th>
@@ -58,6 +59,7 @@
                 { data: 'nama_posisi', name: 'nama_posisi' },
                 { data: 'nama_perusahaan', name: 'nama_perusahaan' },
                 { data: 'kategori_keahlian', name: 'kategori_keahlian' },
+                { data: 'jenis_pelaksanaan', name: 'jenis_pelaksanaan' },
                 { data: 'kuota', name: 'kuota', className: 'text-center' },
                 { data: 'tanggal_buka', name: 'tanggal_buka' },
                 { data: 'tanggal_tutup', name: 'tanggal_tutup' },

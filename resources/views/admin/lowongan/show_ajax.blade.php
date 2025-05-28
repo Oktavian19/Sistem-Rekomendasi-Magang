@@ -23,6 +23,10 @@
                     <td>{{ $lowongan->bidangKeahlian->label }}</td>
                 </tr>
                 <tr>
+                    <th width="30%">Kategori Keahlian</th>
+                    <td>{{ $lowongan->jenisPelaksanaan->label }}</td>
+                </tr>
+                <tr>
                     <th width="30%">Kuota</th>
                     <td>{{ $lowongan->kuota }}</td>
                 </tr>

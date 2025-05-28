@@ -33,14 +33,24 @@
                     <small id="error-edit_deskripsi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="edit_kategori_keahlian">Kategori Keahlian</label>
+                    <label for="edit_kategori_keahlian">Bidang Keahlian</label>
                     <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
-                        <option value="">Pilih Durasi Magang</option>
+                        <option value="">Pilih Bidang Keahlian</option>
                         @foreach ($bidangKeahlians as $bidang)
                             <option value="{{ $bidang->id }}" {{ $bidang->id == $lowongan->id_bidang_keahlian ? 'selected' : '' }}>{{ $bidang->label }}</option>
                         @endforeach
                     </select>
                     <small id="error-edit_kategori_keahlian" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="edit_jenis_pelaksanaan">Jenis Pelaksanaan</label>
+                    <select name="id_jenis_pelaksanaan" id="id_jenis_pelaksanaan" class="form-control" required>
+                        <option value="">Pilih Jenis Pelaksanaan</option>
+                        @foreach ($jenisPelaksanaans as $jenisPelaksanaan)
+                            <option value="{{ $jenisPelaksanaan->id }}" {{ $jenisPelaksanaan->id == $lowongan->id_jenis_pelaksanaan ? 'selected' : '' }}>{{ $jenisPelaksanaan->label }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-edit_jenis_pelaksanaan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="edit_kuota">Kuota</label>
@@ -108,8 +118,10 @@ $(document).ready(function () {
                 maxlength: 1000
             },
             kategori_keahlian: {
-                required: true,
-                maxlength: 100
+                required: true
+            },
+            jenis_pelaksanaan: {
+                required: true
             },
             kuota: {
                 required: true,
@@ -130,8 +142,7 @@ $(document).ready(function () {
                 greaterThanOrEqual: "#tanggal_buka"
             },
             durasi_magang: {
-                required: true,
-                maxlength: 50
+                required: true
             }
         },
         messages: {

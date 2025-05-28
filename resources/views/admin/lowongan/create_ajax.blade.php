@@ -38,6 +38,16 @@
                     <small id="error-kategori_keahlian" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label>Jenis Pelaksanaan</label>
+                    <select name="id_jenis_pelaksanaan" id="id_jenis_pelaksanaan" class="form-control" required>
+                        <option value="">Pilih Jenis Pelaksanaan</option>
+                        @foreach ($jenisPelaksanaans as $jenisPelaksanaan)
+                            <option value="{{ $jenisPelaksanaan->id }}">{{ $jenisPelaksanaan->label }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-jenis_pelaksanaan" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label>Kuota</label>
                     <input type="number" name="kuota" id="kuota" class="form-control" required>
                     <small id="error-kuota" class="error-text form-text text-danger"></small>
@@ -97,6 +107,9 @@ $(document).ready(function () {
                 maxlength: 1000
             },
             id_bidang_keahlian: {
+                required: true,
+            },
+            id_jenis_pelaksanaan: {
                 required: true,
             },
             kuota: {

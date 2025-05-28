@@ -16,7 +16,7 @@ class Lowongan extends Model
         'id_perusahaan',
         'nama_posisi',
         'deskripsi',
-        'id_jenis_magang',
+        'id_jenis_pelaksanaan',
         'id_bidang_keahlian',
         'id_durasi_magang',
         'kuota',
