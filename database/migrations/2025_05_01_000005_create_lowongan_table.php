@@ -12,14 +12,14 @@ return new class extends Migration
             $table->id('id_lowongan');
             $table->unsignedBigInteger('id_perusahaan');
             $table->string('nama_posisi', 100);
-            $table->enum('jenis_magang', ['WFO', 'WFH', 'Hybrid']);
-            $table->text('deskripsi');
+            $table->unsignedBigInteger('id_jenis_pelaksanaan');
             $table->unsignedBigInteger('id_bidang_keahlian');
+            $table->unsignedBigInteger('id_durasi_magang');
+            $table->text('deskripsi');
             $table->integer('kuota');
             $table->text('persyaratan');
             $table->date('tanggal_buka');
             $table->date('tanggal_tutup');
-            $table->string('durasi_magang', 50);
             $table->timestamps(); 
 
             $table->foreign('id_perusahaan')
@@ -27,10 +27,22 @@ return new class extends Migration
                   ->on('perusahaan_mitra')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
+
+            $table->foreign('id_jenis_pelaksanaan')
+                ->references('id')
+                ->on('opsi_preferensi')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
                   
             $table->foreign('id_bidang_keahlian')
-                ->references('id_bidang_keahlian')
-                ->on('bidang_keahlian')
+                ->references('id')
+                ->on('opsi_preferensi')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('id_durasi_magang')
+                ->references('id')
+                ->on('opsi_preferensi')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

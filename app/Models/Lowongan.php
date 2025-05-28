@@ -16,12 +16,13 @@ class Lowongan extends Model
         'id_perusahaan',
         'nama_posisi',
         'deskripsi',
+        'id_jenis_magang',
         'id_bidang_keahlian',
+        'id_durasi_magang',
         'kuota',
         'persyaratan',
         'tanggal_buka',
         'tanggal_tutup',
-        'durasi_magang'
     ];
 
     public function perusahaan()
@@ -34,8 +35,19 @@ class Lowongan extends Model
     //     return $this->belongsTo(BidangKeahlian::class, 'id_bidang_keahlian', 'id_bidang_keahlian');
     // }
 
-    public function opsiPreferensi()
+    public function jenisPelaksanaan()
     {
-        return $this->belongsTo(OpsiPreferensi::class, 'id', 'id');
+        return $this->belongsTo(OpsiPreferensi::class, 'id_jenis_pelaksanaan');
     }
+
+    public function bidangKeahlian()
+    {
+        return $this->belongsTo(OpsiPreferensi::class, 'id_bidang_keahlian');
+    }
+
+    public function durasiMagang()
+    {
+        return $this->belongsTo(OpsiPreferensi::class, 'id_durasi_magang');
+    }
+
 }

@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <th width="30%">Kategori Keahlian</th>
-                    <td>{{ $lowongan->bidangKeahlian->nama_bidang }}</td>
+                    <td>{{ $lowongan->bidangKeahlian->label }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Kuota</th>
@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <th width="30%">Durasi Magang</th>
-                    <td>{{ $lowongan->durasi_magang }}</td>
+                    <td>{{ $lowongan->durasiMagang->label }}</td>
                 </tr>
             </table>
         </div>
