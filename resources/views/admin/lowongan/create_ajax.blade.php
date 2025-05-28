@@ -23,6 +23,16 @@
                     <small id="error-nama_posisi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label>Jenis Magang</label>
+                    <select name="jenis_magang" id="jenis_magang" class="form-control" required>
+                        <option value="">Pilih Jenis</option>
+                        <option value="WFO">WFO</option>
+                        <option value="WFH">WFH</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                    <small id="error-jenis_magang" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label>Deskripsi</label>
                     <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
                     <small id="error-deskripsi" class="error-text form-text text-danger"></small>
@@ -102,6 +112,9 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100
             },
+            jenis_magang: {
+                required: true
+            },
             deskripsi: {
                 required: true,
                 maxlength: 1000
@@ -141,6 +154,9 @@ $(document).ready(function () {
             nama_posisi: {
                 required: "Nama posisi wajib diisi.",
                 maxlength: "Maksimal 100 karakter."
+            },
+            jenis_magang: {
+                required: "Silahkan pilih jenis magang."
             },
             deskripsi: {
                 required: "Deskripsi wajib diisi.",

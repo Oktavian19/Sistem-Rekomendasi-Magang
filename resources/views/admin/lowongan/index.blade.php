@@ -15,8 +15,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Posisi</th>
                             <th>Perusahaan</th>
+                            <th>Nama Posisi</th>
                             <th>Kategori Keahlian</th>
                             <th>Jenis Pelaksanaan</th>
                             <th>Kuota</th>
@@ -51,13 +51,10 @@
             processing: true,
             serverSide: true,
             ajax: "{{ url('lowongan/list') }}",
-            columnDefs: [
-                { targets: [8], orderable: false, width: '200px' }
-            ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
-                { data: 'nama_posisi', name: 'nama_posisi' },
                 { data: 'nama_perusahaan', name: 'nama_perusahaan' },
+                { data: 'nama_posisi', name: 'nama_posisi' },
                 { data: 'kategori_keahlian', name: 'kategori_keahlian' },
                 { data: 'jenis_pelaksanaan', name: 'jenis_pelaksanaan' },
                 { data: 'kuota', name: 'kuota', className: 'text-center' },
