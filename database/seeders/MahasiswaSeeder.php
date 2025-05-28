@@ -105,7 +105,7 @@ class MahasiswaSeeder extends Seeder
             ['nim' => '2341720020', 'nama' => 'ALVIN ADITIYA'],
             ['nim' => '2341720132', 'nama' => 'ANANDA SATRIA PUTRA NUGRAHA'],
             ['nim' => '2341720131', 'nama' => 'ANNISA EKA PUSPITA'],
-            ['nim' => '244107023011', 'nama' => 'ASHRUL RIFKI ARDIYHASA'], // NIM ilmiah dikonversi dari notasi eksponensial
+            ['nim' => '24410702301', 'nama' => 'ASHRUL RIFKI ARDIYHASA'], // NIM ilmiah dikonversi dari notasi eksponensial
             ['nim' => '2341720169', 'nama' => 'DIMAS ADI BAYU SAMUDRA'],
             ['nim' => '2341720098', 'nama' => 'DIO ANDIKA PRADANA MULIA TAMA'],
             ['nim' => '2341720073', 'nama' => 'DWI AHMAD KHAIRY'],
@@ -226,7 +226,7 @@ class MahasiswaSeeder extends Seeder
             ['nim' => '2341720040', 'nama' => 'ALEXANDER AGUNG RAYA'],
             ['nim' => '244107023012', 'nama' => 'ANUGERAH RACHMADANI SUKMA HERIANTO'],
             ['nim' => '2341720012', 'nama' => 'AYLEEN RUHUL QISTHY'],
-            ['nim' => '244107023011', 'nama' => 'DANENDRA ADHIPRAMANA'],
+            ['nim' => '', 'nama' => 'DANENDRA ADHIPRAMANA'],
             ['nim' => '2341720144', 'nama' => 'DANENDRA NAYAKA PASSADHI'],
             ['nim' => '2341720050', 'nama' => 'DINA RAHMAWATI'],
             ['nim' => '2341720139', 'nama' => 'DUTA KURNIA ARDHANI'],
