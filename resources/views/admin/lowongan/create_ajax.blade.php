@@ -23,14 +23,29 @@
                     <small id="error-nama_posisi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label>Jenis Magang</label>
+                    <select name="jenis_magang" id="jenis_magang" class="form-control" required>
+                        <option value="">Pilih Jenis</option>
+                        <option value="WFO">WFO</option>
+                        <option value="WFH">WFH</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                    <small id="error-jenis_magang" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label>Deskripsi</label>
                     <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
                     <small id="error-deskripsi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label>Kategori Keahlian</label>
-                    <input type="text" name="kategori_keahlian" id="kategori_keahlian" class="form-control" required>
-                    <small id="error-kategori_keahlian" class="error-text form-text text-danger"></small>
+                    <label>Bidang Keahlian</label>
+                    <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
+                        <option value="">Pilih Bidang</option>
+                        @foreach ($bidang_keahlians as $bidang_keahlian)
+                            <option value="{{ $bidang_keahlian->id_bidang_keahlian }}">{{ $bidang_keahlian->nama_bidang_keahlian }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-id_bidang_keahlian" class="text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label>Kuota</label>
@@ -82,13 +97,15 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 100
             },
+            jenis_magang: {
+                required: true
+            },
             deskripsi: {
                 required: true,
                 maxlength: 1000
             },
-            kategori_keahlian: {
-                required: true,
-                maxlength: 100
+            id_bidang_keahlian: {
+                required: true
             },
             kuota: {
                 required: true,
@@ -121,13 +138,15 @@ $(document).ready(function () {
                 required: "Nama posisi wajib diisi.",
                 maxlength: "Maksimal 100 karakter."
             },
+            jenis_magang: {
+                required: "Silahkan pilih jenis magang."
+            },
             deskripsi: {
                 required: "Deskripsi wajib diisi.",
                 maxlength: "Maksimal 1000 karakter."
             },
-            kategori_keahlian: {
-                required: "Kategori keahlian wajib diisi.",
-                maxlength: "Maksimal 100 karakter."
+            id_bidang_keahlian: {
+                required: "Silahkan pilih bidang keahlian."
             },
             kuota: {
                 required: "Kuota wajib diisi.",
