@@ -8,6 +8,8 @@ use App\Models\Mahasiswa;
 use App\Models\Magang;
 use App\Models\DosenPembimbing;
 use App\Models\Lamaran;
+use Illuminate\Support\Facades\Auth;
+
 
 class DashboardController extends Controller
 {
@@ -90,6 +92,15 @@ class DashboardController extends Controller
 
     public function dashboard_mahasiswa()
     {
-        return view('dashboard.mahasiswa');
+        $user = Auth::user();
+
+        $dataMahasiswa = Mahasiswa::where('id_mahasiswa', $user->mahasiswa->id_mahasiswa)->first();
+
+        if (!$dataMahasiswa || empty($dataMahasiswa->preferensi_lokasi) || empty($dataMahasiswa->id_program_studi)) {
+            return view('dashboard.mahasiswa_kosong');
+        }
+
+        return view('dashboard.mahasiswa', compact('dataMahasiswa'));
     }
+
 }
