@@ -16,6 +16,7 @@ use App\Http\Controllers\Dosen\MonitoringController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\Mahasiswa\LogKegiatanController;
 use App\Http\Controllers\Mahasiswa\RekomendasiController;
+use App\Http\Controllers\Admin\KelolaInputController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -122,6 +123,13 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/show-ajax', [ProgramStudiController::class, 'show_ajax'])->name('show_ajax');
             Route::post('{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/confirm-ajax', [ProgramStudiController::class, 'confirm_ajax'])->name('confirm_ajax');
+        });
+
+        Route::prefix('input-fasilitas')->name('input_fasilitas.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_fasilitas'])->name('input_fasilitas');
+        });
+        Route::prefix('input-bidang-keahlian')->name('input_bidang_keahlian.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_bidang_keahlian'])->name('input_bidang_keahlian');
         });
     });
 

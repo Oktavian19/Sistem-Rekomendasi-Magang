@@ -83,17 +83,17 @@
         
         
         <!-- Hero Section -->
-        <section style="height: 60vh; background-color: #27548A">
+        <section style="height: 90vh; background-color: #27548A">
           <div class="container h-100">
             <div class="row h-100 ms-5 ps-5">
               <!-- Left Content - Tetap di tengah vertikal -->
-              <div class="col-lg-5 text-white d-flex flex-column justify-content-center">
+              <div class="col-lg-4 text-white d-flex flex-column justify-content-center">
                 <h1 class="fw-bold text-white mb-3" style="font-size: 2.5rem;">Temukan<br>Magang impianmu<br>Bersama Kami</h1>
               </div>
 
               <!-- Right Image - Rata bawah -->
-              <div class="col-lg-7 d-flex align-items-end">
-                <img src="{{ asset('sneat/assets/img/hero-img.png') }}" alt="Hero Image" class="img-fluid" style="max-height: 90%;">
+              <div class="col-lg-8 d-flex align-items-end">
+                <img src="{{ asset('sneat/assets/img/hero-img.png') }}" alt="Hero Image" class="img-fluid" style="max-height: 100%;">
               </div>
             </div>
           </div>
