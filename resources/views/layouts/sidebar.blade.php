@@ -41,12 +41,12 @@
             <div>Program Studi</div>
           </a>
         </li>
-        {{-- <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
-          <a href="{{ url('periode') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-calendar"></i>
-            <div>Periode Magang</div>
+        <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
+          <a href="{{ url('user') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user-plus"></i>
+            <div>Kelola Pengguna</div>
           </a>
-        </li> --}}
+        </li>
         <li class="menu-item {{ request()->is('input*') ? 'active open' : '' }}">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-edit"></i>

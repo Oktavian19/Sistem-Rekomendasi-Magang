@@ -22,14 +22,8 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Role</label>
-                    <select name="role" class="form-control" id="edit_role">
-                        @foreach ($roles as $role)
-                            <option value="{{ $role }}" {{ $role == $user->role ? 'selected' : '' }}>
-                                {{ ucfirst($role) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                    <input type="text" class="form-control" value="{{ $user->role }}" disabled>
+                </div>                
 
                 {{-- Field Admin --}}
                 @if ($user->role === 'admin')
