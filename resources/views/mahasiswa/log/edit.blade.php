@@ -1,165 +1,155 @@
-<form action="{{ route('log-kegiatan.update', $log->id) }}" method="POST" id="form-edit" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
-    <div id="modal-edit-log" class="modal-dialog modal-lg" role="document">
-        <input type="hidden" name="id" id="edit_id" value="{{ $log->id }}">
-        <div class="modal-content">            
+<div id="modal-log" class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form action="{{ url('log-kegiatan/' . $log->id_log) }}" method="POST" id="form-edit"
+            enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
             <div class="modal-header">
-                <h5 class="modal-title">Edit Log Kegiatan</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Log Kegiatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <div class="modal-body">
-                <!-- Date Input -->
-                <div class="form-group mb-4">
-                    <label>Tanggal Kegiatan</label>
-                    <div class="input-group">
-                        <input type="date" name="tanggal" id="edit_tanggal" class="form-control" value="{{ $log->tanggal }}" required>
-                        <span class="input-group-text"><i class="bi bi-calendar-date"></i></span>
-                    </div>
-                    <small id="error-tanggal" class="error-text form-text text-danger"></small>
-                </div>
-                
-                <!-- Week Selector (Optional) -->
-                <div class="form-group mb-4">
-                    <label>Minggu Ke- (Opsional)</label>
-                    <div class="input-group">
-                        <select name="minggu" id="edit_minggu" class="form-control">
-                            <option value="" disabled>Pilih minggu</option>
-                            @for($i = 1; $i <= $jumlahMinggu; $i++)
-                                <option value="{{ $i }}" {{ $log->minggu == $i ? 'selected' : '' }}>
-                                    Minggu ke-{{ $i }}
-                                </option>
-                            @endfor
-                        </select>
-                        <span class="input-group-text"><i class="bi bi-calendar-week"></i></span>
-                    </div>
-                </div>
-                
-                <!-- Description Input -->
-                <div class="form-group mb-4">
-                    <label>Deskripsi Kegiatan</label>
-                    <textarea name="deskripsi_kegiatan" id="edit_deskripsi_kegiatan" class="form-control" rows="8" required>{{ $log->deskripsi_kegiatan }}</textarea>
-                    <small id="error-deskripsi" class="error-text form-text text-danger"></small>
-                </div>
-                
-                <!-- Existing Images -->
-                <div class="form-group mb-4">
-                    <label>Gambar Saat Ini</label>
-                    <div class="row" id="existing-images">
-                        @if($log->images && $log->images->count() > 0)
-                            @foreach($log->images as $image)
-                            <div class="col-md-4 mb-2">
-                                <div class="position-relative">
-                                    <img src="{{ asset('storage/' . $image->path) }}" class="img-thumbnail" style="max-height: 150px;">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image" data-image-id="{{ $image->id }}">
-                                        <i class="bi bi-x"></i>
-                                    </button>
-                                </div>
-                            </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                             @endforeach
-                        @else
-                            <p class="text-muted">Tidak ada gambar</p>
-                        @endif
+                        </ul>
                     </div>
+                @endif
+
+                <div class="mb-3">
+                    <label for="tanggal" class="form-label">Tanggal</label>
+                    <input type="date" name="tanggal" id="tanggal"
+                        class="form-control @error('tanggal') is-invalid @enderror"
+                        value="{{ old('tanggal', $log->tanggal) }}">
+                    @error('tanggal')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                
-                <!-- New Image Upload -->
-                <div class="form-group">
-                    <label for="edit_images">Upload Gambar Tambahan (Maksimal 5)</label>
-                    <input type="file" name="images[]" id="edit_images" class="form-control" multiple accept="image/*">
-                    <small class="text-muted">Format: JPG, PNG (Maksimal 2MB per gambar)</small>
-                    <small id="error-images" class="error-text form-text text-danger"></small>
+
+                <div class="mb-3">
+                    <label for="minggu" class="form-label">Minggu Ke-</label>
+                    <select name="minggu" id="minggu" class="form-select">
+                        @for ($i = 1; $i <= $jumlahMinggu; $i++)
+                            <option value="{{ $i }}"
+                                {{ old('minggu', $log->minggu) == $i ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
                 </div>
-                
-                <!-- New Image Preview -->
-                <div class="row mt-3" id="edit-image-preview-container">
-                    <!-- Preview images will appear here -->
+
+                <div class="mb-3">
+                    <label for="deskripsi_kegiatan" class="form-label">Deskripsi Kegiatan</label>
+                    <textarea name="deskripsi_kegiatan" id="deskripsi_kegiatan"
+                        class="form-control @error('deskripsi_kegiatan') is-invalid @enderror" rows="3">{{ old('deskripsi_kegiatan', $log->deskripsi_kegiatan) }}</textarea>
+                    @error('deskripsi_kegiatan')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="images" class="form-label">Upload Gambar (Maksimal 5)</label>
+                    <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
+                    <div class="row image-preview-container mt-2"></div>
                 </div>
             </div>
-            
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
             </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>
 
-@push('scripts')
 <script>
-    // Image preview functionality for edit form
-    document.getElementById('edit_images').addEventListener('change', function(event) {
-        const previewContainer = document.getElementById('edit-image-preview-container');
-        previewContainer.innerHTML = '';
-        
-        const files = event.target.files;
-        if (files.length > 5) {
-            alert('Maksimal 5 gambar yang dapat diupload');
-            this.value = '';
-            return;
-        }
-        
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (!file.type.match('image.*')) continue;
-            
-            if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                alert('File ' + file.name + ' melebihi ukuran maksimal 2MB');
-                continue;
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('form-edit');
+        const imageInput = document.getElementById('images');
+        const previewContainer = form.querySelector('.image-preview-container');
+        let selectedFiles = [];
+
+        function updateImagePreview() {
+            previewContainer.innerHTML = '';
+            const dt = new DataTransfer();
+            const MAX_FILES = 5;
+
+            if (selectedFiles.length > MAX_FILES) {
+                alert(`Maksimal ${MAX_FILES} gambar yang diizinkan`);
+                selectedFiles = selectedFiles.slice(0, MAX_FILES);
+                imageInput.value = '';
+                return;
             }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const colDiv = document.createElement('div');
-                colDiv.className = 'col-md-4 mb-2';
-                
-                const imgDiv = document.createElement('div');
-                imgDiv.className = 'position-relative';
-                
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'img-thumbnail';
-                img.style.maxHeight = '150px';
-                
-                const removeBtn = document.createElement('button');
-                removeBtn.type = 'button';
-                removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
-                removeBtn.innerHTML = '<i class="bi bi-x"></i>';
-                removeBtn.onclick = function() {
-                    colDiv.remove();
-                    // Create a new DataTransfer object to remove the file
-                    const dataTransfer = new DataTransfer();
-                    const input = document.getElementById('edit_images');
-                    for (let j = 0; j < input.files.length; j++) {
-                        if (j !== i) {
-                            dataTransfer.items.add(input.files[j]);
-                        }
-                    }
-                    input.files = dataTransfer.files;
+
+            selectedFiles.forEach((file, index) => {
+                if (!file.type.match('image.*')) return;
+                dt.items.add(file);
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const colDiv = document.createElement('div');
+                    colDiv.className = 'col-md-4 mb-2';
+
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'position-relative';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'img-thumbnail';
+                    img.style.height = '150px';
+                    img.style.objectFit = 'cover';
+                    img.style.width = '100%';
+                    img.alt = 'Preview gambar';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'btn btn-danger btn-sm position-absolute top-0 end-0';
+                    removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+                    removeBtn.setAttribute('aria-label', 'Hapus gambar');
+                    removeBtn.dataset.index = index;
+
+                    removeBtn.addEventListener('click', function() {
+                        const container = this.closest('.col-md-4');
+                        container.style.transition = 'opacity 0.3s';
+                        container.style.opacity = '0';
+                        setTimeout(() => {
+                            selectedFiles.splice(parseInt(this.dataset.index), 1);
+                            updateImagePreview();
+                        }, 300);
+                    });
+
+                    imgDiv.appendChild(img);
+                    imgDiv.appendChild(removeBtn);
+                    colDiv.appendChild(imgDiv);
+                    previewContainer.appendChild(colDiv);
                 };
-                
-                imgDiv.appendChild(img);
-                imgDiv.appendChild(removeBtn);
-                colDiv.appendChild(imgDiv);
-                previewContainer.appendChild(colDiv);
-            }
-            reader.readAsDataURL(file);
+
+                reader.readAsDataURL(file);
+            });
+
+            imageInput.files = dt.files;
         }
-    });
-    
-    // Existing image removal
-    document.querySelectorAll('.remove-image').forEach(button => {
-        button.addEventListener('click', function() {
-            const imageId = this.getAttribute('data-image-id');
-            const hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = 'removed_image_ids[]';
-            hiddenInput.value = imageId;
-            document.getElementById('form-edit').appendChild(hiddenInput);
-            
-            this.closest('.col-md-4').remove();
+
+        imageInput.addEventListener('change', function(e) {
+            selectedFiles = Array.from(e.target.files);
+
+            if (selectedFiles.length >= 5) {
+                previewContainer.innerHTML = ''; // Reset preview lama (opsional)
+                alert('Gambar lama akan digantikan karena Anda mengunggah 5 gambar baru.');
+            }
+
+            if (selectedFiles.length > 5) {
+                alert('Maksimal 5 gambar yang diizinkan');
+                selectedFiles = selectedFiles.slice(0, 5);
+            }
+
+            updateImagePreview();
         });
+
     });
 </script>
-@endpush
