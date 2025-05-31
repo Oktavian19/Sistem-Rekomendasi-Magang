@@ -226,7 +226,6 @@ class MahasiswaSeeder extends Seeder
             ['nim' => '2341720040', 'nama' => 'ALEXANDER AGUNG RAYA'],
             ['nim' => '244107023012', 'nama' => 'ANUGERAH RACHMADANI SUKMA HERIANTO'],
             ['nim' => '2341720012', 'nama' => 'AYLEEN RUHUL QISTHY'],
-            ['nim' => '', 'nama' => 'DANENDRA ADHIPRAMANA'],
             ['nim' => '2341720144', 'nama' => 'DANENDRA NAYAKA PASSADHI'],
             ['nim' => '2341720050', 'nama' => 'DINA RAHMAWATI'],
             ['nim' => '2341720139', 'nama' => 'DUTA KURNIA ARDHANI'],
