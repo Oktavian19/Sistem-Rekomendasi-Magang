@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('id_log');
             $table->unsignedBigInteger('id_magang');
             $table->date('tanggal');
+            $table->string('minggu');
             $table->text('deskripsi_kegiatan');
             $table->timestamps(); 
 

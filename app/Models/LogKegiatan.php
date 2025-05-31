@@ -16,6 +16,7 @@ class LogKegiatan extends Model
         'id_magang',
         'tanggal',
         'deskripsi_kegiatan',
+        'minggu'
     ];
 
     public function magang()
