@@ -1,4 +1,12 @@
 <form action="{{ url('lowongan/' . $lowongan->id_lowongan . '/update-ajax') }}" method="POST" id="form-edit">
+    <style>
+        .select2-container {
+        z-index: 99999 !important;
+        }
+        .modal-open .select2-dropdown {
+            z-index: 99999 !important;
+        }
+    </style>
     @csrf
     <div id="modal-edit-lowongan" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">            
@@ -97,6 +105,21 @@
                         @endforeach
                     </select>
                     <small id="error-edit_durasi_magang" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="col-lg-12 mb-4">
+                    <div class="form-group">
+                        <label>Fasilitas</label>
+                        <select class="form-select select2" name="fasilitas[]" multiple>
+                            <option value="wifi">WiFi</option>
+                            <option value="laboratorium">Laboratorium</option>
+                            <option value="perpustakaan">Perpustakaan</option>
+                            <option value="parkir">Parkir</option>
+                            <option value="kantin">Kantin</option>
+                        </select>
+                        @error('fasilitas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
             </div>
             
@@ -211,6 +234,15 @@ $(document).ready(function () {
             $(element).removeClass('is-invalid');
         }
     });
+
+    // $('#myModal').on('shown.bs.modal', function() {
+    //     $('select[name="fasilitas[]"]').select2({
+    //         dropdownParent: $(this).find('.modal-content'),
+    //         width: '100%',
+    //         placeholder: "Pilih Fasilitas",
+    //         allowClear: true
+    //     });
+    // });
 });
 </script>
 </form>

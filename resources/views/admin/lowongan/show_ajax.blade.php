@@ -50,6 +50,10 @@
                     <th width="30%">Durasi Magang</th>
                     <td>{{ $lowongan->durasiMagang->label }}</td>
                 </tr>
+                <tr>
+                    <th width="30%">Fasilitas</th>
+                    <td>Mess, Uang Saku</td>
+                </tr>
             </table>
         </div>
         <div class="modal-footer">
