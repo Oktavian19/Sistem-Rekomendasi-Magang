@@ -209,6 +209,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#1</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -230,11 +231,12 @@
                     </div>
                 </div>
             </div>
-    
+            
             <!-- Card 2 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#2</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -256,9 +258,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#3</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -280,9 +284,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#4</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -304,9 +310,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#5</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -328,9 +336,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#6</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>

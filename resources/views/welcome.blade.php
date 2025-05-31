@@ -253,49 +253,7 @@
     </div>
   
 </div>
-<div class="container" style="margin-top: 8vh; padding-left: 10vh; padding-right: 10vh; scroll-margin-top: 8vh;" id="fiturKami">
-  <h4 class="fw-bold">Eksplor Fitur Lebih Lanjut</h4>
-  <div class="row mt-4 mt-md-5">
-      <!-- Kartu Talenta -->
-      <div class="col-lg-4 mb-5">
-          <div class="card h-100 border rounded-3 shadow-sm p-3">
-              <div class="d-flex align-items-start">
-                  <div class="me-3" style="width: 80px; height: 80px; background-size: cover; background-image: url('images/vector/talent-page.png'); border-radius: 8px;"></div>
-                  <div>
-                      <h6 class="fw-bold mb-2">Talenta</h6>
-                      <p class="text-muted mb-3">Hi Digiers, ayo eksplor berbagai peluang menarik untuk perluasan kesempatan kerja melalui Diploy</p>
-                      <a href="https://diploy.id/tentang-talenta" class="btn btn-sm btn-outline-primary rounded-pill">Lebih Lanjut</a>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <!-- Kartu Perusahaan -->
-      <div class="col-lg-4 mb-5">
-          <div class="card h-100 border rounded-3 shadow-sm p-3">
-              <div class="d-flex align-items-start">
-                  <div class="me-3" style="width: 80px; height: 80px; background-size: cover; background-image: url('images/ipad-building.png'); border-radius: 8px;"></div>
-                  <div>
-                      <h6 class="fw-bold mb-2">Perusahaan</h6>
-                      <p class="text-muted mb-3">Mulai temukan dan rekrut talenta terbaik dari Lulusan dan Alumni program Digital Talent Scholarship, sekarang.</p>
-                      <a href="https://diploy.id/tentang-perusahaan" class="btn btn-sm btn-outline-primary rounded-pill">Lebih Lanjut</a>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="col-lg-4 mb-5">
-        <div class="card h-100 border rounded-3 shadow-sm p-3">
-            <div class="d-flex align-items-start">
-                <div class="me-3" style="width: 80px; height: 80px; background-size: cover; background-image: url('images/ipad-building.png'); border-radius: 8px;"></div>
-                <div>
-                    <h6 class="fw-bold mb-2">Perusahaan</h6>
-                    <p class="text-muted mb-3">Mulai temukan dan rekrut talenta terbaik dari Lulusan dan Alumni program Digital Talent Scholarship, sekarang.</p>
-                    <a href="https://diploy.id/tentang-perusahaan" class="btn btn-sm btn-outline-primary rounded-pill">Lebih Lanjut</a>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>
-</div>
+
 <div class="container" style="margin-top: 8vh; margin-bottom: 8vh; padding-top: 8vh; padding-bottom: 8vh; padding-left: 10vh; padding-right: 10vh; scroll-margin-top: 10vh;" id="ssd">
     <h4 class="text-center mb-1">
       Soal sering
