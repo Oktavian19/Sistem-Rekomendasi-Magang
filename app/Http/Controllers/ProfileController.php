@@ -22,7 +22,7 @@ class ProfileController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'mahasiswa') {
-            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
+            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'opsiPreferensi')
                 ->where('id_mahasiswa', $userId)
                 ->first();
 
@@ -56,7 +56,7 @@ class ProfileController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'mahasiswa') {
-            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'bidangKeahlian')
+            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'opsiPreferensi')
                 ->where('id_mahasiswa', $userId)
                 ->first();
 
