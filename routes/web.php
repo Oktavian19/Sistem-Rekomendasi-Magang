@@ -15,6 +15,7 @@ use App\Http\Controllers\Dosen\LogMahasiswaController;
 use App\Http\Controllers\Dosen\MonitoringController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\Mahasiswa\LogKegiatanController;
+use App\Http\Controllers\Mahasiswa\RekomendasiController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -151,15 +152,17 @@ Route::middleware('auth')->group(function () {
         // Log Kegiatan
         Route::get('log-kegiatan', [LogKegiatanController::class, 'index'])->name('log-kegiatan.index');
         Route::get('log-kegiatan/create', [LogKegiatanController::class, 'create'])->name('log-kegiatan.create');
-        Route::post('log-kegiatan', [LogKegiatanController::class, 'store'])->name('log-kegiatan.store');
+        Route::post('log-kegiatan/store', [LogKegiatanController::class, 'store'])->name('log-kegiatan.store');
         Route::get('log-kegiatan/{id}/edit', [LogKegiatanController::class, 'edit'])->name('log-kegiatan.edit');
         Route::put('log-kegiatan/{id}', [LogKegiatanController::class, 'update'])->name('log-kegiatan.update');
+        Route::get('log-kegiatan/{id}/confirm', [LogKegiatanController::class, 'confirm']);
         Route::delete('log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])->name('log-kegiatan.destroy');
 
         Route::get('riwayat-magang', [MagangController::class, 'historyMagang']);
         Route::post('/lowongan/{id}/daftar', [LowonganController::class, 'daftarLamaran'])->name('lowongan.daftar');
         Route::post('/feedback/store', [LogMahasiswaController::class, 'storeFeedbackMahasiswa'])->name('feedback.store');
 
+        Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');
     });
 
 
