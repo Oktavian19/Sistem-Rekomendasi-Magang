@@ -48,29 +48,42 @@ class RekomendasiController extends Controller
 
     // === Fungsi bantu ===
 
-    private function normalisasiVektor($data)
+    private function normalisasiMinMax($data)
     {
         $normal = [];
         $jumlah = count(current($data));
+
         for ($j = 0; $j < $jumlah; $j++) {
-            $total = 0;
+            // Cari nilai min dan max pada kolom ke-j
+            $min = INF;
+            $max = -INF;
             foreach ($data as $alt) {
-                $total += pow($alt[$j], 2);
+                if ($alt[$j] < $min) $min = $alt[$j];
+                if ($alt[$j] > $max) $max = $alt[$j];
             }
-            $akar = sqrt($total);
+
             foreach ($data as $key => $alt) {
-                $normal[$key][$j] = $alt[$j] / $akar;
+                if ($max - $min == 0) {
+                    $normal[$key][$j] = 0; // Hindari pembagian nol
+                } else {
+                    $normal[$key][$j] = ($alt[$j] - $min) / ($max - $min);
+                }
             }
         }
+
         return $normal;
     }
 
-    private function stddev($array)
+
+    private function stddevSample($array)
     {
         $mean = array_sum($array) / count($array);
-        $variance = array_sum(array_map(fn($x) => pow($x - $mean, 2), $array)) / count($array);
+        $n = count($array);
+        if ($n <= 1) return 0; // Hindari pembagian nol
+        $variance = array_sum(array_map(fn($x) => pow($x - $mean, 2), $array)) / ($n - 1);
         return sqrt($variance);
     }
+
 
     private function korelasiPearson($col1, $col2)
     {
@@ -85,15 +98,14 @@ class RekomendasiController extends Controller
             $den1 += pow($col1[$i] - $mean1, 2);
             $den2 += pow($col2[$i] - $mean2, 2);
         }
-
         return $num / sqrt($den1 * $den2);
     }
 
     private function bobotCRITIC($data)
     {
-        $normal = $this->normalisasiVektor($data);
+        $normal = $this->normalisasiMinMax($data);
         $transpose = array_map(null, ...array_values($normal));
-        $sigma = array_map([$this, 'stddev'], $transpose);
+        $sigma = array_map([$this, 'stddevSample'], $transpose);
         $m = count($transpose);
 
         $C = [];
@@ -101,13 +113,14 @@ class RekomendasiController extends Controller
             $sumCorr = 0;
             for ($k = 0; $k < $m; $k++) {
                 if ($j !== $k) {
-                    $sumCorr += (1 - $this->korelasiPearson($transpose[$j], $transpose[$k]));
+                    $sumCorr += (1 - abs($this->korelasiPearson($transpose[$j], $transpose[$k])));
                 }
             }
             $C[$j] = $sigma[$j] * $sumCorr;
         }
-
+   
         $totalC = array_sum($C);
+
         $weights = array_map(fn($c) => $c / $totalC, $C);
 
         return $weights;
