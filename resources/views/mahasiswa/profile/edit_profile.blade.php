@@ -71,7 +71,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-12 mb-4">
+                    <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="form-label">Alamat</label>
                             <textarea class="form-control form-control-sm" name="alamat" placeholder="Masukkan Alamat" autocomplete="off">{{ old('alamat', $mahasiswa->alamat) }}</textarea>
@@ -81,9 +81,9 @@
                         <div class="form-group">
                             <label class="required form-label">Bidang Keahlian</label>
                             <select class="form-select form-select-sm" name="bidang_keahlian[]" data-control="select2"
-                                data-allow-clear="true" data-placeholder="Pilih Bidang Keahlian">
+                                data-allow-clear="true" data-placeholder="Pilih Bidang Keahlian" multiple="multiple">
                                 @foreach ($bidangKeahlian as $bidang)
-                                    <option value="{{ $bidang->id }}" @selected(in_array($bidang->id, old('bidang_keahlian', $mahasiswa->opsiPreferensi->pluck('id')->toArray() ?? [])))>
+                                    <option value="{{ $bidang->id }}" @selected(in_array($bidang->id, old('bidang_keahlian', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
                                         {{ $bidang->label }}
                                     </option>
                                 @endforeach
@@ -97,29 +97,42 @@
                     <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="required form-label">Preferensi Jenis Perusahaan</label>
-                            <select name="preferensi_perusahaan" class="form-control form-control-sm" required>
-                                <option value="BUMN"
-                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'BUMN' ? 'selected' : '' }}>
-                                    BUMN</option>
-                                <option value="Pemerintahan"
-                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Pemerintahan' ? 'selected' : '' }}>
-                                    Pemerintahan</option>
-                                <option value="Swasta"
-                                    {{ old('preferensi_perusahaan', $mahasiswa->preferensi_perusahaan ?? '') == 'Swasta' ? 'selected' : '' }}>
-                                    Swasta</option>
+                            <select class="form-select form-select-sm" name="jenis_perusahaan[]" data-control="select2"
+                                data-allow-clear="true" data-placeholder="Pilih Jenis Perusahaan" multiple="multiple">
+                                @foreach ($jenisPerusahaan as $JP)
+                                    <option value="{{ $JP->id }}" @selected(in_array($JP->id, old('jenis_perusahaan', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
+                                        {{ $JP->label }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
 
                     <div class="col-lg-6 mb-4">
-                        <div class="form-group">
-                            <label class="required form-label">Preferensi Lokasi Magang</label>
-                            <input type="text" class="form-control form-control-sm" name="preferensi_lokasi_magang"
-                                placeholder="Mis: Malang, Jawa Timur" value="" autocomplete="off" required>
-                        </div>
+                        <label class="required form-label">Preferensi Lokasi Magang</label>
+                        <select class="form-select form-select-sm" name="jarak[]" data-control="select2"
+                            data-allow-clear="true" data-placeholder="Pilih Jarak" multiple="multiple">
+                            @foreach ($jarak as $j)
+                                <option value="{{ $j->id }}" @selected(in_array($j->id, old('jarak', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
+                                    {{ $j->label }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="col-lg-6 mb-4">
+                        <label class="required form-label">Fasilitas yang Diinginkan</label>
+                        <select class="form-select form-select-sm" name="fasilitas[]" data-control="select2"
+                            data-allow-clear="true" data-placeholder="Pilih Fasilitas Magang" multiple="multiple">
+                            @foreach ($fasilitas as $f)
+                                <option value="{{ $f->id }}" @selected(in_array($f->id, old('fasilitas', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
+                                    {{ $f->label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="required form-label">Preferensi Jenis Magang</label>
                             <select name="preferensi_magang" class="form-control form-control-sm" required>
@@ -134,7 +147,7 @@
                                     Hybrid</option>
                             </select>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <!-- Submit Buttons -->
@@ -301,6 +314,11 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+        $('[data-control="select2"]').select2({
+            width: '100%', // Makes it take full width of its parent container
+            // For multi-select, you might want to hide the search box if there aren't many options
+            minimumResultsForSearch: Infinity // Uncomment to hide search box always
+        });
             $('#formUpdateProfile').submit(function(e) {
                 e.preventDefault(); // Mencegah form submit default
 

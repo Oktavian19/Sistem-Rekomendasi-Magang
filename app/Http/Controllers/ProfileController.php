@@ -65,11 +65,20 @@ class ProfileController extends Controller
             }
 
             $programStudi = ProgramStudi::all();
+            $jarak = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'jarak');
+            })->get();
+            $jenisPerusahaan = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'jenis_perusahaan');
+            })->get();
             $bidangKeahlian = OpsiPreferensi::whereHas('kategori', function ($query) {
                 $query->where('kode', 'bidang_keahlian');
             })->get();
+            $fasilitas = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'fasilitas');
+            })->get();
 
-            return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'bidangKeahlian'));
+            return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'jarak', 'jenisPerusahaan', 'bidangKeahlian', 'fasilitas'));
         } elseif ($role == 'dosen_pembimbing') {
             $dosen = DosenPembimbing::where('id_dosen_pembimbing', $userId)->first();
 
@@ -99,8 +108,14 @@ class ProfileController extends Controller
             'no_hp' => 'required|string|max:20',
             'id_program_studi' => 'required|exists:program_studi,id_program_studi',
             'alamat' => 'nullable|string|max:500',
+            'jarak' => 'nullable|array',
+            'jarak.*' => 'exists:opsi_preferensi,id',
+            'jenis_perusahaan' => 'nullable|array',
+            'jenis_perusahaan.*' => 'exists:opsi_preferensi,id',
             'bidang_keahlian' => 'nullable|array',
-            'bidang_keahlian.*' => 'exists:bidang_keahlian,id_bidang_keahlian',
+            'bidang_keahlian.*' => 'exists:opsi_preferensi,id',
+            'fasilitas' => 'nullable|array',
+            'fasilitas.*' => 'exists:opsi_preferensi,id',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -127,10 +142,21 @@ class ProfileController extends Controller
             'foto_profil' => $validated['foto_profil'] ?? null
         ]);
 
-
-
         // Sync bidang keahlian
-        $mahasiswa->bidangKeahlian()->sync($validated['bidang_keahlian'] ?? []);
+        $jarakIds = $validated['jarak'] ?? [];
+        $jenisPerusahaanIds = $validated['jenis_perusahaan'] ?? [];
+        $bidangKeahlianIds = $validated['bidang_keahlian'] ?? [];
+        $fasilitasIds = $validated['fasilitas'] ?? []; // Jangan lupa fasilitas juga
+
+        // 2. Gabungkan semua array ID preferensi menjadi satu array tunggal
+        $allPreferensiIds = array_merge(
+            $jarakIds,
+            $jenisPerusahaanIds,
+            $bidangKeahlianIds,
+            $fasilitasIds
+        );
+
+        $mahasiswa->opsiPreferensi()->sync($allPreferensiIds);
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Profil berhasil diperbarui']);
