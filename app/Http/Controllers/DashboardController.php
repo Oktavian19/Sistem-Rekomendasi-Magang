@@ -96,7 +96,47 @@ class DashboardController extends Controller
 
         $dataMahasiswa = Mahasiswa::where('id_mahasiswa', $user->mahasiswa->id_mahasiswa)->first();
 
-        if (!$dataMahasiswa || empty($dataMahasiswa->preferensi_lokasi) || empty($dataMahasiswa->id_program_studi)) {
+        $preferensiPenggunaData = DB::table('preferensi_pengguna as pp')
+            ->join('opsi_preferensi as op', 'pp.id_opsi', '=', 'op.id') // SESUAI: pp.id_opsi menunjuk ke op.id
+            ->join('kategori_preferensi as kp', 'op.id_kategori', '=', 'kp.id') // SESUAI: op.id_kategori menunjuk ke kp.id
+            ->select(
+                'pp.id_mahasiswa',
+                'pp.id_opsi',
+                'pp.ranking',       
+                'pp.poin',          
+                'op.label as nama_opsi', 
+                'op.kode as kode_opsi',  
+                'kp.kode as kode_kategori', 
+                'kp.nama as nama_kategori'  
+            )
+            ->where('pp.id_mahasiswa', $dataMahasiswa->id_mahasiswa)
+            ->get();
+
+        // Inisialisasi variabel untuk menyimpan preferensi berdasarkan kategori
+        $jarak = collect();
+        $jenisPerusahaan = collect();
+        $bidangKeahlian = collect();
+        $fasilitas = collect();
+
+        // Loop melalui hasil dan kelompokkan berdasarkan kode kategori
+        foreach ($preferensiPenggunaData as $pref) {
+            switch ($pref->kode_kategori) {
+                case 'jarak':
+                    $jarak->push($pref);
+                    break;
+                case 'jenis_perusahaan':
+                    $jenisPerusahaan->push($pref);
+                    break;
+                case 'bidang_keahlian':
+                    $bidangKeahlian->push($pref);
+                    break;
+                case 'fasilitas':
+                    $fasilitas->push($pref);
+                    break;
+            }
+        }
+
+        if (!$dataMahasiswa || empty($dataMahasiswa->id_program_studi) || $jarak->isEmpty() || $jenisPerusahaan->isEmpty() || $bidangKeahlian->isEmpty() || $fasilitas->isEmpty()) {
             return view('dashboard.mahasiswa_kosong');
         }
 
