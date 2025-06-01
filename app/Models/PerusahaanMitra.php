@@ -19,9 +19,7 @@ class PerusahaanMitra extends Model
         'alamat',
         'email',
         'telepon',
-        'path_logo',
-        'latitude',
-        'longitude'
+        'path_logo'
     ];
 
     public function lowongan(): HasMany

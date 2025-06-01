@@ -12,7 +12,7 @@ class PreferensiPenggunaSeeder extends Seeder
     {
 
         $mahasiswa = [
-            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH', 'preferensi_lokasi' => 'Purwokerto'],
+            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH'],
             ['nim' => '2341720182', 'nama' => 'ALVANZA SAPUTRA YUDHA'],
             ['nim' => '2341720234', 'nama' => 'ANYA CALLISSTA CHRISWANTARI'],
             ['nim' => '2341720256', 'nama' => 'BERYL FUNKY MUBAROK'],
