@@ -33,8 +33,13 @@
                     <small id="error-telepon" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
+                    {{-- Preview Logo --}}
+                    <div class="mt-2">
+                        <img id="logo-preview" src="#" alt="Preview Logo" style="max-height: 100px; display: none;">
+                    </div>
+                    
                     <label>Logo (opsional)</label>
-                    <input type="file" name="logo" id="logo" class="form-control" accept=".jpg, .jpeg, .png">
+                    <input type="file" name="logo" id="logo" class="form-control" accept="iamge/jpg, image/jpeg, image/png">
                     <small id="error-logo" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -48,24 +53,58 @@
     document.getElementById('telepon').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
+    // Preview logo saat memilih file
+    document.getElementById("logo").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById("logo-preview");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "#";
+            preview.style.display = "none";
+        }
+    });
+
+    // Custom rule: allowed email domain
+    $.validator.addMethod("emailDomain", function (value, element, param) {
+        let allowedDomains = param;
+        let domain = value.split('@')[1];
+        if (!domain) return false;
+
+        return allowedDomains.some(function (allowed) {
+            return domain.endsWith(allowed);
+        });
+    }, "Domain email tidak diperbolehkan.");
+
     $(document).ready(function () {
     $("#form-tambah").validate({
         rules: {
             nama_perusahaan: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             bidang_industri: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             alamat: {
-                required: true
+                required: true,
+                minlength: 3
             },
             email: {
                 required: true,
                 email: true,
-                maxlength: 100
+                maxlength: 100,
+                emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
             },
             telepon: {
                 required: true,
@@ -81,19 +120,23 @@
         messages: {
             nama_perusahaan: {
                 required: "Nama perusahaan wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
             },
             bidang_industri: {
                 required: "Bidang industri wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
             },
             alamat: {
-                required: "Alamat wajib diisi."
+                required: "Alamat wajib diisi.",
+                minlength: "Minimal 3 karakter.",
             },
             email: {
                 required: "Email wajib diisi.",
                 email: "Format email tidak valid.",
-                maxlength: "Maksimal 100 karakter."
+                maxlength: "Maksimal 100 karakter.",
+                emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
             },
             telepon: {
                 required: "Telepon wajib diisi.",

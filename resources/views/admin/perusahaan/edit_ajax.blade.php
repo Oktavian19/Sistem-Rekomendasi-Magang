@@ -40,7 +40,32 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Logo (opsional)</label>
-                    <input type="file" name="logo" id="logo" class="form-control" accept=".jpg, .jpeg, .png">
+
+                    {{-- Preview Logo Lama --}}
+                    @if ($perusahaan->path_logo)
+                        <div class="mb-2">
+                            <img id="logo-preview" 
+                                src="{{ asset( $perusahaan->path_logo) }}" 
+                                alt="Logo Perusahaan" 
+                                style="max-height: 100px;">
+                        </div>
+                    {{-- Checkbox Hapus Logo --}}
+                        <div class="form-check mb-2">
+                            <input type="checkbox" name="hapus_logo" id="hapus_logo" class="form-check-input">
+                            <label class="form-check-label" for="hapus_logo">Hapus Logo</label>
+                        </div>
+                    @else
+                    {{-- Preview Logo Baru --}}
+                        <div class="mb-2">
+                            <img id="logo-preview" 
+                                src="#" 
+                                alt="Preview Logo Baru" 
+                                style="max-height: 100px; display: none;">
+                        </div>
+                    @endif
+
+                    {{-- Input File Logo Baru --}}
+                    <input type="file" name="logo" id="logo" class="form-control" accept="image/jpg, image/jpeg, image/png">
                     <small id="error-logo" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -55,19 +80,56 @@
     document.getElementById('edit_telepon').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+    // Preview logo setelah memilih file
+    document.getElementById("logo").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById("logo-preview");
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "#";
+            preview.style.display = "none";
+        }
+    });
+    
+    document.getElementById('hapus_logo')?.addEventListener('change', function () {
+        const preview = document.getElementById('logo-preview');
+        const originalLogoSrc = preview?.getAttribute('src');
+        const inputLogo = document.getElementById('logo');
+
+        if (this.checked) {
+            preview.style.display = 'none';
+            inputLogo.value = ''; // Reset input file
+        } else {
+            if (originalLogoSrc && !inputLogo.files.length) {
+                preview.src = originalLogoSrc;
+                preview.style.display = 'block';
+            }
+        }
+    });
+
     $(document).ready(function () {
     $("#form-edit").validate({
         rules: {
             nama_perusahaan: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             bidang_industri: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             alamat: {
-                required: true
+                required: true,
+                minlength: 3
             },
             email: {
                 required: true,
@@ -88,14 +150,17 @@
         messages: {
             nama_perusahaan: {
                 required: "Nama perusahaan wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
             },
             bidang_industri: {
                 required: "Bidang industri wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
             },
             alamat: {
-                required: "Alamat wajib diisi."
+                required: "Alamat wajib diisi.",
+                minlength: "Minimal 3 karakter."
             },
             email: {
                 required: "Email wajib diisi.",
