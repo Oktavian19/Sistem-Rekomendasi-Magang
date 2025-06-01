@@ -14,7 +14,7 @@ class MahasiswaSeeder extends Seeder
     public function run(): void
     {
         $mahasiswa = [
-            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH', 'preferensi_lokasi' => 'Purwokerto'],
+            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH'],
             ['nim' => '2341720182', 'nama' => 'ALVANZA SAPUTRA YUDHA'],
             ['nim' => '2341720234', 'nama' => 'ANYA CALLISSTA CHRISWANTARI'],
             ['nim' => '2341720256', 'nama' => 'BERYL FUNKY MUBAROK'],
@@ -278,41 +278,14 @@ class MahasiswaSeeder extends Seeder
 
             $id = DB::table('users')->where('username', $mhs['nim'])->value('id_user');
 
-            // Cek dan ambil preferensi lokasi jika ada
-            $lokasi = $mhs['preferensi_lokasi'] ?? null;
-            $geo = $lokasi ? $this->getCoordinates($lokasi) : null;
-
             // Masukkan ke tabel mahasiswa
             DB::table('mahasiswa')->insert([
                 'id_mahasiswa' => $id,
                 'nim' => $mhs['nim'],
                 'nama' => $mhs['nama'],
                 'id_program_studi' => 1,
-                'preferensi_lokasi' => $lokasi,
-                'latitude' => $geo['lat'] ?? null,
-                'longitude' => $geo['lon'] ?? null,
                 'created_at' => now(),
             ]);
         }
-    }
-
-    private function getCoordinates($preferensi_lokasi)
-    {
-        $response = Http::withHeaders([
-            'User-Agent' => 'LaravelSeeder/1.0 (your.email@example.com)',
-        ])->get('https://nominatim.openstreetmap.org/search', [
-            'q' => $preferensi_lokasi,
-            'format' => 'json',
-            'limit' => 1,
-        ]);
-
-        if ($response->successful() && !empty($response[0])) {
-            return [
-                'lat' => $response[0]['lat'],
-                'lon' => $response[0]['lon'],
-            ];
-        }
-
-        return null;
     }
 }

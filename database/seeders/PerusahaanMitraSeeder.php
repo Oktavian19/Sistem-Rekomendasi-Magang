@@ -84,38 +84,13 @@ class PerusahaanMitraSeeder extends Seeder
         ];
 
         foreach ($data as $item) {
-            $geo = $this->getCoordinates($item['alamat']);
-            sleep(1);
-
             PerusahaanMitra::create([
                 'nama_perusahaan' => $item['nama_perusahaan'],
                 'bidang_industri' => $item['bidang_industri'],
                 'alamat'          => $item['alamat'],
                 'email'           => $item['email'],
                 'telepon'         => $item['telepon'],
-                'latitude'        => $geo['lat'] ?? null,
-                'longitude'       => $geo['lon'] ?? null,
             ]);
         }
-    }
-
-    private function getCoordinates($alamat)
-    {
-        $response = Http::withHeaders([
-            'User-Agent' => 'LaravelSeeder/1.0 (your.email@example.com)',
-        ])->get('https://nominatim.openstreetmap.org/search', [
-            'q' => $alamat,
-            'format' => 'json',
-            'limit' => 1,
-        ]);
-
-        if ($response->successful() && !empty($response[0])) {
-            return [
-                'lat' => $response[0]['lat'],
-                'lon' => $response[0]['lon'],
-            ];
-        }
-
-        return null;
     }
 }
