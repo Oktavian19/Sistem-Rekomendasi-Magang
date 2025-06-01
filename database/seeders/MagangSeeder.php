@@ -38,7 +38,6 @@ class MagangSeeder extends Seeder
             ['id_lamaran' => '63', 'id_dosen_pembimbing' => '260', 'id_periode' => '2', 'status_magang' => 'aktif'],
             ['id_lamaran' => '66', 'id_dosen_pembimbing' => '268', 'id_periode' => '2', 'status_magang' => 'selesai'],
             ['id_lamaran' => '69', 'id_dosen_pembimbing' => '268', 'id_periode' => '2', 'status_magang' => 'aktif'],
-            ['id_lamaran' => '70', 'id_dosen_pembimbing' => '268', 'id_periode' => '2', 'status_magang' => 'aktif'],
             ['id_lamaran' => '71', 'id_dosen_pembimbing' => '264', 'id_periode' => '2', 'status_magang' => 'aktif'],
             ['id_lamaran' => '72', 'id_dosen_pembimbing' => '255', 'id_periode' => '1', 'status_magang' => 'aktif'],
             ['id_lamaran' => '73', 'id_dosen_pembimbing' => '256', 'id_periode' => '2', 'status_magang' => 'selesai'],
