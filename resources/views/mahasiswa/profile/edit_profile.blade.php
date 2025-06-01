@@ -14,21 +14,23 @@
                 @csrf
                 @method('PUT')
 
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-12 mb-4 d-flex flex-column align-items-center justify-content-center text-center">
                     @if (!empty($mahasiswa->foto_profil))
-                        <img src="{{ $mahasiswa->foto_profil }}" class="rounded-circle mb-2"
-                            style="width: 100px; height: 100px;" alt="User">
+                        <img src="{{ $mahasiswa->foto_profil }}" class="rounded-circle mb-3"
+                             style="width: 100px; height: 100px;" alt="User">
                     @else
-                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white mb-2"
-                            style="width: 100px; height: 100px;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white mb-3"
+                             style="width: 100px; height: 100px;">
                             <i class="bi bi-person" style="font-size: 60px;"></i>
                         </div>
                     @endif
-                    <div>
+                
+                    <div class="w-100 text-center">
                         <label for="foto_profil" class="form-label">Ubah Foto Profil</label>
-                        <input type="file" class="form-control" name="foto_profil" id="foto_profil" accept="image/*">
+                        <input type="file" class="form-control mx-auto" style="max-width: 300px;" name="foto_profil" id="foto_profil" accept="image/*">
                     </div>
                 </div>
+                
                 <div class="row">
                     <!-- Personal Information -->
                     <div class="col-lg-6 mb-4">
@@ -74,27 +76,49 @@
                     <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="form-label">Alamat</label>
-                            <textarea class="form-control form-control-sm" name="alamat" placeholder="Masukkan Alamat" autocomplete="off">{{ old('alamat', $mahasiswa->alamat) }}</textarea>
+                            <textarea class="form-control form-control-sm" name="alamat" placeholder="Masukkan Alamat" autocomplete="off" rows="3">{{ old('alamat', $mahasiswa->alamat) }}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-6 mb-4">
-                        <div class="form-group">
-                            <label class="required form-label">Bidang Keahlian</label>
-                            <select class="form-select form-select-sm" name="bidang_keahlian[]" data-control="select2"
-                                data-allow-clear="true" data-placeholder="Pilih Bidang Keahlian" multiple="multiple">
-                                @foreach ($bidangKeahlian as $bidang)
-                                    <option value="{{ $bidang->id }}" @selected(in_array($bidang->id, old('bidang_keahlian', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
-                                        {{ $bidang->label }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('bidang_keahlian')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        <label class="required form-label">Fasilitas yang Diinginkan</label>
+                        <select class="form-select form-select-sm" name="fasilitas[]" data-control="select2"
+                            data-allow-clear="true" data-placeholder="Pilih Fasilitas Magang" multiple="multiple">
+                            @foreach ($fasilitas as $f)
+                                <option value="{{ $f->id }}" @selected(in_array($f->id, old('fasilitas', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
+                                    {{ $f->label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <label class="required form-label">Bidang Keahlian</label>
+                        <select id="select-bidang-keahlian" class="form-select form-select-sm" data-control="select2"
+                            data-placeholder="Pilih Bidang Keahlian">
+                            <option></option>
+                            @foreach ($bidangKeahlian as $bidang)
+                                <option value="{{ $bidang->id }}">{{ $bidang->label }}</option>
+                            @endforeach
+                        </select>
+                    
+                        <ul id="sortable-bidang-keahlian" class="list-group mt-2">
+                            @foreach (old('bidang_keahlian', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
+                                @php $item = $bidangKeahlian->firstWhere('id', $id); @endphp
+                                @if ($item)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $item->id }}">
+                                        <span>{{ $item->label }}</span>
+                                        <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
+                                        <input type="hidden" name="bidang_keahlian[]" value="{{ $item->id }}">
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    
+                        @error('bidang_keahlian')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    <div class="col-lg-6 mb-4">
+                    {{-- <div class="col-lg-6 mb-4">
                         <div class="form-group">
                             <label class="required form-label">Preferensi Jenis Perusahaan</label>
                             <select class="form-select form-select-sm" name="jenis_perusahaan[]" data-control="select2"
@@ -118,19 +142,70 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
+                    {{-- ===== Jenis Perusahaan (Tambah, Hapus, Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
-                        <label class="required form-label">Fasilitas yang Diinginkan</label>
-                        <select class="form-select form-select-sm" name="fasilitas[]" data-control="select2"
-                            data-allow-clear="true" data-placeholder="Pilih Fasilitas Magang" multiple="multiple">
-                            @foreach ($fasilitas as $f)
-                                <option value="{{ $f->id }}" @selected(in_array($f->id, old('fasilitas', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
-                                    {{ $f->label }}
-                                </option>
+                        <label class="required form-label">Preferensi Jenis Perusahaan</label>
+                        <select id="select-jenis-perusahaan" class="form-select form-select-sm" data-control="select2"
+                            data-placeholder="Pilih Jenis Perusahaan">
+                            <option></option>
+                            @foreach ($jenisPerusahaan as $JP)
+                                <option value="{{ $JP->id }}">{{ $JP->label }}</option>
                             @endforeach
                         </select>
+
+                        <ul id="sortable-perusahaan" class="list-group mt-2">
+                            @foreach (old('jenis_perusahaan', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
+                                @php $item = $jenisPerusahaan->firstWhere('id', $id); @endphp
+                                @if ($item)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $item->id }}">
+                                        <span>{{ $item->label }}</span>
+                                        <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
+                                        <input type="hidden" name="jenis_perusahaan[]" value="{{ $item->id }}">
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
                     </div>
+
+                    {{-- ===== Lokasi Magang (Jarak) (Hanya Urutkan) ===== --}}
+                    <div class="col-lg-6 mb-4">
+                        <label class="required form-label">Preferensi Lokasi Magang</label>
+                        <ul id="sortable-jarak" class="list-group">
+                            @foreach (old('jarak', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
+                                @php $item = $jarak->firstWhere('id', $id); @endphp
+                                @if ($item)
+                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $item->id }}">
+                                        <span>{{ $item->label }}</span>
+                                        <input type="hidden" name="jarak[]" value="{{ $item->id }}">
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    {{-- ===== Durasi Magang (Hanya Urutkan) ===== --}}
+                    <div class="col-lg-6 mb-4">
+                        <label class="required form-label">Preferensi Durasi Magang</label>
+                        <ul id="sortable-durasi" class="list-group">
+                            @foreach (old('durasi', ['3', '6']) as $durasi)
+                                @if(in_array($durasi, ['3','6']))
+                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $durasi }}">
+                                        <span>{{ $durasi }} Bulan</span>
+                                        <input type="hidden" name="durasi[]" value="{{ $durasi }}">
+                                    </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </div>
+
+
+
+
+
+
+                    
 
                     {{-- <div class="col-lg-6 mb-4">
                         <div class="form-group">
@@ -312,114 +387,206 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
         $(document).ready(function() {
-        $('[data-control="select2"]').select2({
-            width: '100%', // Makes it take full width of its parent container
-            // For multi-select, you might want to hide the search box if there aren't many options
-            minimumResultsForSearch: Infinity // Uncomment to hide search box always
-        });
-            $('#formUpdateProfile').submit(function(e) {
-                e.preventDefault(); // Mencegah form submit default
+            $('[data-control="select2"]').select2({
+                width: '100%', // Makes it take full width of its parent container
+                // For multi-select, you might want to hide the search box if there aren't many options
+                minimumResultsForSearch: Infinity // Uncomment to hide search box always
+            });
+                $('#formUpdateProfile').submit(function(e) {
+                    e.preventDefault(); // Mencegah form submit default
 
-                var form = $(this)[0];
-                var formData = new FormData(form);
+                    var form = $(this)[0];
+                    var formData = new FormData(form);
 
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: response.message || 'Data berhasil diperbarui!',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    },
-                    error: function(xhr) {
-                        let errorMsg = 'Terjadi kesalahan.';
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message || 'Data berhasil diperbarui!',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        },
+                        error: function(xhr) {
+                            let errorMsg = 'Terjadi kesalahan.';
 
-                        if (xhr.status === 422) {
-                            // Validasi Laravel
-                            const errors = xhr.responseJSON.errors;
-                            errorMsg = Object.values(errors).map(err => err.join(', ')).join(
-                                '\n');
-                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                            errorMsg = xhr.responseJSON.message;
+                            if (xhr.status === 422) {
+                                // Validasi Laravel
+                                const errors = xhr.responseJSON.errors;
+                                errorMsg = Object.values(errors).map(err => err.join(', ')).join(
+                                    '\n');
+                            } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMsg = xhr.responseJSON.message;
+                            }
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: errorMsg,
+                            });
                         }
+                    });
+                });
+            });
 
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal',
-                            text: errorMsg,
-                        });
+            function modalAction(url = '') {
+                const modalEl = document.getElementById('myModal');
+                const modalDialog = modalEl.querySelector('.modal-dialog');
+
+                modalDialog.innerHTML = '';
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        modalDialog.innerHTML = html;
+
+                        const modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error loading modal content:', error);
+                    });
+            }
+
+            function deleteExperience(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda ingin menghapus pengalaman ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.form.submit();
                     }
                 });
+            }
+
+            function confirmDelete(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Hapus Dokumen?',
+                    text: "Apakah Anda yakin ingin menghapus dokumen ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lanjutkan submit form jika dikonfirmasi
+                        event.target.closest('form').submit();
+                    }
+                });
+        
+            }
+            
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        // Fungsi umum enable sortable dan update input hidden
+        function enableSortable(listId, inputName) {
+            new Sortable(document.getElementById(listId), {
+                animation: 150,
+                onEnd: function (evt) {
+                    const container = evt.to;
+                    const items = container.querySelectorAll('li');
+                    container.querySelectorAll('input[type="hidden"]').forEach(e => e.remove());
+                    items.forEach(item => {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = inputName + '[]';
+                        input.value = item.getAttribute('data-id');
+                        item.appendChild(input);
+                    });
+                }
             });
+        }
+    
+        // Enable sortable untuk semua list
+        enableSortable('sortable-bidang-keahlian', 'bidang_keahlian');
+        enableSortable('sortable-perusahaan', 'jenis_perusahaan');
+        enableSortable('sortable-jarak', 'jarak');
+        enableSortable('sortable-durasi', 'durasi');
+    
+        // Select2 khusus untuk jenis perusahaan
+        $('#select-jenis-perusahaan').select2({
+            allowClear: true,
+            placeholder: 'Pilih Jenis Perusahaan'
         });
 
-        function modalAction(url = '') {
-            const modalEl = document.getElementById('myModal');
-            const modalDialog = modalEl.querySelector('.modal-dialog');
+        // Select2 untuk bidang keahlian
+        $('#select-bidang-keahlian').select2({
+            allowClear: true,
+            placeholder: 'Pilih Bidang Keahlian'
+        });
+    
+        // Tambah item ke list jenis perusahaan saat dipilih
+        $('#select-jenis-perusahaan').on('select2:select', function (e) {
+            const id = e.params.data.id;
+            const text = e.params.data.text;
+            const list = $('#sortable-perusahaan');
+    
+            // Cek duplikat
+            if (list.find(`li[data-id="${id}"]`).length) return;
+    
+            list.append(`
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="${id}">
+                    <span>${text}</span>
+                    <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
+                    <input type="hidden" name="jenis_perusahaan[]" value="${id}">
+                </li>
+            `);
+    
+            // Reset select2
+            $(this).val(null).trigger('change');
+        });
+    
+        // Event hapus tombol silang untuk jenis perusahaan
+        $(document).on('click', '.remove-item', function () {
+            $(this).closest('li').remove();
+        });
 
-            modalDialog.innerHTML = '';
+        // Tambah bidang keahlian ke list sortable saat dipilih
+        $('#select-bidang-keahlian').on('select2:select', function (e) {
+            const id = e.params.data.id;
+            const text = e.params.data.text;
+            const list = $('#sortable-bidang-keahlian');
 
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    modalDialog.innerHTML = html;
+            // Cek duplikat
+            if (list.find(`li[data-id="${id}"]`).length) return;
 
-                    const modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-                })
-                .catch(error => {
-                    console.error('Error loading modal content:', error);
-                });
-        }
+            list.append(`
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="${id}">
+                    <span>${text}</span>
+                    <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
+                    <input type="hidden" name="bidang_keahlian[]" value="${id}">
+                </li>
+            `);
 
-        function deleteExperience(event) {
-            event.preventDefault();
-
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Anda ingin menghapus pengalaman ini?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    event.target.form.submit();
-                }
-            });
-        }
-
-        function confirmDelete(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Hapus Dokumen?',
-                text: "Apakah Anda yakin ingin menghapus dokumen ini?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Lanjutkan submit form jika dikonfirmasi
-                    event.target.closest('form').submit();
-                }
-            });
-        }
+            // Reset select2 setelah pilih
+            $(this).val(null).trigger('change');
+        });
     </script>
+    
+    
+    
 @endpush
