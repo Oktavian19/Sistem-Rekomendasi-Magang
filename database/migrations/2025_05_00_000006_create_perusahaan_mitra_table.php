@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('telepon', 20);
             $table->string('path_logo', 100)->default('storage/logo_perusahaan/logo-default.jpg');
-            $table->decimal('latitude', 9, 6)->nullable();
-            $table->decimal('longitude', 9, 6)->nullable();
             $table->timestamps();
         });
     }

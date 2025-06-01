@@ -10,7 +10,7 @@ class OpsiPreferensi extends Model
     use HasFactory;
 
     protected $table = 'opsi_preferensi';
-    
+
     protected $fillable = [
         'id_kategori',
         'kode',
@@ -22,7 +22,8 @@ class OpsiPreferensi extends Model
         return $this->belongsTo(KategoriPreferensi::class, 'id_kategori');
     }
 
-    public function mahasiswa() {
+    public function mahasiswa()
+    {
         return $this->belongsToMany(
             Mahasiswa::class,
             'preferensi_pengguna',

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
-use App\Services\PreferensiService;
-
+use App\Http\Controllers\Mahasiswa\PreferensiController;
 use Illuminate\Http\Request;
 
 class RekomendasiController extends Controller
@@ -12,41 +11,23 @@ class RekomendasiController extends Controller
 
     public function index()
     {
-        // Matriks keputusan
-        $alternatif = [
-            'Perusahaan 1' => [3, 5, 3, 2, 3, 2],
-            'Perusahaan 2' => [10, 5, 2, 1, 1, 3],
-            'Perusahaan 3' => [10, 5, 1, 2, 0, 2],
-            'Perusahaan 4' => [5, 7, 1, 2, 3, 2],
-            'Perusahaan 5' => [3, 7, 2, 1, 2, 1],
+        $idMahasiswa = auth()->user()->mahasiswa->id_mahasiswa;
+
+        $alternatif =$this->generateMatriksAlternatif($idMahasiswa);
+
+        $kriteria = [
+            'Jarak',
+            'Durasi Magang',
+            'Jenis Pelaksanaan',
+            'Jenis Perusahaan',
+            'Bidang Keahlian',
+            'Fasilitas'
         ];
-
-        $kriteria = ['Komputasi Dasar', 'Database', 'Jaringan Komputer', 'Desain UI/UX'];
-
         $bobot = $this->bobotCRITIC($alternatif);
         $hasil = $this->hitungWASPAS($alternatif, $bobot);
 
         return view('mahasiswa.rekomendasi.index', compact('kriteria', 'bobot', 'hasil'));
     }
-
-    public function cekSkor(Request $request, PreferensiService $service)
-    {
-        $provPerusahaan = $request->input('provinsi_id');
-        $kotaPerusahaan = $request->input('kota_id');
-
-        // preferensi mahasiswa (bisa dari DB)
-        $preferensi = ['dalam_kota', 'luar_kota', 'luar_provinsi'];
-
-        $kategori = $service->getKategoriLokasi($provPerusahaan, $kotaPerusahaan);
-        $skor = $service->getSkorPreferensi($kategori, $preferensi);
-
-        return response()->json([
-            'kategori' => $kategori,
-            'skor' => $skor
-        ]);
-    }
-
-    // === Fungsi bantu ===
 
     private function normalisasiMinMax($data)
     {
@@ -118,7 +99,7 @@ class RekomendasiController extends Controller
             }
             $C[$j] = $sigma[$j] * $sumCorr;
         }
-   
+
         $totalC = array_sum($C);
 
         $weights = array_map(fn($c) => $c / $totalC, $C);

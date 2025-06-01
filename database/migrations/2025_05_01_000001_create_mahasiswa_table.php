@@ -15,9 +15,6 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
             $table->string('alamat', 500)->nullable();
             $table->string('no_hp', 20)->nullable();
-            $table->string('preferensi_lokasi', 100)->nullable();
-            $table->decimal('latitude', 9, 6)->nullable()->comment('GPS latitude (WGS84)');
-            $table->decimal('longitude', 9, 6)->nullable()->comment('GPS longitude (WGS84)');
             $table->unsignedBigInteger('id_program_studi');
             $table->string('foto_profil', 255)->nullable();
             $table->timestamps();

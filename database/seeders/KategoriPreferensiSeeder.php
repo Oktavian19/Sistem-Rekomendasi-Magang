@@ -13,7 +13,7 @@ class KategoriPreferensiSeeder extends Seeder
         $kategori = [
             ['kode' => 'jarak',             'nama' => 'Jarak'],
             ['kode' => 'durasi_magang',     'nama' => 'Durasi Magang'],
-            ['kode' => 'jenis_pelaksanaan ','nama' => 'Jenis Pelaksanaan'],
+            ['kode' => 'jenis_pelaksanaan', 'nama' => 'Jenis Pelaksanaan'],
             ['kode' => 'jenis_perusahaan',  'nama' => 'Jenis Perusahaan'],
             ['kode' => 'bidang_keahlian',   'nama' => 'Bidang Keahlian'],
             ['kode' => 'fasilitas',         'nama' => 'Fasilitas'],
