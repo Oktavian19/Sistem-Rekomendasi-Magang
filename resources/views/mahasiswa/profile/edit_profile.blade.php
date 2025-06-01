@@ -189,23 +189,17 @@
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Durasi Magang</label>
                         <ul id="sortable-durasi" class="list-group">
-                            @foreach (old('durasi', ['3', '6']) as $durasi)
-                                @if(in_array($durasi, ['3','6']))
-                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $durasi }}">
-                                        <span>{{ $durasi }} Bulan</span>
-                                        <input type="hidden" name="durasi[]" value="{{ $durasi }}">
+                            @foreach (old('durasi_magang', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
+                                @php $item = $durasi->firstWhere('id', $id); @endphp
+                                @if($item)
+                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $item->id }}">
+                                        <span>{{ $item->label }}</span>
+                                        <input type="hidden" name="durasi[]" value="{{ $item->id }}">
                                     </li>
                                 @endif
                             @endforeach
                         </ul>
                     </div>
-
-
-
-
-
-
-                    
 
                     {{-- <div class="col-lg-6 mb-4">
                         <div class="form-group">
