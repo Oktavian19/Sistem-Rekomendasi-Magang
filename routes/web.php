@@ -11,8 +11,12 @@ use App\Http\Controllers\Admin\LowonganMagangController;
 use App\Http\Controllers\Admin\PerusahaanController;
 use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Admin\LamaranController;
+use App\Http\Controllers\Dosen\LogMahasiswaController;
+use App\Http\Controllers\Dosen\MonitoringController;
 use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\Mahasiswa\LogKegiatanController;
+use App\Http\Controllers\Mahasiswa\RekomendasiController;
+use App\Http\Controllers\Admin\KelolaInputController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -120,6 +124,13 @@ Route::middleware('auth')->group(function () {
             Route::post('{id}/delete-ajax', [ProgramStudiController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/confirm-ajax', [ProgramStudiController::class, 'confirm_ajax'])->name('confirm_ajax');
         });
+
+        Route::prefix('input-fasilitas')->name('input_fasilitas.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_fasilitas'])->name('input_fasilitas');
+        });
+        Route::prefix('input-bidang-keahlian')->name('input_bidang_keahlian.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_bidang_keahlian'])->name('input_bidang_keahlian');
+        });
     });
 
     // ===================== MAHASISWA ROUTES =====================
@@ -149,21 +160,38 @@ Route::middleware('auth')->group(function () {
         // Log Kegiatan
         Route::get('log-kegiatan', [LogKegiatanController::class, 'index'])->name('log-kegiatan.index');
         Route::get('log-kegiatan/create', [LogKegiatanController::class, 'create'])->name('log-kegiatan.create');
-        Route::post('log-kegiatan', [LogKegiatanController::class, 'store'])->name('log-kegiatan.store');
+        Route::post('log-kegiatan/store', [LogKegiatanController::class, 'store'])->name('log-kegiatan.store');
         Route::get('log-kegiatan/{id}/edit', [LogKegiatanController::class, 'edit'])->name('log-kegiatan.edit');
         Route::put('log-kegiatan/{id}', [LogKegiatanController::class, 'update'])->name('log-kegiatan.update');
+        Route::get('log-kegiatan/{id}/confirm', [LogKegiatanController::class, 'confirm']);
         Route::delete('log-kegiatan/{id}', [LogKegiatanController::class, 'destroy'])->name('log-kegiatan.destroy');
 
         Route::get('riwayat-magang', [MagangController::class, 'historyMagang']);
         Route::post('/lowongan/{id}/daftar', [LowonganController::class, 'daftarLamaran'])->name('lowongan.daftar');
+        Route::post('/feedback/store', [LogMahasiswaController::class, 'storeFeedbackMahasiswa'])->name('feedback.store');
+
+        Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');
     });
 
 
     // ===================== DOSEN ROUTES =====================
-    Route::middleware('authorize:dosen_pembimbing')->group(function () {
+    Route::middleware('authorize:dosen_pembimbing')->name('dosen.')->group(function () {
         Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
-        Route::get('dosen/list-mahasiswa', fn() => view('dosen.monitoring.list_mahasiswa'))->name('list-mahasiswa');
-        Route::get('dosen/log-mahasiswa', fn() => view('dosen.monitoring.log_mahasiswa'))->name('log-mahasiswa');
+        Route::get('/monitoring', [MonitoringController::class, 'index']);
+        Route::get('/monitoring/list', [MonitoringController::class, 'list'])->name('monitoring.list');
+        Route::get('/monitoring/{id}', [MonitoringController::class, 'show'])->name('monitoring.show');
+
+        // Route untuk melihat dokumen log
+        Route::get('/logs/documents/{id_dokumen}', [LogMahasiswaController::class, 'showDocument'])->name('admin.logs.document');
+
+        // Route untuk menampilkan form feedback
+        Route::get('/logs/{id_log}/feedback-form', [LogMahasiswaController::class, 'showFeedbackForm'])->name('admin.logs.feedback-form');
+
+        // Route untuk menyimpan feedback
+        Route::post('/logs/{id_log}/feedback', [LogMahasiswaController::class, 'storeFeedback'])->name('admin.logs.feedback');
+
+        // Route umum terakhir agar tidak bentrok
+        Route::get('/mahasiswa/{id}/logs', [LogMahasiswaController::class, 'show'])->name('admin.log-mahasiswa');
 
         // Profile routes
         Route::put('/profile/update-dosen', [ProfileController::class, 'updateDosen'])->name('profile.update');

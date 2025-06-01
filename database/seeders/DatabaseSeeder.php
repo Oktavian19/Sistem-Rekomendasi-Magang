@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BidangKeahlianSeeder::class,
+            KategoriPreferensiSeeder::class,
+            OpsiPreferensiSeeder::class,
             ProgramStudiSeeder::class,
             PerusahaanMitraSeeder::class,
             PeriodeMagangSeeder::class,
@@ -29,7 +31,8 @@ class DatabaseSeeder extends Seeder
             LogKegiatanSeeder::class,
             FeedbackSeeder::class,
             SertifikatSeeder::class,
-            DokumenLogKegiatanSeeder::class
+            DokumenLogKegiatanSeeder::class,
+            PreferensiPenggunaSeeder::class
         ]);
     }
 }

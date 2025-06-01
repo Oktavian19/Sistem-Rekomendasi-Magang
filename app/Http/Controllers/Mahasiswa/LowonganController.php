@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Mahasiswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\BidangKeahlian;
 use App\Models\Lamaran;
 use Illuminate\Http\Request;
 use App\Models\Lowongan;
+use App\Models\OpsiPreferensi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LowonganController extends Controller
 {
@@ -76,7 +78,9 @@ class LowonganController extends Controller
             ->values();
 
         // Ambil bidang pekerjaan untuk filter
-        $bidangKeahlians = BidangKeahlian::all();
+        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'bidang_keahlian');
+            })->get();
 
         return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
@@ -103,9 +107,15 @@ class LowonganController extends Controller
         $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
             ->where('id_lowongan', $id)
             ->exists();
+        
+        $sedangDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('status_lamaran', 'menunggu')
+            ->exists();
 
         if ($sudahDaftar) {
             return back()->with('error', 'Anda sudah mendaftar pada lowongan ini.');
+        } elseif ($sedangDaftar) {
+            return back()->with('error', 'Tunggu Lamaran lainmu dulu, ya');
         }
 
         Lamaran::create([

@@ -23,8 +23,12 @@
                     <td>{{ $lowongan->deskripsi }}</td>
                 </tr>
                 <tr>
+                    <th width="30%">Kategori Keahlian</th>
+                    <td>{{ $lowongan->bidangKeahlian->label }}</td>
+                </tr>
+                <tr>
                     <th width="30%">Bidang Keahlian</th>
-                    <td>{{ $lowongan->bidang_keahlian->nama_bidang }}</td>
+                    <td>{{ $lowongan->jenisPelaksanaan->label }}</td>
                 </tr>
                 <tr>
                     <th width="30%">Kuota</th>
@@ -44,7 +48,11 @@
                 </tr>
                 <tr>
                     <th width="30%">Durasi Magang</th>
-                    <td>{{ $lowongan->durasi_magang }}</td>
+                    <td>{{ $lowongan->durasiMagang->label }}</td>
+                </tr>
+                <tr>
+                    <th width="30%">Fasilitas</th>
+                    <td>Mess, Uang Saku</td>
                 </tr>
             </table>
         </div>

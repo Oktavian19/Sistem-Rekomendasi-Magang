@@ -1,4 +1,12 @@
 <form action="{{ url('lowongan/store-ajax') }}" method="POST" id="form-tambah">
+    <style>
+        .select2-container {
+        z-index: 99999 !important;
+        }
+        .modal-open .select2-dropdown {
+            z-index: 99999 !important;
+        }
+    </style>
     @csrf
     <div id="modal-lowongan" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -40,12 +48,22 @@
                 <div class="form-group mb-3">
                     <label>Bidang Keahlian</label>
                     <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
-                        <option value="">Pilih Bidang</option>
-                        @foreach ($bidang_keahlians as $bidang_keahlian)
-                            <option value="{{ $bidang_keahlian->id_bidang_keahlian }}">{{ $bidang_keahlian->nama_bidang_keahlian }}</option>
+                        <option value="">Pilih Bidang Keahlian</option>
+                        @foreach ($bidangKeahlians as $bidangKeahlian)
+                            <option value="{{ $bidangKeahlian->id }}">{{ $bidangKeahlian->label }}</option>
                         @endforeach
                     </select>
-                    <small id="error-id_bidang_keahlian" class="text-danger"></small>
+                    <small id="error-kategori_keahlian" class="error-text form-text text-danger"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Jenis Pelaksanaan</label>
+                    <select name="id_jenis_pelaksanaan" id="id_jenis_pelaksanaan" class="form-control" required>
+                        <option value="">Pilih Jenis Pelaksanaan</option>
+                        @foreach ($jenisPelaksanaans as $jenisPelaksanaan)
+                            <option value="{{ $jenisPelaksanaan->id }}">{{ $jenisPelaksanaan->label }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-jenis_pelaksanaan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label>Kuota</label>
@@ -69,9 +87,30 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Durasi Magang</label>
-                    <input type="text" name="durasi_magang" id="durasi_magang" class="form-control" required>
+                    <select name="id_durasi_magang" id="id_durasi_magang" class="form-control" required>
+                        <option value="">Pilih Durasi Magang</option>
+                        @foreach ($durasiMagang as $durasi)
+                            <option value="{{ $durasi->id }}">{{ $durasi->label }}</option>
+                        @endforeach
+                    </select>
                     <small id="error-durasi_magang" class="error-text form-text text-danger"></small>
                 </div>
+                <div class="col-lg-12 mb-4">
+                    <div class="form-group">
+                        <label>Fasilitas</label>
+                        <select class="form-select select2" name="fasilitas[]" multiple>
+                            <option value="wifi">WiFi</option>
+                            <option value="laboratorium">Laboratorium</option>
+                            <option value="perpustakaan">Perpustakaan</option>
+                            <option value="parkir">Parkir</option>
+                            <option value="kantin">Kantin</option>
+                        </select>
+                        @error('fasilitas')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -81,7 +120,6 @@
     </div>
 <script>
 $(document).ready(function () {
-    // Tambahkan method untuk membandingkan tanggal tutup >= tanggal buka
     $.validator.addMethod("greaterThanOrEqual", function (value, element, param) {
         let startDate = $(param).val();
         if (!value || !startDate) return true;
@@ -105,7 +143,10 @@ $(document).ready(function () {
                 maxlength: 1000
             },
             id_bidang_keahlian: {
-                required: true
+                required: true,
+            },
+            id_jenis_pelaksanaan: {
+                required: true,
             },
             kuota: {
                 required: true,
@@ -125,9 +166,8 @@ $(document).ready(function () {
                 date: true,
                 greaterThanOrEqual: "#tanggal_buka"
             },
-            durasi_magang: {
-                required: true,
-                maxlength: 50
+            id_durasi_magang: {
+                required: true
             }
         },
         messages: {
@@ -145,8 +185,8 @@ $(document).ready(function () {
                 required: "Deskripsi wajib diisi.",
                 maxlength: "Maksimal 1000 karakter."
             },
-            id_bidang_keahlian: {
-                required: "Silahkan pilih bidang keahlian."
+            kategori_keahlian: {
+                required: "Kategori keahlian wajib diisi.",
             },
             kuota: {
                 required: "Kuota wajib diisi.",
@@ -168,7 +208,6 @@ $(document).ready(function () {
             },
             durasi_magang: {
                 required: "Durasi magang wajib diisi.",
-                maxlength: "Maksimal 50 karakter."
             }
         },
         errorPlacement: function (error, element) {
@@ -182,6 +221,16 @@ $(document).ready(function () {
             $(element).removeClass('is-invalid');
         }
     });
+
+    $('#myModal').on('shown.bs.modal', function() {
+        $('select[name="fasilitas[]"]').select2({
+            dropdownParent: $(this).find('.modal-content'),
+            width: '100%',
+            placeholder: "Pilih Fasilitas",
+            allowClear: true
+        });
+    });
+
 });
 </script>
 </form>

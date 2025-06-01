@@ -8,6 +8,8 @@ use App\Models\Mahasiswa;
 use App\Models\Magang;
 use App\Models\DosenPembimbing;
 use App\Models\Lamaran;
+use Illuminate\Support\Facades\Auth;
+
 
 class DashboardController extends Controller
 {
@@ -15,6 +17,7 @@ class DashboardController extends Controller
     {
         // 1. Jumlah Mahasiswa
         $jumlahMahasiswa = Mahasiswa::count();
+        $jumlahLamaran = Lamaran::count();
 
         // 2. Statistik Status Magang
         $statusMagang = [
@@ -47,9 +50,10 @@ class DashboardController extends Controller
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-            ->join('perusahaan_mitra', 'lowongan.id_perusahaan', '=', 'perusahaan_mitra.id_perusahaan')
-            ->select('perusahaan_mitra.bidang_industri as nama_bidang', DB::raw('count(*) as total_magang'))
-            ->groupBy('perusahaan_mitra.bidang_industri');
+            ->join('bidang_keahlian', 'lowongan.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
+            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_magang'))
+            ->groupBy('bidang_keahlian.nama_bidang');
+
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
@@ -61,7 +65,6 @@ class DashboardController extends Controller
                 'peminatan.total_peminat',
                 DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
-            ->orderByDesc('peminatan.total_peminat')
             ->get();
 
         // 6. Evaluasi Efektivitas Rekomendasi
@@ -69,9 +72,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', true)
             ->count();
 
-        $tidakMengikutiRekomendasi = DB::table('lamaran')
-            ->where('dari_rekomendasi', false)
-            ->count();
+        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi/$jumlahLamaran*100;
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
@@ -80,8 +81,7 @@ class DashboardController extends Controller
             'jumlahDosen',
             'rasioDosenMahasiswa',
             'trenBidangIndustri',
-            'mengikutiRekomendasi',
-            'tidakMengikutiRekomendasi'
+            'persentaseMengikutiRekomendasi',
         ));
     }
 
@@ -92,6 +92,110 @@ class DashboardController extends Controller
 
     public function dashboard_mahasiswa()
     {
-        return view('dashboard.mahasiswa');
+        $user = Auth::user();
+
+        $dataMahasiswa = Mahasiswa::where('id_mahasiswa', $user->mahasiswa->id_mahasiswa)->first();
+
+        $preferensiPenggunaData = DB::table('preferensi_pengguna as pp')
+            ->join('opsi_preferensi as op', 'pp.id_opsi', '=', 'op.id') // SESUAI: pp.id_opsi menunjuk ke op.id
+            ->join('kategori_preferensi as kp', 'op.id_kategori', '=', 'kp.id') // SESUAI: op.id_kategori menunjuk ke kp.id
+            ->select(
+                'pp.id_mahasiswa',
+                'pp.id_opsi',
+                'pp.ranking',       
+                'pp.poin',          
+                'op.label as nama_opsi', 
+                'op.kode as kode_opsi',  
+                'kp.kode as kode_kategori', 
+                'kp.nama as nama_kategori'  
+            )
+            ->where('pp.id_mahasiswa', $dataMahasiswa->id_mahasiswa)
+            ->get();
+
+        // Inisialisasi variabel untuk menyimpan preferensi berdasarkan kategori
+        $jarak = collect();
+        $jenisPerusahaan = collect();
+        $bidangKeahlian = collect();
+        $fasilitas = collect();
+
+        // Loop melalui hasil dan kelompokkan berdasarkan kode kategori
+        foreach ($preferensiPenggunaData as $pref) {
+            switch ($pref->kode_kategori) {
+                case 'jarak':
+                    $jarak->push($pref);
+                    break;
+                case 'jenis_perusahaan':
+                    $jenisPerusahaan->push($pref);
+                    break;
+                case 'bidang_keahlian':
+                    $bidangKeahlian->push($pref);
+                    break;
+                case 'fasilitas':
+                    $fasilitas->push($pref);
+                    break;
+            }
+        }
+
+        if (!$dataMahasiswa || empty($dataMahasiswa->id_program_studi) || $jarak->isEmpty() || $jenisPerusahaan->isEmpty() || $bidangKeahlian->isEmpty() || $fasilitas->isEmpty()) {
+            return view('dashboard.mahasiswa_kosong');
+        }
+
+        $progressBarStatus = null;
+
+        // 1. Cek apakah ada lamaran untuk mahasiswa ini
+        $lamaran = Lamaran::where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
+                          ->latest('tanggal_lamaran') // Ambil lamaran terbaru jika ada banyak
+                          ->first();
+
+        if ($lamaran) {
+            // Jika ada lamaran, langkah 1 (Lamaran Dikirim) dan 2 (Diproses Admin) aktif
+            $progressBarStatus['step1_active'] = true;
+            $progressBarStatus['step2_active'] = true;
+
+            // 2. Cek status lamaran
+            if ($lamaran->status_lamaran === 'diterima') {
+                // Jika lamaran diterima, langkah 3 (Lamaran Disetujui) dan 4 (Magang Berlangsung) aktif
+                $progressBarStatus['step3_active'] = true;
+                $progressBarStatus['step4_active'] = true;
+                $progressBarStatus['step3_icon'] = 'fa-check'; // Pastikan icon tetap check
+
+                // 3. Cek tabel Magang jika lamaran diterima
+                $magang = $lamaran->magang; // Gunakan relasi hasOne untuk mengambil data magang terkait
+
+                if ($magang && $magang->status_magang === 'selesai') {
+                    // Jika magang selesai, langkah 5 (Magang Selesai) aktif
+                    $progressBarStatus['step5_active'] = true;
+                }
+            } elseif ($lamaran->status_lamaran === 'ditolak') {
+                // Jika lamaran ditolak, beri tanda silang pada langkah 3
+                $progressBarStatus['step3_active'] = true; // Atau false, tergantung apakah kamu mau kotaknya tetap aktif tapi isinya silang
+                $progressBarStatus['step3_icon'] = 'fa-xmark'; // Ganti icon menjadi silang
+            }
+            // Jika status_lamaran 'menunggu', maka hanya langkah 1 & 2 yang aktif (sudah diatur di atas)
+        }
+
+        $detailLamaranTerakhir = null; // Inisialisasi variabel untuk detail lamaran
+
+        // Ambil lamaran terbaru untuk mahasiswa, dengan eager loading lowongan dan perusahaan mitra
+        $latestLamaran = Lamaran::with(['lowongan.perusahaan'])
+                                ->where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
+                                ->latest('tanggal_lamaran')
+                                ->first();
+
+        if ($latestLamaran) {
+            // Jika ada lamaran
+            $perusahaan = $latestLamaran->lowongan->perusahaan ?? null; // Null coalescing jika relasi tidak ada
+            $lowongan = $latestLamaran->lowongan ?? null;
+
+            $detailLamaranTerakhir = [
+                'nama_perusahaan' => $perusahaan->nama_perusahaan ?? 'N/A',
+                'bidang_industri' => $perusahaan->bidang_industri ?? 'N/A',
+                'posisi_magang' => $lowongan->nama_posisi ?? 'N/A', // Asumsi kolom posisi_magang ada di tabel lowongan
+                'tanggal_dikirim' => \Carbon\Carbon::parse($latestLamaran->tanggal_lamaran)->isoFormat('D MMMM YYYY'), // Format tanggal
+            ];
+        }
+
+        return view('dashboard.mahasiswa', compact('dataMahasiswa', 'progressBarStatus', 'detailLamaranTerakhir'));
     }
+
 }

@@ -17,8 +17,8 @@
                             <th>No</th>
                             <th>Perusahaan</th>
                             <th>Nama Posisi</th>
-                            <th>Jenis Magang</th>
-                            <th>Bidang Keahlian</th>
+                            <th>Kategori Keahlian</th>
+                            <th>Jenis Pelaksanaan</th>
                             <th>Kuota</th>
                             <th>Tanggal Buka</th>
                             <th>Tanggal Tutup</th>
@@ -55,8 +55,8 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'nama_perusahaan', name: 'nama_perusahaan' },
                 { data: 'nama_posisi', name: 'nama_posisi' },
-                { data: 'jenis_magang', name: 'jenis_magang' },
-                { data: 'bidang_keahlian', name: 'bidang_keahlian' },
+                { data: 'kategori_keahlian', name: 'kategori_keahlian' },
+                { data: 'jenis_pelaksanaan', name: 'jenis_pelaksanaan' },
                 { data: 'kuota', name: 'kuota', className: 'text-center' },
                 { data: 'tanggal_buka', name: 'tanggal_buka' },
                 { data: 'tanggal_tutup', name: 'tanggal_tutup' },

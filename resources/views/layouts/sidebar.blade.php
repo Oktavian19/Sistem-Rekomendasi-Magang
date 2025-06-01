@@ -41,17 +41,31 @@
             <div>Program Studi</div>
           </a>
         </li>
-        {{-- <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
-          <a href="{{ url('periode') }}" class="menu-link">
-            <i class="menu-icon tf-icons bx bx-calendar"></i>
-            <div>Periode Magang</div>
-          </a>
-        </li> --}}
         <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
           <a href="{{ url('user') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user-plus"></i>
-            <div>Manajemen Akun</div>
+            <div>Kelola Pengguna</div>
           </a>
+        </li>
+        <li class="menu-item {{ request()->is('input*') ? 'active open' : '' }}">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-edit"></i>
+            <div class="text-truncate">Kelola Input</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item {{ request()->is('input-fasilitas*') ? 'active' : '' }}">
+              <a href="{{ url('input-fasilitas') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="Fasilitas">Input Fasilitas</div>
+              </a>
+            </li>
+          </ul>
+          <ul class="menu-sub">
+            <li class="menu-item {{ request()->is('input-bidang-keahlian*') ? 'active' : '' }}">
+              <a href="{{ url('input-bidang-keahlian') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="Bidang Keahlian">Input Bidang Keahlian</div>
+              </a>
+            </li>
+          </ul>
         </li>
         {{-- <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
           <a href="{{ url('lowongan') }}" class="menu-link">
@@ -60,28 +74,28 @@
           </a>
         </li> --}}
         <li class="menu-item {{ request()->is(['periode*', 'lowongan*', 'lamaran*']) ? 'active open' : '' }}">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-folder-open"></i>
-          <div class="text-truncate" data-i18n="ManajemenMagang">Manajemen Magang</div>
-        </a>
-        <ul class="menu-sub">
-          <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
-            <a href="{{ url('periode') }}" class="menu-link">
-              <div class="text-truncate" data-i18n="Periode">Periode Magang</div>
-            </a>
-          </li>
-          <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
-            <a href="{{ url('lowongan') }}" class="menu-link">
-              <div class="text-truncate" data-i18n="Lowongan">Lowongan Magang</div>
-            </a>
-          </li>
-          <li class="menu-item {{ request()->is('lamaran*') ? 'active' : '' }}">
-            <a href="{{ url('lamaran') }}" class="menu-link">
-              <div class="text-truncate" data-i18n="Lamaran">Lamaran Magang</div>
-            </a>
-          </li>
-        </ul>
-      </li>
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-folder-open"></i>
+            <div class="text-truncate" data-i18n="ManajemenMagang">Manajemen Magang</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item {{ request()->is('periode*') ? 'active' : '' }}">
+              <a href="{{ url('periode') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="Periode">Periode Magang</div>
+              </a>
+            </li>
+            <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
+              <a href="{{ url('lowongan') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="Lowongan">Lowongan Magang</div>
+              </a>
+            </li>
+            <li class="menu-item {{ request()->is('lamaran*') ? 'active' : '' }}">
+              <a href="{{ url('lamaran') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="Lamaran">Lamaran Magang</div>
+              </a>
+            </li>
+          </ul>
+        </li>
       @endif
 
       @if(auth()->user()->role === 'mahasiswa')
@@ -108,8 +122,8 @@
 
       @if(auth()->user()->role === 'dosen_pembimbing')
         <!-- Dosen Menu Items -->
-        <li class="menu-item {{ request()->is('dosen*') ? 'active' : '' }}">
-          <a href="{{ url('dosen/list-mahasiswa') }}" class="menu-link">
+        <li class="menu-item {{ request()->is('monitoring*') ? 'active' : '' }}">
+          <a href="{{ url('monitoring') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-bar-chart"></i>
             <div>Monitoring & Statistik</div>
           </a>

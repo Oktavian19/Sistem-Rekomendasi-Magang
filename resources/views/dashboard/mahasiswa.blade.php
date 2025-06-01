@@ -93,104 +93,111 @@
         <div class="">
             <div class="card-body card-widget-separator">
                 <div class="d-flex justify-content-center align-items-center" style="padding: 20px">
-                    <ul>
+                    <ul class="progress-bar-steps">
                         <li>
-                            <i class="icons fa-solid fa-user"></i>
-                            <div class="step first active">
+                            <i class="icons fa-solid fa-copy"></i>
+                            <div class="step first {{ ($progressBarStatus['step1_active'] ?? false) ? 'active' : '' }}">
                                 <p>1</p>
-                                <i class="awesome fa-solid fa-check"></i>
+                                <i class="awesome {{ ($progressBarStatus['step1_active'] ?? false) ? 'fa-solid fa-check' : 'hidden' }}"></i>
                             </div>
-                            <p class="label">Profile</p>
+                            <p class="label">Lamaran Dikirim</p>
                         </li>
                         <li>
-                            <i class="icons fa-solid fa-coins"></i>
-                            <div class="step second">
+                            <i class="icons fa-solid fa-bars-progress"></i>
+                            <div class="step second {{ ($progressBarStatus['step2_active'] ?? false) ? 'active' : '' }}">
                                 <p>2</p>
-                                <i class="awesome fa-solid fa-check"></i>
+                                <i class="awesome {{ ($progressBarStatus['step2_active'] ?? false) ? 'fa-solid fa-check' : 'hidden' }}"></i>
                             </div>
-                            <p class="label">Finances</p>
+                            <p class="label">Diproses Admin</p>
                         </li>
                         <li>
-                            <i class="icons fa-solid fa-house"></i>
-                            <div class="step third">
+                            <i class="icons fa-solid fa-file-circle-check"></i>
+                            <div class="step third {{ ($progressBarStatus['step3_active'] ?? false) ? 'active' : '' }}">
                                 <p>3</p>
-                                <i class="awesome fa-solid fa-check"></i>
+                                <i class="awesome fa-solid {{ $progressBarStatus['step3_icon'] ?? 'fa-check' }}"></i>
                             </div>
-                            <p class="label">Property</p>
+                            <p class="label">Lamaran Disetujui</p>
                         </li>
                         <li>
-                            <i class="icons fa-regular fa-star-half-stroke"></i>
-                            <div class="step fourth">
+                            <i class="icons fa-solid fa-person-walking-arrow-right"></i>
+                            <div class="step fourth {{ ($progressBarStatus['step4_active'] ?? false) ? 'active' : '' }}">
                                 <p>4</p>
-                                <i class="awesome fa-solid fa-check"></i>
+                                <i class="awesome {{ ($progressBarStatus['step4_active'] ?? false) ? 'fa-solid fa-check' : 'hidden' }}"></i>
                             </div>
-                            <p class="label">Evaluation</p>
+                            <p class="label">Magang Berlangsung</p>
                         </li>
                         <li>
                             <i class="icons fa-solid fa-thumbs-up"></i>
-                            <div class="step fifth">
+                            <div class="step fifth {{ ($progressBarStatus['step5_active'] ?? false) ? 'active' : '' }}">
                                 <p>5</p>
-                                <i class="awesome fa-solid fa-check"></i>
+                                <i class="awesome {{ ($progressBarStatus['step5_active'] ?? false) ? 'fa-solid fa-check' : 'hidden' }}"></i>
                             </div>
-                            <p class="label">Approval</p>
+                            <p class="label">Magang Selesai</p>
                         </li>
                     </ul>
                 </div>
                 <div class="row gy-4 gy-sm-1 border rounded mx-4" style="padding: 3vh;">
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
-                            <div>
-                                <h5 class="mb-0">PT. Tech Indonesia</h5>
-                                <p class="mb-0">Perusahaan</p>
+                    @if ($detailLamaranTerakhir)
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+                                <div>
+                                    <h5 class="mb-0">{{ $detailLamaranTerakhir['nama_perusahaan'] }}</h5>
+                                    <p class="mb-0">Perusahaan</p>
+                                </div>
+                                <div class="avatar me-sm-4">
+                                    <span class="avatar-initial rounded bg-label-secondary text-heading">
+                                        <i class="bx bx-file bx-md"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="avatar me-sm-4">
-                                <span class="avatar-initial rounded bg-label-secondary text-heading">
-                                    <i class="bx bx-file bx-md"></i>
-                                </span>
+                            <hr class="d-none d-sm-block d-lg-none me-4">
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+                                <div>
+                                    <h5 class="mb-0">{{ $detailLamaranTerakhir['bidang_industri'] }}</h5>
+                                    <p class="mb-0">Bidang Industri</p>
+                                </div>
+                                <div class="avatar me-lg-4">
+                                    <span class="avatar-initial rounded bg-label-warning text-heading">
+                                        <i class="bx bx-loader-circle bx-md"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="d-none d-sm-block d-lg-none">
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+                                <div>
+                                    <h5 class="mb-0">{{ $detailLamaranTerakhir['posisi_magang'] }}</h5>
+                                    <p class="mb-0">Posisi Magang</p>
+                                </div>
+                                <div class="avatar me-sm-4">
+                                    <span class="avatar-initial rounded bg-label-danger text-heading">
+                                        <i class="bx bx-x-circle bx-md"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <hr class="d-none d-sm-block d-lg-none me-4">
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
-                            <div>
-                                <h5 class="mb-0">Teknologi Informasi</h5>
-                                <p class="mb-0">Bidang Industri</p>
-                            </div>
-                            <div class="avatar me-lg-4">
-                                <span class="avatar-initial rounded bg-label-warning text-heading">
-                                    <i class="bx bx-loader-circle bx-md"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <hr class="d-none d-sm-block d-lg-none">
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
-                            <div>
-                                <h5 class="mb-0">Fullstack Developer</h5>
-                                <p class="mb-0">Posisi Magang</p>
-                            </div>
-                            <div class="avatar me-sm-4">
-                                <span class="avatar-initial rounded bg-label-danger text-heading">
-                                    <i class="bx bx-x-circle bx-md"></i>
-                                </span>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-0">{{ $detailLamaranTerakhir['tanggal_dikirim'] }}</h5>
+                                    <p class="mb-0">Tanggal Dikirim</p>
+                                </div>
+                                <div class="avatar">
+                                    <span class="avatar-initial rounded bg-label-success text-heading">
+                                        <i class="bx bx-check-circle bx-md"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0">1 Januari 2023</h5>
-                                <p class="mb-0">Tanggal Dikirim</p>
-                            </div>
-                            <div class="avatar">
-                                <span class="avatar-initial rounded bg-label-success text-heading">
-                                    <i class="bx bx-check-circle bx-md"></i>
-                                </span>
-                            </div>
+                    @else
+                        {{-- Tampilkan pesan jika tidak ada lamaran --}}
+                        <div class="col-12 text-center">
+                            <p>Anda belum memiliki lamaran terbaru.</p>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -209,6 +216,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#1</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -230,11 +238,12 @@
                     </div>
                 </div>
             </div>
-    
+            
             <!-- Card 2 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#2</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -256,9 +265,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#3</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -280,9 +291,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#4</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -304,9 +317,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#5</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>
@@ -328,9 +343,11 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2">#6</span>
                         <div class="d-flex mb-3">
                             <img src="https://via.placeholder.com/60" alt="Company Logo" class="rounded me-3" width="60" height="60">
                             <div>

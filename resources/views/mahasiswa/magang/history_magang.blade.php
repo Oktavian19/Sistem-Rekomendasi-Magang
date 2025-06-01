@@ -120,26 +120,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="ratingForm">
-                        <div class="mb-3">
-                            <label class="form-label">Perusahaan</label>
-                            <input type="text" class="form-control"
-                                value="{{ $lamaran->lowongan->perusahaan->nama_perusahaan }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Posisi Magang</label>
-                            <input type="text" class="form-control" value="{{ $lamaran->lowongan->nama_posisi }}"
-                                readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Durasi Magang</label>
-                            <input type="text" class="form-control" value="{{ $lamaran->lowongan->durasi_magang }} bulan"
-                                readonly>
-                        </div>
+                    <form id="ratingForm" method="POST" action="{{ url('feedback/store') }}">
+                        @csrf
+                        <!-- semua input di sini -->
                         <div class="mb-3">
                             <label class="form-label">Komentar</label>
-                            <textarea class="form-control" rows="3" placeholder="Berikan komentar tentang pengalaman magang Anda"></textarea>
+                            <textarea name="komentar" class="form-control" rows="3"
+                                placeholder="Berikan komentar tentang pengalaman magang Anda"></textarea>
                         </div>
+                        <!-- rating stars dan input hidden -->
                         <div class="mb-3">
                             <label class="form-label">Rating</label>
                             <div class="rating-input">
@@ -151,11 +140,14 @@
                                 <input type="hidden" name="rating" id="ratingValue">
                             </div>
                         </div>
+                        <input type="hidden" name="id_magang" value="{{ $lamaran->magang->id_magang ?? '' }}">
+
+                        <!-- tombol submit form -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Kirim Rating</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" id="submitRating">Kirim Rating</button>
                 </div>
             </div>
         </div>
