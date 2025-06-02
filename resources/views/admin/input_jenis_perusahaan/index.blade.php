@@ -1,15 +1,15 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
 @section('content')
 <div class="container card p-5">
-    <h4>Input Bidang Keahlian</h4>
+    <h4>Input Jenis Perusahaan</h4>
     <hr>
 
     <div class="row mb-3">
         <div class="col">
-            <h5>Bidang Keahlian yang Sudah Ada</h5>
-            <div id="keahlian-list" class="d-flex flex-wrap gap-2">
-                @foreach($bidangKeahlian as $item)
+            <h5>Jenis Perusahaan yang Sudah Ada</h5>
+            <div id="jenis-list" class="d-flex flex-wrap gap-2">
+                @foreach($jenisPerusahaan as $item)
                 <div class="badge bg-light border text-dark d-flex align-items-center" data-id="{{ $item->id }}">
                     {{ $item->label }}
                 </div>
@@ -20,10 +20,9 @@
 
     <div class="row">
         <div class="col">
-            <span class="text-primary">+ Tambah Bidang Keahlian</span>
+            <span class="text-primary">+ Tambah Jenis Perusahaan</span>
             <div class="mt-2 d-flex">
-                <input type="text" id="kode-input" class="form-control me-4" placeholder="Masukkan kode bidang keahlian baru">
-                <input type="text" id="keahlian-input" class="form-control me-4" placeholder="Masukkan nama bidang keahlian baru">
+                <input type="text" id="jenis-input" class="form-control me-4" placeholder="Masukkan jenis perusahaan baru">
                 <button id="tambah-btn" class="btn btn-outline-primary">Tambah</button>
             </div>
         </div>
@@ -35,10 +34,8 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const tambahBtn = document.getElementById('tambah-btn');
-        const inputkode = document.getElementById('kode-input');
-        const input = document.getElementById('keahlian-input');
-        const list = document.getElementById('keahlian-list');
-    
+        const input = document.getElementById('jenis-input');
+        const list = document.getElementById('jenis-list');
         
         // Fungsi untuk membuat badge
         function createBadge(id, text) {
@@ -46,19 +43,18 @@
             badge.className = 'badge bg-light border text-dark d-flex align-items-center';
             badge.dataset.id = id;
             badge.style.padding = '10px';
-            badge.innerHTML = text; // Tanpa tambahan button
+            badge.textContent = text;
             
             return badge;
         }
 
-        // Event tambah fasilitas
+        // Event tambah jenis perusahaan
         tambahBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            const kodee = inputkode.value.trim();
             const text = input.value.trim();
             
-            if (text !== '' && kodee !== '') {
-                fetch("{{ route('admin.input_bidang_keahlian.store_bidang_keahlian') }}", {
+            if (text !== '') {
+                fetch("{{ route('admin.input_jenis_perusahaan.store_jenis_perusahaan') }}", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +62,6 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({ 
-                        kode: kodee, 
                         nama: text 
                     })
                 })
@@ -78,10 +73,9 @@
                 })
                 .then(data => {
                     if (data.success) {
-                        const badge = createBadge(data.fasilitas.id, data.fasilitas.nama);
+                        const badge = createBadge(data.jenis.id, data.jenis.nama);
                         list.appendChild(badge);
                         input.value = '';
-                        inputkode.value = '';
                     }
                 })
                 .catch(error => {
@@ -93,7 +87,7 @@
                     }
                 });
             } else {
-                alert('Both code and name fields are required');
+                alert('Jenis perusahaan harus diisi');
             }
         });
     });

@@ -136,6 +136,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [KelolaInputController::class, 'store_bidang_keahlian'])->name('store_bidang_keahlian');
             Route::delete('/{id}', [KelolaInputController::class, 'destroy_bidang_keahlian'])->name('destroy_bidang_keahlian');
         });
+
+        Route::prefix('input-jenis-perusahaan')->name('input_jenis_perusahaan.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_jenis_perusahaan'])->name('input_jenis_perusahaan');
+            Route::post('/', [KelolaInputController::class, 'store_jenis_perusahaan'])->name('store_jenis_perusahaan');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_jenis_perusahaan'])->name('destroy_jenis_perusahaan');
+        });
     });
 
     // ===================== MAHASISWA ROUTES =====================
