@@ -101,12 +101,32 @@
     <script>
         function modalAction(url) {
             fetch(url)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || 'Terjadi kesalahan');
+                        });
+                    }
+                    return response.text();
+                })
                 .then(html => {
                     const modal = document.getElementById('myModal');
                     modal.innerHTML = html;
                     const bootstrapModal = new bootstrap.Modal(modal);
                     bootstrapModal.show();
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Kamu belum terdaftar magang',
+                        text: error.message,
+                        timer: 5000,
+                        showConfirmButton: true,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
                 });
         }
 
