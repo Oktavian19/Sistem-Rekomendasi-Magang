@@ -23,9 +23,16 @@ class ProfileController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'mahasiswa') {
-            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'opsiPreferensi')
-                ->where('id_mahasiswa', $userId)
-                ->first();
+            $mahasiswa = Mahasiswa::with([
+                'pengalamanKerja',
+                'dokumen',
+                'programStudi',
+                'opsiPreferensi' => function ($query) {
+                    $query->orderBy('preferensi_pengguna.ranking');
+                }
+            ])
+            ->where('id_mahasiswa', $userId)
+            ->first();
 
             if (!$mahasiswa) {
                 abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);

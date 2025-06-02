@@ -72,7 +72,7 @@
               <a class="nav-link text-dark" style="font-size: 1rem" href="#">Beranda</a>
               <a class="nav-link text-dark" style="font-size: 1rem" href="#bidangKeahlian">Bidang Keahlian</a>
               <a class="nav-link text-dark" style="font-size: 1rem" href="#lowonganTerbaru">Lowongan Terbaru</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="#fiturKami">Fitur Kami</a>
+              {{-- <a class="nav-link text-dark" style="font-size: 1rem" href="#fiturKami">Fitur Kami</a> --}}
               <a class="nav-link text-dark" style="font-size: 1rem" href="#ssd">SSD</a>
             </div>
 
