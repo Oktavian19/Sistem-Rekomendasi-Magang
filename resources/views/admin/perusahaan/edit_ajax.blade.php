@@ -114,6 +114,17 @@
         }
     });
 
+    // Custom rule: allowed email domain
+    $.validator.addMethod("emailDomain", function (value, element, param) {
+        let allowedDomains = param;
+        let domain = value.split('@')[1];
+        if (!domain) return false;
+
+        return allowedDomains.some(function (allowed) {
+            return domain.endsWith(allowed);
+        });
+    }, "Domain email tidak diperbolehkan.");    
+
     $(document).ready(function () {
     $("#form-edit").validate({
         rules: {
@@ -134,7 +145,8 @@
             email: {
                 required: true,
                 email: true,
-                maxlength: 100
+                maxlength: 100,
+                emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
             },
             telepon: {
                 required: true,
@@ -165,7 +177,8 @@
             email: {
                 required: "Email wajib diisi.",
                 email: "Format email tidak valid.",
-                maxlength: "Maksimal 100 karakter."
+                maxlength: "Maksimal 100 karakter.",
+                emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
             },
             telepon: {
                 required: "Telepon wajib diisi.",
