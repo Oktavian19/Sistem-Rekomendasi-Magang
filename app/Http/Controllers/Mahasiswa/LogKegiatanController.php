@@ -17,13 +17,22 @@ class LogKegiatanController extends Controller
         $idMahasiswa = Auth::user()->mahasiswa->id_mahasiswa;
 
         $logs = LogKegiatan::whereHas('magang.lamaran', function ($query) use ($idMahasiswa) {
-            $query->where('id_mahasiswa', $idMahasiswa);
-        })
+                $query->where('id_mahasiswa', $idMahasiswa);
+            })
+            ->whereHas('magang', function ($query) {
+                $query->where('status_magang', 'aktif');
+            })
             ->with(['magang.lamaran.lowongan', 'dokumen'])
             ->latest('tanggal')
             ->paginate(10);
 
-        return view('mahasiswa.log.index', compact('logs'));
+        $isMagangAktif = Magang::whereHas('lamaran', function ($query) use ($idMahasiswa) {
+                $query->where('id_mahasiswa', $idMahasiswa);
+            })
+            ->where('status_magang', 'aktif')
+            ->exists();
+
+        return view('mahasiswa.log.index', compact('logs', 'isMagangAktif'));
     }
 
     public function create()
@@ -46,7 +55,7 @@ class LogKegiatanController extends Controller
         if (!$pendaftaran || $pendaftaran->status_magang !== 'aktif') {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Status magang tidak aktif.'
+                'message' => 'Status magang tidak aktif. Anda tidak dapat membuat log kegiatan saat status magang tidak aktif.'
             ], 422);
         }
 
@@ -64,14 +73,24 @@ class LogKegiatanController extends Controller
 
     public function store(Request $request)
     {
-        // Validate request data
+        $messages = [
+            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'minggu.required' => 'Minggu ke- wajib diisi.',
+            'minggu.integer' => 'Minggu harus berupa angka.',
+            'minggu.min' => 'Minggu minimal :min.',
+            'deskripsi_kegiatan.required' => 'Deskripsi kegiatan wajib diisi.',
+            'images.max' => 'Maksimal boleh mengupload :max gambar.',
+            'images.*.image' => 'File harus berupa gambar.',
+        ];
+    
         $validated = $request->validate([
             'tanggal' => 'required|date',
-            'minggu' => 'required|integer|min:1',
-            'deskripsi_kegiatan' => 'required|string',
-            'images.*' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-            'images' => 'nullable|array|max:5',
-        ]);
+            'minggu' => 'required|integer|min:1|max:52',
+            'deskripsi_kegiatan' => 'required|string|max:1000',
+            'images.*' => 'nullable|image', // Hanya validasi tipe gambar
+            'images' => 'nullable|array|max:5', // Validasi jumlah file
+        ], $messages);
 
         try {
             // Get authenticated user's mahasiswa data
@@ -83,10 +102,17 @@ class LogKegiatanController extends Controller
                     ->with('error', 'Data mahasiswa tidak ditemukan.');
             }
 
+            // Validasi tanggal tidak boleh lebih besar dari hari ini
+            if ($validated['tanggal'] > now()->toDateString()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Tanggal tidak boleh lebih besar dari hari ini.');
+            }
+
             // Get the latest active magang
             $lamaran = $mahasiswa->lamaran()
                 ->whereHas('magang', function ($query) {
-                    $query->where('status_magang', 'aktif'); // Only active magang
+                    $query->where('status_magang', 'aktif');
                 })
                 ->latest()
                 ->first();
@@ -95,6 +121,17 @@ class LogKegiatanController extends Controller
                 return redirect()->back()
                     ->withInput()
                     ->with('error', 'Anda belum memiliki magang yang aktif.');
+            }
+
+            // Validasi duplikasi log kegiatan di tanggal yang sama
+            $existingLog = LogKegiatan::where('id_magang', $lamaran->magang->id_magang)
+                ->where('tanggal', $validated['tanggal'])
+                ->first();
+
+            if ($existingLog) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Anda sudah membuat log kegiatan untuk tanggal ini.');
             }
 
             // Create log kegiatan
@@ -108,13 +145,18 @@ class LogKegiatanController extends Controller
             // Handle image uploads
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
+                    // Validasi tambahan untuk memastikan file adalah gambar
+                    if (!$image->isValid()) {
+                        continue; // Skip file yang tidak valid
+                    }
+
                     $path = $image->store('public/log-kegiatan');
                     $publicPath = str_replace('public/', 'storage/', $path);
 
                     DokumenLogKegiatan::create([
                         'id_log' => $log->id_log,
                         'path_file' => $publicPath,
-                        'nama_file' => $image->getClientOriginalName() // Store original filename
+                        'nama_file' => $image->getClientOriginalName()
                     ]);
                 }
             }
@@ -128,7 +170,6 @@ class LogKegiatanController extends Controller
                 ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
-
     public function edit($id)
     {
         $log = LogKegiatan::with('dokumen')->find($id);
