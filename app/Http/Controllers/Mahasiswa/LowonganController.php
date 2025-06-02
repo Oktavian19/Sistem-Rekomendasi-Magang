@@ -79,8 +79,8 @@ class LowonganController extends Controller
 
         // Ambil bidang pekerjaan untuk filter
         $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'bidang_keahlian');
-            })->get();
+            $query->where('kode', 'bidang_keahlian');
+        })->get();
 
         return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
@@ -95,19 +95,22 @@ class LowonganController extends Controller
             ->where('id_lowongan', $id)
             ->exists();
 
-        return view('mahasiswa.magang.lowongan_detail', compact('lowongan', 'sudahDaftar'));
+        $jumlahPelamar = Lamaran::where('id_lowongan', $id)->count();
+
+        return view('mahasiswa.magang.lowongan_detail', compact('lowongan', 'sudahDaftar', 'jumlahPelamar'));
     }
+
 
 
     public function daftarLamaran(Request $request, $id)
     {
-        $mahasiswaId = Auth::id(); // Langsung pakai Auth default
+        $mahasiswaId = Auth::id();
 
         // Cek apakah sudah pernah mendaftar
         $sudahDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
             ->where('id_lowongan', $id)
             ->exists();
-        
+
         $sedangDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
             ->where('status_lamaran', 'menunggu')
             ->exists();
@@ -123,7 +126,7 @@ class LowonganController extends Controller
             'id_lowongan'      => $id,
             'tanggal_lamaran'  => now(),
             'status_lamaran'   => 'Menunggu',
-            'dari_rekomendasi' => false,
+            'dari_rekomendasi' => $request->boolean('dari_rekomendasi'), // Ambil dari form
         ]);
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil!');

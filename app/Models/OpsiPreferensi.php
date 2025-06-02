@@ -31,4 +31,9 @@ class OpsiPreferensi extends Model
             'id_mahasiswa'
         )->withPivot('ranking', 'poin')->withTimestamps();
     }
+
+    public function lowonganFasilitas()
+    {
+        return $this->belongsToMany(Lowongan::class, 'fasilitas_lowongan', 'id_fasilitas', 'id_lowongan');
+    }
 }

@@ -20,20 +20,20 @@ return new class extends Migration
             $table->text('persyaratan');
             $table->date('tanggal_buka');
             $table->date('tanggal_tutup');
-            $table->timestamps(); 
+            $table->timestamps();
 
             $table->foreign('id_perusahaan')
-                  ->references('id_perusahaan')
-                  ->on('perusahaan_mitra')
-                  ->onDelete('cascade')
-                  ->onUpdate('cascade');
+                ->references('id_perusahaan')
+                ->on('perusahaan_mitra')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('id_jenis_pelaksanaan')
                 ->references('id')
                 ->on('opsi_preferensi')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                  
+
             $table->foreign('id_bidang_keahlian')
                 ->references('id')
                 ->on('opsi_preferensi')

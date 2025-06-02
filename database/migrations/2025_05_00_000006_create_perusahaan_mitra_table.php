@@ -12,11 +12,18 @@ return new class extends Migration
             $table->id('id_perusahaan');
             $table->string('nama_perusahaan', 100);
             $table->string('bidang_industri', 100);
+            $table->unsignedBigInteger('id_jenis_perusahaan');
             $table->text('alamat');
             $table->string('email', 100);
             $table->string('telepon', 20);
             $table->string('path_logo', 100)->default('storage/logo_perusahaan/logo-default.jpg');
             $table->timestamps();
+
+            $table->foreign('id_jenis_perusahaan')
+                ->references('id')
+                ->on('opsi_preferensi')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
