@@ -24,13 +24,13 @@ class DatabaseSeeder extends Seeder
             PengalamanSeeder::class,
             DokumenSeeder::class,
             LowonganSeeder::class,
+            FasilitasLowonganSeeder::class,
             LamaranSeeder::class,
             MagangSeeder::class,
             LogKegiatanSeeder::class,
             FeedbackSeeder::class,
-            SertifikatSeeder::class,
             DokumenLogKegiatanSeeder::class,
-            PreferensiPenggunaSeeder::class
+            PreferensiPenggunaSeeder::class,
         ]);
     }
 }

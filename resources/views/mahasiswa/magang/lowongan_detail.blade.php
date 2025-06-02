@@ -22,13 +22,18 @@
                             <div class="d-flex align-items-center mt-3">
                                 <form action="{{ url('lowongan/' . $lowongan->id_lowongan . '/daftar') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill" 
+                                    {{-- Tambahkan input hidden dari_rekomendasi --}}
+                                    <input type="hidden" name="dari_rekomendasi"
+                                        value="{{ request('dari_rekomendasi', 0) }}">
+
+                                    <button type="submit" class="btn btn-primary ms-2 rounded-pill"
                                         {{ $sudahDaftar ? 'disabled' : '' }}>
                                         {{ $sudahDaftar ? 'Sudah Terdaftar' : 'Daftar' }}
                                     </button>
                                 </form>
                             </div>
-                            
+
+
                         </div>
                     </div>
 
@@ -36,7 +41,7 @@
                         <div class="col-auto mb-2">
                             <div>
                                 <p class="text-muted mb-1">Total Pelamar</p>
-                                <span class="fw-bold">-</span> {{-- Ganti sesuai kebutuhan --}}
+                                <span class="fw-bold">{{$jumlahPelamar}}</span> {{-- Ganti sesuai kebutuhan --}}
                             </div>
                         </div>
                         <div class="col-auto mb-2">
@@ -138,17 +143,17 @@
     </section>
 @endsection
 @if (session('success'))
-@push('scripts')
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: '{{ session('success') }}',
-        confirmButtonColor: '#007bff',
-        confirmButtonText: 'OK'
-    });
-</script>
-@endpush
+    @push('scripts')
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#007bff',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endpush
 @endif
 @if (session('error'))
     <div class="alert alert-danger">{{ session('error') }}</div>
