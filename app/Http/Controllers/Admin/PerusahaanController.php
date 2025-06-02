@@ -83,7 +83,7 @@ class PerusahaanController extends Controller
 
         $pathLogo = null;
         if ($request->hasFile('logo')) {
-            $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
+            $pathLogo = 'storage/' . $request->file('logo')->store('logo_perusahaan', 'public');
         }
 
 

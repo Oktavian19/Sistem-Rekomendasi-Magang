@@ -126,6 +126,18 @@
     document.getElementById('no_hp').addEventListener('input', function (e) {
     this.value = this.value.replace(/[^0-9]/g, '');
 });
+
+    // Custom rule: allowed email domain
+    $.validator.addMethod("emailDomain", function (value, element, param) {
+        let allowedDomains = param;
+        let domain = value.split('@')[1];
+        if (!domain) return false;
+
+        return allowedDomains.some(function (allowed) {
+            return domain.endsWith(allowed);
+        });
+    }, "Domain email tidak diperbolehkan.");
+
     $(document).ready(function () {
     $("#form-edit").validate({
         rules: {
@@ -141,12 +153,15 @@
                 maxlength: 100
             },
             email: {
-                required: true,
-                email: true
+                required: false,
+                minlength: 3,
+                email: true,
+                emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
             },
             no_hp: {
-                required: true,
+                required: false,
                 digits: true,
+                minlength: 10,
                 maxlength: 20
             },
             nim: {
@@ -171,13 +186,29 @@
             }
         },
         messages: {
-            username: "Username minimal 3 karakter",
-            password: "Minimal 6 karakter jika ingin diubah",
-            nama: "Nama wajib diisi",
-            email: "Email tidak valid",
+            username: {
+                required: "Username wajib diisi",
+                minlength: "Username minimal 3 karakter",
+            },
+            password: {
+                required: "Password wajib diisi",
+                minlength: "Minimal 6 karakter jika ingin diubah"
+            },
+            nama: {
+                required: "Nama wajib diisi",
+                maxlength: "Maksimal 100 karakter"
+            },
+            email: {
+                //required: "Email wajib diisi",
+                minlength: "Email minimal 3 karakter",
+                email: "Format email tidak sesuai",
+                emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
+            },
             no_hp: {
-                required: "Nomor HP wajib diisi",
-                digits: "Hanya boleh angka"
+                //required: "Nomor HP wajib diisi",
+                digits: "Hanya boleh angka",
+                minlength: "Minimal 10 karakter",
+                maxlength: "Maksimal 20 karakter"
             },
             nim: "NIM wajib untuk mahasiswa",
             id_program_studi: "Program studi wajib untuk mahasiswa",
