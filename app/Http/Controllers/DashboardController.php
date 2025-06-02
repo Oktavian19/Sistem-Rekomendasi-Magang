@@ -42,26 +42,28 @@ class DashboardController extends Controller
             : 0;
 
         // 5. Statistik Tren Bidang Industri (Peminatan vs Realisasi)
-        $peminatan = DB::table('mahasiswa_bidang_keahlian')
-            ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
-            ->groupBy('bidang_keahlian.nama_bidang');
+        $peminatan = DB::table('preferensi_pengguna')
+            ->join('opsi_preferensi', 'preferensi_pengguna.id_opsi', '=', 'opsi_preferensi.id')
+            ->join('kategori_preferensi', 'opsi_preferensi.id_kategori', '=', 'kategori_preferensi.id')
+            ->select('opsi_preferensi.label', DB::raw('count(*) as total_peminat'))
+            ->where('kategori_preferensi.kode', 'bidang_keahlian') 
+            ->groupBy('opsi_preferensi.label');
 
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-            ->join('bidang_keahlian', 'lowongan.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_magang'))
-            ->groupBy('bidang_keahlian.nama_bidang');
+            ->join('opsi_preferensi', 'lowongan.id_bidang_keahlian', '=', 'opsi_preferensi.id')
+            ->select('opsi_preferensi.label', DB::raw('count(*) as total_magang'))
+            ->groupBy('opsi_preferensi.label');
 
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
             ->leftJoinSub($realisasi, 'realisasi', function ($join) {
-                $join->on('peminatan.nama_bidang', '=', 'realisasi.nama_bidang');
+                $join->on('peminatan.label', '=', 'realisasi.label');
             })
             ->select(
-                'peminatan.nama_bidang',
+                'peminatan.label',
                 'peminatan.total_peminat',
                 DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )

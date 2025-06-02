@@ -129,7 +129,7 @@
 <script>
     const tren = @json($trenBidangIndustri);
     // Ekstrak arrays untuk chart
-    const labels = tren.map(item => item.nama_bidang);
+    const labels = tren.map(item => item.label);
     const dataPeminat = tren.map(item => item.total_peminat);
     const dataTerealisasi = tren.map(item => item.total_magang);
 
