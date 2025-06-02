@@ -127,9 +127,14 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('input-fasilitas')->name('input_fasilitas.')->group(function () {
             Route::get('/', [KelolaInputController::class, 'input_fasilitas'])->name('input_fasilitas');
+            Route::post('/', [KelolaInputController::class, 'store_fasilitas'])->name('store_fasilitas');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_fasilitas'])->name('destroy_fasilitas');
         });
+
         Route::prefix('input-bidang-keahlian')->name('input_bidang_keahlian.')->group(function () {
             Route::get('/', [KelolaInputController::class, 'input_bidang_keahlian'])->name('input_bidang_keahlian');
+            Route::post('/', [KelolaInputController::class, 'store_bidang_keahlian'])->name('store_bidang_keahlian');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_bidang_keahlian'])->name('destroy_bidang_keahlian');
         });
     });
 
