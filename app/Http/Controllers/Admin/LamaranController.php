@@ -73,7 +73,7 @@ class LamaranController extends Controller
                     'id_periode' => $periodeAktif?->id_periode,
                     'id_dosen_pembimbing' => $request->id_dosen_pembimbing,
                 ]);
-            } else {
+            } else if ($request->id_dosen_pembimbing) {
                 $existingMagang->update([
                     'id_dosen_pembimbing' => $request->id_dosen_pembimbing
                 ]);
