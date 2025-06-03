@@ -96,6 +96,9 @@ Route::middleware('auth')->group(function () {
             Route::get('feedback', [MagangController::class, 'feedback'])->name('feedback');
         });
 
+        // Download Dokumen
+        Route::get('/download/dokumen/{id}', [LamaranController::class, 'downloadDokumen'])->name('download.dokumen');
+
         // Periode
         Route::prefix('periode')->name('periode.')->group(function () {
             Route::get('/', [PeriodeController::class, 'index'])->name('index');

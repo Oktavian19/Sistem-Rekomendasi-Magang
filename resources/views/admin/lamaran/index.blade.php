@@ -83,8 +83,7 @@
                                         onclick="showDetailModal({{ $item->id_lamaran }}, 'lowongan')">
                                         <strong>{{ $item->lowongan->nama_posisi }}</strong><br>
                                     </a>
-                                    <small class="text-muted">{{ $item->lowongan->jenis_magang }} -
-                                        {{ $item->lowongan->durasi_magang }}</small>
+                                    <small class="text-muted">{{ $item->lowongan->perusahaan->nama_perusahaan }}</small>
                                 </td>
                                 <td>
                                     <a href="javascript:void(0)"

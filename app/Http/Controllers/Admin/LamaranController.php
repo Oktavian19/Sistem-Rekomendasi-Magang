@@ -66,6 +66,18 @@ class LamaranController extends Controller
         return view('admin.lamaran.show', compact('lamaran'));
     }
 
+    public function downloadDokumen($id)
+    {
+        $dokumen = Dokumen::findOrFail($id);
+        $path = storage_path('app/public/' . $dokumen->path_file);
+        
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->download($path);
+    }
+
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
