@@ -27,6 +27,15 @@ Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('/test-email', function () {
+    Mail::raw('Tes kirim email berhasil.', function ($message) {
+        $message->to('hamdanizul24@gmail.com')
+                ->subject('Test Email');
+    });
+
+    return 'Email terkirim';
+});
+
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
@@ -54,6 +63,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
             Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
+            Route::post('toggle-status/{id}', [KelolaPenggunaController::class, 'toggleStatus']);
         });
 
         // Lamaran
@@ -85,6 +95,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [MagangController::class, 'store'])->name('store');
             Route::get('feedback', [MagangController::class, 'feedback'])->name('feedback');
         });
+
+        // Download Dokumen
+        Route::get('/download/dokumen/{id}', [LamaranController::class, 'downloadDokumen'])->name('download.dokumen');
 
         // Periode
         Route::prefix('periode')->name('periode.')->group(function () {
@@ -127,9 +140,20 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('input-fasilitas')->name('input_fasilitas.')->group(function () {
             Route::get('/', [KelolaInputController::class, 'input_fasilitas'])->name('input_fasilitas');
+            Route::post('/', [KelolaInputController::class, 'store_fasilitas'])->name('store_fasilitas');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_fasilitas'])->name('destroy_fasilitas');
         });
+
         Route::prefix('input-bidang-keahlian')->name('input_bidang_keahlian.')->group(function () {
             Route::get('/', [KelolaInputController::class, 'input_bidang_keahlian'])->name('input_bidang_keahlian');
+            Route::post('/', [KelolaInputController::class, 'store_bidang_keahlian'])->name('store_bidang_keahlian');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_bidang_keahlian'])->name('destroy_bidang_keahlian');
+        });
+
+        Route::prefix('input-jenis-perusahaan')->name('input_jenis_perusahaan.')->group(function () {
+            Route::get('/', [KelolaInputController::class, 'input_jenis_perusahaan'])->name('input_jenis_perusahaan');
+            Route::post('/', [KelolaInputController::class, 'store_jenis_perusahaan'])->name('store_jenis_perusahaan');
+            Route::delete('/{id}', [KelolaInputController::class, 'destroy_jenis_perusahaan'])->name('destroy_jenis_perusahaan');
         });
     });
 
@@ -176,7 +200,7 @@ Route::middleware('auth')->group(function () {
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->name('dosen.')->group(function () {
-        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
         Route::get('/monitoring', [MonitoringController::class, 'index']);
         Route::get('/monitoring/list', [MonitoringController::class, 'list'])->name('monitoring.list');
         Route::get('/monitoring/{id}', [MonitoringController::class, 'show'])->name('monitoring.show');

@@ -8,11 +8,19 @@ use App\Models\Mahasiswa;
 use App\Models\Magang;
 use App\Models\DosenPembimbing;
 use App\Models\Lamaran;
+use App\Models\Lowongan;
 use Illuminate\Support\Facades\Auth;
-
+use App\Services\RekomendasiService;
 
 class DashboardController extends Controller
 {
+    protected $rekomendasiService;
+
+    public function __construct(RekomendasiService $rekomendasiService)
+    {
+        $this->rekomendasiService = $rekomendasiService;
+    }
+
     public function dashboard_admin()
     {
         // 1. Jumlah Mahasiswa
@@ -42,26 +50,28 @@ class DashboardController extends Controller
             : 0;
 
         // 5. Statistik Tren Bidang Industri (Peminatan vs Realisasi)
-        $peminatan = DB::table('mahasiswa_bidang_keahlian')
-            ->join('bidang_keahlian', 'mahasiswa_bidang_keahlian.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_peminat'))
-            ->groupBy('bidang_keahlian.nama_bidang');
+        $peminatan = DB::table('preferensi_pengguna')
+            ->join('opsi_preferensi', 'preferensi_pengguna.id_opsi', '=', 'opsi_preferensi.id')
+            ->join('kategori_preferensi', 'opsi_preferensi.id_kategori', '=', 'kategori_preferensi.id')
+            ->select('opsi_preferensi.label', DB::raw('count(*) as total_peminat'))
+            ->where('kategori_preferensi.kode', 'bidang_keahlian')
+            ->groupBy('opsi_preferensi.label');
 
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-            ->join('bidang_keahlian', 'lowongan.id_bidang_keahlian', '=', 'bidang_keahlian.id_bidang_keahlian')
-            ->select('bidang_keahlian.nama_bidang', DB::raw('count(*) as total_magang'))
-            ->groupBy('bidang_keahlian.nama_bidang');
+            ->join('opsi_preferensi', 'lowongan.id_bidang_keahlian', '=', 'opsi_preferensi.id')
+            ->select('opsi_preferensi.label', DB::raw('count(*) as total_magang'))
+            ->groupBy('opsi_preferensi.label');
 
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
             ->leftJoinSub($realisasi, 'realisasi', function ($join) {
-                $join->on('peminatan.nama_bidang', '=', 'realisasi.nama_bidang');
+                $join->on('peminatan.label', '=', 'realisasi.label');
             })
             ->select(
-                'peminatan.nama_bidang',
+                'peminatan.label',
                 'peminatan.total_peminat',
                 DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
@@ -72,7 +82,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', true)
             ->count();
 
-        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi/$jumlahLamaran*100;
+        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi / $jumlahLamaran * 100;
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
@@ -102,12 +112,12 @@ class DashboardController extends Controller
             ->select(
                 'pp.id_mahasiswa',
                 'pp.id_opsi',
-                'pp.ranking',       
-                'pp.poin',          
-                'op.label as nama_opsi', 
-                'op.kode as kode_opsi',  
-                'kp.kode as kode_kategori', 
-                'kp.nama as nama_kategori'  
+                'pp.ranking',
+                'pp.poin',
+                'op.label as nama_opsi',
+                'op.kode as kode_opsi',
+                'kp.kode as kode_kategori',
+                'kp.nama as nama_kategori'
             )
             ->where('pp.id_mahasiswa', $dataMahasiswa->id_mahasiswa)
             ->get();
@@ -144,8 +154,8 @@ class DashboardController extends Controller
 
         // 1. Cek apakah ada lamaran untuk mahasiswa ini
         $lamaran = Lamaran::where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
-                          ->latest('tanggal_lamaran') // Ambil lamaran terbaru jika ada banyak
-                          ->first();
+            ->latest('tanggal_lamaran') // Ambil lamaran terbaru jika ada banyak
+            ->first();
 
         if ($lamaran) {
             // Jika ada lamaran, langkah 1 (Lamaran Dikirim) dan 2 (Diproses Admin) aktif
@@ -178,9 +188,9 @@ class DashboardController extends Controller
 
         // Ambil lamaran terbaru untuk mahasiswa, dengan eager loading lowongan dan perusahaan mitra
         $latestLamaran = Lamaran::with(['lowongan.perusahaan'])
-                                ->where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
-                                ->latest('tanggal_lamaran')
-                                ->first();
+            ->where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
+            ->latest('tanggal_lamaran')
+            ->first();
 
         if ($latestLamaran) {
             // Jika ada lamaran
@@ -195,7 +205,27 @@ class DashboardController extends Controller
             ];
         }
 
-        return view('dashboard.mahasiswa', compact('dataMahasiswa', 'progressBarStatus', 'detailLamaranTerakhir'));
-    }
+        $alternatif = $this->rekomendasiService->generateMatriksAlternatif($dataMahasiswa->id_mahasiswa);
+        $bobot = $this->rekomendasiService->bobotCRITIC($alternatif);
+        $hasil = $this->rekomendasiService->hitungWASPAS($alternatif, $bobot);
 
+
+        $lowonganIds = array_keys(array_slice($hasil, 0, 6, true));
+
+        // Ambil data lowongan yang termasuk dalam hasil
+        $rekomendasi = Lowongan::with(['perusahaan', 'jenisPelaksanaan'])
+            ->whereIn('id_lowongan', $lowonganIds)
+            ->get()
+            ->keyBy('id_lowongan');
+
+        // Susun kembali sesuai urutan skor
+        $rekomendasiTerurut = collect($lowonganIds)->map(function ($id) use ($rekomendasi, $hasil) {
+            $lowongan = $rekomendasi[$id];
+            $lowongan->skor = $hasil[$id]; // Tambahkan skor WASPAS ke objek
+            return $lowongan;
+        });
+
+
+        return view('dashboard.mahasiswa', compact('dataMahasiswa', 'progressBarStatus', 'detailLamaranTerakhir', 'rekomendasiTerurut'));
+    }
 }

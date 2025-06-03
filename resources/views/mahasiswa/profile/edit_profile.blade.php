@@ -81,12 +81,11 @@
                     </div>
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Fasilitas yang Diinginkan</label>
-                        <select class="form-select form-select-sm" name="fasilitas[]" data-control="select2"
-                            data-allow-clear="true" data-placeholder="Pilih Fasilitas Magang" multiple="multiple">
+                        <select class="form-select form-select-sm" name="fasilitas[]" data-control="select2" data-allow-clear="true" data-placeholder="Pilih Fasilitas Magang" multiple="multiple">
                             @foreach ($fasilitas as $f)
                                 <option value="{{ $f->id }}" @selected(in_array($f->id, old('fasilitas', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
                                     {{ $f->label }}
-                                </option>
+                                </option>                            
                             @endforeach
                         </select>
                     </div>
@@ -189,23 +188,17 @@
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Durasi Magang</label>
                         <ul id="sortable-durasi" class="list-group">
-                            @foreach (old('durasi', ['3', '6']) as $durasi)
-                                @if(in_array($durasi, ['3','6']))
-                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $durasi }}">
-                                        <span>{{ $durasi }} Bulan</span>
-                                        <input type="hidden" name="durasi[]" value="{{ $durasi }}">
+                            @foreach (old('durasi_magang', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
+                                @php $item = $durasi->firstWhere('id', $id); @endphp
+                                @if($item)
+                                    <li class="list-group-item d-flex align-items-center" data-id="{{ $item->id }}">
+                                        <span>{{ $item->label }}</span>
+                                        <input type="hidden" name="durasi[]" value="{{ $item->id }}">
                                     </li>
                                 @endif
                             @endforeach
                         </ul>
                     </div>
-
-
-
-
-
-
-                    
 
                     {{-- <div class="col-lg-6 mb-4">
                         <div class="form-group">
@@ -391,54 +384,53 @@
     <script>
         $(document).ready(function() {
             $('[data-control="select2"]').select2({
-                width: '100%', // Makes it take full width of its parent container
-                // For multi-select, you might want to hide the search box if there aren't many options
-                minimumResultsForSearch: Infinity // Uncomment to hide search box always
+                width: '100%',
             });
-                $('#formUpdateProfile').submit(function(e) {
-                    e.preventDefault(); // Mencegah form submit default
 
-                    var form = $(this)[0];
-                    var formData = new FormData(form);
+            $('#formUpdateProfile').submit(function(e) {
+                e.preventDefault(); 
 
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message || 'Data berhasil diperbarui!',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        },
-                        error: function(xhr) {
-                            let errorMsg = 'Terjadi kesalahan.';
+                var form = $(this)[0];
+                var formData = new FormData(form);
 
-                            if (xhr.status === 422) {
-                                // Validasi Laravel
-                                const errors = xhr.responseJSON.errors;
-                                errorMsg = Object.values(errors).map(err => err.join(', ')).join(
-                                    '\n');
-                            } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                                errorMsg = xhr.responseJSON.message;
-                            }
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message || 'Data berhasil diperbarui!',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    error: function(xhr) {
+                        let errorMsg = 'Terjadi kesalahan.';
 
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: errorMsg,
-                            });
+                        if (xhr.status === 422) {
+                            // Validasi Laravel
+                            const errors = xhr.responseJSON.errors;
+                            errorMsg = Object.values(errors).map(err => err.join(', ')).join(
+                                '\n');
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
                         }
-                    });
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: errorMsg,
+                        });
+                    }
                 });
+            });
             });
 
             function modalAction(url = '') {
@@ -492,7 +484,6 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Lanjutkan submit form jika dikonfirmasi
                         event.target.closest('form').submit();
                     }
                 });
@@ -502,7 +493,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
-        // Fungsi umum enable sortable dan update input hidden
         function enableSortable(listId, inputName) {
             new Sortable(document.getElementById(listId), {
                 animation: 150,
@@ -521,31 +511,36 @@
             });
         }
     
-        // Enable sortable untuk semua list
         enableSortable('sortable-bidang-keahlian', 'bidang_keahlian');
         enableSortable('sortable-perusahaan', 'jenis_perusahaan');
         enableSortable('sortable-jarak', 'jarak');
         enableSortable('sortable-durasi', 'durasi');
     
-        // Select2 khusus untuk jenis perusahaan
         $('#select-jenis-perusahaan').select2({
             allowClear: true,
             placeholder: 'Pilih Jenis Perusahaan'
         });
 
-        // Select2 untuk bidang keahlian
         $('#select-bidang-keahlian').select2({
             allowClear: true,
-            placeholder: 'Pilih Bidang Keahlian'
+            placeholder: 'Pilih Bidang Keahlian',
+            width: '100%',
+            minimumResultsForSearch: 1,
+            language: {
+                noResults: function() {
+                    return "Tidak ditemukan";
+                },
+                searching: function() {
+                    return "Mencari...";
+                }
+            }
         });
     
-        // Tambah item ke list jenis perusahaan saat dipilih
         $('#select-jenis-perusahaan').on('select2:select', function (e) {
             const id = e.params.data.id;
             const text = e.params.data.text;
             const list = $('#sortable-perusahaan');
     
-            // Cek duplikat
             if (list.find(`li[data-id="${id}"]`).length) return;
     
             list.append(`
@@ -560,18 +555,15 @@
             $(this).val(null).trigger('change');
         });
     
-        // Event hapus tombol silang untuk jenis perusahaan
         $(document).on('click', '.remove-item', function () {
             $(this).closest('li').remove();
         });
 
-        // Tambah bidang keahlian ke list sortable saat dipilih
         $('#select-bidang-keahlian').on('select2:select', function (e) {
             const id = e.params.data.id;
             const text = e.params.data.text;
             const list = $('#sortable-bidang-keahlian');
 
-            // Cek duplikat
             if (list.find(`li[data-id="${id}"]`).length) return;
 
             list.append(`
@@ -582,7 +574,6 @@
                 </li>
             `);
 
-            // Reset select2 setelah pilih
             $(this).val(null).trigger('change');
         });
     </script>

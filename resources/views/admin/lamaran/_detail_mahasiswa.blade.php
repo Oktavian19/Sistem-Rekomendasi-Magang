@@ -25,5 +25,80 @@
                 </tr>
             </table>
         </div>
+
+        <!-- Pengalaman Kerja Section -->
+        <h5>Pengalaman Kerja</h5>
+        @if($lamaran->mahasiswa->pengalamanKerja->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nama Perusahaan</th>
+                            <th>Posisi</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($lamaran->mahasiswa->pengalamanKerja as $pengalaman)
+                            <tr>
+                                <td>{{ $pengalaman->perusahaan }}</td>
+                                <td>{{ $pengalaman->nama_posisi }}</td>
+                                <td>{{ $pengalaman->tanggal_mulai }}</td>
+                                <td>{{ $pengalaman->tanggal_selesai }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="alert alert-info">Mahasiswa belum memiliki pengalaman kerja</div>
+        @endif
+
+        <!-- Dokumen Section -->
+        <h5 class="mt-4">Dokumen Pendukung</h5>
+        @if($lamaran->mahasiswa->dokumen->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Jenis Dokumen</th>
+                            <th>File</th>
+                            <th>Tanggal Upload</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($lamaran->mahasiswa->dokumen as $dokumen)
+                            <tr>
+                                <td>{{ $dokumen->jenis_dokumen }}</td>
+                                <td>
+                                    @php
+                                        $filename = basename($dokumen->path_file);
+                                    @endphp
+                                    {{ $filename }}
+                                </td>
+                                <td>{{ $dokumen->tanggal_upload }}</td>
+                                <td>
+                                    <a href="{{ asset('storage/' . $dokumen->path_file) }}" 
+                                    target="_blank" 
+                                    class="btn btn-sm btn-info" 
+                                    title="Preview">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ url('/download/dokumen/' . $dokumen->id_dokumen) }}" 
+                                    class="btn btn-sm btn-primary" 
+                                    title="Download">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="alert alert-info">Mahasiswa belum mengunggah dokumen pendukung</div>
+        @endif
     </div>
 </div>

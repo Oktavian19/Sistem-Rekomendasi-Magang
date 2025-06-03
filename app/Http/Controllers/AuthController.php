@@ -57,7 +57,8 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // Tambah pengecekan status aktif
+        if (Auth::attempt(array_merge($credentials, ['status' => 'aktif']))) {
             $request->session()->regenerate();
 
             if ($request->ajax() || $request->wantsJson()) {
@@ -74,14 +75,15 @@ class AuthController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Username atau password salah'
+                'message' => 'Username atau password salah atau akun tidak aktif'
             ], 401);
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
+            'username' => 'Username atau password salah atau akun tidak aktif.',
         ])->onlyInput('username');
     }
+
 
     /**
      * Proses logout

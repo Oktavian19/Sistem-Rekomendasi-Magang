@@ -60,32 +60,81 @@
 </form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const imageInput = document.getElementById('images');
-        const previewContainer = document.getElementById('image-preview-container');
+    $(document).ready(function() {
+        const $imageInput = $('#images');
+        const $previewContainer = $('#image-preview-container');
         const MAX_FILES = 5;
-        const MAX_SIZE_MB = 2;
+        const MAX_SIZE_MB = 2; // Maksimal 2MB per file
+        const MAX_TOTAL_SIZE_MB = 10; // Maksimal 10MB total
+        let validFiles = [];
 
-        imageInput.addEventListener('change', function(event) {
+        $imageInput.on('change', function(event) {
             const files = Array.from(event.target.files);
-            previewContainer.innerHTML = ''; // Bersihkan pratinjau sebelumnya
+            $previewContainer.empty();
+            validFiles = [];
+            let totalSize = 0;
 
+            // Validasi jumlah file
             if (files.length > MAX_FILES) {
-                alert(`Maksimal ${MAX_FILES} gambar yang dapat diunggah.`);
-                imageInput.value = ''; // Reset input
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terlalu Banyak File',
+                    text: `Maksimal ${MAX_FILES} file yang dapat diupload.`,
+                    confirmButtonText: 'OK'
+                });
+                $imageInput.val('');
                 return;
             }
 
-            const validFiles = [];
-
-            files.forEach((file, index) => {
+            // Validasi ukuran file
+            for (const file of files) {
                 if (!file.type.startsWith('image/')) {
-                    alert(`File ${file.name} bukan gambar yang valid.`);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Format File Tidak Valid',
+                        text: `File ${file.name} bukan gambar.`,
+                        confirmButtonText: 'OK'
+                    });
+                    $imageInput.val('');
                     return;
                 }
 
                 if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-                    alert(`Ukuran file ${file.name} melebihi ${MAX_SIZE_MB}MB.`);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ukuran File Terlalu Besar',
+                        text: `File ${file.name} melebihi ${MAX_SIZE_MB}MB.`,
+                        confirmButtonText: 'OK'
+                    });
+                    $imageInput.val('');
+                    return;
+                }
+
+                totalSize += file.size;
+            }
+
+            // Validasi total ukuran
+            if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Total Ukuran Terlalu Besar',
+                    text: `Total ukuran file melebihi ${MAX_TOTAL_SIZE_MB}MB.`,
+                    confirmButtonText: 'OK'
+                });
+                $imageInput.val('');
+                return;
+            }
+
+            // Proses preview gambar
+            files.forEach((file, index) => {
+                if (!file.type.startsWith('image/')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Format File Tidak Valid',
+                        text: `File ${file.name} bukan gambar yang valid.`,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Mengerti'
+                    });
                     return;
                 }
 
@@ -93,47 +142,49 @@
 
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const colDiv = document.createElement('div');
-                    colDiv.className = 'col-md-4 mb-3';
-
-                    const cardDiv = document.createElement('div');
-                    cardDiv.className = 'card h-100 position-relative';
-
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'card-img-top img-thumbnail';
-                    img.style.maxHeight = '150px';
-                    img.style.objectFit = 'cover';
-
-                    const cardBody = document.createElement('div');
-                    cardBody.className = 'card-body p-2';
-
-                    const fileName = document.createElement('p');
-                    fileName.className = 'card-text small text-truncate mb-0';
-                    fileName.textContent = file.name;
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.type = 'button';
-                    removeBtn.className =
-                        'btn btn-danger btn-sm position-absolute top-0 end-0 m-1';
-                    removeBtn.innerHTML = '<i class="bi bi-x"></i>';
-                    removeBtn.title = 'Hapus gambar';
-
-                    removeBtn.addEventListener('click', function() {
-                        const indexToRemove = validFiles.indexOf(file);
-                        if (indexToRemove > -1) {
-                            validFiles.splice(indexToRemove, 1);
-                            updateFileInput(validFiles);
-                            colDiv.remove();
+                    const $colDiv = $('<div>').addClass('col-md-4 mb-3');
+                    const $cardDiv = $('<div>').addClass('card h-100 position-relative');
+                    const $img = $('<img>', {
+                        src: e.target.result,
+                        class: 'card-img-top img-thumbnail',
+                        css: {
+                            'max-height': '150px',
+                            'object-fit': 'cover'
                         }
                     });
+                    const $cardBody = $('<div>').addClass('card-body p-2');
+                    const $fileName = $('<p>').addClass('card-text small text-truncate mb-0').text(file.name);
+                    const $removeBtn = $('<button>', {
+                        type: 'button',
+                        class: 'btn btn-danger btn-sm position-absolute top-0 end-0 m-1',
+                        html: '<i class="bi bi-x"></i>',
+                        title: 'Hapus gambar'
+                    }).on('click', function() {
+                        Swal.fire({
+                            title: 'Hapus Gambar?',
+                            text: "Anda yakin ingin menghapus gambar ini?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const indexToRemove = validFiles.indexOf(file);
+                                if (indexToRemove > -1) {
+                                    validFiles.splice(indexToRemove, 1);
+                                    updateFileInput(validFiles);
+                                    $colDiv.remove();
+                                }
+                            }
+                        });
+                    });
 
-                    cardBody.appendChild(fileName);
-                    cardDiv.appendChild(img);
-                    cardDiv.appendChild(cardBody);
-                    cardDiv.appendChild(removeBtn);
-                    colDiv.appendChild(cardDiv);
-                    previewContainer.appendChild(colDiv);
+                    $cardBody.append($fileName);
+                    $cardDiv.append($img, $cardBody, $removeBtn);
+                    $colDiv.append($cardDiv);
+                    $previewContainer.append($colDiv);
                 };
 
                 reader.readAsDataURL(file);
@@ -142,10 +193,41 @@
             updateFileInput(validFiles);
         });
 
+        // Validasi sebelum submit form
+        $('#form-tambah').on('submit', function(e) {
+            const files = $('#images')[0].files;
+            let totalSize = 0;
+
+            if (files.length > MAX_FILES) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terlalu Banyak File',
+                    text: `Maksimal ${MAX_FILES} file yang dapat diupload.`,
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                totalSize += file.size;
+            });
+
+            if (totalSize > MAX_TOTAL_SIZE_MB * 1024 * 1024) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Total Ukuran Terlalu Besar',
+                    text: `Total ukuran file melebihi ${MAX_TOTAL_SIZE_MB}MB.`,
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
         function updateFileInput(files) {
             const dataTransfer = new DataTransfer();
             files.forEach(file => dataTransfer.items.add(file));
-            imageInput.files = dataTransfer.files;
+            $imageInput[0].files = dataTransfer.files;
         }
     });
 </script>

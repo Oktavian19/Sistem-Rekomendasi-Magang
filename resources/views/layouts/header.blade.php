@@ -8,6 +8,18 @@
   </div>
 
   <div class="d-flex align-items-center ms-auto">
+    @php
+      $user = Auth::user();
+      $name = match ($user->role) {
+          'mahasiswa' => $user->mahasiswa->nama ?? $user->username,
+          'dosen_pembimbing' => $user->dosenPembimbing->nama ?? $user->username,
+          'admin' => $user->admin->nama ?? $user->username,
+          default => $user->username,
+      };
+    @endphp
+
+    <span class="me-3">{{ $name }}</span>
+
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         @if (!empty($user->photo_url))

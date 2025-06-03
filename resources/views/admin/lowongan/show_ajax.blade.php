@@ -15,10 +15,6 @@
                     <td>{{ $lowongan->nama_posisi }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Jenis Magang</th>
-                    <td>{{ ucfirst($lowongan->jenis_magang) }}</td>
-                </tr>
-                <tr>
                     <th width="30%">Deskripsi</th>
                     <td>{{ $lowongan->deskripsi }}</td>
                 </tr>
@@ -27,7 +23,7 @@
                     <td>{{ $lowongan->bidangKeahlian->label }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Bidang Keahlian</th>
+                    <th width="30%">Jenis Pelaksanaan</th>
                     <td>{{ $lowongan->jenisPelaksanaan->label }}</td>
                 </tr>
                 <tr>

@@ -12,7 +12,7 @@ class PreferensiPenggunaSeeder extends Seeder
     {
 
         $mahasiswa = [
-            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH', 'preferensi_lokasi' => 'Purwokerto'],
+            ['nim' => '2341720172', 'nama' => 'ACHMAD MAULANA HAMZAH'],
             ['nim' => '2341720182', 'nama' => 'ALVANZA SAPUTRA YUDHA'],
             ['nim' => '2341720234', 'nama' => 'ANYA CALLISSTA CHRISWANTARI'],
             ['nim' => '2341720256', 'nama' => 'BERYL FUNKY MUBAROK'],
@@ -319,7 +319,7 @@ class PreferensiPenggunaSeeder extends Seeder
         // Jenis Perusahaan
         foreach ($nims as $nim) {
             $id = DB::table('users')->where('username', $nim)->value('id_user');
-            $choosedId = generateRandomOptions(2,5,6,12);
+            $choosedId = generateRandomOptions(2,5,9,13);
             $num_options = count($choosedId);
 
             foreach ($choosedId as $index => $id_opsi) {

@@ -172,10 +172,10 @@
               if (response.status) {
                 Swal.fire({
                   icon: 'success',
-                  title: 'Berhasil',
-                  text: response.message,
+                  title: response.message,
+                  text: 'Validasi akun akan dikirimkan ke email Anda.',
                   timer: 2000,
-                  showConfirmButton: false
+                  showConfirmButton: true
                 });
                 window.location.href = response.redirect;
               } else {

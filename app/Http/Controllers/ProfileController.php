@@ -10,6 +10,7 @@ use App\Models\Dokumen;
 use App\Models\ProgramStudi;
 use App\Models\DosenPembimbing;
 use App\Models\Admin;
+use App\Models\KategoriPreferensi;
 use App\Models\OpsiPreferensi;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,9 +23,16 @@ class ProfileController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'mahasiswa') {
-            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'opsiPreferensi')
-                ->where('id_mahasiswa', $userId)
-                ->first();
+            $mahasiswa = Mahasiswa::with([
+                'pengalamanKerja',
+                'dokumen',
+                'programStudi',
+                'opsiPreferensi' => function ($query) {
+                    $query->orderBy('preferensi_pengguna.ranking');
+                }
+            ])
+            ->where('id_mahasiswa', $userId)
+            ->first();
 
             if (!$mahasiswa) {
                 abort(404, 'Mahasiswa tidak ditemukan untuk user ID: ' . $userId);
@@ -56,9 +64,16 @@ class ProfileController extends Controller
         $role = Auth::user()->role;
 
         if ($role == 'mahasiswa') {
-            $mahasiswa = Mahasiswa::with('pengalamanKerja', 'dokumen', 'programStudi', 'opsiPreferensi')
-                ->where('id_mahasiswa', $userId)
-                ->first();
+            $mahasiswa = Mahasiswa::with([
+                'pengalamanKerja',
+                'dokumen',
+                'programStudi',
+                'opsiPreferensi' => function ($query) {
+                    $query->orderBy('preferensi_pengguna.ranking');
+                }
+            ])
+            ->where('id_mahasiswa', $userId)
+            ->first();
 
             if (!$mahasiswa) {
                 return response()->json(['error' => 'Data mahasiswa tidak ditemukan.'], 404);
@@ -77,8 +92,11 @@ class ProfileController extends Controller
             $fasilitas = OpsiPreferensi::whereHas('kategori', function ($query) {
                 $query->where('kode', 'fasilitas');
             })->get();
+            $durasi = OpsiPreferensi::whereHas('kategori', function ($query) {
+                $query->where('kode', 'durasi_magang');
+            })->get();
 
-            return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'jarak', 'jenisPerusahaan', 'bidangKeahlian', 'fasilitas'));
+            return view('mahasiswa.profile.edit_profile', compact('mahasiswa', 'programStudi', 'jarak', 'jenisPerusahaan', 'bidangKeahlian', 'fasilitas', 'durasi'));
         } elseif ($role == 'dosen_pembimbing') {
             $dosen = DosenPembimbing::where('id_dosen_pembimbing', $userId)->first();
 
@@ -116,6 +134,8 @@ class ProfileController extends Controller
             'bidang_keahlian.*' => 'exists:opsi_preferensi,id',
             'fasilitas' => 'nullable|array',
             'fasilitas.*' => 'exists:opsi_preferensi,id',
+            'durasi' => 'nullable|array',
+            'durasi.*' => 'exists:opsi_preferensi,id',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -142,21 +162,68 @@ class ProfileController extends Controller
             'foto_profil' => $validated['foto_profil'] ?? null
         ]);
 
-        // Sync bidang keahlian
+        // --- Prepare Preferences for Synchronization with Pivot Values ---
+        $allPreferensiWithPivot = [];
+
+        // 1. Preferensi Jarak (Ordered, points based on fixed array)
         $jarakIds = $validated['jarak'] ?? [];
+        $opsiPoinJarak = [10, 5, 3]; // Points for rank 1, 2, 3
+        foreach ($jarakIds as $index => $id) {
+            $ranking = $index + 1;
+            $poin = $opsiPoinJarak[$index] ?? 0; // Default to 0 if index out of bounds
+            $allPreferensiWithPivot[(int)$id] = [ // Cast ID to integer to be safe
+                'ranking' => $ranking,
+                'poin' => $poin,
+            ];
+        }
+
+        // 2. Preferensi Durasi Magang (Ordered, points based on fixed array)
+        $durasiIds = $validated['durasi'] ?? []; // Frontend sends IDs for Durasi now, not '3' or '6'
+        $opsiPoinDurasi = [7, 5]; // Points for rank 1, 2
+        foreach ($durasiIds as $index => $id) { // Loop through the IDs directly
+            // No need to query OpsiPreferensi here, as frontend sends the ID
+            $ranking = $index + 1;
+            $poin = $opsiPoinDurasi[$index] ?? 0; // Default to 0 if index out of bounds
+            $allPreferensiWithPivot[(int)$id] = [ // Cast ID to integer and use it directly
+                'ranking' => $ranking,
+                'poin' => $poin,
+            ];
+        }
+
+        // 3. Preferensi Jenis Perusahaan (Ordered, points based on calculation)
         $jenisPerusahaanIds = $validated['jenis_perusahaan'] ?? [];
+        $num_options_jenis_perusahaan = count($jenisPerusahaanIds);
+        foreach ($jenisPerusahaanIds as $index => $id) {
+            $ranking = $index + 1;
+            $poin = ($num_options_jenis_perusahaan - $index) * 3; // Points = (total_options - current_index) * 3
+            $allPreferensiWithPivot[(int)$id] = [ // Cast ID to integer
+                'ranking' => $ranking,
+                'poin' => $poin,
+            ];
+        }
+
+        // 4. Preferensi Bidang Keahlian (Ordered, points based on calculation)
         $bidangKeahlianIds = $validated['bidang_keahlian'] ?? [];
-        $fasilitasIds = $validated['fasilitas'] ?? []; // Jangan lupa fasilitas juga
+        $num_options_bidang_keahlian = count($bidangKeahlianIds);
+        foreach ($bidangKeahlianIds as $index => $id) {
+            $ranking = $index + 1;
+            $poin = ($num_options_bidang_keahlian - $index) * 5; // Poin = (total_options - current_index) * 5
+            $allPreferensiWithPivot[(int)$id] = [ // Cast ID to integer
+                'ranking' => $ranking,
+                'poin' => $poin,
+            ];
+        }
 
-        // 2. Gabungkan semua array ID preferensi menjadi satu array tunggal
-        $allPreferensiIds = array_merge(
-            $jarakIds,
-            $jenisPerusahaanIds,
-            $bidangKeahlianIds,
-            $fasilitasIds
-        );
-
-        $mahasiswa->opsiPreferensi()->sync($allPreferensiIds);
+        // 5. Preferensi Fasilitas (Unordered, fixed point)
+        foreach (($validated['fasilitas'] ?? []) as $id) {
+            $allPreferensiWithPivot[(int)$id] = [ // Cast ID to integer
+                'ranking' => null, // No specific ranking for facilities
+                'poin' => 1,       // Fixed point for facilities as per seeder
+            ];
+        }
+        
+        // --- Synchronize all preferences with their ranking and points ---
+        $mahasiswa->opsiPreferensi()->sync($allPreferensiWithPivot);
 
         if ($request->ajax()) {
             return response()->json(['message' => 'Profil berhasil diperbarui']);

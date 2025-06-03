@@ -83,8 +83,7 @@
                                         onclick="showDetailModal({{ $item->id_lamaran }}, 'lowongan')">
                                         <strong>{{ $item->lowongan->nama_posisi }}</strong><br>
                                     </a>
-                                    <small class="text-muted">{{ $item->lowongan->jenis_magang }} -
-                                        {{ $item->lowongan->durasi_magang }}</small>
+                                    <small class="text-muted">{{ $item->lowongan->perusahaan->nama_perusahaan }}</small>
                                 </td>
                                 <td>
                                     <a href="javascript:void(0)"
@@ -99,51 +98,31 @@
                                     </a>
                                 </td>
                                 <td>
-                                    @if ($item->status_lamaran == 'menunggu')
-                                        <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <select name="id_dosen_pembimbing" class="form-select form-select-sm"
-                                                onchange="toggleSetujuiButton(this, {{ $item->id_lamaran }})"
-                                                id="dosenSelect-{{ $item->id_lamaran }}" required>
-                                                <option value="">-- Pilih Dosen --</option>
-                                                @foreach ($dosenList as $dosen)
-                                                    <option value="{{ $dosen->id_dosen_pembimbing }}"
-                                                        {{ optional($item->magang)->id_dosen_pembimbing == $dosen->id_dosen_pembimbing ? 'selected' : '' }}>
-                                                        {{ $dosen->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        @elseif($item->status_lamaran == 'diterima')
-                                            @if ($item->magang && $item->magang->dosenPembimbing)
-                                                {{ $item->magang->dosenPembimbing->nama }}
-                                            @else
-                                                <span class="text-muted">Belum ada dosen</span>
-                                            @endif
+                                    @if ($item->status_lamaran == 'diterima')
+                                        @if ($item->magang && $item->magang->dosenPembimbing)
+                                            {{ $item->magang->dosenPembimbing->nama }}
                                         @else
-                                            <span class="text-muted">-</span>
+                                            <span class="text-muted">(Belum ada dosen)</span>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($item->status_lamaran == 'menunggu')
                                         <div class="d-flex gap-2">
                                             {{-- Tombol Setujui --}}
-                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}"
-                                                method="POST">
+                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="status_lamaran" value="diterima">
-                                                <button type="submit" class="btn btn-sm btn-success"
-                                                    id="setujuiBtn-{{ $item->id_lamaran }}"
-                                                    {{ empty(optional($item->magang)->id_dosen_pembimbing) ? 'disabled' : '' }}>
+                                                <button type="submit" class="btn btn-sm btn-success">
                                                     <i class="bx bx-check"></i> Setujui
                                                 </button>
                                             </form>
 
                                             {{-- Tombol Tolak --}}
-                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}"
-                                                method="POST">
+                                            <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="status_lamaran" value="ditolak">
@@ -152,6 +131,11 @@
                                                 </button>
                                             </form>
                                         </div>
+                                    @elseif($item->status_lamaran == 'diterima')
+                                        <button class="btn btn-sm btn-primary" 
+                                            onclick="showPlotDosenModal({{ $item->id_lamaran }}, {{ optional($item->magang)->id_dosen_pembimbing }})">
+                                            <i class="bx bx-user-plus"></i> {{ $item->magang && $item->magang->dosenPembimbing ? 'Ubah Dosen' : 'Plot Dosen' }}
+                                        </button>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
@@ -159,7 +143,6 @@
                             </tr>
                         @endforeach
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -179,6 +162,38 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Plot Dosen -->
+    <div class="modal fade" id="plotDosenModal" tabindex="-1" aria-labelledby="plotDosenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="plotDosenModalLabel">Plot Dosen Pembimbing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="plotDosenForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <input type="hidden" name="status_lamaran" value="diterima">
+                        <div class="mb-3">
+                            <label for="id_dosen_pembimbing" class="form-label">Dosen Pembimbing</label>
+                            <select name="id_dosen_pembimbing" id="id_dosen_pembimbing" class="form-select select2-dosen" required>
+                                <option value="">-- Pilih Dosen --</option>
+                                @foreach ($dosenList as $dosen)
+                                    <option value="{{ $dosen->id_dosen_pembimbing }}">{{ $dosen->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -204,57 +219,45 @@
             });
         });
 
-        function handleStatusForm(form, action) {
-            event.preventDefault();
-
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: `Anda yakin ingin ${action} lamaran ini?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Batal',
-                customClass: {
-                    confirmButton: 'btn btn-primary me-2',
-                    cancelButton: 'btn btn-secondary'
-                },
-                buttonsStyling: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit form jika konfirmasi
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        type: 'POST',
-                        data: $(form).serialize(),
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message || `Lamaran berhasil di${action}`,
-                                timer: 2000,
-                                showConfirmButton: false
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: xhr.responseJSON?.message ||
-                                    `Terjadi kesalahan saat ${action} lamaran`
-                            });
-                        }
-                    });
+        $('.select2-dosen').select2({
+            placeholder: 'Cari atau pilih dosen',
+            allowClear: true,
+            dropdownParent: $('#plotDosenModal'),
+            width: '100%',
+            language: {
+                noResults: function() {
+                    return "Dosen tidak ditemukan";
                 }
-            });
-        }
-
-        function toggleSetujuiButton(selectEl, lamaranId) {
-            const btn = document.getElementById('setujuiBtn-' + lamaranId);
-            if (btn) {
-                btn.disabled = !selectEl.value;
             }
+        });
+
+        // Ketika modal ditutup, bersihkan pencarian Select2
+        $('#plotDosenModal').on('hidden.bs.modal', function () {
+            $('.select2-dosen').val(null).trigger('change');
+        });
+
+        // Fungsi untuk menampilkan modal plot dosen
+        function showPlotDosenModal(lamaranId, dosenId = null) {
+            const modal = $('#plotDosenModal');
+            const form = $('#plotDosenForm');
+            
+            // Set form action
+            form.attr('action', `/lamaran/${lamaranId}/status`);
+            
+            // Set selected dosen if provided
+            const selectElement = $('#id_dosen_pembimbing');
+            if (dosenId) {
+                selectElement.val(dosenId).trigger('change');
+            } else {
+                selectElement.val(null).trigger('change');
+            }
+            
+            modal.modal('show');
+            
+            // Fokus ke input pencarian setelah modal ditampilkan
+            modal.on('shown.bs.modal', function() {
+                $('.select2-search__field').focus();
+            });
         }
 
         function showDetailModal(id, detail) {
@@ -279,5 +282,84 @@
                 `);
             });
         }
+
+        // Handle form submission for both status changes and dosen plotting
+        $('form[action*="/status"]').on('submit', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const actionText = form.find('input[name="status_lamaran"]').val() === 'diterima' ? 'menyetujui' : 'menolak';
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: `Anda yakin ingin ${actionText} lamaran ini?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    confirmButton: 'btn btn-primary me-2',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message || `Lamaran berhasil di${actionText}`,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: xhr.responseJSON?.message ||
+                                    `Terjadi kesalahan saat ${actionText} lamaran`
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Handle plot dosen form submission
+        $('#plotDosenForm').on('submit', function(e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    $('#plotDosenModal').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Dosen pembimbing berhasil diperbarui',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: xhr.responseJSON?.message || 'Terjadi kesalahan saat memperbarui dosen pembimbing'
+                    });
+                }
+            });
+        });
     </script>
 @endpush

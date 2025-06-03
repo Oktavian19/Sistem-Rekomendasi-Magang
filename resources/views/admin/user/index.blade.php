@@ -57,6 +57,8 @@
                         <th>Username</th>
                         <th>Nama</th>
                         <th>Role</th>
+                        <th>Status</th>
+                        <th>Aksi Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -95,6 +97,8 @@
                 { data: 'username', name: 'username' },
                 { data: 'nama', name: 'nama' },
                 { data: 'role', name: 'role' },
+                { data: 'status', name: 'status', className: 'text-center' },
+                { data: 'aksi_status', name: 'aksi_status', orderable: false, searchable: false, className: 'text-center' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
         });
@@ -104,6 +108,55 @@
             dataUser.ajax.reload();
         });
     });
+
+    $(document).on('submit', '.toggle-status-form', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let form = $(this);
+        let button = form.find('button[type="submit"]');
+        let originalHtml = button.html();
+
+        button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Memproses...');
+
+        let url = form.attr('action');
+
+        $.post(url, form.serialize(), function(res) {
+            if (res.status) {
+                Swal.fire({
+                    title: 'Berhasil',
+                    text: res.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+                dataUser.ajax.reload();
+            } else {
+                Swal.fire({
+                    title: 'Gagal',
+                    text: res.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
+            }
+        }).fail(function() {
+            Swal.fire('Error', 'Terjadi kesalahan.', 'error');
+        }).always(function() {
+            button.prop('disabled', false).html(originalHtml);
+        });
+
+        return false;
+    });
+
+
+
 
     $(document).on('submit', 'form', function(e) {
         e.preventDefault();

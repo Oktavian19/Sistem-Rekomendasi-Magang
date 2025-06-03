@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Mail\UserActivated;
+use Illuminate\Support\Facades\Mail;
+
 
 class KelolaPenggunaController extends Controller
 {
@@ -35,6 +38,7 @@ class KelolaPenggunaController extends Controller
             'users.id_user',
             'users.username',
             'users.role',
+            'users.status',
             DB::raw("
         CASE 
             WHEN users.role = 'admin' THEN admin.nama
@@ -59,6 +63,19 @@ class KelolaPenggunaController extends Controller
 
         return DataTables::of($users)
             ->addIndexColumn()
+            ->addColumn('status', function ($user) {
+                $class = $user->status === 'aktif' ? 'badge bg-success' : 'badge bg-secondary';
+                return '<span class="' . $class . '">' . ucfirst($user->status) . '</span>';
+            })
+            ->addColumn('aksi_status', function ($user) {
+                $btn = '<form method="POST" action="' . url('user/toggle-status/' . $user->id_user) . '" class="d-inline toggle-status-form">';
+                $btn .= csrf_field();
+                $btn .= '<button type="submit" class="btn btn-sm ' . ($user->status == 'aktif' ? 'btn-warning' : 'btn-success') . '">';
+                $btn .= $user->status == 'aktif' ? 'Nonaktifkan' : 'Aktifkan';
+                $btn .= '</button>';
+                $btn .= '</form>';
+                return $btn;
+            })            
             ->addColumn('aksi', function ($user) {
                 $btn  = '<div class="dropdown">';
                 $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
@@ -102,7 +119,10 @@ class KelolaPenggunaController extends Controller
             ->filterColumn('username', function ($query, $keyword) {
                 $query->whereRaw("LOWER(users.username) LIKE ?", ["%" . strtolower($keyword) . "%"]);
             })
-            ->rawColumns(['aksi'])
+            ->filterColumn('status', function ($query, $keyword) {
+                $query->whereRaw("LOWER(users.status) LIKE ?", ["%" . strtolower($keyword) . "%"]);
+            })            
+            ->rawColumns(['aksi', 'status', 'aksi_status'])
             ->make(true);
     }
 
@@ -410,5 +430,40 @@ class KelolaPenggunaController extends Controller
         $user->save();
 
         return redirect('/admin/user')->with('success', 'Password berhasil direset.');
+    }
+
+    public function toggleStatus($id)
+    {
+        $user = Users::findOrFail($id);
+        $user->status = $user->status === 'aktif' ? 'nonaktif' : 'aktif';
+        $user->save();
+
+        // Ambil email berdasarkan role
+        $email = null;
+
+        switch ($user->role) {
+            case 'mahasiswa':
+                $mahasiswa = \App\Models\Mahasiswa::where('id_mahasiswa', $user->id_user)->first();
+                $email = $mahasiswa->email ?? null;
+                break;
+            case 'admin':
+                $admin = \App\Models\Admin::where('id_admin', $user->id_user)->first();
+                $email = $admin->email ?? null;
+                break;
+            case 'dosen_pembimbing':
+                $dosen = \App\Models\DosenPembimbing::where('id_dosen_pembimbing', $user->id_user)->first();
+                $email = $dosen->email ?? null;
+                break;
+        }
+
+        // Kirim email jika email ditemukan dan status aktif
+        if ($user->status === 'aktif' && $email) {
+            Mail::to($email)->send(new UserActivated($user));
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Status akun berhasil diubah menjadi ' . $user->status
+        ]);
     }
 }
