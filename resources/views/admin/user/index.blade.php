@@ -1,6 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="card-stats">
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fs-4 fw-bold">{{ $totalUser }}</div>
+                <div class="text-muted">Total Pengguna</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fs-4 fw-bold">{{ $totalAdmin }}</div>
+                <div class="text-muted">Jumlah Admin</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fs-4 fw-bold">{{ $totalDosen }}</div>
+                <div class="text-muted">Jumlah Dosen</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <div class="fs-4 fw-bold">{{ $totalMahasiswa }}</div>
+                <div class="text-muted">Jumlah Mahasiswa</div>
+            </div>
+        </div>
+    </div>    
+</div>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <select id="filter-role" class="form-select">
+            <option value="">Semua User</option>
+            <option value="admin">Admin</option>
+            <option value="dosen_pembimbing">Dosen Pembimbing</option>
+            <option value="mahasiswa">Mahasiswa</option>
+        </select>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Pengguna</h5>
@@ -47,7 +86,12 @@
         dataUser = $('#table-user').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('user/list') }}",
+            ajax: {
+                url: "{{ url('user/list') }}",
+                data: function (d) {
+                    d.role = $('#filter-role').val(); // ambil filter dari dropdown
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { data: 'username', name: 'username' },
@@ -57,6 +101,11 @@
                 { data: 'aksi_status', name: 'aksi_status', orderable: false, searchable: false, className: 'text-center' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
+        });
+
+        // Trigger reload datatable saat filter berubah
+        $('#filter-role').on('change', function () {
+            dataUser.ajax.reload();
         });
     });
 

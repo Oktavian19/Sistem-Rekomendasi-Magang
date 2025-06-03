@@ -16,7 +16,9 @@ class LowonganMagangController extends Controller
     {
         $lowongan = Lowongan::with('perusahaan')->get();
         $perusahaan = PerusahaanMitra::all();
-        return view('admin.lowongan.index', compact('lowongan', 'perusahaan'));
+        $totalLowongan = $lowongan->count();
+        $totalKuota = $lowongan->sum('kuota');
+        return view('admin.lowongan.index', compact('lowongan', 'perusahaan', 'totalLowongan', 'totalKuota'));
     }
 
     public function list(Request $request)
