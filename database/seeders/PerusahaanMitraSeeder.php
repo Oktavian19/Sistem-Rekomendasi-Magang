@@ -17,7 +17,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Krian, Sidoarjo, Jawa Timur',
                 'email'           => 'info@spuindo.com',
-                'telepon'         => '031-8975555',
+                'telepon'         => '0318975555',
             ],
             [
                 'nama_perusahaan' => 'PT Lesaffre Sari Nusa',
@@ -25,7 +25,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Krebet, Bululawang, Kabupaten Malang, Jawa Timur 65163',
                 'email'           => 'contact@lesaffre.co.id',
-                'telepon'         => '0341-654321',
+                'telepon'         => '0341654321',
             ],
             [
                 'nama_perusahaan' => 'PT. Satoria Aneka Industri',
@@ -33,7 +33,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Wonorejo, Pasuruan, Jawa Timur 67173',
                 'email'           => 'contact@satoria.co.id',
-                'telepon'         => '0343-6752123',
+                'telepon'         => '03436752123',
             ],
             [
                 'nama_perusahaan' => 'PT Rapidplast Indonesia',
@@ -41,7 +41,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Sukorejo, Pasuruan',
                 'email'           => 'contact@rapidplast.co.id',
-                'telepon'         => '0341-654321',
+                'telepon'         => '0341654321',
             ],
             [
                 'nama_perusahaan' => 'PT. Amerta Indah Otsuka',
@@ -49,7 +49,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Kejayan, Pasuruan, Jawa Timur 67172',
                 'email'           => 'contact@otsuka.co.id',
-                'telepon'         => '0343-414200',
+                'telepon'         => '0343414200',
             ],
             [
                 'nama_perusahaan' => 'PT. Schneider Indonesia',
@@ -57,7 +57,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Jakarta',
                 'email'           => 'contact@schneider.co.id',
-                'telepon'         => '021-8970203',
+                'telepon'         => '0218970203',
             ],
             [
                 'nama_perusahaan' => 'PT. Borwita Citra Prima',
@@ -65,7 +65,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Pakis, Kabupaten Malang, Jawa Timur',
                 'email'           => 'contact@borwitacitra.co.id',
-                'telepon'         => '031-7889777',
+                'telepon'         => '0317889777',
             ],
             [
                 'nama_perusahaan' => 'PT. Bangun Arta Hutama',
@@ -73,7 +73,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Driyorejo, Kabupaten Gresik, Jawa Timur 61177',
                 'email'           => 'contact@bangunarta.co.id',
-                'telepon'         => '0341-654321',
+                'telepon'         => '0341654321',
             ],
             [
                 'nama_perusahaan' => 'PT. Viktori Profindo Automation',
@@ -81,7 +81,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Semolowaru, Sukolilo, Surabaya, East Java 60119',
                 'email'           => 'contact@viktori.co.id',
-                'telepon'         => '031-5944555',
+                'telepon'         => '0315944555',
             ],
             [
                 'nama_perusahaan' => 'Golden Tulip Holland Resort Batu',
@@ -89,7 +89,7 @@ class PerusahaanMitraSeeder extends Seeder
                 'id_jenis_perusahaan' => random_int(9, 12),
                 'alamat'          => 'Temas, Batu, Jawa Timur 65314',
                 'email'           => 'contact@goldentuliphollandresort.co.id',
-                'telepon'         => '0341-3302000',
+                'telepon'         => '03413302000',
             ],
         ];
 
