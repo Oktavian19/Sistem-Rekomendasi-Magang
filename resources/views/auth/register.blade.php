@@ -212,6 +212,18 @@
       document.getElementById('nim').addEventListener('input', function (e) {
       this.value = this.value.replace(/[^0-9]/g, '');
     });
+
+    // Custom rule: allowed email domain
+    $.validator.addMethod("emailDomain", function (value, element, param) {
+        let allowedDomains = param;
+        let domain = value.split('@')[1];
+        if (!domain) return false;
+
+        return allowedDomains.some(function (allowed) {
+            return domain.endsWith(allowed);
+        });
+    }, "Domain email tidak diperbolehkan.")
+
       $(document).ready(function () {
       $("#formAuthentication").validate({
           rules: {
@@ -226,14 +238,18 @@
               },
               email: {
                   required: true,
-                  email: true
+                  minlength: 3,
+                  email: true,
+                  emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
               },
               alamat: {
-                  required: true
+                  required: true,
+                  minlength: 3
               },
               no_hp: {
                   required: true,
                   maxlength: 15,
+                  minlength: 10,
                   digits: true
               },
               id_program_studi: {
@@ -260,14 +276,18 @@
               },
               email: {
                   required: "Email wajib diisi.",
-                  email: "Format email tidak valid."
+                  minlength: "Minimal 3 karakter.",
+                  email: "Format email tidak valid.",
+                  emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
               },
               alamat: {
-                  required: "Alamat wajib diisi."
+                  required: "Alamat wajib diisi.",
+                  minlength: "Minimal 3 karakter."
               },
               no_hp: {
                   required: "No HP wajib diisi.",
                   maxlength: "Maksimal 15 digit.",
+                  minlength: "Minimal 10 digit.",
                   digits: "Hanya angka yang diperbolehkan."
               },
               id_program_studi: {

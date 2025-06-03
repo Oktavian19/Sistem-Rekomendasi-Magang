@@ -126,6 +126,87 @@
             }
         });
 
+    $(document).ready(function () {
+        $("#form-edit").validate({
+            rules: {
+                nama_perusahaan: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 100
+                },
+                bidang_industri: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 100
+                },
+                alamat: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 100,
+                    minlength: 3,
+                    emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
+                },
+                telepon: {
+                    required: true,
+                    maxlength: 20,
+                    minlength: 10,
+                    digits: true
+                },
+                logo: {
+                    required: false,
+                    extension: "jpg|jpeg|png",
+                    filesize: 2048000
+                }
+            },
+            messages: {
+                nama_perusahaan: {
+                    required: "Nama perusahaan wajib diisi.",
+                    minlength: "Minimal 3 karakter.",
+                    maxlength: "Maksimal 100 karakter."
+                },
+                bidang_industri: {
+                    required: "Bidang industri wajib diisi.",
+                    minlength: "Minimal 3 karakter.",
+                    maxlength: "Maksimal 100 karakter."
+                },
+                alamat: {
+                    required: "Alamat wajib diisi.",
+                    minlength: "Minimal 3 karakter."
+                },
+                email: {
+                    required: "Email wajib diisi.",
+                    email: "Format email tidak valid.",
+                    maxlength: "Maksimal 100 karakter.",
+                    minlength: "Minimal 3 karakter.",
+                    emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
+                },
+                telepon: {
+                    required: "Telepon wajib diisi.",
+                    maxlength: "Maksimal 20 digit.",
+                    minlength: "Minimal 10 digit.",
+                    digits: "Hanya angka yang diperbolehkan."
+                },
+                logo: {
+                    extension: "Format logo harus jpg, jpeg, atau png.",
+                    filesize: "Ukuran logo maksimal 2MB."
+                }
+            },
+            errorPlacement: function (error, element) {
+                let id = element.attr("id");
+                $("#error-" + id).html(error);
+            },
+            highlight: function (element) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element) {
+                $(element).removeClass("is-invalid");
+            }
+        });
+
         // Custom rule: allowed email domain
         $.validator.addMethod("emailDomain", function(value, element, param) {
             let allowedDomains = param;
