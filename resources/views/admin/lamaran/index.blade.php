@@ -103,7 +103,7 @@
                                         @if ($item->magang && $item->magang->dosenPembimbing)
                                             {{ $item->magang->dosenPembimbing->nama }}
                                         @else
-                                            <span class="text-muted">Belum ada dosen</span>
+                                            <span class="text-muted">(Belum ada dosen)</span>
                                         @endif
                                     @else
                                         <span class="text-muted">-</span>
