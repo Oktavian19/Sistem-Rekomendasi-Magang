@@ -133,6 +133,7 @@ $(document).ready(function () {
             },
             nama_posisi: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             jenis_magang: {
@@ -176,6 +177,7 @@ $(document).ready(function () {
             },
             nama_posisi: {
                 required: "Nama posisi wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
             },
             jenis_magang: {
