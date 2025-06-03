@@ -3,6 +3,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}"
+        class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
+    </a>
     <section>
         <div class="container card" style="padding: 50px">
             <div class="row">
@@ -127,11 +131,6 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}"
-                        class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
-                    </a>
-
                 </div>
             </div>
         </div>
@@ -151,5 +150,15 @@
 @endpush
 @endif
 @if (session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
+@push('scripts')
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endpush
 @endif
