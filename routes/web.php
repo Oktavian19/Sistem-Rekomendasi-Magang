@@ -27,15 +27,6 @@ Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
-Route::get('/test-email', function () {
-    Mail::raw('Tes kirim email berhasil.', function ($message) {
-        $message->to('hamdanizul24@gmail.com')
-                ->subject('Test Email');
-    });
-
-    return 'Email terkirim';
-});
-
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
