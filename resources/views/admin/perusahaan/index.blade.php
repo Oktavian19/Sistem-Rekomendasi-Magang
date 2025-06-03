@@ -17,8 +17,7 @@
                         <th>No</th>
                         <th>Nama Perusahaan</th>
                         <th>Alamat</th>
-                        <th>Email</th>
-                        <th>Nomor Telepon</th>
+                        <th>Jenis Perusahaan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -75,8 +74,7 @@
                     }
                 },
                 { data: 'alamat', name: 'alamat' },
-                { data: 'email', name: 'email' },
-                { data: 'telepon', name: 'telepon' },
+                { data: 'jenis_perusahaan', name: 'jenis_perusahaan' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
         });
