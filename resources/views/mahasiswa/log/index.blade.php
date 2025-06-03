@@ -32,14 +32,12 @@
 
                                         <div class="mb-3">
                                             <p class="fw-semibold mb-1">
-                                                <i
-                                                    class="bi bi-calendar me-3"></i>{{ \Carbon\Carbon::parse($log->tanggal)->format('d M Y') }}
+                                                <i class="bi bi-calendar me-3"></i>{{ \Carbon\Carbon::parse($log->tanggal)->format('d M Y') }}
                                             </p>
                                             <p class="fw-normal text-muted small mb-0">
                                                 <i class="bi bi-clock me-2"></i>Minggu ke-{{ $log->minggu }}
                                             </p>
                                         </div>
-
 
                                         @if ($log->dokumen && $log->dokumen->count() > 0)
                                             <div class="d-flex flex-wrap gap-2">
@@ -59,6 +57,28 @@
                                                 {{ $log->deskripsi_kegiatan }}
                                             </p>
                                         </div>
+
+                                        <!-- Feedback Section -->
+                                        @if($log->feedback->count() > 0)
+                                            <div class="mt-3 pt-3 border-top">
+                                                <h6 class="fw-semibold">Feedback Dosen:</h6>
+                                                @foreach($log->feedback as $feedback)
+                                                    <div class="card mb-2 bg-primary text-white">
+                                                        <div class="card-body p-3">
+                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                <span class="fw-semibold">
+                                                                    {{ $feedback->user->nama ?? 'Dosen' }}
+                                                                </span>
+                                                            </div>
+                                                            <p class="mb-0">{{ $feedback->komentar }}</p>
+                                                            <small class="text-muted">
+                                                                {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->format('d M Y') }}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

@@ -22,7 +22,7 @@ class LogKegiatanController extends Controller
             ->whereHas('magang', function ($query) {
                 $query->where('status_magang', 'aktif');
             })
-            ->with(['magang.lamaran.lowongan', 'dokumen'])
+            ->with(['magang.lamaran.lowongan', 'dokumen', 'feedback.user'])
             ->latest('tanggal')
             ->paginate(10);
 
