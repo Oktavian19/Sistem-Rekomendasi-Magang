@@ -104,11 +104,13 @@
                 required: true,
                 email: true,
                 maxlength: 100,
+                minlength: 3,
                 emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
             },
             telepon: {
                 required: true,
                 maxlength: 20,
+                minlength: 10,
                 digits: true
             },
             logo: {
@@ -136,11 +138,13 @@
                 required: "Email wajib diisi.",
                 email: "Format email tidak valid.",
                 maxlength: "Maksimal 100 karakter.",
+                minlength: "Minimal 3 karakter.",
                 emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
             },
             telepon: {
                 required: "Telepon wajib diisi.",
                 maxlength: "Maksimal 20 digit.",
+                minlength: "Minimal 10 digit.",
                 digits: "Hanya angka yang diperbolehkan."
             },
             logo: {
