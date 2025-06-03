@@ -27,6 +27,15 @@ Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('/test-email', function () {
+    Mail::raw('Tes kirim email berhasil.', function ($message) {
+        $message->to('hamdanizul24@gmail.com')
+                ->subject('Test Email');
+    });
+
+    return 'Email terkirim';
+});
+
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
@@ -54,6 +63,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
             Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
+            Route::post('toggle-status/{id}', [KelolaPenggunaController::class, 'toggleStatus']);
         });
 
         // Lamaran
