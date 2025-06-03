@@ -180,13 +180,13 @@
                 required: "Email wajib diisi.",
                 email: "Format email tidak valid.",
                 maxlength: "Maksimal 100 karakter.",
-                minlength: "Minimal 3 karakter."
+                minlength: "Minimal 3 karakter.",
                 emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
             },
             telepon: {
                 required: "Telepon wajib diisi.",
                 maxlength: "Maksimal 20 digit.",
-                minlength: "Minimal 10 digit."
+                minlength: "Minimal 10 digit.",
                 digits: "Hanya angka yang diperbolehkan."
             },
             logo: {
