@@ -13,7 +13,7 @@ use App\Models\PeriodeMagang;
 
 class LamaranController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Tampilkan semua lamaran, lengkap dengan relasi mahasiswa dan lowongan
         $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan', 'magang.dosenPembimbing'])->latest()->get();
@@ -21,7 +21,23 @@ class LamaranController extends Controller
         // Ambil data dosen untuk dropdown
         $dosenList = DosenPembimbing::orderBy('nama')->get();
 
-        return view('admin.lamaran.index', compact('lamaran', 'dosenList'));
+        // Filter setiap status lamaran
+        $query = Lamaran::with(['mahasiswa.user', 'lowongan', 'magang.dosenPembimbing'])->latest();
+        if ($request->has('status') && in_array($request->status, ['diterima', 'menunggu', 'ditolak'])) {
+            $query->where('status_lamaran', $request->status);
+        }
+
+        $lamaran = $query->get();
+
+        // Tambahkan statistik lamaran
+        $statistik = [
+            'total'     => Lamaran::count(),
+            'diterima'  => Lamaran::where('status_lamaran', 'diterima')->count(),
+            'menunggu'  => Lamaran::where('status_lamaran', 'menunggu')->count(),
+            'ditolak'   => Lamaran::where('status_lamaran', 'ditolak')->count(),
+        ];
+
+        return view('admin.lamaran.index', compact('lamaran', 'dosenList', 'statistik'));
     }
 
     public function show($id, $detail)
@@ -50,6 +66,18 @@ class LamaranController extends Controller
         return view('admin.lamaran.show', compact('lamaran'));
     }
 
+    public function downloadDokumen($id)
+    {
+        $dokumen = Dokumen::findOrFail($id);
+        $path = storage_path('app/public/' . $dokumen->path_file);
+        
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->download($path);
+    }
+
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -73,7 +101,7 @@ class LamaranController extends Controller
                     'id_periode' => $periodeAktif?->id_periode,
                     'id_dosen_pembimbing' => $request->id_dosen_pembimbing,
                 ]);
-            } else {
+            } else if ($request->id_dosen_pembimbing) {
                 $existingMagang->update([
                     'id_dosen_pembimbing' => $request->id_dosen_pembimbing
                 ]);

@@ -67,8 +67,8 @@ class MonitoringController extends Controller
         return view('dosen.monitoring.detail', [
             'posisi' => $lowongan->nama_posisi,
             'perusahaan' => $lowongan->perusahaan->nama_perusahaan,
-            'bidang' => $lowongan->bidangKeahlian->nama_bidang ?? '-',
-            'durasi' => $lowongan->durasi_magang,
+            'bidang' => $lowongan->bidangKeahlian->label ?? '-',
+            'durasi' => $lowongan->durasiMagang->label,
             'alamat' => $lowongan->perusahaan->alamat ?? '-',
         ]);
     }

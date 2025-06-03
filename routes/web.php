@@ -96,6 +96,9 @@ Route::middleware('auth')->group(function () {
             Route::get('feedback', [MagangController::class, 'feedback'])->name('feedback');
         });
 
+        // Download Dokumen
+        Route::get('/download/dokumen/{id}', [LamaranController::class, 'downloadDokumen'])->name('download.dokumen');
+
         // Periode
         Route::prefix('periode')->name('periode.')->group(function () {
             Route::get('/', [PeriodeController::class, 'index'])->name('index');
@@ -197,7 +200,7 @@ Route::middleware('auth')->group(function () {
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->name('dosen.')->group(function () {
-        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
         Route::get('/monitoring', [MonitoringController::class, 'index']);
         Route::get('/monitoring/list', [MonitoringController::class, 'list'])->name('monitoring.list');
         Route::get('/monitoring/{id}', [MonitoringController::class, 'show'])->name('monitoring.show');

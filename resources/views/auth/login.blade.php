@@ -102,14 +102,6 @@
                     <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
                   </div>
                 </div>
-                <div class="mb-8">
-                  <div class="d-flex justify-content-between">
-                    <div class="form-check mb-0">
-                      <input class="form-check-input" type="checkbox" id="remember-me" name="remember" />
-                      <label class="form-check-label" for="remember-me"> Ingat Saya </label>
-                    </div>
-                  </div>
-                </div>
                 <div class="mb-6">
                   <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
                 </div>

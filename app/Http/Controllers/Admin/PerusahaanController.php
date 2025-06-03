@@ -15,7 +15,9 @@ class PerusahaanController extends Controller
     public function index()
     {
         $perusahaan = PerusahaanMitra::all();
-        return view('admin.perusahaan.index', compact('perusahaan'));
+        $totalPerusahaan = PerusahaanMitra::count();
+        $totalBidangIndustri = PerusahaanMitra::distinct('bidang_industri')->count('bidang_industri');
+        return view('admin.perusahaan.index', compact('perusahaan', 'totalPerusahaan', 'totalBidangIndustri'));
     }
 
     public function list(Request $request)
@@ -25,6 +27,10 @@ class PerusahaanController extends Controller
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
+        }
+
+        if ($request->filled('bidang_industri')) {
+            $query->where('bidang_industri', $request->bidang_industri);
         }
 
         return DataTables::of($query)

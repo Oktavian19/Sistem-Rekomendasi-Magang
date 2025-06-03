@@ -16,7 +16,9 @@ class LowonganMagangController extends Controller
     {
         $lowongan = Lowongan::with('perusahaan')->get();
         $perusahaan = PerusahaanMitra::all();
-        return view('admin.lowongan.index', compact('lowongan', 'perusahaan'));
+        $totalLowongan = $lowongan->count();
+        $totalKuota = $lowongan->sum('kuota');
+        return view('admin.lowongan.index', compact('lowongan', 'perusahaan', 'totalLowongan', 'totalKuota'));
     }
 
     public function list(Request $request)
@@ -25,6 +27,16 @@ class LowonganMagangController extends Controller
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
+        }
+
+        if ($request->filled('nama_posisi')) {
+            $query->where('nama_posisi', $request->nama_posisi);
+        }
+
+        if ($request->filled('jenis_pelaksanaan')) {
+            $query->whereHas('jenisPelaksanaan', function ($q) use ($request) {
+                $q->where('label', 'like', '%' . $request->jenis_pelaksanaan . '%');
+            });
         }
 
         return DataTables::of($query)
