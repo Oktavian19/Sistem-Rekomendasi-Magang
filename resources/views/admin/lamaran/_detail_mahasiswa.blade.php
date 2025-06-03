@@ -86,11 +86,6 @@
                                     title="Preview">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ url('/download/dokumen/' . $dokumen->id_dokumen) }}" 
-                                    class="btn btn-sm btn-primary" 
-                                    title="Download">
-                                        <i class="fas fa-download"></i>
-                                    </a>
                                 </td>
                             </tr>
                         @endforeach
