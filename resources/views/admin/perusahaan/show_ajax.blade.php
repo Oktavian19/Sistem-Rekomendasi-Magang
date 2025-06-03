@@ -15,6 +15,10 @@
                     <td>{{ $perusahaan->bidang_industri }}</td>
                 </tr>
                 <tr>
+                    <th width="30%">Jenis Perusahaan</th>
+                    <td>{{ $perusahaan->jenisPerusahaan->label }}</td>
+                </tr>
+                <tr>
                     <th width="30%">Alamat</th>
                     <td>{{ $perusahaan->alamat }}</td>
                 </tr>
