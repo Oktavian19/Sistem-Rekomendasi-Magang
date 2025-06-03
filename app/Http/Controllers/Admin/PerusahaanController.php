@@ -28,6 +28,10 @@ class PerusahaanController extends Controller
             $query->where('id_perusahaan', $request->id_perusahaan);
         }
 
+        if ($request->filled('bidang_industri')) {
+            $query->where('bidang_industri', $request->bidang_industri);
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('aksi', function ($perusahaanMitra) {

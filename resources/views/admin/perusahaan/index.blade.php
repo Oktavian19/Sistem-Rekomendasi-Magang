@@ -21,6 +21,16 @@
         </div>
     </div>    
 </div>
+<div class="row mb-3">
+    <div class="col-md-4">
+        <select id="filter-bidang-industri" class="form-select">
+            <option value="">-- Semua Bidang Industri --</option>
+            @foreach (\App\Models\PerusahaanMitra::select('bidang_industri')->distinct()->get() as $item)
+                <option value="{{ $item->bidang_industri }}">{{ $item->bidang_industri }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Perusahaan</h5>
@@ -66,7 +76,12 @@
         dataPerusahaan = $('#table-perusahaan').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ url('perusahaan/list') }}",
+            ajax: {
+                url: "{{ url('perusahaan/list') }}",
+                data: function (d) {
+                    d.bidang_industri = $('#filter-bidang-industri').val();
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
                 { 
@@ -99,6 +114,9 @@
                 { data: 'telepon', name: 'telepon' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
+        });
+        $('#filter-bidang-industri').on('change', function () {
+            dataPerusahaan.draw();
         });
     });
 
