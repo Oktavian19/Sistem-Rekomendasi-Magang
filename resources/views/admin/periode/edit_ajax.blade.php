@@ -40,6 +40,7 @@
         rules: {
             nama_periode: {
                 required: true,
+                minlength: 3,
                 maxlength: 100
             },
             tanggal_mulai: {
@@ -55,6 +56,7 @@
         messages: {
             nama_periode: {
                 required: "Nama periode wajib diisi.",
+                minlength: "Minimal 3 karakter.",
                 maxlength: "Nama periode maksimal 100 karakter."
             },
             tanggal_mulai: {

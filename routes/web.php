@@ -27,15 +27,6 @@ Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('register', [AuthController::class, 'register']);
 Route::post('register', [AuthController::class, 'postregister']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
-Route::get('/test-email', function () {
-    Mail::raw('Tes kirim email berhasil.', function ($message) {
-        $message->to('hamdanizul24@gmail.com')
-                ->subject('Test Email');
-    });
-
-    return 'Email terkirim';
-});
-
 
 // ===================== AUTHENTICATED ROUTES =====================
 Route::middleware('auth')->group(function () {
@@ -200,7 +191,7 @@ Route::middleware('auth')->group(function () {
 
     // ===================== DOSEN ROUTES =====================
     Route::middleware('authorize:dosen_pembimbing')->name('dosen.')->group(function () {
-        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_dosen'])->name('dashboard_dosen');
+        Route::get('/dashboard-dosen', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
         Route::get('/monitoring', [MonitoringController::class, 'index']);
         Route::get('/monitoring/list', [MonitoringController::class, 'list'])->name('monitoring.list');
         Route::get('/monitoring/{id}', [MonitoringController::class, 'show'])->name('monitoring.show');

@@ -128,6 +128,7 @@
             no_hp: {
                 required: true,
                 maxlength: 20,
+                minlength: 10,
                 digits: true
             },
             email: {

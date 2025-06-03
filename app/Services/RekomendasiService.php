@@ -132,7 +132,7 @@ class RekomendasiService
             }
         }
 
-        return 0;
+        return 1;
     }
 
     protected function getSkorBidangKeahlian(array $preferensi, Lowongan $lowongan): int
@@ -145,13 +145,13 @@ class RekomendasiService
             }
         }
 
-        return 0;
+        return 1;
     }
 
     protected function getSkorFasilitas(array $preferensi, Lowongan $lowongan): int
     {
         $fasilitasLowongan = $lowongan->fasilitas->pluck('kode')->toArray();
-        $totalSkor = 0;
+        $totalSkor = 1;
 
         foreach ($preferensi['fasilitas'] ?? [] as $fasilitas) {
             if (in_array($fasilitas['kode'], $fasilitasLowongan)) {
@@ -211,6 +211,11 @@ class RekomendasiService
             $num += ($col1[$i] - $mean1) * ($col2[$i] - $mean2);
             $den1 += pow($col1[$i] - $mean1, 2);
             $den2 += pow($col2[$i] - $mean2, 2);
+        }
+
+        if ($den1 == 0 || $den2 == 0) {
+            // Varians nol: tidak bisa hitung korelasi
+            return 0; // atau null, tergantung kebutuhan
         }
         return $num / sqrt($den1 * $den2);
     }

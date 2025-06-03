@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PerusahaanMitra;
+use App\Models\OpsiPreferensi; // Add this for company types
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class PerusahaanController extends Controller
@@ -15,7 +15,9 @@ class PerusahaanController extends Controller
     public function index()
     {
         $perusahaan = PerusahaanMitra::all();
-        return view('admin.perusahaan.index', compact('perusahaan'));
+        $totalPerusahaan = PerusahaanMitra::count();
+        $totalBidangIndustri = PerusahaanMitra::distinct('bidang_industri')->count('bidang_industri');
+        return view('admin.perusahaan.index', compact('perusahaan', 'totalPerusahaan', 'totalBidangIndustri'));
     }
 
     public function list(Request $request)
@@ -26,14 +28,26 @@ class PerusahaanController extends Controller
             $query->where('id_perusahaan', $request->id_perusahaan);
         }
 
+        if ($request->filled('bidang_industri')) {
+            $query->where('bidang_industri', $request->bidang_industri);
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('jenis_perusahaan', function ($perusahaan) {
+                return $perusahaan->jenisPerusahaan ? $perusahaan->jenisPerusahaan->label : '-';
+            })
             ->addColumn('aksi', function ($perusahaanMitra) {
                 $btn  = '<div class="dropdown">';
                 $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
                 $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';
                 $btn .= '</a>';
                 $btn .= '<ul class="dropdown-menu">';
+
+                // Detail link
+                $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/show-ajax') . '" onclick="modalAction(this.href); return false;">';
+                $btn .= '<i class="bx bx-show-alt"></i> Detail';
+                $btn .= '</a></li>';
 
                 // Edit link
                 $btn .= '<li><a class="dropdown-item" href="' . url('perusahaan/' . $perusahaanMitra->id_perusahaan . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
@@ -56,7 +70,10 @@ class PerusahaanController extends Controller
 
     public function create_ajax()
     {
-        return view('admin.perusahaan.create_ajax');
+        $jenisPerusahaan = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'jenis_perusahaan');
+        })->get();
+        return view('admin.perusahaan.create_ajax', compact('jenisPerusahaan'));
     }
 
     public function store_ajax(Request $request)
@@ -64,12 +81,12 @@ class PerusahaanController extends Controller
         $rules = [
             'nama_perusahaan' => 'required|string|max:100',
             'bidang_industri' => 'required|string|max:100',
+            'id_jenis_perusahaan' => 'required|exists:opsi_preferensi,id',
             'alamat'          => 'required|string',
             'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $request->id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
             'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
-
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -86,19 +103,15 @@ class PerusahaanController extends Controller
             $pathLogo = 'storage/' . $request->file('logo')->store('logo_perusahaan', 'public');
         }
 
-
-        // Geocoding berdasarkan alamat
-        $geo = $this->getCoordinates($request->alamat);
-
-        PerusahaanMitra::create([
-            'nama_perusahaan' => $request->nama_perusahaan,
-            'bidang_industri' => $request->bidang_industri,
-            'alamat'          => $request->alamat,
-            'email'           => $request->email,
-            'telepon'         => $request->telepon,
-            'path_logo'       => $pathLogo,
-            'latitude'        => $geo['lat'] ?? null,
-            'longitude'       => $geo['lon'] ?? null,
+        PerusahaanMitra::create($request->only([
+            'nama_perusahaan',
+            'bidang_industri',
+            'id_jenis_perusahaan',
+            'alamat',
+            'email',
+            'telepon'
+        ]) + [
+            'path_logo' => $pathLogo,
         ]);
 
 
@@ -108,10 +121,9 @@ class PerusahaanController extends Controller
         ]);
     }
 
-
     public function edit_ajax($id)
     {
-        $perusahaan = PerusahaanMitra::find($id);
+        $perusahaan = PerusahaanMitra::with('jenisPerusahaan')->find($id);
 
         if (!$perusahaan) {
             return response()->json([
@@ -120,14 +132,20 @@ class PerusahaanController extends Controller
             ], 404);
         }
 
-        return view('admin.perusahaan.edit_ajax', compact('perusahaan'));
+        $jenisPerusahaan = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'jenis_perusahaan');
+        })->get();
+
+        return view('admin.perusahaan.edit_ajax', compact('perusahaan', 'jenisPerusahaan'));
     }
+
 
     public function update_ajax(Request $request, $id)
     {
         $rules = [
             'nama_perusahaan' => 'required|string|max:100',
             'bidang_industri' => 'required|string|max:100',
+            'id_jenis_perusahaan' => 'required|exists:opsi_preferensi,id',
             'alamat'          => 'required|string',
             'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
@@ -173,18 +191,14 @@ class PerusahaanController extends Controller
             $pathLogo = 'storage/'.$pathLogo; 
         }
 
-        // Geocode alamat baru
-        $geo = $this->getCoordinates($request->alamat);
-
         $perusahaan->update([
             'nama_perusahaan' => $request->nama_perusahaan,
             'bidang_industri' => $request->bidang_industri,
+            'id_jenis_perusahaan' => $request->id_jenis_perusahaan,
             'alamat'          => $request->alamat,
             'email'           => $request->email,
             'telepon'         => $request->telepon,
-            'path_logo'       => $pathLogo,
-            'latitude'        => $geo['lat'] ?? null,
-            'longitude'       => $geo['lon'] ?? null,
+            'path_logo'       => $pathLogo ?? $perusahaan->path_logo,
         ]);
 
         return response()->json([
@@ -194,10 +208,9 @@ class PerusahaanController extends Controller
         ]);
     }
 
-
     public function show_ajax($id)
     {
-        $perusahaan = PerusahaanMitra::find($id);
+        $perusahaan = PerusahaanMitra::with('jenisPerusahaan')->find($id);
 
         if (!$perusahaan) {
             return response()->json([
@@ -240,25 +253,5 @@ class PerusahaanController extends Controller
             'status'  => true,
             'message' => 'Data berhasil dihapus',
         ]);
-    }
-
-    private function getCoordinates($alamat)
-    {
-        $response = Http::withHeaders([
-            'User-Agent' => 'MyApp/1.0 (your.email@example.com)',
-        ])->get('https://nominatim.openstreetmap.org/search', [
-            'q' => $alamat,
-            'format' => 'json',
-            'limit' => 1,
-        ]);
-
-        if ($response->successful() && !empty($response[0])) {
-            return [
-                'lat' => $response[0]['lat'],
-                'lon' => $response[0]['lon'],
-            ];
-        }
-
-        return null;
     }
 }
