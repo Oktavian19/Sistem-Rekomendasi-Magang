@@ -20,7 +20,7 @@ class PerusahaanController extends Controller
 
     public function list(Request $request)
     {
-        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'email', 'telepon', 'alamat');
+        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'email', 'telepon', 'alamat', 'path_logo');
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
@@ -132,8 +132,8 @@ class PerusahaanController extends Controller
             'email'           => 'required|email|max:100|unique:perusahaan_mitra,email,' . $id . ',id_perusahaan',
             'telepon'         => 'required|string|max:20',
             'logo'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'hapus_logo'      => 'nullable|boolean',
         ];
-
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -153,19 +153,25 @@ class PerusahaanController extends Controller
             ], 404);
         }
 
-        if ($request->hasFile('logo')) {
+        $pathLogo = $perusahaan->path_logo;
+
+        // Handle penghapusan logo jika checkbox dicentang
+        if ($request->has('hapus_logo') && $request->hapus_logo == '1') {
+            if ($perusahaan->path_logo && Storage::disk('public')->exists($perusahaan->path_logo)) {
+                Storage::disk('public')->delete($perusahaan->path_logo);
+            }
+            $pathLogo = 'storage/logo_perusahaan/logo-default.jpg';
+        }
+        // Handle upload logo baru
+        elseif ($request->hasFile('logo')) {
             // Hapus logo lama jika ada
             if ($perusahaan->path_logo && Storage::disk('public')->exists($perusahaan->path_logo)) {
                 Storage::disk('public')->delete($perusahaan->path_logo);
             }
-
-            // Simpan logo baru
+            
             $pathLogo = $request->file('logo')->store('logo_perusahaan', 'public');
-        } else {
-            $pathLogo = $perusahaan->path_logo;
+            $pathLogo = 'storage/'.$pathLogo; 
         }
-
-
 
         // Geocode alamat baru
         $geo = $this->getCoordinates($request->alamat);
@@ -176,15 +182,15 @@ class PerusahaanController extends Controller
             'alamat'          => $request->alamat,
             'email'           => $request->email,
             'telepon'         => $request->telepon,
-            'path_logo'       => $pathLogo ?? $perusahaan->path_logo,
+            'path_logo'       => $pathLogo,
             'latitude'        => $geo['lat'] ?? null,
             'longitude'       => $geo['lon'] ?? null,
         ]);
 
-
         return response()->json([
             'status'  => true,
             'message' => 'Data berhasil diupdate',
+            'logo_url' => $pathLogo ? asset('storage/'.$pathLogo) : null
         ]);
     }
 
