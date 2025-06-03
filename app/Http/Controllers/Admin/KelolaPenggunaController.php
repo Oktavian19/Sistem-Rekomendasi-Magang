@@ -14,7 +14,19 @@ class KelolaPenggunaController extends Controller
     public function index()
     {
         $pengguna = Users::all();
-        return view('admin.user.index', compact('pengguna'));
+        // Hitung total berdasarkan role
+        $totalUser = Users::count();
+        $totalAdmin = Users::where('role', 'admin')->count();
+        $totalDosen = Users::where('role', 'dosen_pembimbing')->count();
+        $totalMahasiswa = Users::where('role', 'mahasiswa')->count();
+
+        return view('admin.user.index', compact(
+            'pengguna',
+            'totalUser',
+            'totalAdmin',
+            'totalDosen',
+            'totalMahasiswa'
+        ));
     }
 
     public function list(Request $request)
@@ -38,6 +50,11 @@ class KelolaPenggunaController extends Controller
 
         if ($request->has('id_user')) {
             $users->where('id_user', $request->id_user);
+        }
+
+        // Filter by role
+        if ($request->has('role') && $request->role != '') {
+            $users->where('users.role', $request->role);
         }
 
         return DataTables::of($users)

@@ -1,6 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="card-stats">
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <h6 class="text-muted">Total Pelamar</h6>
+                <h3 class="fs-4 fw-bold">{{ $statistik['total'] }}</h3>                
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <h6 class="text-muted">Diterima</h6>
+                <h3 class="fs-4 fw-bold text-success">{{ $statistik['diterima'] }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <h6 class="text-muted">Menunggu</h6>
+                <h3 class="fs-4 fw-bold text-warning">{{ $statistik['menunggu'] }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3 text-center">
+                <h6 class="text-muted">Ditolak</h6>
+                <h3 class="fs-4 fw-bold text-danger">{{ $statistik['ditolak'] }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <form action="{{ route('admin.lamaran.index') }}" method="GET">
+            <div class="input-group">
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Semua Status --</option>
+                    <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                    <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0">Daftar Lamaran Magang</h5>

@@ -1,6 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="card-stats">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Jumlah Perusahaan</h5>
+                    <p class="card-text fs-4" >{{ $totalPerusahaan }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-dark">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Jumlah Bidang Industri</h5>
+                    <p class="card-text fs-4">{{ $totalBidangIndustri }}</p>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Perusahaan</h5>

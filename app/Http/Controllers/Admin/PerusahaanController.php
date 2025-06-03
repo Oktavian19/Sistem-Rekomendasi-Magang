@@ -15,7 +15,9 @@ class PerusahaanController extends Controller
     public function index()
     {
         $perusahaan = PerusahaanMitra::all();
-        return view('admin.perusahaan.index', compact('perusahaan'));
+        $totalPerusahaan = PerusahaanMitra::count();
+        $totalBidangIndustri = PerusahaanMitra::distinct('bidang_industri')->count('bidang_industri');
+        return view('admin.perusahaan.index', compact('perusahaan', 'totalPerusahaan', 'totalBidangIndustri'));
     }
 
     public function list(Request $request)
