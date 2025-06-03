@@ -90,13 +90,13 @@
                         let content = '<div class="d-flex align-items-center">';
                         
                         content += '<div class="avatar avatar-sm me-2">';
-                        if (row.logo) {
-                            content += '<img src="' + row.logo + '" alt="Logo ' + data + '" class="avatar-img rounded">';
-                        } else {
-                            content += '<span class="avatar-initial rounded bg-label-secondary">' +
-                                      '<i class="bx bx-buildings"></i>' +
-                                      '</span>';
-                        }
+                            if (row.path_logo) {
+                                content += '<img src="' + row.path_logo + '" alt="Logo ' + data + '" class="avatar-img rounded" style="object-fit: contain; width: 100%; height: 100%;">';
+                            } else {
+                                content += '<span class="avatar-initial rounded bg-label-secondary">' +
+                                        '<i class="bx bx-buildings"></i>' +
+                                        '</span>';
+                            }
                         content += '</div>';
                         
                         content += '<div>' +

@@ -64,7 +64,7 @@
                         </div>
                         {{-- Checkbox Hapus Logo --}}
                         <div class="form-check mb-2">
-                            <input type="checkbox" name="hapus_logo" id="hapus_logo" class="form-check-input">
+                            <input type="checkbox" name="hapus_logo" id="hapus_logo" class="form-check-input" value="1">
                             <label class="form-check-label" for="hapus_logo">Hapus Logo</label>
                         </div>
                     @else
