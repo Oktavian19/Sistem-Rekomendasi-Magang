@@ -1,4 +1,5 @@
-<form action="{{ url('perusahaan/store-ajax') }}" method="POST" id="form-tambah" class="validate">
+<form action="{{ url('perusahaan/store-ajax') }}" method="POST" id="form-tambah" class="validate"
+    enctype="multipart/form-data">
     @csrf
     <div id="modal-perusahaan" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -12,14 +13,29 @@
                     <input type="text" name="nama_perusahaan" id="nama_perusahaan" class="form-control" required>
                     <small id="error-nama_perusahaan" class="error-text form-text text-danger"></small>
                 </div>
+
+                <!-- Jenis Perusahaan Dropdown -->
+                <div class="form-group mb-3">
+                    <label>Jenis Perusahaan</label>
+                    <select name="id_jenis_perusahaan" id="id_jenis_perusahaan" class="form-control" required>
+                        <option value="">Pilih Jenis Perusahaan</option>
+                        @foreach ($jenisPerusahaan as $jenis)
+                            <option value="{{ $jenis->id }}">
+                                {{ $jenis->label }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small id="error-id_jenis_perusahaan" class="error-text form-text text-danger"></small>
+                </div>
+
                 <div class="form-group mb-3">
                     <label>Bidang Industri</label>
                     <input type="text" name="bidang_industri" id="bidang_industri" class="form-control" required>
                     <small id="error-bidang_industri" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label >Alamat</label>
-                    <input type="text" name="alamat" id="alamat" class="form-control" required>
+                    <label>Alamat</label>
+                    <textarea name="alamat" id="alamat" class="form-control" required rows="3"></textarea>
                     <small id="error-alamat" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
@@ -29,17 +45,18 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Telepon</label>
-                    <input type="tel" name="telepon" id="telepon" class="form-control" required pattern="[0-9]*" inputmode="numeric" required>
+                    <input type="tel" name="telepon" id="telepon" class="form-control" required pattern="[0-9]*"
+                        inputmode="numeric">
                     <small id="error-telepon" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    {{-- Preview Logo --}}
-                    <div class="mt-2">
-                        <img id="logo-preview" src="#" alt="Preview Logo" style="max-height: 100px; display: none;">
-                    </div>
-                    
                     <label>Logo (opsional)</label>
-                    <input type="file" name="logo" id="logo" class="form-control" accept="iamge/jpg, image/jpeg, image/png">
+                    <div class="mt-2">
+                        <img id="logo-preview" src="#" alt="Preview Logo"
+                            style="max-height: 100px; display: none;">
+                    </div>
+                    <input type="file" name="logo" id="logo" class="form-control"
+                        accept="image/jpg, image/jpeg, image/png">
                     <small id="error-logo" class="error-text form-text text-danger"></small>
                 </div>
             </div>
@@ -50,127 +67,129 @@
         </div>
     </div>
     <script>
-    document.getElementById('telepon').addEventListener('input', function (e) {
-    this.value = this.value.replace(/[^0-9]/g, '');
-});
-
-    // Preview logo saat memilih file
-    document.getElementById("logo").addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        const preview = document.getElementById("logo-preview");
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        } else {
-            preview.src = "#";
-            preview.style.display = "none";
-        }
-    });
-
-    // Custom rule: allowed email domain
-    $.validator.addMethod("emailDomain", function (value, element, param) {
-        let allowedDomains = param;
-        let domain = value.split('@')[1];
-        if (!domain) return false;
-
-        return allowedDomains.some(function (allowed) {
-            return domain.endsWith(allowed);
+        document.getElementById('telepon').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
         });
-    }, "Domain email tidak diperbolehkan.");
 
-    $(document).ready(function () {
-    $("#form-tambah").validate({
-        rules: {
-            nama_perusahaan: {
-                required: true,
-                minlength: 3,
-                maxlength: 100
-            },
-            bidang_industri: {
-                required: true,
-                minlength: 3,
-                maxlength: 100
-            },
-            alamat: {
-                required: true,
-                minlength: 3
-            },
-            email: {
-                required: true,
-                email: true,
-                maxlength: 100,
-                minlength: 3,
-                emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
-            },
-            telepon: {
-                required: true,
-                maxlength: 20,
-                minlength: 10,
-                digits: true
-            },
-            logo: {
-                required: false,
-                extension: "jpg|jpeg|png",
-                filesize: 2048000
-            }
-        },
-        messages: {
-            nama_perusahaan: {
-                required: "Nama perusahaan wajib diisi.",
-                minlength: "Minimal 3 karakter.",
-                maxlength: "Maksimal 100 karakter."
-            },
-            bidang_industri: {
-                required: "Bidang industri wajib diisi.",
-                minlength: "Minimal 3 karakter.",
-                maxlength: "Maksimal 100 karakter."
-            },
-            alamat: {
-                required: "Alamat wajib diisi.",
-                minlength: "Minimal 3 karakter.",
-            },
-            email: {
-                required: "Email wajib diisi.",
-                email: "Format email tidak valid.",
-                maxlength: "Maksimal 100 karakter.",
-                minlength: "Minimal 3 karakter.",
-                emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
-            },
-            telepon: {
-                required: "Telepon wajib diisi.",
-                maxlength: "Maksimal 20 digit.",
-                minlength: "Minimal 10 digit.",
-                digits: "Hanya angka yang diperbolehkan."
-            },
-            logo: {
-                extension: "Hanya file jpg, jpeg, atau png.",
-                filesize: "Ukuran maksimal 2MB."
-            }
-        },
-        errorPlacement: function (error, element) {
-            let id = element.attr('id');
-            $('#error-' + id).html(error);
-        },
-        highlight: function (element) {
-            $(element).addClass('is-invalid');
-        },
-        unhighlight: function (element) {
-            $(element).removeClass('is-invalid');
-        }  
-    });
+        // Preview logo saat memilih file
+        document.getElementById("logo").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById("logo-preview");
 
-   // Custom rule: file size
-    $.validator.addMethod("filesize", function (value, element, param) {
-        if (element.files.length === 0) {
-            return true;
-        }
-        return element.files[0].size <= param;
-    }, "File terlalu besar.");
-});
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "#";
+                preview.style.display = "none";
+            }
+        });
+
+        // Custom rule: allowed email domain
+        $.validator.addMethod("emailDomain", function(value, element, param) {
+            let allowedDomains = param;
+            let domain = value.split('@')[1];
+            if (!domain) return false;
+
+            return allowedDomains.some(function(allowed) {
+                return domain.endsWith(allowed);
+            });
+        }, "Domain email tidak diperbolehkan.");
+
+        $(document).ready(function() {
+            $("#form-tambah").validate({
+                rules: {
+                    nama_perusahaan: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 100
+                    },
+                    id_jenis_perusahaan: {
+                        required: true
+                    },
+                    bidang_industri: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 100
+                    },
+                    alamat: {
+                        required: true,
+                        minlength: 3
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        maxlength: 100,
+                        emailDomain: [".com", ".ac.id", ".co.id", ".org", ".net", ".info", ".biz", ".xyz"]
+                    },
+                    telepon: {
+                        required: true,
+                        maxlength: 20,
+                        digits: true
+                    },
+                    logo: {
+                        required: false,
+                        extension: "jpg|jpeg|png",
+                        filesize: 2048000
+                    }
+                },
+                messages: {
+                    nama_perusahaan: {
+                        required: "Nama perusahaan wajib diisi.",
+                        minlength: "Minimal 3 karakter.",
+                        maxlength: "Maksimal 100 karakter."
+                    },
+                    id_jenis_perusahaan: {
+                        required: "Jenis perusahaan wajib dipilih."
+                    },
+                    bidang_industri: {
+                        required: "Bidang industri wajib diisi.",
+                        minlength: "Minimal 3 karakter.",
+                        maxlength: "Maksimal 100 karakter."
+                    },
+                    alamat: {
+                        required: "Alamat wajib diisi.",
+                        minlength: "Minimal 3 karakter."
+                    },
+                    email: {
+                        required: "Email wajib diisi.",
+                        email: "Format email tidak valid.",
+                        maxlength: "Maksimal 100 karakter.",
+                        emailDomain: "Gunakan email dengan domain yang diperbolehkan (.com, .ac.id, dll)."
+                    },
+                    telepon: {
+                        required: "Telepon wajib diisi.",
+                        maxlength: "Maksimal 20 digit.",
+                        digits: "Hanya angka yang diperbolehkan."
+                    },
+                    logo: {
+                        extension: "Hanya file jpg, jpeg, atau png.",
+                        filesize: "Ukuran maksimal 2MB."
+                    }
+                },
+                errorPlacement: function(error, element) {
+                    let id = element.attr('id');
+                    $('#error-' + id).html(error);
+                },
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+
+            // Custom rule: file size
+            $.validator.addMethod("filesize", function(value, element, param) {
+                if (element.files.length === 0) {
+                    return true;
+                }
+                return element.files[0].size <= param;
+            }, "File terlalu besar.");
+        });
     </script>
 </form>

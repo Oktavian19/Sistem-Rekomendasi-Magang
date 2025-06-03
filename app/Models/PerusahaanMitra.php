@@ -30,6 +30,6 @@ class PerusahaanMitra extends Model
 
     public function jenisPerusahaan()
     {
-        return $this->belongsTo(OpsiPreferensi::class, 'id_jenis_perusahaan');
+        return $this->belongsTo(OpsiPreferensi::class, 'id_jenis_perusahaan', 'id');
     }
 }
