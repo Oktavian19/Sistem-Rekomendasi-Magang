@@ -6,6 +6,7 @@ use App\Models\Lowongan;
 use App\Models\Mahasiswa;
 use App\Models\Users; // Menggunakan model User (standar Laravel)
 use App\Models\ProgramStudi;
+use App\Models\OpsiPreferensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -37,11 +38,32 @@ class AuthController extends Controller
     public function landingPage()
     {
         $lowongans = Lowongan::with('perusahaan')
-            ->orderBy('id_lowongan', 'desc')   // atau sesuai kebutuhan
+            ->orderBy('id_lowongan', 'desc')
             ->take(9)
             ->get();
 
-        return view('welcome', compact('lowongans'));
+        $bidangKeahlian = OpsiPreferensi::where('id_kategori', 5)->take(8)->get();
+
+        $availableImages = [
+            'https://diploy.id/get-file?path=job-field%2Fd3d019d1-8bbe-47ff-b8c8-9ead895744c1.png',
+            'https://diploy.id/get-file?path=job-field%2Fdd44f13e-51df-4d33-9f2f-b389e9d91cd4.png',
+            'https://diploy.id/get-file?path=job-field%2F6531cc18-faa3-457e-b18a-5458b410da80.png',
+            'https://diploy.id/get-file?path=job-field%2F2ddedfde-5022-4d8d-97ce-030d4a163abf.png',
+            'https://diploy.id/get-file?path=job-field%2Fd2e0eae8-0a6b-4e63-b3a4-dfcb607e38db.png',
+            'https://diploy.id/get-file?path=job-field%2F4b0813f1-167c-41c6-bbd0-59f1ad735f8d.png',
+            'https://diploy.id/get-file?path=job-field%2F64f29e9a-269c-4ac4-a4c0-941c3c507ae7.png',
+            'https://diploy.id/get-file?path=job-field%2Fddaa98d8-5bfe-42c3-bd5a-f90f79704288.png'
+        ];
+
+        shuffle($availableImages);
+
+        $bidangGambar = [];
+        
+        foreach ($bidangKeahlian as $index => $bidang) {
+            $bidangGambar[$bidang->id] = $availableImages[$index % count($availableImages)] ?? 'sneat/assets/img/1.png';
+        }
+
+        return view('welcome', compact('lowongans', 'bidangKeahlian', 'bidangGambar'));
     }
 
     /**
