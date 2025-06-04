@@ -17,6 +17,7 @@ use App\Http\Controllers\Mahasiswa\LowonganController;
 use App\Http\Controllers\Mahasiswa\LogKegiatanController;
 use App\Http\Controllers\Mahasiswa\RekomendasiController;
 use App\Http\Controllers\Admin\KelolaInputController;
+use App\Http\Controllers\Admin\KelolaMagangController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -68,6 +69,17 @@ Route::middleware('auth')->group(function () {
             Route::delete('{id}', [LamaranController::class, 'destroy'])->name('destroy');
             Route::get('export/excel', [LamaranController::class, 'exportExcel'])->name('export.excel');
             Route::get('export/pdf', [LamaranController::class, 'exportPdf'])->name('export.pdf');
+        });
+
+        // Lamaran
+        Route::prefix('kelola-magang')->name('kelola-magang.')->group(function () {
+            Route::get('/', [KelolaMagangController::class, 'index'])->name('index');
+            Route::get('list', [KelolaMagangController::class, 'list'])->name('list');
+            Route::get('{id}/{detail}', [KelolaMagangController::class, 'show'])->name('show');
+            Route::put('{id}/status', [KelolaMagangController::class, 'updateStatus'])->name('update-status');
+            Route::delete('{id}', [KelolaMagangController::class, 'destroy'])->name('destroy');
+            Route::get('export/excel', [KelolaMagangController::class, 'exportExcel'])->name('export.excel');
+            Route::get('export/pdf', [KelolaMagangController::class, 'exportPdf'])->name('export.pdf');
         });
 
         // Lowongan Magang
