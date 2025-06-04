@@ -28,7 +28,7 @@ class LamaranController extends Controller
             'magang.dosenPembimbing'
         ])->latest();
 
-        if ($request->has('status') && in_array($request->status, ['diterima', 'menunggu', 'ditolak'])) {
+        if ($request->has('status') && in_array($request->status, ['diterima', 'diprosesAdmin', 'diprosesPerusahaan', 'ditolak'])) {
             $query->where('status_lamaran', $request->status);
         }
 

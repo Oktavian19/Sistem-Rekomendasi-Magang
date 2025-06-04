@@ -157,7 +157,17 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($item->status_lamaran == 'menunggu')
+                                    @if ($item->status_lamaran == 'diprosesAdmin')
+                                        {{-- Tombol Kirim ke Perusahaan --}}
+                                        <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status_lamaran" value="diprosesPerusahaan">
+                                            <button type="submit" class="btn btn-sm btn-warning">
+                                                <i class="bx bx-send"></i> Kirim ke Perusahaan
+                                            </button>
+                                        </form>
+                                    @elseif ($item->status_lamaran == 'diprosesPerusahaan')
                                         <div class="d-flex gap-2">
                                             {{-- Tombol Setujui --}}
                                             <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST">
