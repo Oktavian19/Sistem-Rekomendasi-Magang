@@ -12,6 +12,10 @@ use App\Models\DosenPembimbing;
 use App\Models\Magang;
 use App\Models\PeriodeMagang;
 use App\Models\ProgramStudi;
+use App\Exports\LamaranExport;
+use App\Exports\LamaranPdfExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class LamaranController extends Controller
 {
@@ -22,18 +26,18 @@ class LamaranController extends Controller
         $dosenList = DosenPembimbing::orderBy('nama')->get();
 
         $query = Lamaran::with([
-            'mahasiswa.user', 
-            'mahasiswa.programStudi', 
-            'lowongan', 
+            'mahasiswa.user',
+            'mahasiswa.programStudi',
+            'lowongan',
             'magang.dosenPembimbing'
         ])->latest();
 
-        if ($request->has('status') && in_array($request->status, ['diterima', 'diprosesAdmin', 'diprosesPerusahaan', 'ditolak'])) {
+        if ($request->has('status') && in_array($request->status, ['diprosesAdmin', 'diprosesPerusahaan', 'diterima', 'ditolak'])) {
             $query->where('status_lamaran', $request->status);
         }
 
         if ($request->has('prodi') && $request->prodi != '') {
-            $query->whereHas('mahasiswa', function($q) use ($request) {
+            $query->whereHas('mahasiswa', function ($q) use ($request) {
                 $q->where('id_program_studi', $request->prodi);
             });
         }
@@ -43,7 +47,8 @@ class LamaranController extends Controller
         $statistik = [
             'total'     => $query->count(),
             'diterima'  => $query->where('status_lamaran', 'diterima')->count(),
-            'menunggu'  => $query->where('status_lamaran', 'menunggu')->count(),
+            'diprosesAdmin' => $query->where('status_lamaran', 'diprosesAdmin')->count(),
+            'diprosesPerusahaan' => $query->where('status_lamaran', 'diprosesPerusahaan')->count(),
             'ditolak'   => $query->where('status_lamaran', 'ditolak')->count(),
         ];
 
@@ -80,7 +85,7 @@ class LamaranController extends Controller
     {
         $dokumen = Dokumen::findOrFail($id);
         $path = storage_path('app/public/' . $dokumen->path_file);
-        
+
         if (!file_exists($path)) {
             abort(404);
         }
@@ -91,50 +96,50 @@ class LamaranController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status_lamaran' => 'required|in:menunggu,diterima,ditolak',
-            'id_dosen_pembimbing' => 'nullable|exists:dosen_pembimbing,id_dosen_pembimbing',
+            'status_lamaran' => 'required|in:diprosesAdmin,diprosesPerusahaan,diterima,ditolak',
         ]);
 
         $lamaran = Lamaran::findOrFail($id);
         $lamaran->status_lamaran = $request->status_lamaran;
         $lamaran->save();
 
-        // Jika status diterima, atur magang dan dosen
+        // Jika status diterima dan belum ada magang, buat data magang dengan dosen null
         if ($request->status_lamaran === 'diterima') {
             $existingMagang = Magang::where('id_lamaran', $lamaran->id_lamaran)->first();
 
             if (!$existingMagang) {
                 $periodeAktif = PeriodeMagang::where('status', 'aktif')->first();
+
                 Magang::create([
                     'id_lamaran' => $lamaran->id_lamaran,
-                    'status_magang' => 'aktif',
+                    'status_magang' => 'aktif', // Status sementara sebelum aktif
                     'id_periode' => $periodeAktif?->id_periode,
-                    'id_dosen_pembimbing' => $request->id_dosen_pembimbing,
-                ]);
-            } else if ($request->id_dosen_pembimbing) {
-                $existingMagang->update([
-                    'id_dosen_pembimbing' => $request->id_dosen_pembimbing
+                    'id_dosen_pembimbing' => null, // Dosen akan diisi nanti
                 ]);
             }
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Status lamaran berhasil diperbarui.',
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Status lamaran berhasil diperbarui.');
+        return $request->ajax()
+            ? response()->json(['status' => true, 'message' => 'Status lamaran berhasil diperbarui.'])
+            : redirect()->back()->with('success', 'Status lamaran berhasil diperbarui.');
     }
 
-
-
-    public function destroy($id)
+    public function exportExcel()
     {
-        $lamaran = Lamaran::findOrFail($id);
-        $lamaran->delete();
+        $status = request('status');
+        $prodi = request('prodi');
+        
+        return Excel::download(new LamaranExport($status, $prodi), 'lamaran-magang.xlsx');
+    }
 
-        return redirect()->route('admin.lamaran.index')->with('success', 'Lamaran berhasil dihapus.');
+    public function exportPdf()
+    {
+        $status = request('status');
+        $prodi = request('prodi');
+        
+        $export = new LamaranPdfExport($status, $prodi);
+        $pdf = PDF::loadView('exports.lamaran-pdf', $export->view()->getData());
+        
+        return $pdf->download('lamaran-magang.pdf');
     }
 }

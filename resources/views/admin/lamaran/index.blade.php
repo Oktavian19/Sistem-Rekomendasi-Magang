@@ -96,6 +96,29 @@
             </div>
         </div>
 
+        <div class="row ms-3 mb-3">
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bx bx-export me-1"></i> Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ url('lamaran/export/excel') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
+                                Excel
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url('lamaran/export/pdf') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
+                                PDF
+                            </a>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+
         <div class="card-body">
             <div class="table-responsive">
                 <table id="lamaranTable" class="table table-bordered table-striped w-100">

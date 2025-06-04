@@ -30,12 +30,10 @@ class OpsiPreferensiSeeder extends Seeder
         $perusahaan = [
             ['kode' => 'bumn',         'label' => 'Badan Usaha Milik Negara'],
             ['kode' => 'swasta',       'label' => 'Swasta'],
-            ['kode' => 'teknologi',    'label' => 'Teknologi dan Kreatif'],
-            ['kode' => 'pemerintah',   'label' => 'Pemerintah dan Pendidikan'],
-            ['kode' => 'pelatihan',    'label' => 'Pelatihan dan Sertifikasi'],
-            ['kode' => 'manufaktur',   'label' => 'Industri Manufaktur dan Otomotif'],
+            ['kode' => 'startup',      'label' => 'Startup'],
+            ['kode' => 'pemerintah',   'label' => 'Pemerintah'],
+            ['kode' => 'umkm',         'label' => 'UMKM'],
         ];
-
 
         $bidang = [
             ['kode' => 'BE',    'label' => 'Backend Development',],
