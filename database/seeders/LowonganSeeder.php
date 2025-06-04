@@ -267,6 +267,35 @@ class LowonganSeeder extends Seeder
                 'created_at'            => now(),
                 'updated_at'            => now(),
             ],
+            [
+                'id_perusahaan'         => 4,
+                'nama_posisi'           => 'Content Writer Intern',
+                'deskripsi'             => 'Menulis konten blog, artikel, dan copywriting untuk media sosial.',
+                'id_bidang_keahlian'    => 39,
+                'id_jenis_pelaksanaan'  => random_int($minJenisPelaksanaan, $maxJenisPelaksanaan),
+                'id_durasi_magang'      => random_int(4, 5),
+                'kuota'                 => 2,
+                'persyaratan'           => 'Memiliki kemampuan menulis dan memahami SEO dasar.',
+                'tanggal_buka'          => '2025-06-05',
+                'tanggal_tutup'         => '2025-07-05',
+                'created_at'            => now(),
+                'updated_at'            => now(),
+            ],
+            [
+                'id_perusahaan'         => 5,
+                'nama_posisi'           => 'IT Support Intern',
+                'deskripsi'             => 'Membantu pengelolaan perangkat keras dan dukungan teknis internal.',
+                'id_bidang_keahlian'    => 21,
+                'id_jenis_pelaksanaan'  => random_int($minJenisPelaksanaan, $maxJenisPelaksanaan),
+                'id_durasi_magang'      => random_int(4, 5),
+                'kuota'                 => 2,
+                'persyaratan'           => 'Mengerti troubleshooting komputer dan jaringan.',
+                'tanggal_buka'          => '2025-06-20',
+                'tanggal_tutup'         => '2025-07-20',
+                'created_at'            => now(),
+                'updated_at'            => now(),
+            ],
+
         ]);
     }
 }
