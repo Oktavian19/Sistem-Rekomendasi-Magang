@@ -35,8 +35,8 @@ class DashboardController extends Controller
         ];
 
         $statusLamaran = [
-            'menunggu'   => Lamaran::where('status_lamaran', 'menunggu')->count(),
-            'diterima' => Lamaran::where('status_lamaran', 'diterima')->count(),
+            'menunggu'  => Lamaran::whereIn('status_lamaran', ['diprosesAdmin', 'diprosesPerusahaan'])->count(),
+            'diterima'  => Lamaran::where('status_lamaran', 'diterima')->count(),
             'ditolak'   => Lamaran::where('status_lamaran', 'ditolak')->count(),
         ];
 
