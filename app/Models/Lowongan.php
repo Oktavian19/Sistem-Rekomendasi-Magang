@@ -17,7 +17,6 @@ class Lowongan extends Model
         'nama_posisi',
         'deskripsi',
         'id_jenis_pelaksanaan',
-        'id_bidang_keahlian',
         'id_durasi_magang',
         'kuota',
         'persyaratan',
@@ -35,18 +34,30 @@ class Lowongan extends Model
         return $this->belongsTo(OpsiPreferensi::class, 'id_jenis_pelaksanaan');
     }
 
-    public function bidangKeahlian()
-    {
-        return $this->belongsTo(OpsiPreferensi::class, 'id_bidang_keahlian');
-    }
-
     public function durasiMagang()
     {
         return $this->belongsTo(OpsiPreferensi::class, 'id_durasi_magang');
     }
 
+    // Ini digunakan untuk sync (jangan ada whereHas!)
+    public function semuaPreferensi()
+    {
+        return $this->belongsToMany(OpsiPreferensi::class, 'preferensi_lowongan', 'id_lowongan', 'id_opsi');
+    }
+
+    // Ini untuk ambil bidang keahlian yang difilter oleh kategori
+    public function bidangKeahlian()
+    {
+        return $this->semuaPreferensi()->whereHas('kategori', function ($q) {
+            $q->where('kode', 'bidang_keahlian');
+        });
+    }
+
+    // Sama untuk fasilitas
     public function fasilitas()
     {
-        return $this->belongsToMany(OpsiPreferensi::class, 'fasilitas_lowongan', 'id_lowongan', 'id_fasilitas');
+        return $this->semuaPreferensi()->whereHas('kategori', function ($q) {
+            $q->where('kode', 'fasilitas');
+        });
     }
 }
