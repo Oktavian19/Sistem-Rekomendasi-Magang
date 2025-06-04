@@ -102,7 +102,7 @@ class PerusahaanController extends Controller
             ], 422);
         }
 
-        $pathLogo = null;
+        $pathLogo = 'storage/logo_perusahaan/logo-default.jpg';
         if ($request->hasFile('logo')) {
             $pathLogo = 'storage/' . $request->file('logo')->store('logo_perusahaan', 'public');
         }
