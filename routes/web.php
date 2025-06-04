@@ -114,6 +114,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/show-ajax', [PerusahaanController::class, 'show_ajax'])->name('show_ajax');
             Route::post('{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('confirm_ajax');
+            Route::get('export/excel', [PerusahaanController::class, 'export_excel'])->name('perusahaan.export.excel');
+            Route::get('export/pdf', [PerusahaanController::class, 'export_pdf'])->name('perusahaan.export.pdf');
         });
 
         // Program Studi

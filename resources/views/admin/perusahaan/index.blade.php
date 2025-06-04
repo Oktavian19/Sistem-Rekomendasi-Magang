@@ -5,9 +5,20 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Perusahaan</h5>
-        <button class="btn btn-primary" onclick="modalAction('{{ url('perusahaan/create-ajax') }}')">
-            <i class="bx bx-plus"></i> Tambah Perusahaan
-        </button>
+        <div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-export me-1"></i> Export
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url('perusahaan/export/excel') }}" id="export-excel">Excel</a></li>
+                    <li><a class="dropdown-item" href="{{ url('perusahaan/export/pdf') }}" id="export-pdf">PDF</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-primary ms-2" onclick="modalAction('{{ url('perusahaan/create-ajax') }}')">
+                <i class="bx bx-plus"></i> Tambah Perusahaan
+            </button>
+        </div>
     </div>
 
     <div class="row ms-3">
@@ -30,6 +41,7 @@
                         <th>Nama Perusahaan</th>
                         <th>Alamat</th>
                         <th>Jenis Perusahaan</th>
+                        <th>Bidang Industri</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -83,7 +95,7 @@
                         
                         content += '<div>' +
                                   '<div class="fw-semibold">' + data + '</div>' +
-                                  '<small class="text-muted">Kode: ' + (row.bidang_industri || '-') + '</small>' +
+                                  '<small class="text-muted">Kode: ' + (row.kode_perusahaan || '-') + '</small>' +
                                   '</div>' +
                                   '</div>';
                         
@@ -92,11 +104,26 @@
                 },
                 { data: 'alamat', name: 'alamat' },
                 { data: 'jenis_perusahaan', name: 'jenis_perusahaan' },
+                { data: 'bidang_industri', name: 'bidang_industri' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
         });
+        
         $('#filter-bidang-industri').on('change', function () {
             dataPerusahaan.draw();
+        });
+
+        // Handle export dengan filter
+        $('#export-excel, #export-pdf').on('click', function(e) {
+            e.preventDefault();
+            let url = $(this).attr('href');
+            let bidangIndustri = $('#filter-bidang-industri').val();
+            
+            if (bidangIndustri) {
+                url += '?bidang_industri=' + bidangIndustri;
+            }
+            
+            window.location.href = url;
         });
     });
 
