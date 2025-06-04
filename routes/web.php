@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
             Route::get('export/pdf', [LamaranController::class, 'exportPdf'])->name('export.pdf');
         });
 
-        // Lamaran
+        // Kelola Magang
         Route::prefix('kelola-magang')->name('kelola-magang.')->group(function () {
             Route::get('/', [KelolaMagangController::class, 'index'])->name('index');
             Route::get('list', [KelolaMagangController::class, 'list'])->name('list');
