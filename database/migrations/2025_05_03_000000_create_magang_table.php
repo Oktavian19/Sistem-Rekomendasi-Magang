@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_magang');
             
             $table->unsignedBigInteger('id_lamaran');
-            $table->unsignedBigInteger('id_dosen_pembimbing');
+            $table->unsignedBigInteger('id_dosen_pembimbing')->nullable();
             $table->unsignedBigInteger('id_periode');
 
             $table->enum('status_magang', ['aktif', 'selesai', 'batal']);

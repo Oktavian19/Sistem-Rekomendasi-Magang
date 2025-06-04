@@ -23,7 +23,7 @@ class LowonganMagangController extends Controller
 
     public function list(Request $request)
     {
-        $query = Lowongan::with(['perusahaan', 'bidangKeahlian', 'jenisPelaksanaan', 'durasiMagang'])->select('lowongan.*');
+        $query = Lowongan::with(['perusahaan', 'jenisPelaksanaan', 'durasiMagang'])->select('lowongan.*');
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
@@ -43,9 +43,6 @@ class LowonganMagangController extends Controller
             ->addIndexColumn()
             ->addColumn('nama_perusahaan', function ($row) {
                 return $row->perusahaan->nama_perusahaan ?? '-';
-            })
-            ->addColumn('kategori_keahlian', function ($row) {
-                return $row->bidangKeahlian->label ?? '-';
             })
             ->addColumn('jenis_pelaksanaan', function ($row) {
                 return $row->jenisPelaksanaan->label ?? '-';
@@ -88,17 +85,30 @@ class LowonganMagangController extends Controller
     public function create_ajax()
     {
         $perusahaans = PerusahaanMitra::all();
-        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'bidang_keahlian');
-            })->get();
-        $jenisPelaksanaans = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'jenis_pelaksanaan');
-            })->get();
-        $durasiMagang = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'durasi_magang');
-            })->get();
 
-        return view('admin.lowongan.create_ajax', compact( 'perusahaans', 'bidangKeahlians', 'jenisPelaksanaans','durasiMagang'));
+        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'bidang_keahlian');
+        })->get();
+
+        $jenisPelaksanaans = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'jenis_pelaksanaan');
+        })->get();
+
+        $durasiMagangs = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'durasi_magang');
+        })->get();
+
+        $fasilitas = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'fasilitas');
+        })->get();
+
+        return view('admin.lowongan.create_ajax', compact(
+            'perusahaans',
+            'bidangKeahlians',
+            'jenisPelaksanaans',
+            'durasiMagangs',
+            'fasilitas'
+        ));
     }
 
     public function store_ajax(Request $request)
@@ -107,7 +117,10 @@ class LowonganMagangController extends Controller
             'id_perusahaan'         => 'required|exists:perusahaan_mitra,id_perusahaan',
             'nama_posisi'           => 'required|string|max:100',
             'deskripsi'             => 'required|string',
-            'id_bidang_keahlian'    => 'required|exists:opsi_preferensi,id',
+            'id_bidang_keahlian'    => 'required|array|min:1',
+            'id_bidang_keahlian.*'  => 'exists:opsi_preferensi,id',
+            'id_fasilitas'          => 'nullable|array',
+            'id_fasilitas.*'        => 'exists:opsi_preferensi,id',
             'id_jenis_pelaksanaan'  => 'required|exists:opsi_preferensi,id',
             'kuota'                 => 'required|integer|min:1',
             'persyaratan'           => 'required|string',
@@ -126,18 +139,25 @@ class LowonganMagangController extends Controller
             ], 422);
         }
 
-        Lowongan::create($request->only(
-            'id_perusahaan',
-            'nama_posisi',
-            'deskripsi',
-            'id_bidang_keahlian',
-            'id_jenis_pelaksanaan',
-            'kuota',
-            'persyaratan',
-            'tanggal_buka',
-            'tanggal_tutup',
-            'id_durasi_magang',
-        ));
+        $lowongan = Lowongan::create([
+            'id_perusahaan' => $request->id_perusahaan,
+            'nama_posisi' => $request->nama_posisi,
+            'deskripsi' => $request->deskripsi,
+            'id_jenis_pelaksanaan' => $request->id_jenis_pelaksanaan,
+            'id_durasi_magang' => $request->id_durasi_magang,
+            'kuota' => $request->kuota,
+            'persyaratan' => $request->persyaratan,
+            'tanggal_buka' => $request->tanggal_buka,
+            'tanggal_tutup' => $request->tanggal_tutup,
+        ]);
+
+        if ($request->has('id_bidang_keahlian')) {
+            $lowongan->bidangKeahlian()->attach($request->id_bidang_keahlian);
+        }
+
+        if ($request->has('id_fasilitas')) {
+            $lowongan->fasilitas()->attach($request->id_fasilitas);
+        }
 
         return response()->json([
             'status'  => true,
@@ -145,9 +165,16 @@ class LowonganMagangController extends Controller
         ]);
     }
 
+
     public function edit_ajax($id)
     {
-        $lowongan = Lowongan::with('perusahaan', 'bidangKeahlian', 'jenisPelaksanaan', 'durasiMagang')->find($id);
+        $lowongan = Lowongan::with([
+            'perusahaan',
+            'bidangKeahlian',
+            'fasilitas',
+            'jenisPelaksanaan',
+            'durasiMagang'
+        ])->find($id);
 
         if (!$lowongan) {
             return response()->json([
@@ -157,17 +184,31 @@ class LowonganMagangController extends Controller
         }
 
         $perusahaans = PerusahaanMitra::all();
-        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'bidang_keahlian');
-            })->get();
-        $jenisPelaksanaans = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'jenis_pelaksanaan');
-            })->get();
-        $durasiMagangs = OpsiPreferensi::whereHas('kategori', function ($query) {
-                $query->where('kode', 'durasi_magang');
-            })->get();
 
-        return view('admin.lowongan.edit_ajax', compact('lowongan', 'perusahaans', 'bidangKeahlians', 'jenisPelaksanaans', 'durasiMagangs'));
+        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'bidang_keahlian');
+        })->get();
+
+        $jenisPelaksanaans = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'jenis_pelaksanaan');
+        })->get();
+
+        $durasiMagangs = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'durasi_magang');
+        })->get();
+
+        $fasilitas = OpsiPreferensi::whereHas('kategori', function ($query) {
+            $query->where('kode', 'fasilitas');
+        })->get();
+
+        return view('admin.lowongan.edit_ajax', compact(
+            'lowongan',
+            'perusahaans',
+            'bidangKeahlians',
+            'jenisPelaksanaans',
+            'durasiMagangs',
+            'fasilitas'
+        ));
     }
 
     public function update_ajax(Request $request, $id)
@@ -176,7 +217,10 @@ class LowonganMagangController extends Controller
             'id_perusahaan'         => 'required|exists:perusahaan_mitra,id_perusahaan',
             'nama_posisi'           => 'required|string|max:100',
             'deskripsi'             => 'required|string',
-            'id_bidang_keahlian'    => 'required|exists:opsi_preferensi,id',
+            'id_bidang_keahlian'    => 'required|array|min:1',
+            'id_bidang_keahlian.*'  => 'exists:opsi_preferensi,id',
+            'id_fasilitas'          => 'nullable|array',
+            'id_fasilitas.*'        => 'exists:opsi_preferensi,id',
             'id_jenis_pelaksanaan'  => 'required|exists:opsi_preferensi,id',
             'kuota'                 => 'required|integer|min:1',
             'persyaratan'           => 'required|string',
@@ -203,18 +247,24 @@ class LowonganMagangController extends Controller
                 'message' => 'Data tidak ditemukan',
             ], 404);
         }
-        $lowongan->update($request->only([
-            'id_perusahaan',
-            'nama_posisi',
-            'deskripsi',
-            'id_bidang_keahlian',
-            'id_jenis_pelaksanaan',
-            'kuota',
-            'persyaratan',
-            'tanggal_buka',
-            'tanggal_tutup',
-            'id_durasi_magang',
-        ]));
+
+        // Update data utama
+        $lowongan->update([
+            'id_perusahaan'        => $request->id_perusahaan,
+            'nama_posisi'          => $request->nama_posisi,
+            'deskripsi'            => $request->deskripsi,
+            'id_jenis_pelaksanaan' => $request->id_jenis_pelaksanaan,
+            'kuota'                => $request->kuota,
+            'persyaratan'          => $request->persyaratan,
+            'tanggal_buka'         => $request->tanggal_buka,
+            'tanggal_tutup'        => $request->tanggal_tutup,
+            'id_durasi_magang'     => $request->id_durasi_magang,
+        ]);
+
+        $bidangIDs = array_map('intval', $request->id_bidang_keahlian ?? []);
+        $fasilitasIDs = array_map('intval', $request->id_fasilitas ?? []);
+
+        $lowongan->semuaPreferensi()->sync(array_merge($bidangIDs, $fasilitasIDs));
 
         return response()->json([
             'status'  => true,
@@ -222,9 +272,16 @@ class LowonganMagangController extends Controller
         ]);
     }
 
+
     public function show_ajax($id)
     {
-        $lowongan = Lowongan::with('perusahaan', 'bidangKeahlian', 'jenisPelaksanaan', 'durasiMagang')->find($id);
+        $lowongan = Lowongan::with([
+            'perusahaan',
+            'bidangKeahlian',
+            'fasilitas',
+            'jenisPelaksanaan',
+            'durasiMagang'
+        ])->find($id);
 
         if (!$lowongan) {
             return response()->json([
@@ -235,6 +292,7 @@ class LowonganMagangController extends Controller
 
         return view('admin.lowongan.show_ajax', compact('lowongan'));
     }
+
 
     public function confirm_ajax($id)
     {

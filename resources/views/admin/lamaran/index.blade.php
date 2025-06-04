@@ -1,51 +1,99 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card-stats">
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <h6 class="text-muted">Total Pelamar</h6>
-                <h3 class="fs-4 fw-bold">{{ $statistik['total'] }}</h3>                
+<div class="row border rounded bg-white mb-2" style="padding: 2vh; margin-left: 0px; margin-right: 0px">
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $statistik['total'] }}</h5>
+                <p class="mb-0">Total Pelamar</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-secondary text-heading">
+                    <i class="bx bx-group bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <h6 class="text-muted">Diterima</h6>
-                <h3 class="fs-4 fw-bold text-success">{{ $statistik['diterima'] }}</h3>
+        <hr class="d-none d-sm-block d-lg-none me-4">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $statistik['diterima'] }}</h5>
+                <p class="mb-0">Diterima</p>
+            </div>
+            <div class="avatar me-lg-4">
+                <span class="avatar-initial rounded bg-label-success text-heading">
+                    <i class="bx bx-check-circle bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <h6 class="text-muted">Menunggu</h6>
-                <h3 class="fs-4 fw-bold text-warning">{{ $statistik['menunggu'] }}</h3>
+        <hr class="d-none d-sm-block d-lg-none">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $statistik['menunggu'] }}</h5>
+                <p class="mb-0">Menunggu</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-warning text-heading">
+                    <i class="bx bx-time-five bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <h6 class="text-muted">Ditolak</h6>
-                <h3 class="fs-4 fw-bold text-danger">{{ $statistik['ditolak'] }}</h3>
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">{{ $statistik['ditolak'] }}</h5>
+                <p class="mb-0">Ditolak</p>
+            </div>
+            <div class="avatar">
+                <span class="avatar-initial rounded bg-label-danger text-heading">
+                    <i class="bx bx-x-circle bx-md"></i>
+                </span>
             </div>
         </div>
     </div>
 </div>
-<div class="row mb-3">
-    <div class="col-md-3">
-        <form action="{{ route('admin.lamaran.index') }}" method="GET">
-            <div class="input-group">
-                <select name="status" class="form-select" onchange="this.form.submit()">
-                    <option value="">-- Semua Status --</option>
-                    <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                    <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                </select>
-            </div>
-        </form>
-    </div>
-</div>
+
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0">Daftar Lamaran Magang</h5>
+        </div>
+
+        <div class="row ms-3">
+            <div class="col-md-3 mb-3">
+                <form action="{{ route('admin.lamaran.index') }}" method="GET">
+                    <div class="input-group">
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Status</option>
+                            <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                            <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4 mb-3">
+                <form action="{{ route('admin.lamaran.index') }}" method="GET">
+                    <div class="input-group">
+                        <select name="prodi" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Program Studi</option>
+                            @foreach($prodiList as $prodi)
+                                <option value="{{ $prodi->id_program_studi }}" 
+                                    {{ request('prodi') == $prodi->id_program_studi ? 'selected' : '' }}>
+                                    {{ $prodi->nama_program_studi }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @if(request('status'))
+                        <input type="hidden" name="status" value="{{ request('status') }}">
+                    @endif
+                </form>
+            </div>
         </div>
 
         <div class="card-body">
