@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
             Route::post('{id}/update-ajax', [KelolaPenggunaController::class, 'update_ajax'])->name('update_ajax');
             Route::get('{id}/show-ajax', [KelolaPenggunaController::class, 'show_ajax'])->name('show_ajax');
             Route::get('{id}/confirm-ajax', [KelolaPenggunaController::class, 'confirm_ajax'])->name('confirm_ajax');
-            Route::delete('{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::post('{id}/delete-ajax', [KelolaPenggunaController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
             Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
             Route::post('toggle-status/{id}', [KelolaPenggunaController::class, 'toggleStatus']);
