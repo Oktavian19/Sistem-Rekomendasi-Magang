@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
             Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
             Route::post('toggle-status/{id}', [KelolaPenggunaController::class, 'toggleStatus']);
+            Route::get('export/excel', [KelolaPenggunaController::class, 'export_excel'])->name('user.export.excel');
+            Route::get('export/pdf', [KelolaPenggunaController::class, 'export_pdf'])->name('user.export.pdf');
         });
 
         // Lamaran

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Mail\UserActivated;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use PDF;
 
 
 class KelolaPenggunaController extends Controller
@@ -465,5 +468,66 @@ class KelolaPenggunaController extends Controller
             'status' => true,
             'message' => 'Status akun berhasil diubah menjadi ' . $user->status
         ]);
+    }
+
+    public function export_excel(Request $request)
+    {
+        $role = $request->query('role');
+        
+        $fileName = 'data_pengguna_' . date('Ymd_His') . '.xlsx';
+        
+        return Excel::download(new UsersExport($role), $fileName);
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $role = $request->query('role');
+        
+        $query = Users::query()->with(['mahasiswa', 'admin', 'dosenPembimbing']);
+        
+        if ($role) {
+            $query->where('role', $role);
+        }
+        
+        $data = $query->get()->map(function($user) {
+            return [
+                'username' => $user->username,
+                'nama' => $this->getNamaUser($user),
+                'role' => $this->formatRole($user->role),
+                'status' => $user->status ? 'Aktif' : 'Nonaktif'
+            ];
+        });
+        
+        $pdf = PDF::loadView('exports.users-pdf', [
+            'data' => $data,
+            'filter' => $role ? 'Role: ' . $this->formatRole($role) : 'Semua Data'
+        ]);
+        
+        return $pdf->download('data_pengguna_' . date('Ymd_His') . '.pdf');
+    }
+
+    private function getNamaUser($user)
+    {
+        switch ($user->role) {
+            case 'mahasiswa':
+                return $user->mahasiswa->nama ?? '-';
+            case 'admin':
+                return $user->admin->nama ?? '-';
+            case 'dosen_pembimbing':
+                return $user->dosenPembimbing->nama ?? '-';
+            default:
+                return '-';
+        }
+    }
+
+    private function formatRole($role)
+    {
+        $roles = [
+            'admin' => 'Admin',
+            'dosen_pembimbing' => 'Dosen Pembimbing',
+            'mahasiswa' => 'Mahasiswa'
+        ];
+        
+        return $roles[$role] ?? $role;
     }
 }

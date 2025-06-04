@@ -62,9 +62,20 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Data Pengguna</h5>
-        <button class="btn btn-primary" onclick="modalAction('{{ url('user/create-ajax') }}')">
-            <i class="bx bx-plus"></i> Tambah Pengguna
-        </button>
+        <div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-export me-1"></i> Export
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url('user/export/excel') }}" id="export-excel">Excel</a></li>
+                    <li><a class="dropdown-item" href="{{ url('user/export/pdf') }}" id="export-pdf">PDF</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-primary ms-2" onclick="modalAction('{{ url('user/create-ajax') }}')">
+                <i class="bx bx-plus"></i> Tambah Pengguna
+            </button>
+        </div>
     </div>
 
     <div class="row ms-3">
