@@ -66,13 +66,13 @@
               </a>
             </li>
           </ul>
-          <ul class="menu-sub">
+          {{-- <ul class="menu-sub">
             <li class="menu-item {{ request()->is('input-jenis-perusahaan*') ? 'active' : '' }}">
               <a href="{{ url('input-jenis-perusahaan') }}" class="menu-link">
                 <div class="text-truncate" data-i18n="Jenis Perusahaan">Input Jenis Perusahaan</div>
               </a>
             </li>
-          </ul>
+          </ul> --}}
         </li>
         {{-- <li class="menu-item {{ request()->is('lowongan*') ? 'active' : '' }}">
           <a href="{{ url('lowongan') }}" class="menu-link">
