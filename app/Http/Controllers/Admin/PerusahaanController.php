@@ -22,10 +22,14 @@ class PerusahaanController extends Controller
 
     public function list(Request $request)
     {
-        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'email', 'telepon', 'alamat', 'path_logo');
+        $query = PerusahaanMitra::select('id_perusahaan', 'nama_perusahaan', 'bidang_industri', 'id_jenis_perusahaan', 'email', 'telepon', 'alamat', 'path_logo');
 
         if ($request->has('id_perusahaan')) {
             $query->where('id_perusahaan', $request->id_perusahaan);
+        }
+
+        if ($request->has('id_jenis_perusahaan')) {
+            $query->where('id_jenis_perusahaan', $request->id_jenis_perusahaan);
         }
 
         if ($request->filled('bidang_industri')) {

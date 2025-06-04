@@ -35,17 +35,6 @@
                     <small id="error-edit_nama_posisi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label>Jenis Magang</label>
-                    <select name="jenis_magang" id="jenis_magang" class="form-control" required>
-                        @foreach ($jenis_magangs as $jenis_magang)
-                            <option value="{{ $jenis_magang }}" {{ $jenis_magang == $lowongan->jenis_magang ? 'selected' : '' }}>
-                                {{ ucfirst($jenis_magang) }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <small id="error-jenis_magang" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group mb-3">
                     <label for="edit_deskripsi">Deskripsi</label>
                     <textarea name="deskripsi" id="edit_deskripsi" 
                             class="form-control" required>{{ $lowongan->deskripsi }}</textarea>
@@ -148,9 +137,6 @@ $(document).ready(function () {
                 minlength: 3,
                 maxlength: 100
             },
-            jenis_magang: {
-                required: true
-            },
             deskripsi: {
                 required: true,
                 maxlength: 1000
@@ -191,9 +177,6 @@ $(document).ready(function () {
                 required: "Nama posisi wajib diisi.",
                 minlength: "Minimal 3 karakter.",
                 maxlength: "Maksimal 100 karakter."
-            },
-            jenis_magang: {
-                required: "Silahkan pilih jenis magang."
             },
             deskripsi: {
                 required: "Deskripsi wajib diisi.",
