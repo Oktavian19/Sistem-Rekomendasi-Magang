@@ -137,15 +137,19 @@ class RekomendasiService
 
     protected function getSkorBidangKeahlian(array $preferensi, Lowongan $lowongan): int
     {
-        $kode = $lowongan->bidangKeahlian->kode ?? '';
+        $skor = 1;
 
+        // Ambil semua kode bidang keahlian dari lowongan
+        $kodeBidangLowongan = $lowongan->bidangKeahlian->pluck('kode')->toArray();
+
+        // Loop preferensi pengguna
         foreach ($preferensi['bidang_keahlian'] ?? [] as $pref) {
-            if ($pref['kode'] === $kode) {
-                return $pref['poin'];
+            if (in_array($pref['kode'], $kodeBidangLowongan)) {
+                $skor += $pref['poin'] ?? 0;
             }
         }
 
-        return 1;
+        return $skor;
     }
 
     protected function getSkorFasilitas(array $preferensi, Lowongan $lowongan): int

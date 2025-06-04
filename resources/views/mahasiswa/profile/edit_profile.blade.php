@@ -117,33 +117,6 @@
                         @enderror
                     </div>
 
-                    {{-- <div class="col-lg-6 mb-4">
-                        <div class="form-group">
-                            <label class="required form-label">Preferensi Jenis Perusahaan</label>
-                            <select class="form-select form-select-sm" name="jenis_perusahaan[]" data-control="select2"
-                                data-allow-clear="true" data-placeholder="Pilih Jenis Perusahaan" multiple="multiple">
-                                @foreach ($jenisPerusahaan as $JP)
-                                    <option value="{{ $JP->id }}" @selected(in_array($JP->id, old('jenis_perusahaan', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
-                                        {{ $JP->label }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 mb-4">
-                        <label class="required form-label">Preferensi Lokasi Magang</label>
-                        <select class="form-select form-select-sm" name="jarak[]" data-control="select2"
-                            data-allow-clear="true" data-placeholder="Pilih Jarak" multiple="multiple">
-                            @foreach ($jarak as $j)
-                                <option value="{{ $j->id }}" @selected(in_array($j->id, old('jarak', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? [])))>
-                                    {{ $j->label }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div> --}}
-
-                    {{-- ===== Jenis Perusahaan (Tambah, Hapus, Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Jenis Perusahaan</label>
                         <select id="select-jenis-perusahaan" class="form-select form-select-sm" data-control="select2"
@@ -199,24 +172,6 @@
                             @endforeach
                         </ul>
                     </div>
-
-                    {{-- <div class="col-lg-6 mb-4">
-                        <div class="form-group">
-                            <label class="required form-label">Preferensi Jenis Magang</label>
-                            <select name="preferensi_magang" class="form-control form-control-sm" required>
-                                <option value="WFO"
-                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFO' ? 'selected' : '' }}>
-                                    WFO</option>
-                                <option value="WFH"
-                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'WFH' ? 'selected' : '' }}>
-                                    WFH</option>
-                                <option value="Hybrid"
-                                    {{ old('preferensi_magang', $mahasiswa->preferensi_magang ?? '') == 'Hybrid' ? 'selected' : '' }}>
-                                    Hybrid</option>
-                            </select>
-                        </div>
-                    </div> --}}
-
 
                     <!-- Submit Buttons -->
                     <div class="col-lg-12 mt-4 text-end">
