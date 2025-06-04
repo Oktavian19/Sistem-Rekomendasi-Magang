@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/{detail}', [LamaranController::class, 'show'])->name('show');
             Route::put('{id}/status', [LamaranController::class, 'updateStatus'])->name('update-status');
             Route::delete('{id}', [LamaranController::class, 'destroy'])->name('destroy');
+            Route::get('export/excel', [LamaranController::class, 'exportExcel'])->name('export.excel');
+            Route::get('export/pdf', [LamaranController::class, 'exportPdf'])->name('export.pdf');
         });
 
         // Lowongan Magang
