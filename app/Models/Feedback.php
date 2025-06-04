@@ -17,7 +17,6 @@ class Feedback extends Model
         'id_magang',
         'id_log',
         'komentar',
-        'rating',
         'tanggal_feedback',
     ];
 

@@ -118,6 +118,28 @@
                                                     <i class="bi bi-chat-left-text"></i> Beri Feedback
                                                 </button>
                                             </div>
+
+                                             <!-- Feedback Section -->
+                                            @if($log->feedback->count() > 0)
+                                                <div class="mt-3 pt-3 border-top">
+                                                    <h6 class="fw-semibold">Feedback Dosen:</h6>
+                                                    @foreach($log->feedback as $feedback)
+                                                        <div class="card mb-2 bg-primary text-white">
+                                                            <div class="card-body p-3">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <span class="fw-semibold">
+                                                                        {{ $feedback->user->dosenPembimbing->nama ?? 'Dosen' }}
+                                                                    </span>
+                                                                </div>
+                                                                <p class="mb-0">{{ $feedback->komentar }}</p>
+                                                                <small class="text-muted">
+                                                                    {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->format('d M Y') }}
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

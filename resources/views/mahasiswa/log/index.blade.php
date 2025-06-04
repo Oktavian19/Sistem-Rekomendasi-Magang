@@ -67,7 +67,7 @@
                                                         <div class="card-body p-3">
                                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                                 <span class="fw-semibold">
-                                                                    {{ $feedback->user->nama ?? 'Dosen' }}
+                                                                    {{ $feedback->user->dosenPembimbing->nama ?? 'Dosen' }}
                                                                 </span>
                                                             </div>
                                                             <p class="mb-0">{{ $feedback->komentar }}</p>
