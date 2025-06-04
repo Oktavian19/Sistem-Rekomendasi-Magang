@@ -12,6 +12,10 @@ use App\Models\DosenPembimbing;
 use App\Models\Magang;
 use App\Models\PeriodeMagang;
 use App\Models\ProgramStudi;
+use App\Exports\LamaranExport;
+use App\Exports\LamaranPdfExport;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class LamaranController extends Controller
 {
@@ -136,5 +140,24 @@ class LamaranController extends Controller
         $lamaran->delete();
 
         return redirect()->route('admin.lamaran.index')->with('success', 'Lamaran berhasil dihapus.');
+    }
+
+    public function exportExcel()
+    {
+        $status = request('status');
+        $prodi = request('prodi');
+        
+        return Excel::download(new LamaranExport($status, $prodi), 'lamaran-magang.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $status = request('status');
+        $prodi = request('prodi');
+        
+        $export = new LamaranPdfExport($status, $prodi);
+        $pdf = PDF::loadView('exports.lamaran-pdf', $export->view()->getData());
+        
+        return $pdf->download('lamaran-magang.pdf');
     }
 }
