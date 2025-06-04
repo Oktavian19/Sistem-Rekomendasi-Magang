@@ -128,6 +128,7 @@
                     },
                     telepon: {
                         required: true,
+                        minlength: 10,
                         maxlength: 20,
                         digits: true
                     },
@@ -163,6 +164,7 @@
                     },
                     telepon: {
                         required: "Telepon wajib diisi.",
+                        minlength: "Minimal 10 digit.",
                         maxlength: "Maksimal 20 digit.",
                         digits: "Hanya angka yang diperbolehkan."
                     },
