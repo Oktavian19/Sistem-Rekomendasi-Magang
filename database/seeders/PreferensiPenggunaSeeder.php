@@ -319,7 +319,7 @@ class PreferensiPenggunaSeeder extends Seeder
         // Jenis Perusahaan
         foreach ($nims as $nim) {
             $id = DB::table('users')->where('username', $nim)->value('id_user');
-            $choosedId = generateRandomOptions(2,5,9,13);
+            $choosedId = generateRandomOptions(5,5,9,13);
             $num_options = count($choosedId);
 
             foreach ($choosedId as $index => $id_opsi) {
