@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/reset-password', [KelolaPenggunaController::class, 'resetPasswordForm'])->name('reset_password_form');
             Route::post('{id}/reset-password', [KelolaPenggunaController::class, 'resetPassword'])->name('reset_password');
             Route::post('toggle-status/{id}', [KelolaPenggunaController::class, 'toggleStatus']);
+            Route::get('export/excel', [KelolaPenggunaController::class, 'export_excel'])->name('user.export.excel');
+            Route::get('export/pdf', [KelolaPenggunaController::class, 'export_pdf'])->name('user.export.pdf');
         });
 
         // Lamaran
@@ -114,6 +116,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/show-ajax', [PerusahaanController::class, 'show_ajax'])->name('show_ajax');
             Route::post('{id}/delete-ajax', [PerusahaanController::class, 'delete_ajax'])->name('delete_ajax');
             Route::get('{id}/confirm-ajax', [PerusahaanController::class, 'confirm_ajax'])->name('confirm_ajax');
+            Route::get('export/excel', [PerusahaanController::class, 'export_excel'])->name('perusahaan.export.excel');
+            Route::get('export/pdf', [PerusahaanController::class, 'export_pdf'])->name('perusahaan.export.pdf');
         });
 
         // Program Studi

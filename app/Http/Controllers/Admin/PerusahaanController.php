@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PerusahaanMitra;
-use App\Models\OpsiPreferensi; // Add this for company types
+use App\Models\OpsiPreferensi; 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PerusahaanExport;
+use PDF;
 
 class PerusahaanController extends Controller
 {
@@ -257,5 +260,34 @@ class PerusahaanController extends Controller
             'status'  => true,
             'message' => 'Data berhasil dihapus',
         ]);
+    }
+
+    public function export_excel(Request $request)
+    {
+        $bidangIndustri = $request->query('bidang_industri');
+        
+        $fileName = 'data_perusahaan_' . date('Ymd_His') . '.xlsx';
+        
+        return Excel::download(new PerusahaanExport($bidangIndustri), $fileName);
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $bidangIndustri = $request->query('bidang_industri');
+        
+        $query = PerusahaanMitra::with('jenisPerusahaan');
+        
+        if ($bidangIndustri) {
+            $query->where('bidang_industri', $bidangIndustri);
+        }
+        
+        $data = $query->get();
+        
+        $pdf = PDF::loadView('exports.perusahaan-pdf', [
+            'data' => $data,
+            'filter' => $bidangIndustri ? 'Bidang Industri: ' . $bidangIndustri : 'Semua Data'
+        ]);
+        
+        return $pdf->download('data_perusahaan_' . date('Ymd_His') . '.pdf');
     }
 }
