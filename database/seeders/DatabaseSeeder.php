@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             PengalamanSeeder::class,
             DokumenSeeder::class,
             LowonganSeeder::class,
-            FasilitasLowonganSeeder::class,
+            PreferensiLowonganSeeder::class,
             LamaranSeeder::class,
             MagangSeeder::class,
             LogKegiatanSeeder::class,
