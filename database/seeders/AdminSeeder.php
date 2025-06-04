@@ -20,9 +20,10 @@ class AdminSeeder extends Seeder
         foreach ($admins as $admin) {
             DB::table('users')->insert([
             [
-                'username' => $admin['username'],
-                'password' => Hash::make('admin123'),
-                'role' => 'admin',
+                'username'  => $admin['username'],
+                'password'  => Hash::make('admin123'),
+                'role'      => 'admin',
+                'status'    => 'aktif',
                 'created_at' => now(),
             ]]);
 

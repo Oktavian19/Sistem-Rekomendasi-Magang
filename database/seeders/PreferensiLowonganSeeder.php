@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class FasilitasLowonganSeeder extends Seeder
+class PreferensiLowonganSeeder extends Seeder
 {
     /**
      * Generate random options from a range
@@ -44,7 +44,38 @@ class FasilitasLowonganSeeder extends Seeder
             foreach ($fasilitasIds as $fasilitasId) {
                 DB::table('fasilitas_lowongan')->insert([
                     'id_lowongan' => $lowonganId,
-                    'id_fasilitas' => $fasilitasId,
+                    'id_opsi' => $fasilitasId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+         // Ambil range ID fasilitas (asumsi id_kategori=6 adalah fasilitas)
+        $minBidangKeahlianId = DB::table('opsi_preferensi')
+                          ->where('id_kategori', 5)
+                          ->min('id');
+                          
+        $maxBidangKeahlianId = DB::table('opsi_preferensi')
+                          ->where('id_kategori', 5)
+                          ->max('id');
+
+        // Ambil semua ID lowongan
+        $lowonganIds = DB::table('lowongan')->pluck('id_lowongan')->toArray();
+
+        if (empty($lowonganIds)) {
+            $this->command->info('Tidak ada lowongan yang tersedia. Seeder fasilitas lowongan dilewati.');
+            return;
+        }
+
+        foreach ($lowonganIds as $lowonganId) {
+            // Generate 3-5 fasilitas acak untuk setiap lowongan
+            $bidangKeahlianIds = $this->generateRandomOptions(1, 5, $minBidangKeahlianId, $maxBidangKeahlianId);
+
+            foreach ($bidangKeahlianIds as $bidangKeahlianId) {
+                DB::table('fasilitas_lowongan')->insert([
+                    'id_lowongan' => $lowonganId,
+                    'id_opsi' => $bidangKeahlianId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

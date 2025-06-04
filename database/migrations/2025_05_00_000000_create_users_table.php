@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('username', 50); 
             $table->string('password', 255); 
             $table->enum('role', ['admin', 'mahasiswa', 'dosen_pembimbing']); 
+            $table->enum('status', ['aktif', 'nonaktif']); 
             $table->timestamps(); 
         });
     }
