@@ -31,7 +31,7 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">Nama Pengguna:</th>
-                            <td class="col-9">{{ $user->nama }}</td>
+                            <td class="col-9">{{ $detail->nama }}</td>
                         </tr>
                     </table>
                     <div class="alert alert-info mt-3">

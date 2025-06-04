@@ -15,7 +15,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_magang')->nullable(); 
             $table->unsignedBigInteger('id_log')->nullable();
             $table->text('komentar');
-            $table->tinyInteger('rating')->nullable(); 
             $table->date('tanggal_feedback');
 
             $table->timestamps();
