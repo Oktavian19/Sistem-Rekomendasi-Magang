@@ -80,7 +80,7 @@
             <div>Manajemen Magang</div>
           </a>
         </li> --}}
-        <li class="menu-item {{ request()->is(['periode*', 'lowongan*', 'lamaran*']) ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->is(['periode*', 'lowongan*', 'lamaran*', 'kelola-magang*']) ? 'active open' : '' }}">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-folder-open"></i>
             <div class="text-truncate" data-i18n="ManajemenMagang">Manajemen Magang</div>
@@ -99,6 +99,11 @@
             <li class="menu-item {{ request()->is('lamaran*') ? 'active' : '' }}">
               <a href="{{ url('lamaran') }}" class="menu-link">
                 <div class="text-truncate" data-i18n="Lamaran">Lamaran Magang</div>
+              </a>
+            </li>
+            <li class="menu-item {{ request()->is('kelola-magang*') ? 'active' : '' }}">
+              <a href="{{ url('kelola-magang') }}" class="menu-link">
+                <div class="text-truncate" data-i18n="KelolaMagang">Pelaksanaan Magang</div>
               </a>
             </li>
           </ul>
