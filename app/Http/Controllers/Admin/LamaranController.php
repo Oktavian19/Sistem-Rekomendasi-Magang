@@ -14,8 +14,8 @@ use App\Models\PeriodeMagang;
 use App\Models\ProgramStudi;
 use App\Exports\LamaranExport;
 use App\Exports\LamaranPdfExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
 
 class LamaranController extends Controller
 {

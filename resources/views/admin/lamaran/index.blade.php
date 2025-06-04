@@ -33,8 +33,21 @@
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
             <div>
-                <h5 class="mb-0">{{ $statistik['menunggu'] }}</h5>
-                <p class="mb-0">Menunggu</p>
+                <h5 class="mb-0">{{ $statistik['diprosesAdmin'] }}</h5>
+                <p class="mb-0">Diproses Admin</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-warning text-heading">
+                    <i class="bx bx-time-five bx-md"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $statistik['diprosesPerusahaan'] }}</h5>
+                <p class="mb-0">Diproses Perusahaan</p>
             </div>
             <div class="avatar me-sm-4">
                 <span class="avatar-initial rounded bg-label-warning text-heading">
@@ -69,7 +82,8 @@
                     <div class="input-group">
                         <select name="status" class="form-select" onchange="this.form.submit()">
                             <option value="">Semua Status</option>
-                            <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="diprosesAdmin" {{ request('status') == 'diprosesAdmin' ? 'selected' : '' }}>Diproses Admin</option>
+                            <option value="diprosesPerusahaan" {{ request('status') == 'diprosesPerusahaan' ? 'selected' : '' }}>Diproses Perusahaan</option>
                             <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
                             <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                         </select>
@@ -128,7 +142,6 @@
                             <th>Mahasiswa</th>
                             <th>Lowongan</th>
                             <th>Status</th>
-                            <th>Dosen Pembimbing</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -169,17 +182,6 @@
                                     </a>
                                 </td>
                                 <td>
-                                    @if ($item->status_lamaran == 'diterima')
-                                        @if ($item->magang && $item->magang->dosenPembimbing)
-                                            {{ $item->magang->dosenPembimbing->nama }}
-                                        @else
-                                            <span class="text-muted">(Belum ada dosen)</span>
-                                        @endif
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
-                                </td>
-                                <td>
                                     @if ($item->status_lamaran == 'diprosesAdmin')
                                         {{-- Tombol Kirim ke Perusahaan --}}
                                         <form action="{{ url('lamaran/' . $item->id_lamaran . '/status') }}" method="POST">
@@ -213,11 +215,6 @@
                                             </form>
                                         </div>
                                     @elseif($item->status_lamaran == 'diterima')
-                                        <button class="btn btn-sm btn-primary" 
-                                            onclick="showPlotDosenModal({{ $item->id_lamaran }}, {{ optional($item->magang)->id_dosen_pembimbing }})">
-                                            <i class="bx bx-user-plus"></i> {{ $item->magang && $item->magang->dosenPembimbing ? 'Ubah Dosen' : 'Plot Dosen' }}
-                                        </button>
-                                    @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
@@ -368,11 +365,12 @@
         $('form[action*="/status"]').on('submit', function(e) {
             e.preventDefault();
             const form = $(this);
-            const actionText = form.find('input[name="status_lamaran"]').val() === 'diterima' ? 'menyetujui' : 'menolak';
+            const actionText = form.find('input[name="status_lamaran"]').val();
+            console.log(actionText);
 
             Swal.fire({
                 title: 'Konfirmasi',
-                text: `Anda yakin ingin ${actionText} lamaran ini?`,
+                text: `Anda yakin ingin memproses lamaran ini?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
