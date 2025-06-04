@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
             Route::get('{id}/show-ajax', [LowonganMagangController::class, 'show_ajax'])->name('show_ajax');
             Route::get('{id}/confirm-ajax', [LowonganMagangController::class, 'confirm_ajax'])->name('confirm_ajax');
             Route::delete('{id}/delete-ajax', [LowonganMagangController::class, 'delete_ajax'])->name('delete_ajax');
+            Route::get('export/excel', [LowonganMagangController::class, 'exportExcel'])->name('lowongan.export.excel');
+            Route::get('export/pdf', [LowonganMagangController::class, 'exportPdf'])->name('lowongan.export.pdf');
         });
 
         // Magang

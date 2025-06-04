@@ -1,50 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card-stats">
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card bg-white text-dark">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Jumlah Lowongan</h5>
-                        <p class="card-text fs-4">{{ $totalLowongan }}</p>
-                    </div>
-                </div>
+<div class="row border rounded bg-white mb-2" style="padding: 2vh; margin-left: 0px; margin-right: 0px">
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalLowongan }}</h5>
+                <p class="mb-0">Jumlah Lowongan</p>
             </div>
-            <div class="col-md-6">
-                <div class="card bg-white text-dark">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Total Kuota</h5>
-                        <p class="card-text fs-4">{{ $totalKuota }}</p>
-                    </div>
-                </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-primary text-heading">
+                    <i class="bx bx-briefcase-alt bx-md"></i>
+                </span>
+            </div>
+        </div>
+        <hr class="d-none d-sm-block d-lg-none me-4">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalLowonganWFO }}</h5>
+                <p class="mb-0">Lowongan WFO</p>
+            </div>
+            <div class="avatar me-lg-4">
+                <span class="avatar-initial rounded bg-label-info text-heading">
+                    <i class="bx bx-building-house bx-md"></i>
+                </span>
+            </div>
+        </div>
+        <hr class="d-none d-sm-block d-lg-none">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalLowonganWFH }}</h5>
+                <p class="mb-0">Lowongan WFH</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-success text-heading">
+                    <i class="bx bx-home-alt bx-md"></i>
+                </span>
             </div>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <select id="filter-nama-posisi" class="form-select">
-                <option value="">-- Semua Posisi --</option>
-                @foreach (\App\Models\Lowongan::select('nama_posisi')->distinct()->get() as $item)
-                    <option value="{{ $item->nama_posisi }}">{{ $item->nama_posisi }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select id="filter-jenis-pelaksanaan" class="form-select">
-                <option value="">-- Semua Jenis Pelaksanaan --</option>
-                @foreach (\App\Models\OpsiPreferensi::where('id_kategori', '3')->get() as $item)
-                    <option value="{{ $item->label }}">{{ $item->label }}</option>
-                @endforeach
-            </select>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">{{ $totalLowonganHybrid }}</h5>
+                <p class="mb-0">Lowongan Hybrid</p>
+            </div>
+            <div class="avatar">
+                <span class="avatar-initial rounded bg-label-warning text-heading">
+                    <i class="bx bx-transfer-alt bx-md"></i>
+                </span>
+            </div>
         </div>
     </div>
+</div>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Data Lowongan</h5>
-            <button class="btn btn-primary" onclick="modalAction('{{ url('lowongan/create-ajax') }}')">
-                <i class="bx bx-plus"></i> Tambah Lowongan
-            </button>
+            <div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bx bx-export me-1"></i> Export
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url('lowongan/export/excel') }}" id="export-excel">Excel</a></li>
+                        <li><a class="dropdown-item" href="{{ url('lowongan/export/pdf') }}" id="export-pdf">PDF</a></li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary ms-2" onclick="modalAction('{{ url('lowongan/create-ajax') }}')">
+                    <i class="bx bx-plus"></i> Tambah Lowongan
+                </button>
+            </div>
+        </div>
+
+        <div class="row ms-3">
+            <div class="col-md-4">
+                <select id="filter-nama-posisi" class="form-select">
+                    <option value="">Semua Posisi </option>
+                    @foreach (\App\Models\Lowongan::select('nama_posisi')->distinct()->get() as $item)
+                        <option value="{{ $item->nama_posisi }}">{{ $item->nama_posisi }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select id="filter-jenis-pelaksanaan" class="form-select">
+                    <option value="">Semua Jenis Pelaksanaan </option>
+                    @foreach (\App\Models\OpsiPreferensi::where('id_kategori', '3')->get() as $item)
+                        <option value="{{ $item->label }}">{{ $item->label }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
         <div class="card-body">
@@ -183,6 +231,27 @@
                     });
                 }
             });
+        });
+
+        $('#export-excel, #export-pdf').on('click', function(e) {
+            e.preventDefault();
+            let url = $(this).attr('href');
+            let nama_posisi = $('#filter-nama-posisi').val();
+            let jenis_pelaksanaan = $('#filter-jenis-pelaksanaan').val();
+            
+            let params = [];
+            if (nama_posisi) {
+                params.push('nama_posisi=' + nama_posisi);
+            }
+            if (jenis_pelaksanaan) {
+                params.push('jenis_pelaksanaan=' + jenis_pelaksanaan);
+            }
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            window.location.href = url;
         });
     </script>
 @endpush

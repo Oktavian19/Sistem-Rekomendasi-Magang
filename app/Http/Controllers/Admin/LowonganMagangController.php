@@ -9,6 +9,9 @@ use App\Models\PerusahaanMitra;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LowonganExport;
+use PDF;
 
 class LowonganMagangController extends Controller
 {
@@ -17,8 +20,10 @@ class LowonganMagangController extends Controller
         $lowongan = Lowongan::with('perusahaan')->get();
         $perusahaan = PerusahaanMitra::all();
         $totalLowongan = $lowongan->count();
-        $totalKuota = $lowongan->sum('kuota');
-        return view('admin.lowongan.index', compact('lowongan', 'perusahaan', 'totalLowongan', 'totalKuota'));
+        $totalLowonganWFO = $lowongan->where('id_jenis_pelaksanaan', 6)->count();
+        $totalLowonganWFH = $lowongan->where('id_jenis_pelaksanaan', 7)->count();
+        $totalLowonganHybrid = $lowongan->where('id_jenis_pelaksanaan', 8)->count();
+        return view('admin.lowongan.index', compact('lowongan', 'perusahaan', 'totalLowongan', 'totalLowonganWFO', 'totalLowonganWFH', 'totalLowonganHybrid'));
     }
 
     public function list(Request $request)
@@ -325,5 +330,43 @@ class LowonganMagangController extends Controller
             'status'  => true,
             'message' => 'Data berhasil dihapus',
         ]);
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $nama_posisi = $request->query('nama_posisi');
+        $jenis_pelaksanaan = $request->query('jenis_pelaksanaan');
+        
+        $fileName = 'data_lowongan_' . date('Ymd_His') . '.xlsx';
+        
+        return Excel::download(new LowonganExport($nama_posisi, $jenis_pelaksanaan), $fileName);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $nama_posisi = $request->query('nama_posisi');
+        $jenis_pelaksanaan = $request->query('jenis_pelaksanaan');
+        
+        $query = Lowongan::with(['perusahaan', 'jenisPelaksanaan', 'durasiMagang']);
+        
+        if ($nama_posisi) {
+            $query->where('nama_posisi', $nama_posisi);
+        }
+        
+        if ($jenis_pelaksanaan) {
+            $query->whereHas('jenisPelaksanaan', function($q) use ($jenis_pelaksanaan) {
+                $q->where('label', $jenis_pelaksanaan);
+            });
+        }
+        
+        $data = $query->get();
+        
+        $pdf = PDF::loadView('exports.lowongan-pdf', [
+            'data' => $data,
+            'filter_posisi' => $nama_posisi ? 'Posisi: ' . $nama_posisi : 'Semua Posisi',
+            'filter_pelaksanaan' => $jenis_pelaksanaan ? 'Jenis: ' . $jenis_pelaksanaan : 'Semua Jenis'
+        ]);
+        
+        return $pdf->download('data_lowongan_' . date('Ymd_His') . '.pdf');
     }
 }
