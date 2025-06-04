@@ -10,34 +10,43 @@ use App\Models\Lowongan;
 use App\Models\DosenPembimbing;
 use App\Models\Magang;
 use App\Models\PeriodeMagang;
+use App\Models\ProgramStudi;
 
 class LamaranController extends Controller
 {
     public function index(Request $request)
     {
-        // Tampilkan semua lamaran, lengkap dengan relasi mahasiswa dan lowongan
-        $lamaran = Lamaran::with(['mahasiswa.user', 'lowongan', 'magang.dosenPembimbing'])->latest()->get();
+        $prodiList = ProgramStudi::orderBy('nama_program_studi')->get();
 
-        // Ambil data dosen untuk dropdown
         $dosenList = DosenPembimbing::orderBy('nama')->get();
 
-        // Filter setiap status lamaran
-        $query = Lamaran::with(['mahasiswa.user', 'lowongan', 'magang.dosenPembimbing'])->latest();
+        $query = Lamaran::with([
+            'mahasiswa.user', 
+            'mahasiswa.programStudi', 
+            'lowongan', 
+            'magang.dosenPembimbing'
+        ])->latest();
+
         if ($request->has('status') && in_array($request->status, ['diterima', 'menunggu', 'ditolak'])) {
             $query->where('status_lamaran', $request->status);
         }
 
+        if ($request->has('prodi') && $request->prodi != '') {
+            $query->whereHas('mahasiswa', function($q) use ($request) {
+                $q->where('id_program_studi', $request->prodi);
+            });
+        }
+
         $lamaran = $query->get();
 
-        // Tambahkan statistik lamaran
         $statistik = [
-            'total'     => Lamaran::count(),
-            'diterima'  => Lamaran::where('status_lamaran', 'diterima')->count(),
-            'menunggu'  => Lamaran::where('status_lamaran', 'menunggu')->count(),
-            'ditolak'   => Lamaran::where('status_lamaran', 'ditolak')->count(),
+            'total'     => $query->count(),
+            'diterima'  => $query->where('status_lamaran', 'diterima')->count(),
+            'menunggu'  => $query->where('status_lamaran', 'menunggu')->count(),
+            'ditolak'   => $query->where('status_lamaran', 'ditolak')->count(),
         ];
 
-        return view('admin.lamaran.index', compact('lamaran', 'dosenList', 'statistik'));
+        return view('admin.lamaran.index', compact('lamaran', 'dosenList', 'statistik', 'prodiList'));
     }
 
     public function show($id, $detail)
