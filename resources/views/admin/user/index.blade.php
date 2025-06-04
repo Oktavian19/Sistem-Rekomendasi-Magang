@@ -1,44 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card-stats">
-    <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <div class="fs-4 fw-bold">{{ $totalUser }}</div>
-                <div class="text-muted">Total Pengguna</div>
+<div class="row border rounded bg-white mb-2" style="padding: 2vh; margin-left: 0px; margin-right: 0px">
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalUser }}</h5>
+                <p class="mb-0">Total Pengguna</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-secondary text-heading">
+                    <i class="bx bx-user bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <div class="fs-4 fw-bold">{{ $totalAdmin }}</div>
-                <div class="text-muted">Jumlah Admin</div>
+        <hr class="d-none d-sm-block d-lg-none me-4">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalAdmin }}</h5>
+                <p class="mb-0">Jumlah Admin</p>
+            </div>
+            <div class="avatar me-lg-4">
+                <span class="avatar-initial rounded bg-label-warning text-heading">
+                    <i class="bx bx-user bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <div class="fs-4 fw-bold">{{ $totalDosen }}</div>
-                <div class="text-muted">Jumlah Dosen</div>
+        <hr class="d-none d-sm-block d-lg-none">
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+            <div>
+                <h5 class="mb-0">{{ $totalDosen }}</h5>
+                <p class="mb-0">Jumlah Dosen</p>
+            </div>
+            <div class="avatar me-sm-4">
+                <span class="avatar-initial rounded bg-label-success text-heading">
+                    <i class="bx bx-user bx-md"></i>
+                </span>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm p-3 text-center">
-                <div class="fs-4 fw-bold">{{ $totalMahasiswa }}</div>
-                <div class="text-muted">Jumlah Mahasiswa</div>
+    </div>
+    <div class="col-sm-6 col-lg-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">{{ $totalMahasiswa }}</h5>
+                <p class="mb-0">Jumlah Mahasiswa</p>
+            </div>
+            <div class="avatar">
+                <span class="avatar-initial rounded bg-label-info text-heading">
+                    <i class="bx bx-user bx-md"></i>
+                </span>
             </div>
         </div>
-    </div>    
-</div>
-<div class="row mb-3">
-    <div class="col-md-3">
-        <select id="filter-role" class="form-select">
-            <option value="">Semua User</option>
-            <option value="admin">Admin</option>
-            <option value="dosen_pembimbing">Dosen Pembimbing</option>
-            <option value="mahasiswa">Mahasiswa</option>
-        </select>
     </div>
 </div>
+
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -46,6 +65,17 @@
         <button class="btn btn-primary" onclick="modalAction('{{ url('user/create-ajax') }}')">
             <i class="bx bx-plus"></i> Tambah Pengguna
         </button>
+    </div>
+
+    <div class="row ms-3">
+        <div class="col-md-3">
+            <select id="filter-role" class="form-select">
+                <option value="">Semua User</option>
+                <option value="admin">Admin</option>
+                <option value="dosen_pembimbing">Dosen Pembimbing</option>
+                <option value="mahasiswa">Mahasiswa</option>
+            </select>
+        </div>
     </div>
 
     <div class="card-body">

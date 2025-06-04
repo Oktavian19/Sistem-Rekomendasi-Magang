@@ -11,44 +11,64 @@
                     <td>{{ $lowongan->perusahaan->nama_perusahaan }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Nama Posisi</th>
+                    <th>Nama Posisi</th>
                     <td>{{ $lowongan->nama_posisi }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Deskripsi</th>
+                    <th>Deskripsi</th>
                     <td>{{ $lowongan->deskripsi }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Kategori Keahlian</th>
-                    <td>{{ $lowongan->bidangKeahlian->label }}</td>
+                    <th>Kategori Keahlian</th>
+                    <td>
+                        @if ($lowongan->bidangKeahlian->isNotEmpty())
+                            <ul class="mb-0 ps-3">
+                                @foreach ($lowongan->bidangKeahlian as $bidang)
+                                    <li>{{ $bidang->label }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <em>Tidak ada</em>
+                        @endif
+                    </td>
                 </tr>
                 <tr>
-                    <th width="30%">Jenis Pelaksanaan</th>
-                    <td>{{ $lowongan->jenisPelaksanaan->label }}</td>
+                    <th>Fasilitas</th>
+                    <td>
+                        @if ($lowongan->fasilitas->isNotEmpty())
+                            <ul class="mb-0 ps-3">
+                                @foreach ($lowongan->fasilitas as $fasilitas)
+                                    <li>{{ $fasilitas->label }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <em>Tidak ada</em>
+                        @endif
+                    </td>
                 </tr>
                 <tr>
-                    <th width="30%">Kuota</th>
+                    <th>Jenis Pelaksanaan</th>
+                    <td>{{ $lowongan->jenisPelaksanaan->label ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Kuota</th>
                     <td>{{ $lowongan->kuota }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Persyaratan</th>
+                    <th>Persyaratan</th>
                     <td>{{ $lowongan->persyaratan }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal Buka</th>
-                    <td>{{ \Carbon\Carbon::parse($lowongan->tanggal_buka)->format('d F Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($lowongan->tanggal_buka)->translatedFormat('d F Y') }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal Tutup</th>
-                    <td>{{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->format('d F Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->translatedFormat('d F Y') }}</td>
                 </tr>
                 <tr>
-                    <th width="30%">Durasi Magang</th>
-                    <td>{{ $lowongan->durasiMagang->label }}</td>
-                </tr>
-                <tr>
-                    <th width="30%">Fasilitas</th>
-                    <td>Mess, Uang Saku</td>
+                    <th>Durasi Magang</th>
+                    <td>{{ $lowongan->durasiMagang->label ?? '-' }}</td>
                 </tr>
             </table>
         </div>

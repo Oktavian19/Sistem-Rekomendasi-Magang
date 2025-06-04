@@ -34,6 +34,7 @@ class DosenPembimbingSeeder extends Seeder
                 'username'  => $dsn['nidn'],
                 'password'  => Hash::make($dsn['nidn']),
                 'role'      => 'dosen_pembimbing',
+                'status'    => 'aktif',
                 'created_at' => now()
 
             ]);

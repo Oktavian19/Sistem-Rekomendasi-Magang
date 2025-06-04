@@ -55,11 +55,7 @@
                             <th>No</th>
                             <th>Perusahaan</th>
                             <th>Nama Posisi</th>
-                            <th>Kategori Keahlian</th>
                             <th>Jenis Pelaksanaan</th>
-                            <th>Kuota</th>
-                            <th>Tanggal Buka</th>
-                            <th>Tanggal Tutup</th>
                             <th>Durasi Magang</th>
                             <th>Aksi</th>
                         </tr>
@@ -76,99 +72,117 @@
 @endsection
 
 @push('scripts')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function () {
-            $('#myModal').modal('show');
-        });
-    }
-
-    var dataLowongan;
-    $(document).ready(function () {
-        dataLowongan = $('#table-lowongan').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ url('lowongan/list') }}",
-                data: function (d) {
-                    d.nama_posisi = $('#filter-nama-posisi').val();
-                    d.jenis_pelaksanaan = $('#filter-jenis-pelaksanaan').val();
-                }
-            },
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
-                { data: 'nama_perusahaan', name: 'nama_perusahaan' },
-                { data: 'nama_posisi', name: 'nama_posisi' },
-                { data: 'kategori_keahlian', name: 'kategori_keahlian' },
-                { data: 'jenis_pelaksanaan', name: 'jenis_pelaksanaan' },
-                { data: 'kuota', name: 'kuota', className: 'text-center' },
-                { data: 'tanggal_buka', name: 'tanggal_buka' },
-                { data: 'tanggal_tutup', name: 'tanggal_tutup' },
-                { data: 'durasi_magang', name: 'durasi_magang' },
-                { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
-            ]
-        });
-        $('#filter-nama-posisi').on('change', function () {
-            dataLowongan.draw();
-        });
-
-        $('#filter-jenis-pelaksanaan').on('change', function () {
-            dataLowongan.draw();
-        });
-    });
-
-    $(document).on('submit', 'form', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        let url = form.attr('action');
-        let method = form.attr('method');
-        let data = new FormData(this);
-
-        if ($.fn.validate && form.hasClass('validate')) {
-            if (!form.valid()) return false;
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
         }
 
-        $.ajax({
-            url: url,
-            type: method,
-            data: data,
-            processData: false,
-            contentType: false,
-            success: function(res) {
-                if (res.status) {
+        var dataLowongan;
+        $(document).ready(function() {
+            dataLowongan = $('#table-lowongan').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('lowongan/list') }}",
+                    data: function(d) {
+                        d.nama_posisi = $('#filter-nama-posisi').val();
+                        d.jenis_pelaksanaan = $('#filter-jenis-pelaksanaan').val();
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nama_perusahaan',
+                        name: 'nama_perusahaan'
+                    },
+                    {
+                        data: 'nama_posisi',
+                        name: 'nama_posisi'
+                    },
+                    {
+                        data: 'jenis_pelaksanaan',
+                        name: 'jenis_pelaksanaan'
+                    },
+                    {
+                        data: 'durasi_magang',
+                        name: 'durasi_magang'
+                    },
+                    {
+                        data: 'aksi',
+                        name: 'aksi',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center'
+                    }
+                ]
+            });
+            $('#filter-nama-posisi').on('change', function() {
+                dataLowongan.draw();
+            });
+
+            $('#filter-jenis-pelaksanaan').on('change', function() {
+                dataLowongan.draw();
+            });
+        });
+
+        $(document).on('submit', 'form', function(e) {
+            e.preventDefault();
+            let form = $(this);
+            let url = form.attr('action');
+            let method = form.attr('method');
+            let data = new FormData(this);
+
+            if ($.fn.validate && form.hasClass('validate')) {
+                if (!form.valid()) return false;
+            }
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if (res.status) {
+                        $('#myModal').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: res.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        dataLowongan.ajax.reload();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: res.message
+                        });
+                        if (res.msgField) {
+                            $('.error-text').text('');
+                            $.each(res.msgField, function(prefix, val) {
+                                $('#error-' + prefix).text(val[0]);
+                            });
+                        }
+                    }
+                },
+                error: function(xhr) {
                     $('#myModal').modal('hide');
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil',
-                        text: res.message,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    dataLowongan.ajax.reload();
-                } else {
-                    Swal.fire({
                         icon: 'error',
-                        title: 'Gagal',
-                        text: res.message
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat mengirim data.'
                     });
-                    if (res.msgField) {
-                        $('.error-text').text('');
-                        $.each(res.msgField, function(prefix, val) {
-                            $('#error-' + prefix).text(val[0]);
-                        });
-                    }
                 }
-            },
-            error: function(xhr) {
-                $('#myModal').modal('hide');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Terjadi kesalahan saat mengirim data.'
-                });
-            }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
-

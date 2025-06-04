@@ -272,7 +272,8 @@ class MahasiswaSeeder extends Seeder
             DB::table('users')->insert([
                 'username' => $mhs['nim'],
                 'password' => Hash::make($mhs['nim']),
-                'role' => 'mahasiswa',
+                'role'     => 'mahasiswa',
+                'status'   => 'aktif',
                 'created_at' => now(),
             ]);
 
