@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LowonganExport;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LowonganMagangController extends Controller
 {
