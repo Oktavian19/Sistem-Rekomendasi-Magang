@@ -104,12 +104,12 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item" href="{{ url('magang/export/excel') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
+                        <a class="dropdown-item" href="{{ url('kelola-magang/export/excel') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
                             Excel
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ url('magang/export/pdf') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
+                        <a class="dropdown-item" href="{{ url('kelola-magang/export/pdf') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}">
                             PDF
                         </a>
                     </li>
