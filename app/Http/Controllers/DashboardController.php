@@ -60,10 +60,12 @@ class DashboardController extends Controller
         $realisasi = DB::table('magang')
             ->join('lamaran', 'magang.id_lamaran', '=', 'lamaran.id_lamaran')
             ->join('lowongan', 'lamaran.id_lowongan', '=', 'lowongan.id_lowongan')
-            ->join('opsi_preferensi', 'lowongan.id_bidang_keahlian', '=', 'opsi_preferensi.id')
+            ->join('preferensi_lowongan', 'lowongan.id_lowongan', '=', 'preferensi_lowongan.id_lowongan')
+            ->join('opsi_preferensi', 'preferensi_lowongan.id_opsi', '=', 'opsi_preferensi.id')
+            ->join('kategori_preferensi', 'opsi_preferensi.id_kategori', '=', 'kategori_preferensi.id')
+            ->where('kategori_preferensi.kode', 'bidang_keahlian')
             ->select('opsi_preferensi.label', DB::raw('count(*) as total_magang'))
             ->groupBy('opsi_preferensi.label');
-
 
         $trenBidangIndustri = DB::table(DB::raw("({$peminatan->toSql()}) as peminatan"))
             ->mergeBindings($peminatan)
@@ -76,6 +78,7 @@ class DashboardController extends Controller
                 DB::raw('COALESCE(realisasi.total_magang, 0) as total_magang')
             )
             ->get();
+
 
         // 6. Evaluasi Efektivitas Rekomendasi
         $mengikutiRekomendasi = DB::table('lamaran')

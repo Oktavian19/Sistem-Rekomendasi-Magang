@@ -13,7 +13,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_perusahaan');
             $table->string('nama_posisi', 100);
             $table->unsignedBigInteger('id_jenis_pelaksanaan');
-            $table->unsignedBigInteger('id_bidang_keahlian');
             $table->unsignedBigInteger('id_durasi_magang');
             $table->text('deskripsi');
             $table->integer('kuota');
@@ -29,12 +28,6 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             $table->foreign('id_jenis_pelaksanaan')
-                ->references('id')
-                ->on('opsi_preferensi')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-            $table->foreign('id_bidang_keahlian')
                 ->references('id')
                 ->on('opsi_preferensi')
                 ->onUpdate('cascade')
