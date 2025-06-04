@@ -23,6 +23,7 @@
                 <div class="form-group mb-3">
                     <label>Role</label>
                     <input type="text" class="form-control" value="{{ $user->role }}" disabled>
+                    <input type="hidden" name="role" id="edit_role" value="{{ $user->role }}">
                 </div>                
 
                 {{-- Field Admin --}}
