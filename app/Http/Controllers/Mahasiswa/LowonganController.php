@@ -112,7 +112,7 @@ class LowonganController extends Controller
             ->exists();
 
         $sedangDaftar = Lamaran::where('id_mahasiswa', $mahasiswaId)
-            ->where('status_lamaran', 'menunggu')
+            ->whereIn('status_lamaran', ['diprosesAdmin', 'diprosesPerusahaan'])
             ->exists();
 
         if ($sudahDaftar) {
@@ -125,7 +125,7 @@ class LowonganController extends Controller
             'id_mahasiswa'     => $mahasiswaId,
             'id_lowongan'      => $id,
             'tanggal_lamaran'  => now(),
-            'status_lamaran'   => 'Menunggu',
+            'status_lamaran'   => 'diprosesAdmin',
             'dari_rekomendasi' => $request->boolean('dari_rekomendasi'), // Ambil dari form
         ]);
 

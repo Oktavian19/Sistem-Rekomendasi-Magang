@@ -1,8 +1,9 @@
 <form action="{{ url('lowongan/store-ajax') }}" method="POST" id="form-tambah">
     <style>
         .select2-container {
-        z-index: 99999 !important;
+            z-index: 99999 !important;
         }
+
         .modal-open .select2-dropdown {
             z-index: 99999 !important;
         }
@@ -37,13 +38,13 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Bidang Keahlian</label>
-                    <select name="id_bidang_keahlian" id="id_bidang_keahlian" class="form-control" required>
+                    <select name="id_bidang_keahlian[]" class="form-select select2" multiple required>
                         <option value="">Pilih Bidang Keahlian</option>
                         @foreach ($bidangKeahlians as $bidangKeahlian)
                             <option value="{{ $bidangKeahlian->id }}">{{ $bidangKeahlian->label }}</option>
                         @endforeach
                     </select>
-                    <small id="error-kategori_keahlian" class="error-text form-text text-danger"></small>
+                    <small id="error-id_bidang_keahlian" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label>Jenis Pelaksanaan</label>
@@ -53,7 +54,7 @@
                             <option value="{{ $jenisPelaksanaan->id }}">{{ $jenisPelaksanaan->label }}</option>
                         @endforeach
                     </select>
-                    <small id="error-jenis_pelaksanaan" class="error-text form-text text-danger"></small>
+                    <small id="error-id_jenis_pelaksanaan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label>Kuota</label>
@@ -79,28 +80,24 @@
                     <label>Durasi Magang</label>
                     <select name="id_durasi_magang" id="id_durasi_magang" class="form-control" required>
                         <option value="">Pilih Durasi Magang</option>
-                        @foreach ($durasiMagang as $durasi)
+                        @foreach ($durasiMagangs as $durasi)
                             <option value="{{ $durasi->id }}">{{ $durasi->label }}</option>
                         @endforeach
                     </select>
-                    <small id="error-durasi_magang" class="error-text form-text text-danger"></small>
+                    <small id="error-id_durasi_magang" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="col-lg-12 mb-4">
                     <div class="form-group">
                         <label>Fasilitas</label>
-                        <select class="form-select select2" name="fasilitas[]" multiple>
-                            <option value="wifi">WiFi</option>
-                            <option value="laboratorium">Laboratorium</option>
-                            <option value="perpustakaan">Perpustakaan</option>
-                            <option value="parkir">Parkir</option>
-                            <option value="kantin">Kantin</option>
+                        <select class="form-select select2" name="id_fasilitas[]" multiple>
+                            @foreach ($fasilitas as $fasilitasItem)
+                                <option value="{{ $fasilitasItem->id }}">{{ $fasilitasItem->label }}</option>
+                            @endforeach
                         </select>
-                        @error('fasilitas')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <small id="error-id_fasilitas" class="error-text form-text text-danger"></small>
                     </div>
                 </div>
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -108,115 +105,123 @@
             </div>
         </div>
     </div>
-<script>
-$(document).ready(function () {
-    $.validator.addMethod("greaterThanOrEqual", function (value, element, param) {
-        let startDate = $(param).val();
-        if (!value || !startDate) return true;
-        return new Date(value) >= new Date(startDate);
-    }, "Tanggal tutup harus setelah atau sama dengan tanggal buka.");
+    <script>
+        $(document).ready(function() {
+            $.validator.addMethod("greaterThanOrEqual", function(value, element, param) {
+                let startDate = $(param).val();
+                if (!value || !startDate) return true;
+                return new Date(value) >= new Date(startDate);
+            }, "Tanggal tutup harus setelah atau sama dengan tanggal buka.");
 
-    $("#form-tambah").validate({
-        rules: {
-            id_perusahaan: {
-                required: true
-            },
-            nama_posisi: {
-                required: true,
-                minlength: 3,
-                maxlength: 100
-            },
-            deskripsi: {
-                required: true,
-                maxlength: 1000
-            },
-            id_bidang_keahlian: {
-                required: true,
-            },
-            id_jenis_pelaksanaan: {
-                required: true,
-            },
-            kuota: {
-                required: true,
-                digits: true,
-                min: 1
-            },
-            persyaratan: {
-                required: true,
-                maxlength: 1000
-            },
-            tanggal_buka: {
-                required: true,
-                date: true
-            },
-            tanggal_tutup: {
-                required: true,
-                date: true,
-                greaterThanOrEqual: "#tanggal_buka"
-            },
-            id_durasi_magang: {
-                required: true
-            }
-        },
-        messages: {
-            id_perusahaan: {
-                required: "Silakan pilih perusahaan."
-            },
-            nama_posisi: {
-                required: "Nama posisi wajib diisi.",
-                minlength: "Minimal 3 karakter.",
-                maxlength: "Maksimal 100 karakter."
-            },
-            deskripsi: {
-                required: "Deskripsi wajib diisi.",
-                maxlength: "Maksimal 1000 karakter."
-            },
-            kategori_keahlian: {
-                required: "Kategori keahlian wajib diisi.",
-            },
-            kuota: {
-                required: "Kuota wajib diisi.",
-                digits: "Kuota harus berupa angka.",
-                min: "Minimal 1 kuota."
-            },
-            persyaratan: {
-                required: "Persyaratan wajib diisi.",
-                maxlength: "Maksimal 1000 karakter."
-            },
-            tanggal_buka: {
-                required: "Tanggal buka wajib diisi.",
-                date: "Format tanggal tidak valid."
-            },
-            tanggal_tutup: {
-                required: "Tanggal tutup wajib diisi.",
-                date: "Format tanggal tidak valid.",
-                greaterThanOrEqual: "Tanggal tutup harus setelah atau sama dengan tanggal buka."
-            },
-            durasi_magang: {
-                required: "Durasi magang wajib diisi.",
-            }
-        },
-        errorPlacement: function (error, element) {
-            let id = element.attr('id');
-            $('#error-' + id).html(error);
-        },
-        highlight: function (element) {
-            $(element).addClass('is-invalid');
-        },
-        unhighlight: function (element) {
-            $(element).removeClass('is-invalid');
-        }
-    });
+            $("#form-tambah").validate({
+                rules: {
+                    id_perusahaan: {
+                        required: true
+                    },
+                    nama_posisi: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 100
+                    },
+                    deskripsi: {
+                        required: true,
+                        maxlength: 1000
+                    },
+                    "id_bidang_keahlian[]": {
+                        required: true
+                    },
+                    id_jenis_pelaksanaan: {
+                        required: true,
+                    },
+                    kuota: {
+                        required: true,
+                        digits: true,
+                        min: 1
+                    },
+                    persyaratan: {
+                        required: true,
+                        maxlength: 1000
+                    },
+                    tanggal_buka: {
+                        required: true,
+                        date: true
+                    },
+                    tanggal_tutup: {
+                        required: true,
+                        date: true,
+                        greaterThanOrEqual: "#tanggal_buka"
+                    },
+                    id_durasi_magang: {
+                        required: true
+                    }
+                },
+                messages: {
+                    id_perusahaan: {
+                        required: "Silakan pilih perusahaan."
+                    },
+                    nama_posisi: {
+                        required: "Nama posisi wajib diisi.",
+                        minlength: "Minimal 3 karakter.",
+                        maxlength: "Maksimal 100 karakter."
+                    },
+                    deskripsi: {
+                        required: "Deskripsi wajib diisi.",
+                        maxlength: "Maksimal 1000 karakter."
+                    },
+                    "id_bidang_keahlian[]": {
+                        required: "Pilih minimal satu bidang keahlian."
+                    },
+                    id_jenis_pelaksanaan: {
+                        required: "Jenis pelaksanaan wajib diisi.",
+                    },
+                    kuota: {
+                        required: "Kuota wajib diisi.",
+                        digits: "Kuota harus berupa angka.",
+                        min: "Minimal 1 kuota."
+                    },
+                    persyaratan: {
+                        required: "Persyaratan wajib diisi.",
+                        maxlength: "Maksimal 1000 karakter."
+                    },
+                    tanggal_buka: {
+                        required: "Tanggal buka wajib diisi.",
+                        date: "Format tanggal tidak valid."
+                    },
+                    tanggal_tutup: {
+                        required: "Tanggal tutup wajib diisi.",
+                        date: "Format tanggal tidak valid.",
+                        greaterThanOrEqual: "Tanggal tutup harus setelah atau sama dengan tanggal buka."
+                    },
+                    id_durasi_magang: {
+                        required: "Durasi magang wajib diisi.",
+                    }
+                },
+                errorPlacement: function(error, element) {
+                    let id = element.attr('id');
+                    $('#error-' + id).html(error);
+                },
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
 
-    $('#myModal').on('shown.bs.modal', function() {
-        $('select[name="fasilitas[]"]').select2({
-            dropdownParent: $(this).find('.modal-content'),
-            width: '100%',
-            placeholder: "Pilih Fasilitas",
-            allowClear: true
+            $('#myModal').on('shown.bs.modal', function() {
+                $('select[name="id_fasilitas[]"]').select2({
+                    dropdownParent: $(this).find('.modal-content'),
+                    width: '100%',
+                    placeholder: "Pilih Fasilitas",
+                    allowClear: true
+                });
+                $('select[name="id_bidang_keahlian[]"]').select2({
+                    dropdownParent: $(this).find('.modal-content'),
+                    width: '100%',
+                    placeholder: "Pilih Bidang Keahlian",
+                    allowClear: true
+                });
+            });
         });
-    });
-
-});
-</script>
+    </script>
 </form>

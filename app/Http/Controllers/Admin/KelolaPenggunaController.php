@@ -387,6 +387,20 @@ class KelolaPenggunaController extends Controller
     {
         $user = Users::find($id);
 
+        $detail = null;
+
+        switch ($user->role) {
+            case 'admin':
+                $detail = Admin::where('id_admin', $user->id_user)->first();
+                break;
+            case 'mahasiswa':
+                $detail = Mahasiswa::where('id_mahasiswa', $user->id_user)->first();
+                break;
+            case 'dosen_pembimbing':
+                $detail = DosenPembimbing::where('id_dosen_pembimbing', $user->id_user)->first();
+                break;
+        }
+
         if (!$user) {
             return response()->json([
                 'status'  => false,
@@ -394,7 +408,7 @@ class KelolaPenggunaController extends Controller
             ], 404);
         }
 
-        return view('admin.user.confirm_ajax', compact('user'));
+        return view('admin.user.confirm_ajax', compact('user', 'detail'));
     }
 
     public function delete_ajax(Request $request, $id)
