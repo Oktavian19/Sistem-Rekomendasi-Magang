@@ -21,7 +21,7 @@
         </div>
         <div class="col-lg-12 col-xl-12">
             <div class="row">
-                @foreach ($lamarans as $lamaran)
+                @forelse ($lamarans as $lamaran)
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <div class="card-body">
@@ -106,7 +106,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    @empty
+                        <div class="col-md-12">
+                            <div class="alert alert-info">Belum ada riwayat magang.</div>
+                        </div>
+                @endforelse
             </div>
         </div>
 
