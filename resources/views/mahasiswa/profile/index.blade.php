@@ -87,7 +87,7 @@
                                     <div class="d-flex flex-wrap text-muted">
                                         <span class="me-3">
                                             <i
-                                                class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d M Y') }}
+                                                class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->locale('id')->isoFormat('D MMMM YYYY') }}
                                         </span>
                                         <a href="{{ asset('storage/' . $dokumen->path_file) }}"
                                             class="btn btn-sm btn-outline-primary ms-3" target="_blank">
@@ -116,8 +116,8 @@
                         <h5 class="fw-bold">{{ $pengalaman->nama_posisi }}</h5>
                         <div class="d-flex align-items-center text-muted mb-2">
                             <span>{{ $pengalaman->nama_perusahaan }}</span>
-                            <span>{{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->translatedFormat('M Y') }} -
-                                {{ \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->translatedFormat('M Y') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->locale('id')->isoFormat('D MMMM YYYY') }} -
+                                {{ \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
                         </div>
                     </div>
                 @endforeach

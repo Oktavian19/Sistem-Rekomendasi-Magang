@@ -3,8 +3,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}"
-        class="btn btn-outline-secondary">
+    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}" class="btn btn-outline-secondary">
         <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
     </a>
     <section>
@@ -52,10 +51,10 @@
                             <div>
                                 <p class="text-muted mb-1">Pendaftaran</p>
                                 <span
-                                    class="fw-bold text-success">{{ \Carbon\Carbon::parse($lowongan->tanggal_buka)->format('d M') }}</span>
+                                    class="fw-bold text-success">{{ \Carbon\Carbon::parse($lowongan->tanggal_buka)->locale('id')->isoFormat('D MMMM') }}</span>
                                 -
                                 <span
-                                    class="fw-bold text-danger">{{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->format('d M Y') }}</span>
+                                    class="fw-bold text-danger">{{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
                             </div>
                         </div>
                     </div>
