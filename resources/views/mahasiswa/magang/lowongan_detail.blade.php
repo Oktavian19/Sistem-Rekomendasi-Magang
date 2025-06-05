@@ -86,7 +86,11 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <div class="text-muted small">Bidang Pekerjaan</div>
-                                <div class="fw-bold">{{ $lowongan->bidangKeahlian->nama_bidang ?? '-' }}</div>
+                                    <div class="fw-bold">
+                                    @foreach ($lowongan->bidangKeahlian as $bidang)
+                                        {{ $bidang->label ?? '-' }},
+                                    @endforeach
+                                    </div>
                             </div>
                             <div class="mb-3">
                                 <div class="text-muted small">Lokasi</div>
