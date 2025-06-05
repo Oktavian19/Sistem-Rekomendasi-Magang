@@ -3,9 +3,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <a href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
-    </a>
     <section>
         <div class="container card" style="padding: 50px">
             <div class="row">
@@ -77,6 +74,9 @@
                                     gratis...</strong>
                             </div>
                         </div>
+                        <a style="margin-top: 10vh" href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
+                        </a>
                     </div>
                 </div>
 
