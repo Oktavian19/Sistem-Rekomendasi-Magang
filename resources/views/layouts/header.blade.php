@@ -20,10 +20,21 @@
 
     <span class="me-3">{{ $name }}</span>
 
+    @php
+        $fotoProfil = null;
+
+        if ($user->role === 'mahasiswa' && $user->mahasiswa && $user->mahasiswa->foto_profil) {
+            $fotoProfil = $user->mahasiswa->foto_profil;
+        } elseif ($user->role === 'admin' && $user->admin && $user->admin->foto_profil) {
+            $fotoProfil = $user->admin->foto_profil;
+        } elseif ($user->role === 'dosen_pembimbing' && $user->dosenPembimbing && $user->dosenPembimbing->foto_profil) {
+            $fotoProfil = $user->dosenPembimbing->foto_profil;
+        }
+    @endphp
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        @if (!empty($user->photo_url))
-            <img src="{{ $user->photo_url }}" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
+        @if ($fotoProfil)
+            <img src="{{ asset($fotoProfil) }}" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
         @else
             <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white"
                 style="width: 40px; height: 40px;">
