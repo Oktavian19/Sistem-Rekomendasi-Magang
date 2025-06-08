@@ -85,7 +85,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', true)
             ->count();
 
-        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi / $jumlahLamaran * 100;
+        $persentaseMengikutiRekomendasi =  round($mengikutiRekomendasi / $jumlahLamaran * 100, 2);
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
