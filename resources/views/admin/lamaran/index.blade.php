@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row border rounded bg-white mb-2" style="padding: 2vh; margin-left: 0px; margin-right: 0px">
+{{-- <div class="row border rounded bg-white mb-2" style="padding: 2vh; margin-left: 0px; margin-right: 0px">
     <div class="col-sm-6 col-lg-3 mb-4">
         <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
             <div>
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
     <div class="card">
         <div class="card-header">

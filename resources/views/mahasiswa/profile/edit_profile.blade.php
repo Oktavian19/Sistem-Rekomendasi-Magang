@@ -219,7 +219,7 @@
                                         <h5 class="fw-semibold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
                                         <div class="d-flex align-items-center text-muted small">
                                             <span>Diunggah:
-                                                {{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->format('d M Y') }}</span>
+                                                {{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
                                             <span class="bullet bg-gray-400 mx-2"></span>
                                             <span>
                                                 <a href="{{ asset('storage/' . $dokumen->path_file) }}" target="_blank"
@@ -282,8 +282,8 @@
                                     <span>{{ $pengalaman->perusahaan }}</span>
                                     <span class="bullet bg-gray-400 mx-2"></span>
                                     <span>
-                                        {{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->format('M Y') }} -
-                                        {{ $pengalaman->tanggal_selesai ? \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->format('M Y') : 'Sekarang' }}
+                                        {{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->locale('id')->isoFormat('MMMM YYYY') }} -
+                                        {{ $pengalaman->tanggal_selesai ? \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->locale('id')->isoFormat('MMMM YYYY') : 'Sekarang' }}
                                         ({{ $pengalaman->tanggal_selesai
                                             ? \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->diff(\Carbon\Carbon::parse($pengalaman->tanggal_selesai))->format('%y tahun %m bulan')
                                             : \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->diffForHumans(['parts' => 2, 'join' => true]) }})

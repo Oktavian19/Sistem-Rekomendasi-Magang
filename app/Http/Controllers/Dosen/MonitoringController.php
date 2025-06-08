@@ -61,13 +61,12 @@ class MonitoringController extends Controller
             return response()->json(['message' => 'Detail magang tidak ditemukan.'], 404);
         }
 
-        $magang = $lamaranAktif->magang;
         $lowongan = $lamaranAktif->lowongan;
 
         return view('dosen.monitoring.detail', [
             'posisi' => $lowongan->nama_posisi,
             'perusahaan' => $lowongan->perusahaan->nama_perusahaan,
-            'bidang' => $lowongan->bidangKeahlian->label ?? '-',
+            'bidang' => $lowongan->perusahaan->bidang_industri ?? '-',
             'durasi' => $lowongan->durasiMagang->label,
             'alamat' => $lowongan->perusahaan->alamat ?? '-',
         ]);

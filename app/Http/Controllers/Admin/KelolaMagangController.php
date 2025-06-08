@@ -12,10 +12,11 @@ use App\Models\DosenPembimbing;
 use App\Models\Magang;
 use App\Models\PeriodeMagang;
 use App\Models\ProgramStudi;
-use App\Exports\LamaranExport;
-use App\Exports\LamaranPdfExport;
+use App\Exports\MagangExport;
+use App\Exports\MagangPdfExport;
 use Maatwebsite\Excel\Facades\Excel;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class KelolaMagangController extends Controller
 {
@@ -184,22 +185,28 @@ class KelolaMagangController extends Controller
         return redirect()->route('admin.lamaran.index')->with('success', 'Lamaran berhasil dihapus.');
     }
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        $status = request('status');
-        $prodi = request('prodi');
+        $status = $request->query('status');
+        $prodi = $request->query('prodi');
         
-        return Excel::download(new LamaranExport($status, $prodi), 'lamaran-magang.xlsx');
+        return Excel::download(new MagangExport($status, $prodi), 'data-magang.xlsx');
     }
 
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
-        $status = request('status');
-        $prodi = request('prodi');
+        $status = $request->query('status');
+        $prodi = $request->query('prodi');
         
-        $export = new LamaranPdfExport($status, $prodi);
-        $pdf = PDF::loadView('exports.lamaran-pdf', $export->view()->getData());
+        $export = new MagangPdfExport($status, $prodi);
+        $data = $export->collection();
         
-        return $pdf->download('lamaran-magang.pdf');
+        $pdf = PDF::loadView('exports.magang-pdf', [
+            'magang' => $data,
+            'statusFilter' => $status,
+            'prodiFilter' => $prodi ? ProgramStudi::find($prodi)->nama_program_studi : null
+        ])->setPaper('a4', 'landscape');
+        
+        return $pdf->download('data-magang.pdf');
     }
 }

@@ -8,40 +8,42 @@ use Illuminate\Http\Request;
 use App\Models\Lowongan;
 use App\Models\OpsiPreferensi;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class LowonganController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Lowongan::with('perusahaan');
+        // Gunakan array dalam with()
+        $query = Lowongan::with(['perusahaan', 'bidangKeahlian']);
 
+        // Hitung total sebelum filter
         $total = $query->count();
 
-        // Filter: Keyword
+        // Filter: Keyword posisi
         if ($request->filled('keyword')) {
             $query->where('nama_posisi', 'like', '%' . $request->keyword . '%');
         }
 
-        // Filter: Lokasi (kota)
+        // Filter: Lokasi perusahaan
         if ($request->filled('lokasi')) {
             $query->whereHas('perusahaan', function ($q) use ($request) {
-                $q->where('alamat', 'LIKE', '%' . $request->lokasi . '%');
+                $q->where('alamat', 'like', '%' . $request->lokasi . '%');
             });
         }
 
-        // Filter: Bidang pekerjaan
+        // Filter: Bidang Keahlian (relasi melalui preferensi)
         if ($request->filled('job_field_id')) {
-            $query->where('id_bidang_keahlian', $request->job_field_id);
+            $query->whereHas('bidangKeahlian', function ($q) use ($request) {
+                $q->where('id', $request->job_field_id);
+            });
         }
 
-        // Filter: Kuota (diubah untuk menerima single value)
+        // Filter: Kuota
         if ($request->filled('quota_range')) {
             $range = $request->quota_range;
             if ($range === '51+') {
                 $query->where('kuota', '>', 50);
-            } else {
+            } elseif (str_contains($range, '-')) {
                 [$min, $max] = explode('-', $range);
                 $query->whereBetween('kuota', [(int) $min, (int) $max]);
             }
@@ -60,11 +62,13 @@ class LowonganController extends Controller
                 break;
             default:
                 $query->orderBy('created_at', 'desc');
+                break;
         }
 
-        $lowongans = $query->paginate(12)->appends(request()->query());
+        // Pagination
+        $lowongans = $query->paginate(12)->appends($request->query());
 
-        // Ambil kota unik dari alamat perusahaan (ketiga dari belakang)
+        // Ambil kota dari alamat perusahaan (2 elemen dari belakang)
         $kotas = Lowongan::with('perusahaan')
             ->get()
             ->map(function ($lowongan) {
@@ -77,13 +81,14 @@ class LowonganController extends Controller
             ->sort()
             ->values();
 
-        // Ambil bidang pekerjaan untuk filter
-        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($query) {
-            $query->where('kode', 'bidang_keahlian');
+        // Ambil bidang keahlian (opsi preferensi dengan kode = bidang_keahlian)
+        $bidangKeahlians = OpsiPreferensi::whereHas('kategori', function ($q) {
+            $q->where('kode', 'bidang_keahlian');
         })->get();
 
         return view('mahasiswa.magang.lowongan', compact('total', 'lowongans', 'kotas', 'bidangKeahlians'));
     }
+
 
     public function show($id)
     {
