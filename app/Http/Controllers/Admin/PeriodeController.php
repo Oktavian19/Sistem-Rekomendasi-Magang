@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\PeriodeMagang;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;    
+use Carbon\Carbon;
 
 class PeriodeController extends Controller
 {
@@ -18,7 +19,7 @@ class PeriodeController extends Controller
 
     public function list(Request $request)
     {
-        $periode = PeriodeMagang::select('id_periode', 'nama_periode', 'tanggal_mulai', 'tanggal_selesai');
+        $periode = PeriodeMagang::select('id_periode', 'nama_periode', 'tanggal_mulai', 'tanggal_selesai', 'status');
 
         if ($request->has('id_periode')) {
             $periode->where('id_periode', $request->id_periode);
@@ -26,29 +27,39 @@ class PeriodeController extends Controller
 
         return DataTables::of($periode)
             ->addIndexColumn()
+            ->addColumn('tanggal_mulai', function ($periode) {
+                return Carbon::parse($periode->tanggal_mulai)->translatedFormat('d F Y'); // contoh: 11 Juni 2025
+            })
+            ->addColumn('tanggal_selesai', function ($periode) {
+                return Carbon::parse($periode->tanggal_selesai)->translatedFormat('d F Y');
+            })
+            ->addColumn('status', function ($periode) {
+                $class = $periode->status === 'aktif' ? 'badge bg-success' : 'badge bg-secondary';
+                return '<span class="' . $class . '">' . ucfirst($periode->status) . '</span>';
+            })
             ->addColumn('aksi', function ($periode) {
                 $btn  = '<div class="dropdown">';
                 $btn .= '<a href="#" class="text-dark" data-bs-toggle="dropdown" aria-expanded="false">';
-                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';  
+                $btn .= '<i class="bx bx-dots-vertical-rounded"></i>';
                 $btn .= '</a>';
                 $btn .= '<ul class="dropdown-menu">';
-                
+
                 // Edit link
                 $btn .= '<li><a class="dropdown-item" href="' . url('periode/' . $periode->id_periode . '/edit-ajax') . '" onclick="modalAction(this.href); return false;">';
                 $btn .= '<i class="bx bx-edit-alt"></i> Edit';
                 $btn .= '</a></li>';
-                
+
                 // Delete link
                 $btn .= '<li><a class="dropdown-item" href="' . url('periode/' . $periode->id_periode . '/confirm-ajax') . '" onclick="modalAction(this.href); return false;">';
                 $btn .= '<i class="bx bx-trash"></i> Hapus';
                 $btn .= '</a></li>';
-                
+
                 $btn .= '</ul>';
                 $btn .= '</div>';
-    
+
                 return $btn;
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['status', 'aksi'])
             ->make(true);
     }
 
@@ -76,6 +87,10 @@ class PeriodeController extends Controller
             ], 422);
         }
 
+        // Ubah semua periode sebelumnya menjadi non-aktif
+        PeriodeMagang::where('status', 'aktif')->update(['status' => 'non-aktif']);
+
+        // Simpan periode baru dengan status default 'aktif'
         PeriodeMagang::create($request->only([
             'nama_periode',
             'tanggal_mulai',
@@ -84,9 +99,10 @@ class PeriodeController extends Controller
 
         return response()->json([
             'status'  => true,
-            'message' => 'Periode berhasil disimpan',
+            'message' => 'Periode berhasil disimpan dan status sebelumnya dinonaktifkan',
         ]);
     }
+
 
     public function edit_ajax(string $id)
     {
