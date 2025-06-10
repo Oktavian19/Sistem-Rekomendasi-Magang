@@ -77,8 +77,14 @@
                 </h4>
             </div>
             <div class="card-body">
-                @foreach ($mahasiswa->dokumen as $dokumen)
-                    @if ($dokumen->jenis_dokumen !== 'Curriculum Vitae (CV)')
+                @php
+                    $dokumenLain = $mahasiswa->dokumen->filter(fn($d) => $d->jenis_dokumen !== 'Curriculum Vitae (CV)');
+                @endphp
+
+                @if ($dokumenLain->isEmpty())
+                    <p class="text-muted">Belum ada dokumen pendukung</p>
+                @else
+                    @foreach ($dokumenLain as $dokumen)
                         <div class="border rounded p-4 mb-3">
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-file-earmark-text-fill text-primary fs-1 me-3"></i>
@@ -86,20 +92,18 @@
                                     <h5 class="fw-bold mb-1">{{ $dokumen->jenis_dokumen }}</h5>
                                     <div class="d-flex flex-wrap text-muted">
                                         <span class="me-3">
-                                            <i
-                                                class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->locale('id')->isoFormat('D MMMM YYYY') }}
+                                            <i class="bi bi-calendar me-1"></i>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->locale('id')->isoFormat('D MMMM YYYY') }}
                                         </span>
                                         <a href="{{ asset('storage/' . $dokumen->path_file) }}"
-                                            class="btn btn-sm btn-outline-primary ms-3" target="_blank">
+                                        class="btn btn-sm btn-outline-primary ms-3" target="_blank">
                                             <i class="bi bi-download me-1"></i> Unduh
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endif
-                @endforeach
-
+                    @endforeach
+                @endif
             </div>
         </div>
 
@@ -111,16 +115,22 @@
                 </h4>
             </div>
             <div class="card-body">
-                @foreach ($mahasiswa->pengalamanKerja as $pengalaman)
-                    <div class="mb-4">
-                        <h5 class="fw-bold">{{ $pengalaman->nama_posisi }}</h5>
-                        <div class="d-flex align-items-center text-muted mb-2">
-                            <span>{{ $pengalaman->nama_perusahaan }}</span>
-                            <span>{{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->locale('id')->isoFormat('D MMMM YYYY') }} -
-                                {{ \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
+                @if ($mahasiswa->pengalamanKerja->isEmpty())
+                    <p class="text-muted">Belum ada pengalaman kerja.</p>
+                @else
+                    @foreach ($mahasiswa->pengalamanKerja as $pengalaman)
+                        <div class="mb-4">
+                            <h5 class="fw-bold">{{ $pengalaman->nama_posisi }}</h5>
+                            <div class="d-flex align-items-center text-muted mb-2">
+                                <span>{{ $pengalaman->nama_perusahaan }}</span>
+                                <span class="ms-3">
+                                    {{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->locale('id')->isoFormat('D MMMM YYYY') }} -
+                                    {{ \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY') }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
