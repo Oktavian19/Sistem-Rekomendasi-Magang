@@ -13,7 +13,7 @@
                 </tr>
                 <tr>
                     <th>Program Studi</th>
-                    <td>{{ $lamaran->mahasiswa->program_studi->nama_prodi ?? '-' }}</td>
+                    <td>{{ $lamaran->mahasiswa->programStudi->nama_program_studi ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th>Email</th>
