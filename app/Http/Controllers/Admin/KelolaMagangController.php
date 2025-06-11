@@ -116,6 +116,8 @@ class KelolaMagangController extends Controller
             'lamaran.mahasiswa.user',
             'lamaran.mahasiswa.programStudi',
             'lamaran.lowongan.perusahaan',
+            'lamaran.lowongan.jenisPelaksanaan',
+            'lamaran.lowongan.durasiMagang',
             'dosenPembimbing',
             'periodeMagang'
         ])->findOrFail($id);
