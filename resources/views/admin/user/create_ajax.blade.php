@@ -167,6 +167,9 @@
                 required: "Password wajib diisi",
                 minlength: "Minimal 6 karakter jika ingin diubah"
             },
+            role: {
+                required: "Role wajib dipilih"
+            },
             nama: {
                 required: "Nama wajib diisi",
                 maxlength: "Maksimal 100 karakter"

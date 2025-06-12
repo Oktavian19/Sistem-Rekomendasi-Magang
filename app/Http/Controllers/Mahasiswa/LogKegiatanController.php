@@ -67,8 +67,14 @@ class LogKegiatanController extends Controller
 
         // Ubah bulan ke minggu
         $jumlahMinggu = $durasi * 4;
+        $magangAktif = $pendaftaran;
 
-        return view('mahasiswa.log.create', compact('jumlahMinggu'));
+        $mingguTerpakai = LogKegiatan::where('id_magang', $magangAktif->id_magang)
+            ->whereNotNull('minggu')
+            ->pluck('minggu')
+            ->toArray();
+
+        return view('mahasiswa.log.create', compact('jumlahMinggu', 'mingguTerpakai'));
     }
 
     public function store(Request $request)
