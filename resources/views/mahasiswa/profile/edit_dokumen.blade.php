@@ -50,9 +50,9 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batalkan</button>
+        <div class="modal-footer justify-content-start">
             <button type="submit" class="btn btn-warning" form="formEditDocument">Perbarui</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batalkan</button>
         </div>
     </div>
 </div>
