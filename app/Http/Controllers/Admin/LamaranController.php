@@ -63,6 +63,8 @@ class LamaranController extends Controller
             'mahasiswa.user',
             'mahasiswa.programStudi',
             'lowongan.perusahaan',
+            'lowongan.jenisPelaksanaan',
+            'lowongan.durasiMagang',
         ])->findOrFail($id);
 
         $allowed = [

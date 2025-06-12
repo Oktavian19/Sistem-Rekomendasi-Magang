@@ -185,7 +185,7 @@
                     <div class="card-footer bg-white border-top-0">
                         <small class="text-muted">
                             <i class="bi bi-clock me-1"></i>
-                            Akhir Pendaftaran {{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->format('d M Y') }}
+                            Akhir Pendaftaran {{ \Carbon\Carbon::parse($lowongan->tanggal_tutup)->locale('id')->isoFormat('D MMMM YYYY') }}
                         </small>
                     </div>
                 </div>

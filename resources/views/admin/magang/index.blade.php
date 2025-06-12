@@ -180,11 +180,12 @@
                                             onclick="showUbahStatusModal({{ $item['id_magang'] }})">
                                             <i class="bx bx-edit"></i> Ubah Status
                                         </button>
-                                    @endif
-                                    <button class="btn btn-sm btn-primary" 
+                                    @else
+                                        <button class="btn btn-sm btn-primary" 
                                         onclick="showPlotDosenModal({{ $item['id_magang'] }}, {{ $item['id_dosen_pembimbing'] ?? 'null' }})">
-                                        <i class="bx bx-user-plus"></i> {{ $item['dosen_pembimbing'] ? 'Ubah Dosen' : 'Plot Dosen' }}
+                                        <i class="bx bx-user-plus"></i> Plot Dosen
                                     </button>
+                                    @endif
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif

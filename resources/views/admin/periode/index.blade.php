@@ -18,6 +18,7 @@
                         <th>Nama Periode</th>
                         <th>Tanggal Mulai</th>
                         <th>Tanggal Selesai</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -51,6 +52,7 @@
                 { data: 'nama_periode', name: 'nama_periode' },
                 { data: 'tanggal_mulai', name: 'tanggal_mulai' },
                 { data: 'tanggal_selesai', name: 'tanggal_selesai' },
+                { data: 'status', name: 'status', className: 'text-center' },
                 { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' }
             ]
         });

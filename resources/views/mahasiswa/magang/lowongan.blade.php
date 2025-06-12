@@ -174,17 +174,18 @@
                                                     <i
                                                         class="bi bi-building me-1"></i>{{ $lowongan->perusahaan->nama_perusahaan ?? '-' }}
                                                 </p>
-                                                <p class="card-text text-muted small">
+                                                <p class="card-text text-muted small  mb-1">
                                                     <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->perusahaan->alamat }}
-                                                    <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: {{ $lowongan->kuota }}
-                                                    orang
+                                                </p>
+                                                <p class="card-text text-muted small  mb-1">
+                                                    <i class="bi bi-briefcase me-1"></i>Kuota: {{ $lowongan->kuota }} orang
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="border-top pt-2">
                                             <p class="card-text small">
                                                 <i class="bi bi-clock me-1"></i>Akhir Pendaftaran
-                                                {{ \Carbon\Carbon::parse($lowongan->tanggal_akhir)->format('d M Y') }}
+                                                {{ \Carbon\Carbon::parse($lowongan->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY'), }}
                                             </p>
                                         </div>
                                     </div>

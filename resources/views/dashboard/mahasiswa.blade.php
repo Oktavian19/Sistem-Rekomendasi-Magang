@@ -230,16 +230,18 @@
                                         <p class="card-text text-muted small mb-1">
                                             <i class="bi bi-building me-1"></i>{{ $lowongan->perusahaan->nama_perusahaan }}
                                         </p>
-                                        <p class="card-text text-muted small">
-                                            <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->perusahaan->kota }}
-                                            <i class="bi bi-briefcase ms-2 me-1"></i>Kuota: {{ $lowongan->kuota }} orang
+                                        <p class="card-text text-muted small  mb-1">
+                                            <i class="bi bi-geo-alt me-1"></i>{{ $lowongan->perusahaan->alamat }}
+                                        </p>
+                                        <p class="card-text text-muted small  mb-1">
+                                            <i class="bi bi-briefcase me-1"></i>Kuota: {{ $lowongan->kuota }} orang
                                         </p>
                                     </div>
                                 </div>
                                 <div class="border-top pt-2 d-flex justify-content-between align-items-center">
                                     <p class="card-text small mb-0">
                                         <i class="bi bi-clock me-1"></i>Akhir Pendaftaran
-                                        {{ \Carbon\Carbon::parse($lowongan->tanggal_selesai)->translatedFormat('d M Y') }}
+                                        {{ \Carbon\Carbon::parse($lowongan->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY'), }}
                                     </p>
                                     <a href="{{ url('daftar-lowongan', $lowongan->id_lowongan) }}?dari_rekomendasi=1"
                                         class="btn btn-sm btn-outline-primary">

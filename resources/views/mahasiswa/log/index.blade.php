@@ -32,7 +32,7 @@
 
                                         <div class="mb-3">
                                             <p class="fw-semibold mb-1">
-                                                <i class="bi bi-calendar me-3"></i>{{ \Carbon\Carbon::parse($log->tanggal)->format('d M Y') }}
+                                                <i class="bi bi-calendar me-3"></i>{{ \Carbon\Carbon::parse($log->tanggal)->locale('id')->isoFormat('D MMMM YYYY') }}
                                             </p>
                                             <p class="fw-normal text-muted small mb-0">
                                                 <i class="bi bi-clock me-2"></i>Minggu ke-{{ $log->minggu }}
@@ -72,7 +72,7 @@
                                                             </div>
                                                             <p class="mb-0">{{ $feedback->komentar }}</p>
                                                             <small class="text-muted">
-                                                                {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->format('d M Y') }}
+                                                                {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->locale('id')->isoFormat('D MMMM YYYY') }}
                                                             </small>
                                                         </div>
                                                     </div>

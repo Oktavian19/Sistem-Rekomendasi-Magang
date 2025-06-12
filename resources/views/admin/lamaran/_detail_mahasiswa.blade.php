@@ -13,7 +13,7 @@
                 </tr>
                 <tr>
                     <th>Program Studi</th>
-                    <td>{{ $lamaran->mahasiswa->program_studi->nama_prodi ?? '-' }}</td>
+                    <td>{{ $lamaran->mahasiswa->programStudi->nama_program_studi ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th>Email</th>
@@ -28,7 +28,7 @@
 
         <!-- Pengalaman Kerja Section -->
         <h5>Pengalaman Kerja</h5>
-        @if($lamaran->mahasiswa->pengalamanKerja->count() > 0)
+        @if ($lamaran->mahasiswa->pengalamanKerja->count() > 0)
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -40,12 +40,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($lamaran->mahasiswa->pengalamanKerja as $pengalaman)
+                        @foreach ($lamaran->mahasiswa->pengalamanKerja as $pengalaman)
                             <tr>
                                 <td>{{ $pengalaman->perusahaan }}</td>
                                 <td>{{ $pengalaman->nama_posisi }}</td>
-                                <td>{{ $pengalaman->tanggal_mulai }}</td>
-                                <td>{{ $pengalaman->tanggal_selesai }}</td>
+                                <td>{{ \Carbon\Carbon::parse($pengalaman->tanggal_mulai)->translatedFormat('d F Y') }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($pengalaman->tanggal_selesai)->translatedFormat('d F Y') }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -57,7 +59,7 @@
 
         <!-- Dokumen Section -->
         <h5 class="mt-4">Dokumen Pendukung</h5>
-        @if($lamaran->mahasiswa->dokumen->count() > 0)
+        @if ($lamaran->mahasiswa->dokumen->count() > 0)
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -69,7 +71,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($lamaran->mahasiswa->dokumen as $dokumen)
+                        @foreach ($lamaran->mahasiswa->dokumen as $dokumen)
                             <tr>
                                 <td>{{ $dokumen->jenis_dokumen }}</td>
                                 <td>
@@ -78,12 +80,11 @@
                                     @endphp
                                     {{ $filename }}
                                 </td>
-                                <td>{{ $dokumen->tanggal_upload }}</td>
+                                <td>{{ \Carbon\Carbon::parse($dokumen->tanggal_upload)->translatedFormat('d F Y') }}
+                                </td>
                                 <td>
-                                    <a href="{{ asset('storage/' . $dokumen->path_file) }}" 
-                                    target="_blank" 
-                                    class="btn btn-sm btn-info" 
-                                    title="Preview">
+                                    <a href="{{ asset('storage/' . $dokumen->path_file) }}" target="_blank"
+                                        class="btn btn-sm btn-info" title="Preview">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>

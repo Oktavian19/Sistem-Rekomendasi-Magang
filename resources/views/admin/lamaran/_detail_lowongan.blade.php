@@ -1,4 +1,4 @@
-<div class="row">    
+<div class="row">
     <div class="col-md-12">
         <h5>Informasi Lowongan</h5>
         <div class="mb-3">
@@ -13,17 +13,17 @@
                 </tr>
                 <tr>
                     <th>Jenis Magang</th>
-                    <td>{{ $lamaran->lowongan->jenis_magang }}</td>
+                    <td>{{ $lamaran->lowongan->jenisPelaksanaan->label }}</td>
                 </tr>
                 <tr>
                     <th>Durasi</th>
-                    <td>{{ $lamaran->lowongan->durasi_magang }}</td>
+                    <td>{{ $lamaran->lowongan->durasiMagang->label }}</td>
                 </tr>
                 <tr>
                     <th>Periode</th>
                     <td>
-                        {{ \Carbon\Carbon::parse($lamaran->lowongan->tanggal_buka)->format('d M Y') }} - 
-                        {{ \Carbon\Carbon::parse($lamaran->lowongan->tanggal_tutup)->format('d M Y') }}
+                        {{ \Carbon\Carbon::parse($lamaran->lowongan->tanggal_buka)->translatedFormat('d F Y') }} -
+                        {{ \Carbon\Carbon::parse($lamaran->lowongan->tanggal_tutup)->translatedFormat('d F Y') }}
                     </td>
                 </tr>
             </table>
@@ -31,24 +31,24 @@
     </div>
 </div>
 
-@if($lamaran->lowongan->deskripsi)
-<div class="row">
-    <div class="col-12">
-        <h5>Deskripsi Lowongan</h5>
-        <div class="card card-body bg-light">
-            {!! nl2br(e($lamaran->lowongan->deskripsi)) !!}
+@if ($lamaran->lowongan->deskripsi)
+    <div class="row">
+        <div class="col-12">
+            <h5>Deskripsi Lowongan</h5>
+            <div class="card card-body bg-light">
+                {!! nl2br(e($lamaran->lowongan->deskripsi)) !!}
+            </div>
         </div>
     </div>
-</div>
 @endif
 
-@if($lamaran->lowongan->persyaratan)
-<div class="row mt-3">
-    <div class="col-12">
-        <h5>Persyaratan</h5>
-        <div class="card card-body bg-light">
-            {!! nl2br(e($lamaran->lowongan->persyaratan)) !!}
+@if ($lamaran->lowongan->persyaratan)
+    <div class="row mt-3">
+        <div class="col-12">
+            <h5>Persyaratan</h5>
+            <div class="card card-body bg-light">
+                {!! nl2br(e($lamaran->lowongan->persyaratan)) !!}
+            </div>
         </div>
     </div>
-</div>
 @endif

@@ -85,7 +85,7 @@ class DashboardController extends Controller
             ->where('dari_rekomendasi', true)
             ->count();
 
-        $persentaseMengikutiRekomendasi = $mengikutiRekomendasi / $jumlahLamaran * 100;
+        $persentaseMengikutiRekomendasi =  round($mengikutiRekomendasi / $jumlahLamaran * 100, 2);
 
         return view('dashboard.admin', compact(
             'jumlahMahasiswa',
@@ -201,10 +201,12 @@ class DashboardController extends Controller
             $lowongan = $latestLamaran->lowongan ?? null;
 
             $detailLamaranTerakhir = [
-                'nama_perusahaan' => $perusahaan->nama_perusahaan ?? 'N/A',
-                'bidang_industri' => $perusahaan->bidang_industri ?? 'N/A',
-                'posisi_magang' => $lowongan->nama_posisi ?? 'N/A', // Asumsi kolom posisi_magang ada di tabel lowongan
-                'tanggal_dikirim' => \Carbon\Carbon::parse($latestLamaran->tanggal_lamaran)->isoFormat('D MMMM YYYY'), // Format tanggal
+                'nama_perusahaan'   => $perusahaan->nama_perusahaan ?? 'N/A',
+                'bidang_industri'   => $perusahaan->bidang_industri ?? 'N/A',
+                'posisi_magang'     => $lowongan->nama_posisi ?? 'N/A', // Asumsi kolom posisi_magang ada di tabel lowongan
+                'tanggal_dikirim'   => \Carbon\Carbon::parse($latestLamaran->tanggal_lamaran)
+                    ->locale('id')
+                    ->isoFormat('D MMMM YYYY'),
             ];
         }
 

@@ -128,16 +128,24 @@ class RekomendasiService
 
         foreach ($preferensi['jenis_perusahaan'] ?? [] as $pref) {
             if ($pref['kode'] === $kategoriPerusahaan->kode) {
-                return $pref['poin'];
+                $poin = $pref['poin'];
+
+                // Tambahkan poin ekstra jika kode adalah 'pemerintah' atau 'bumn'
+                if (in_array(Str::lower($pref['kode']), ['pemerintah', 'bumn'])) {
+                    $poin += 2;
+                }
+
+                return $poin;
             }
         }
 
-        return 1;
+        return 0;
     }
+
 
     protected function getSkorBidangKeahlian(array $preferensi, Lowongan $lowongan): int
     {
-        $skor = 1;
+        $skor = 0;
 
         // Ambil semua kode bidang keahlian dari lowongan
         $kodeBidangLowongan = $lowongan->bidangKeahlian->pluck('kode')->toArray();
@@ -149,7 +157,7 @@ class RekomendasiService
             }
         }
 
-        return $skor;
+        return $skor > 0 ? $skor : 1;
     }
 
     protected function getSkorFasilitas(array $preferensi, Lowongan $lowongan): int
