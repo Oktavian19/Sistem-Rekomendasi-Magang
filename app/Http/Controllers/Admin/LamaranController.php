@@ -16,6 +16,8 @@ use App\Exports\LamaranExport;
 use App\Exports\LamaranPdfExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\ApplicationStatusNotification;
+use Illuminate\Support\Facades\Mail;
 
 class LamaranController extends Controller
 {
@@ -101,9 +103,27 @@ class LamaranController extends Controller
             'status_lamaran' => 'required|in:diprosesAdmin,diprosesPerusahaan,diterima,ditolak',
         ]);
 
-        $lamaran = Lamaran::findOrFail($id);
+        $lamaran = Lamaran::with(['mahasiswa', 'lowongan.perusahaan'])->findOrFail($id);
+        $previousStatus = $lamaran->status_lamaran;
         $lamaran->status_lamaran = $request->status_lamaran;
         $lamaran->save();
+
+        // Send email notification if status changed to diterima or ditolak
+        if (($request->status_lamaran === 'diterima' || $request->status_lamaran === 'ditolak') && 
+            $previousStatus !== $request->status_lamaran) {
+            
+            try {
+                Mail::to($lamaran->mahasiswa->email)
+                    ->send(new ApplicationStatusNotification($lamaran, $request->status_lamaran));
+            } catch (\Exception $e) {
+                \Log::error('Failed to send email notification: ' . $e->getMessage());
+                
+                return $request->ajax()
+                ? response()->json(['status' => false, 'message' => $e->getMessage()], 500)
+                : redirect()->back()->with('error', $e->getMessage());
+
+            }
+        }
 
         // Jika status diterima dan belum ada magang, buat data magang dengan dosen null
         if ($request->status_lamaran === 'diterima') {
@@ -114,9 +134,9 @@ class LamaranController extends Controller
 
                 Magang::create([
                     'id_lamaran' => $lamaran->id_lamaran,
-                    'status_magang' => 'aktif', // Status sementara sebelum aktif
+                    'status_magang' => 'aktif',
                     'id_periode' => $periodeAktif?->id_periode,
-                    'id_dosen_pembimbing' => null, // Dosen akan diisi nanti
+                    'id_dosen_pembimbing' => null,
                 ]);
             }
         }
