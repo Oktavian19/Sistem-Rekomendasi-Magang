@@ -12,17 +12,16 @@
                     <input type="text" name="kode_program_studi" id="kode_program_studi" class="form-control" required>
                     <small id="error-kode_program_studi" class="error-text form-text text-danger"></small>
                 </div>
-            </div>
-            <div class="modal-body">
                 <div class="form-group">
                     <label>Nama Program Studi</label>
                     <input type="text" name="nama_program_studi" id="nama_program_studi" class="form-control" required>
                     <small id="error-nama_program_studi" class="error-text form-text text-danger"></small>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                
+            <div class="modal-footer justify-content-start">
                 <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>

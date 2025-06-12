@@ -51,9 +51,9 @@
                     <!-- Preview images will appear here -->
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <div class="modal-footer justify-content-start">
                 <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>
