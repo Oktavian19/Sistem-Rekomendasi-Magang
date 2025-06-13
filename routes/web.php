@@ -34,6 +34,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
+    Route::get('/export/lamaran-diproses', [DashboardController::class, 'exportLamaranDiproses'])->name('admin.export.lamaran-diproses');
+    Route::get('/export/mahasiswa-magang-aktif', [DashboardController::class, 'exportMahasiswaMagangAktif'])->name('admin.export.mahasiswa-magang-aktif');
+    Route::get('/export/mahasiswa-selesai-magang', [DashboardController::class, 'exportMahasiswaSelesaiMagang'])->name('admin.export.mahasiswa-selesai-magang');
+    Route::get('/export/rasio-dosen-mahasiswa', [DashboardController::class, 'exportRasioDosenMahasiswa'])->name('admin.export.rasio-dosen-mahasiswa');
+    Route::get('/dashboard/export/status', [DashboardController::class, 'exportStatusLamaran'])->name('dashboard.export.status');
+    Route::get('/dashboard/export/rekomendasi', [DashboardController::class, 'exportLamaranRekomendasi'])->name('dashboard.export.rekomendasi');
+
     // ===================== ADMIN ROUTES =====================
     Route::middleware('authorize:admin')->name('admin.')->group(function () {
         // Dashboard
