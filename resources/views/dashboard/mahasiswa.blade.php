@@ -101,16 +101,16 @@
                                     <i
                                         class="awesome {{ $progressBarStatus['step1_active'] ?? false ? 'fa-solid fa-check' : 'hidden' }}"></i>
                                 </div>
-                                <p class="label">Lamaran Dikirim</p>
+                                <p class="label">Diproses Admin</p>
                             </li>
                             <li>
-                                <i class="icons fa-solid fa-bars-progress"></i>
+                                <i class="icons fa-solid fa-building-circle-arrow-right"></i>
                                 <div class="step second {{ $progressBarStatus['step2_active'] ?? false ? 'active' : '' }}">
                                     <p>2</p>
                                     <i
                                         class="awesome {{ $progressBarStatus['step2_active'] ?? false ? 'fa-solid fa-check' : 'hidden' }}"></i>
                                 </div>
-                                <p class="label">Diproses Admin</p>
+                                <p class="label">Diproses Perusahaan</p>
                             </li>
                             <li>
                                 <i class="icons fa-solid fa-file-circle-check"></i>
