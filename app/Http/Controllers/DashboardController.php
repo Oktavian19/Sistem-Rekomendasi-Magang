@@ -247,7 +247,7 @@ class DashboardController extends Controller
             // Jika ada lamaran, langkah 1 (Lamaran Dikirim) dan 2 (Diproses Admin) aktif
             $progressBarStatus['step1_active'] = true;
 
-            $progressBarStatus['step2_active'] = ($lamaran->status_lamaran !== 'menunggu');
+            $progressBarStatus['step2_active'] = ($lamaran->status_lamaran !== 'diprosesAdmin');
 
             // 2. Cek status lamaran
             if ($lamaran->status_lamaran === 'diterima') {

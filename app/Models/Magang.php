@@ -38,4 +38,8 @@ class Magang extends Model
     {
         return $this->hasMany(LogKegiatan::class, 'id_magang', 'id_magang');
     }
+
+    public function feedback() {
+        return $this->hasMany(Feedback::class, 'id_magang', 'id_magang');
+    }
 }
