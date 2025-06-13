@@ -119,13 +119,15 @@ class KelolaMagangController extends Controller
             'lamaran.lowongan.jenisPelaksanaan',
             'lamaran.lowongan.durasiMagang',
             'dosenPembimbing',
-            'periodeMagang'
+            'periodeMagang',
+            'feedback'
         ])->findOrFail($id);
 
         $allowed = [
             'mahasiswa' => 'admin.magang._detail_mahasiswa',
-            'lowongan' => 'admin.magang._detail_lowongan',
-            'magang' => 'admin.magang._detail_magang',
+            'lowongan'  => 'admin.magang._detail_lowongan',
+            'magang'    => 'admin.magang._detail_magang',
+            'feedback'  => 'admin.magang._feedback_magang',
         ];
 
         if (!array_key_exists($detail, $allowed)) {
