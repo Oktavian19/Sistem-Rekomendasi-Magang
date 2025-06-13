@@ -151,7 +151,7 @@
                 borderRadius: 7
             }
         },
-        colors: ["#00C5A4", '#F3F2FC'],
+        colors: ["#00C5A4", '#E7E6EF'],
         series: [
             { name: "Terealisasi", data: dataTerealisasi },
             { name: "Peminat", data: dataPeminat }
@@ -246,6 +246,10 @@
         colors: ['#E91E63'],
         plotOptions: {
             radialBar: {
+                track: {
+                    background: '#E7E6EF', 
+                    strokeWidth: '100%',  
+                },
                 dataLabels: {
                     name: { show: false },
                     value: { offsetY: 0 }
