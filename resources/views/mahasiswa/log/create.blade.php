@@ -81,16 +81,13 @@
                     tanggal: {
                         required: true
                     },
-                    minggu: {
-                        required: true
-                    },
                     deskripsi_kegiatan: {
                         required: true,
                         minlength: 10
                     },
                     "images[]": {
                         extension: "jpg|jpeg|png",
-                        filesize: 2 * 1024 * 1024,  // total size
+                        filesize: 2 * 1024 * 1024,
                         maxfilecount: 5
                     }
                 },
@@ -98,17 +95,14 @@
                     tanggal: {
                         required: "Tanggal kegiatan wajib diisi."
                     },
-                    minggu: {
-                        required: "Minggu wajib diisi."
-                    },
                     deskripsi_kegiatan: {
                         required: "Deskripsi kegiatan wajib diisi.",
                         minlength: "Deskripsi minimal 10 karakter."
                     },
                     "images[]": {
                         extension: "Hanya file gambar JPG, JPEG, atau PNG yang diperbolehkan.",
-                        filesize: "Ukuran total maksimal 5MB.",
-                        maxfilecount: "Maksimal 5 file gambar."
+                        filesize: "Ukuran maksimal 2MB.",
+                        maxfilecount: "Maksimal 5 file."
                     }
                 },
                 errorPlacement: function (error, element) {
@@ -120,11 +114,6 @@
                 },
                 unhighlight: function (element) {
                     $(element).removeClass('is-invalid');
-                },
-    
-                submitHandler: function (form) {
-                    alert("Validasi berhasil, form akan disubmit.");
-                    form.submit();
                 }
             });
         });
