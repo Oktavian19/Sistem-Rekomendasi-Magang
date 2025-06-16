@@ -436,7 +436,7 @@ class ProfileController extends Controller
 
     public function downloadCV()
     {
-        return $this->downloadDokumen('CV');
+        return $this->downloadDokumen('Curriculum Vitae (CV)');
     }
 
     public function updateAdmin(Request $request)
