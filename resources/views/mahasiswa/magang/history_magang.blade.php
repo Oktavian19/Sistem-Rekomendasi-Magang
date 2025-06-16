@@ -4,15 +4,15 @@
 
 @push('styles')
     <style>
-    .rating-input i {
-        cursor: pointer;
-        color: #ddd;
-        transition: color 0.2s;
-    }
+        .rating-input i {
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s;
+        }
 
-    .rating-input i.active {
-        color: #ffc107;
-    }
+        .rating-input i.active {
+            color: #ffc107;
+        }
     </style>
 @endpush
 
@@ -49,7 +49,8 @@
                                                         class="bi bi-building me-1"></i>{{ $lamaran->lowongan->perusahaan->nama_perusahaan }}
                                                 </p>
                                                 <p class="card-text text-muted small">
-                                                    <i class="bi bi-geo-alt me-1"></i>{{ $lamaran->lowongan->perusahaan->alamat }}
+                                                    <i
+                                                        class="bi bi-geo-alt me-1"></i>{{ $lamaran->lowongan->perusahaan->alamat }}
                                                 </p>
                                             </div>
                                         </div>
@@ -74,7 +75,8 @@
                                                         <div class="d-flex justify-content-end">
                                                             <p
                                                                 class="card-text small text-info mb-0 badge rounded-pill bg-label-info">
-                                                                <i class="bi bi-check-circle me-1"></i>Diterima (Belum Magang)
+                                                                <i class="bi bi-check-circle me-1"></i>Diterima (Belum
+                                                                Magang)
                                                             </p>
                                                         </div>
                                                     @elseif($lamaran->magang->status_magang == 'aktif')
@@ -86,11 +88,12 @@
                                                         </div>
                                                     @elseif($lamaran->magang->status_magang == 'selesai')
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <a href="#"
-                                                                class="small text-warning mb-0 badge rounded-pill bg-label-warning"
-                                                                role="button" data-bs-toggle="modal" data-bs-target="#ratingModal">
+                                                            <a href="javascript:void(0);"
+                                                                onclick="modalAction('{{ url('feedback/modal/' . ($lamaran->magang->id_magang ?? 0)) }}')"
+                                                                class="small text-warning mb-0 badge rounded-pill bg-label-warning">
                                                                 <i class="bi bi-star me-1"></i> Beri Feedback
                                                             </a>
+
                                                             <p
                                                                 class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
                                                                 <i class="bi bi-send-check me-1"></i>Diterima
@@ -111,67 +114,28 @@
                                     </div>
                                 </div>
                             </div>
-                            @empty
-                                <div class="col-md-12">
-                                    <div class="alert alert-info">Belum ada riwayat magang.</div>
-                                </div>
+                        @empty
+                            <div class="col-md-12">
+                                <div class="alert alert-info">Belum ada riwayat magang.</div>
+                            </div>
                         @endforelse
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    {{-- <div class="card d-flex justify-content-start align-items-start" style="padding: 5vh">
-        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
-            <h4 class="mb-0">Riwayat Magang</h4>
-        </div>
-    </div> --}}
-
-    <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ratingModalLabel">Beri Feedback Magang</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="ratingForm" method="POST" action="{{ url('feedback/store') }}">
-                        @csrf
-                        <!-- semua input di sini -->
-                        <div class="mb-2">
-                            <label class="form-label">Komentar</label>
-                            <textarea name="komentar" class="form-control" rows="3"
-                                placeholder="Berikan komentar tentang pengalaman magang Anda"></textarea>
-                        </div>
-                        <!-- rating stars dan input hidden -->
-                        {{-- <div class="mb-3">
-                            <label class="form-label">Rating</label>
-                            <div class="rating-input">
-                                <i class="bi bi-star fs-3" data-value="1"></i>
-                                <i class="bi bi-star fs-3" data-value="2"></i>
-                                <i class="bi bi-star fs-3" data-value="3"></i>
-                                <i class="bi bi-star fs-3" data-value="4"></i>
-                                <i class="bi bi-star fs-3" data-value="5"></i>
-                                <input type="hidden" name="rating" id="ratingValue">
-                            </div>
-                        </div> --}}
-                        <input type="hidden" name="id_magang" value="{{ $lamaran->magang->id_magang ?? '' }}">
-
-                        <!-- tombol submit form -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Kirim Feedback</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+        data-keyboard="false" aria-hidden="true">
     </div>
-
 @endsection
 
 @push('scripts')
     <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
         document.addEventListener('DOMContentLoaded', function() {
             const stars = document.querySelectorAll('.rating-input i');
             const ratingValue = document.getElementById('ratingValue');
