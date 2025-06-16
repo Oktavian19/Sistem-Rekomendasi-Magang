@@ -119,7 +119,7 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center"
                                         data-id="{{ $item->id }}">
                                         <span class="rank me-2">#1</span>
-                                        <span>{{ $item->label }}</span>
+                                        <span class="text-start flex-grow-1">{{ $item->label }}</span>
                                         <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
                                         <input type="hidden" name="bidang_keahlian[]" value="{{ $item->id }}">
                                     </li>

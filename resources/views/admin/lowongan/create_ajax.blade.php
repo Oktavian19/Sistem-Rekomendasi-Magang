@@ -38,8 +38,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Bidang Keahlian</label>
-                    <select name="id_bidang_keahlian[]" class="form-select select2" multiple required>
-                        <option value="">Pilih Bidang Keahlian</option>
+                    <select id="id_bidang_keahlian" name="id_bidang_keahlian[]" class="form-select select2" multiple required>
                         @foreach ($bidangKeahlians as $bidangKeahlian)
                             <option value="{{ $bidangKeahlian->id }}">{{ $bidangKeahlian->label }}</option>
                         @endforeach
@@ -89,7 +88,7 @@
                 <div class="col-lg-12 mb-4">
                     <div class="form-group">
                         <label>Fasilitas</label>
-                        <select class="form-select select2" name="id_fasilitas[]" multiple>
+                        <select id="id_fasilitas" class="form-select select2" name="id_fasilitas[]" multiple>
                             @foreach ($fasilitas as $fasilitasItem)
                                 <option value="{{ $fasilitasItem->id }}">{{ $fasilitasItem->label }}</option>
                             @endforeach
@@ -153,6 +152,9 @@
                     },
                     id_durasi_magang: {
                         required: true
+                    },
+                    "id_fasilitas[]": { 
+                        required: true
                     }
                 },
                 messages: {
@@ -194,6 +196,9 @@
                     },
                     id_durasi_magang: {
                         required: "Durasi magang wajib diisi.",
+                    },
+                    "id_fasilitas[]": {
+                        required: "Pilih minimal satu fasilitas."
                     }
                 },
                 errorPlacement: function(error, element) {
