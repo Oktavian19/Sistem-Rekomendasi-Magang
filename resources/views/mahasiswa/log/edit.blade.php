@@ -29,6 +29,7 @@
                     @error('tanggal')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <small id="error-tanggal" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="mb-3">
@@ -50,12 +51,14 @@
                     @error('deskripsi_kegiatan')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <small id="error-deskripsi_kegiatan" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="mb-3">
                     <label for="images" class="form-label">Upload Gambar (Maksimal 5)</label>
                     <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
                     <div class="row image-preview-container mt-2"></div>
+                    <small id="error-images" class="error-text form-text text-danger"></small>
                 </div>
             </div>
 
