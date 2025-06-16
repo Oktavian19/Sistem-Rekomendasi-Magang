@@ -83,7 +83,7 @@
               <a class="nav-link text-dark" style="font-size: 1rem" href="#bidangKeahlian">Bidang Keahlian</a>
               <a class="nav-link text-dark" style="font-size: 1rem" href="#lowonganTerbaru">Lowongan Terbaru</a>
               <a class="nav-link text-dark" style="font-size: 1rem" href="#ssd">SSD</a>
-              <a class="nav-link text-dark" style="font-size: 1rem" href="https://docs.google.com/document/d/1JQtxjj5FWhHMQsAdGyISucFklJ2SZXIb/edit?usp=sharing&ouid=115429365200999512022&rtpof=true&sd=true">Manual Book</a>
+              <a class="nav-link text-dark" style="font-size: 1rem" href="{{ asset('storage/manual_book.pdf') }}" target="_blank">Manual Book</a>
             </div>
 
             <a href="{{ url('/login') }}" class="btn btn-outline-primary" style="font-size: 1rem">Login</a>
