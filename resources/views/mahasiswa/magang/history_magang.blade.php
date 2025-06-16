@@ -89,7 +89,7 @@
                                                             <a href="#"
                                                                 class="small text-warning mb-0 badge rounded-pill bg-label-warning"
                                                                 role="button" data-bs-toggle="modal" data-bs-target="#ratingModal">
-                                                                <i class="bi bi-star me-1"></i> Beri Rating
+                                                                <i class="bi bi-star me-1"></i> Beri Feedback
                                                             </a>
                                                             <p
                                                                 class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
@@ -131,20 +131,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ratingModalLabel">Beri Rating Magang</h5>
+                    <h5 class="modal-title" id="ratingModalLabel">Beri Feedback Magang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="ratingForm" method="POST" action="{{ url('feedback/store') }}">
                         @csrf
                         <!-- semua input di sini -->
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label class="form-label">Komentar</label>
                             <textarea name="komentar" class="form-control" rows="3"
                                 placeholder="Berikan komentar tentang pengalaman magang Anda"></textarea>
                         </div>
                         <!-- rating stars dan input hidden -->
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Rating</label>
                             <div class="rating-input">
                                 <i class="bi bi-star fs-3" data-value="1"></i>
@@ -154,13 +154,13 @@
                                 <i class="bi bi-star fs-3" data-value="5"></i>
                                 <input type="hidden" name="rating" id="ratingValue">
                             </div>
-                        </div>
+                        </div> --}}
                         <input type="hidden" name="id_magang" value="{{ $lamaran->magang->id_magang ?? '' }}">
 
                         <!-- tombol submit form -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Kirim Rating</button>
+                            <button type="submit" class="btn btn-primary">Kirim Feedback</button>
                         </div>
                     </form>
                 </div>
