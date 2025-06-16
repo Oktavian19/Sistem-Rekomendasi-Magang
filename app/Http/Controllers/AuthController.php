@@ -58,7 +58,7 @@ class AuthController extends Controller
         shuffle($availableImages);
 
         $bidangGambar = [];
-        
+
         foreach ($bidangKeahlian as $index => $bidang) {
             $bidangGambar[$bidang->id] = $availableImages[$index % count($availableImages)] ?? 'sneat/assets/img/1.png';
         }
@@ -185,9 +185,8 @@ class AuthController extends Controller
                 'role' => 'mahasiswa'
             ]);
 
-            // Tambahkan mahasiswa dengan relasi ke user
-            Mahasiswa::create([
-                'id_mahasiswa' => $user->id_user, // sesuaikan primary key user
+            $mahasiswa = Mahasiswa::create([
+                'id_mahasiswa' => $user->id_user,
                 'nim' => $request->nim,
                 'nama' => $request->nama,
                 'email' => $request->email,
@@ -195,6 +194,31 @@ class AuthController extends Controller
                 'no_hp' => $request->no_hp,
                 'id_program_studi' => $request->id_program_studi,
             ]);
+
+            // Ambil opsi preferensi dari kategori: jarak (1), durasi (2), perusahaan (4)
+            $preferensi_jarak = DB::table('opsi_preferensi')->where('id_kategori', 1)->limit(3)->get();
+            $preferensi_durasi = DB::table('opsi_preferensi')->where('id_kategori', 2)->limit(3)->get();
+            $preferensi_perusahaan = DB::table('opsi_preferensi')->where('id_kategori', 4)->limit(4)->get();
+
+            // Gabungkan semua
+            $semua_preferensi = $preferensi_jarak->merge($preferensi_durasi)->merge($preferensi_perusahaan);
+
+            // Insert ke tabel preferensi_pengguna
+            $insertData = [];
+            $ranking = 1;
+            foreach ($semua_preferensi as $opsi) {
+                $insertData[] = [
+                    'id_mahasiswa' => $user->id_user,
+                    'id_opsi' => $opsi->id,
+                    'ranking' => null,
+                    'poin' => null,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ];
+                $ranking++;
+            }
+
+            DB::table('preferensi_pengguna')->insert($insertData);
 
             DB::commit();
 

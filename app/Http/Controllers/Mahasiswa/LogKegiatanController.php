@@ -17,8 +17,8 @@ class LogKegiatanController extends Controller
         $idMahasiswa = Auth::user()->mahasiswa->id_mahasiswa;
 
         $logs = LogKegiatan::whereHas('magang.lamaran', function ($query) use ($idMahasiswa) {
-                $query->where('id_mahasiswa', $idMahasiswa);
-            })
+            $query->where('id_mahasiswa', $idMahasiswa);
+        })
             ->whereHas('magang', function ($query) {
                 $query->where('status_magang', 'aktif');
             })
@@ -27,8 +27,8 @@ class LogKegiatanController extends Controller
             ->paginate(10);
 
         $isMagangAktif = Magang::whereHas('lamaran', function ($query) use ($idMahasiswa) {
-                $query->where('id_mahasiswa', $idMahasiswa);
-            })
+            $query->where('id_mahasiswa', $idMahasiswa);
+        })
             ->where('status_magang', 'aktif')
             ->exists();
 
@@ -59,6 +59,14 @@ class LogKegiatanController extends Controller
             ], 422);
         }
 
+        // Cek apakah sudah memiliki dosen pembimbing
+        if (is_null($pendaftaran->id_dosen_pembimbing)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Anda belum memiliki dosen pembimbing. Tidak dapat membuat log kegiatan.'
+            ], 422);
+        }
+
         $label = $pendaftaran->lamaran->lowongan->durasiMagang->label;
 
         // Ambil angka dari string, misalnya '3 Bulan' -> 3
@@ -77,6 +85,7 @@ class LogKegiatanController extends Controller
         return view('mahasiswa.log.create', compact('jumlahMinggu', 'mingguTerpakai'));
     }
 
+
     public function store(Request $request)
     {
         $messages = [
@@ -89,7 +98,7 @@ class LogKegiatanController extends Controller
             'images.max' => 'Maksimal boleh mengupload :max gambar.',
             'images.*.image' => 'File harus berupa gambar.',
         ];
-    
+
         $validated = $request->validate([
             'tanggal' => 'required|date',
             'minggu' => 'required|integer|min:1|max:52',
