@@ -174,7 +174,7 @@
                   icon: 'success',
                   title: response.message,
                   text: 'Validasi akun akan dikirimkan ke email Anda.',
-                  timer: 2000,
+                  // timer: 2000,
                   showConfirmButton: true
                 });
                 window.location.href = response.redirect;
