@@ -104,7 +104,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label>Fasilitas</label>
-                    <select class="form-select select2" name="id_fasilitas[]" multiple>
+                    <select class="form-select select2" id="edit_id_fasilitas" name="id_fasilitas[]" multiple>
                         @foreach ($fasilitas as $fasilitasItem)
                             <option value="{{ $fasilitasItem->id }}"
                                 {{ in_array($fasilitasItem->id, $lowongan->fasilitas->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -184,6 +184,9 @@
                     },
                     id_durasi_magang: {
                         required: true
+                    },
+                    "id_fasilitas[]": { 
+                        required: true
                     }
                 },
                 messages: {
@@ -225,6 +228,9 @@
                     },
                     id_durasi_magang: {
                         required: "Durasi magang wajib diisi.",
+                    },
+                    "id_fasilitas[]": {
+                        required: "Pilih minimal satu fasilitas."
                     }
                 },
                 errorPlacement: function(error, element) {

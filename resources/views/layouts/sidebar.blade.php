@@ -44,13 +44,13 @@
         <li class="menu-item {{ request()->is('user*') ? 'active' : '' }}">
           <a href="{{ url('user') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-user-plus"></i>
-            <div>Kelola Pengguna</div>
+            <div>Pengguna</div>
           </a>
         </li>
         <li class="menu-item {{ request()->is('input*') ? 'active open' : '' }}">
           <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-edit"></i>
-            <div class="text-truncate">Kelola Input</div>
+            <div class="text-truncate">Input Pengguna</div>
           </a>
           <ul class="menu-sub">
             <li class="menu-item {{ request()->is('input-fasilitas*') ? 'active' : '' }}">
