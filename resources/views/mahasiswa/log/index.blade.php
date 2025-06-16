@@ -134,6 +134,9 @@
                     modal.innerHTML = html;
                     const bootstrapModal = new bootstrap.Modal(modal);
                     bootstrapModal.show();
+                    
+                    // Inisialisasi validasi setelah modal ditampilkan
+                    initValidation();
                 })
                 .catch(error => {
                     Swal.fire({
@@ -148,6 +151,111 @@
                         buttonsStyling: false
                     });
                 });
+        }
+
+        function initValidation() {
+            // Fungsi untuk menginisialisasi validasi pada form tertentu
+            function setupFormValidation(formId) {
+                if ($(`#${formId}`).length) {
+                    // Tambahkan custom methods (hanya sekali)
+                    if (!$.validator.methods.filesize) {
+                        $.validator.addMethod("filesize", function(value, element, param) {
+                            if (element.files.length === 0) return true;
+                            
+                            let totalSize = 0;
+                            for (let i = 0; i < element.files.length; i++) {
+                                totalSize += element.files[i].size;
+                            }
+                            return this.optional(element) || totalSize <= param;
+                        }, "Ukuran total file terlalu besar.");
+                    }
+
+                    if (!$.validator.methods.maxfilecount) {
+                        $.validator.addMethod("maxfilecount", function(value, element, max) {
+                            return this.optional(element) || (element.files.length <= max && element.files.length > 0);
+                        }, "Maksimal {0} file yang diperbolehkan dan minimal 1 file.");
+                    }
+
+                    // Aturan validasi yang sama untuk kedua form
+                    const commonRules = {
+                        tanggal: {
+                            required: true
+                        },
+                        deskripsi_kegiatan: {
+                            required: true,
+                            minlength: 3
+                        }
+                    };
+
+                    // Pesan error yang sama untuk kedua form
+                    const commonMessages = {
+                        tanggal: {
+                            required: "Tanggal kegiatan wajib diisi."
+                        },
+                        deskripsi_kegiatan: {
+                            required: "Deskripsi kegiatan wajib diisi.",
+                            minlength: "Deskripsi minimal 3 karakter."
+                        }
+                    };
+
+                    // Konfigurasi khusus untuk form tambah
+                    if (formId === 'form-tambah') {
+                        commonRules["images[]"] = {
+                            required: true,
+                            extension: "jpg|jpeg|png",
+                            filesize: 2 * 1024 * 1024, // 2MB
+                            maxfilecount: 5
+                        };
+
+                        commonMessages["images[]"] = {
+                            required: "Minimal 1 gambar diperlukan.",
+                            extension: "Hanya file gambar JPG, JPEG, atau PNG yang diperbolehkan.",
+                            filesize: "Ukuran total maksimal 2MB.",
+                            maxfilecount: "Maksimal 5 file yang diperbolehkan."
+                        };
+                    }
+
+                    // Konfigurasi khusus untuk form edit
+                    if (formId === 'form-edit') {
+                        // Jika di form edit gambar tidak wajib diubah
+                        commonRules["images[]"] = {
+                            extension: "jpg|jpeg|png",
+                            filesize: 2 * 1024 * 1024, // 2MB
+                            maxfilecount: 5
+                        };
+
+                        commonMessages["images[]"] = {
+                            extension: "Hanya file gambar JPG, JPEG, atau PNG yang diperbolehkan.",
+                            filesize: "Ukuran total maksimal 2MB.",
+                            maxfilecount: "Maksimal 5 file yang diperbolehkan."
+                        };
+                    }
+
+                    // Inisialisasi validasi
+                    $(`#${formId}`).validate({
+                        ignore: [],
+                        rules: commonRules,
+                        messages: commonMessages,
+                        errorPlacement: function(error, element) {
+                            let id = element.attr('id');
+                            $(`#error-${id}`).html(error);
+                        },
+                        highlight: function(element) {
+                            $(element).addClass('is-invalid');
+                        },
+                        unhighlight: function(element) {
+                            $(element).removeClass('is-invalid');
+                        },
+                        submitHandler: function(form) {
+                            form.submit();
+                        }
+                    });
+                }
+            }
+
+            // Setup validasi untuk kedua form
+            setupFormValidation('form-tambah');
+            setupFormValidation('form-edit');
         }
 
         // SweetAlert notifications

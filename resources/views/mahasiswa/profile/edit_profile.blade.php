@@ -102,8 +102,9 @@
                         <small id="error-fasilitas" class="text-danger error-text"></small>
                     </div>
                     <div class="col-lg-6 mb-4">
-                        <label class="required form-label">Bidang Keahlian</label>
-                        <select id="select-bidang-keahlian" class="form-select form-select-sm" data-control="select2"
+                        <label class="required form-label">Bidang Keahlian</label><br>
+                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
+                        <select id="select-bidang-keahlian" name="select_bidang_keahlian" class="form-select form-select-sm" data-control="select2"
                             data-placeholder="Pilih Bidang Keahlian">
                             <option></option>
                             @foreach ($bidangKeahlian as $bidang)
@@ -117,6 +118,7 @@
                                 @if ($item)
                                     <li class="list-group-item d-flex justify-content-between align-items-center"
                                         data-id="{{ $item->id }}">
+                                        <span class="rank me-2">#1</span>
                                         <span>{{ $item->label }}</span>
                                         <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
                                         <input type="hidden" name="bidang_keahlian[]" value="{{ $item->id }}">
@@ -132,7 +134,7 @@
 
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Jenis Perusahaan</label><br>
-                        <small class="text-muted">Urutan Pembobotan SPK</small>
+                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
                         <ul id="sortable-perusahaan" class="list-group">
                             @foreach (old('jenis_perusahaan', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $jenisPerusahaan->firstWhere('id', $id); @endphp
@@ -152,7 +154,7 @@
                     {{-- ===== Lokasi Magang (Jarak) (Hanya Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Lokasi Magang</label><br>
-                        <small class="text-muted">Urutan Pembobotan SPK</small>
+                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
                         <ul id="sortable-jarak" class="list-group">
                             @foreach (old('jarak', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $jarak->firstWhere('id', $id); @endphp
@@ -172,7 +174,7 @@
                     {{-- ===== Durasi Magang (Hanya Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Durasi Magang</label><br>
-                        <small class="text-muted">Urutan Pembobotan SPK</small>
+                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
                         <ul id="sortable-durasi" class="list-group">
                             @foreach (old('durasi_magang', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $durasi->firstWhere('id', $id); @endphp
@@ -391,9 +393,13 @@
         }, "File terlalu besar.");
 
         // Custom method untuk minimal jumlah input
-        $.validator.addMethod("minSelected", function (value, element, min) {
-            return $('input[name="bidang_keahlian[]"]').length >= min;
+        $.validator.addMethod("minSelected", function (value, element, params) {
+            return $('#sortable-bidang-keahlian li').length >= params;
         }, "Pilih setidaknya {0} bidang keahlian.");
+
+        $.validator.addMethod("minFasilitas", function (value, element, params) {
+            return $('#fasilitas').val() && $('#fasilitas').val().length >= params;
+        }, "Pilih setidaknya {0} fasilitas.")
 
         $(document).ready(function() {
             // Aktifkan select2 hanya untuk select yang masih digunakan
@@ -428,6 +434,8 @@
                             text: response.message || 'Data berhasil diperbarui!',
                             timer: 2000,
                             showConfirmButton: false
+                        }).then(() => {
+                            location.reload(); // Refresh seluruh halaman setelah alert selesai
                         });
                     },
                     error: function(xhr) {
@@ -480,10 +488,10 @@
                         required: true,
                         minlength: 3,
                     },
-                    fasilitas: {
-                        required: true
+                    "fasilitas[]": {
+                        minFasilitas: 1
                     },
-                    bidang_keahlian: {
+                    select_bidang_keahlian: {
                         minSelected: 1
                     },
                 },
@@ -515,29 +523,48 @@
                         required: "Alamat wajib diisi",
                         minlength: "Minimal 3 karakter"
                     },
-                    fasilitas: {
-                        required: "Pilih setidaknya 1 fasilitas."
+                    "fasilitas[]": {
+                        required: "Pilih setidaknya 1 fasilitas.",
+                        minFasilitas: "Pilih setidaknya 1 fasilitas."
                     },
-                    bidang_keahlian: {
+                    select_bidang_keahlian: {
                         minSelected: "Pilih setidaknya 1 bidang keahlian."
                     }
                 },
-                errorPlacement: function (error, element) {
-                    let id = element.attr("id");
-                    $("#error-" + id).html(error);
+                errorElement: 'small',
+                errorClass: 'text-danger text-sm',
+                
+                highlight: function(element, errorClass) {
+                    if ($(element).hasClass('select2-hidden-accessible')) {
+                        $(element).next('.select2-container').find('.select2-selection')
+                            .addClass('border border-danger');
+                    } else {
+                        $(element).addClass('is-invalid');
+                    }
                 },
-                highlight: function (element) {
-                    $(element).addClass("is-invalid");
+                
+                unhighlight: function(element, errorClass) {
+                    if ($(element).hasClass('select2-hidden-accessible')) {
+                        $(element).next('.select2-container').find('.select2-selection')
+                            .removeClass('border border-danger');
+                    } else {
+                        $(element).removeClass('is-invalid');
+                    }
                 },
-                unhighlight: function (element) {
-                    $(element).removeClass("is-invalid");
+
+                errorPlacement: function(error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // taruh setelah select2
+                    } else {
+                        error.insertAfter(element);
+                    }
                 }
             });
         });
 
         // Number Ranking
         $(function () {
-            const sortableIds = ['perusahaan', 'jarak', 'durasi'];
+            const sortableIds = ['perusahaan', 'jarak', 'durasi', 'bidang-keahlian'];
 
             sortableIds.forEach(function (id) {
                 const selector = '#sortable-' + id;
@@ -556,6 +583,17 @@
 
                 updateRanks(); // set initial
             });
+        });
+
+        function updateRanks() {
+            $('#sortable-bidang-keahlian li').each(function (index) {
+                $(this).find('.rank').text('#' + (index + 1));
+            });
+        }
+
+        $(document).on('click', '.remove-item', function () {
+            $(this).closest('li').remove();
+            updateRanks();
         });
 
         function modalAction(url = '') {
@@ -661,23 +699,31 @@
             const id = e.params.data.id;
             const text = e.params.data.text;
             const list = $('#sortable-bidang-keahlian');
-
+            
             if (list.find(`li[data-id="${id}"]`).length) return;
-
+            
             list.append(`
             <li class="list-group-item d-flex justify-content-between align-items-center" data-id="${id}">
+                <span class="rank me-2">#?</span>
                 <span>${text}</span>
                 <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
                 <input type="hidden" name="bidang_keahlian[]" value="${id}">
-            </li>
-        `);
-
+                </li>
+                `);
+                
             $(this).val(null).trigger('change');
+            $("#select-bidang-keahlian").valid();
+            updateRanks();
+        });
+
+        $('#fasilitas').on('change', function () {
+            $(this).valid();
         });
 
         // Handler tombol hapus hanya untuk item dinamis seperti bidang keahlian
         $(document).on('click', '.remove-item', function() {
             $(this).closest('li').remove();
+            $("#select-bidang-keahlian").valid();
         });
     </script>
 @endpush

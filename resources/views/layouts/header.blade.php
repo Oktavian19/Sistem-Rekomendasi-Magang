@@ -34,7 +34,7 @@
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         @if ($fotoProfil)
-            <img src="{{ asset($fotoProfil) }}" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
+            <img id="foto-header" src="{{ asset($fotoProfil) }}" class="rounded-circle" style="width: 40px; height: 40px;" alt="User">
         @else
             <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white"
                 style="width: 40px; height: 40px;">

@@ -67,8 +67,14 @@ class LogKegiatanController extends Controller
 
         // Ubah bulan ke minggu
         $jumlahMinggu = $durasi * 4;
+        $magangAktif = $pendaftaran;
 
-        return view('mahasiswa.log.create', compact('jumlahMinggu'));
+        $mingguTerpakai = LogKegiatan::where('id_magang', $magangAktif->id_magang)
+            ->whereNotNull('minggu')
+            ->pluck('minggu')
+            ->toArray();
+
+        return view('mahasiswa.log.create', compact('jumlahMinggu', 'mingguTerpakai'));
     }
 
     public function store(Request $request)
@@ -144,12 +150,39 @@ class LogKegiatanController extends Controller
 
             // Handle image uploads
             if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    // Validasi tambahan untuk memastikan file adalah gambar
+                $images = $request->file('images');
+
+                // Cek ulang jumlah file
+                if (count($images) > 5) {
+                    return redirect()->back()->withInput()
+                        ->with('error', 'Maksimal hanya boleh mengunggah 5 gambar.');
+                }
+
+                $maxFileSize = 2 * 1024 * 1024; // 2MB per file
+                $maxTotalSize = 10 * 1024 * 1024; // 10MB total
+                $totalSize = 0;
+
+                foreach ($images as $image) {
                     if (!$image->isValid()) {
-                        continue; // Skip file yang tidak valid
+                        return redirect()->back()->withInput()
+                            ->with('error', 'Terdapat file yang tidak valid.');
                     }
 
+                    if ($image->getSize() > $maxFileSize) {
+                        return redirect()->back()->withInput()
+                            ->with('error', 'Ukuran tiap gambar maksimal 2MB.');
+                    }
+
+                    $totalSize += $image->getSize();
+                }
+
+                if ($totalSize > $maxTotalSize) {
+                    return redirect()->back()->withInput()
+                        ->with('error', 'Total ukuran semua gambar maksimal 10MB.');
+                }
+
+                // Simpan gambar setelah semua validasi lolos
+                foreach ($images as $image) {
                     $path = $image->store('public/log-kegiatan');
                     $publicPath = str_replace('public/', 'storage/', $path);
 
