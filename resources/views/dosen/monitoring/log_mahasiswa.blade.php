@@ -59,7 +59,7 @@
                     <div class="col-sm-6 col-lg-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h5 class="mb-0">{{ $magang->created_at->format('d F Y') }}</h5>
+                                <h5 class="mb-0">{{ $magang->created_at->locale('id')->isoFormat('D MMMM YYYY') }}</h5>
                                 <p class="mb-0">Tanggal Dikirim</p>
                             </div>
                             <div class="avatar">
@@ -83,8 +83,7 @@
                                             <div class="mb-3">
                                                 <p class="fw-semibold mb-1">
                                                     <i class="bi bi-calendar me-3"></i>
-                                                    Minggu ke-{{ $loop->iteration }} -
-                                                    {{ \Carbon\Carbon::parse($log->tanggal)->format('d F Y') }}
+                                                    Minggu ke-{{ $loop->iteration }} ({{ \Carbon\Carbon::parse($log->tanggal)->locale('id')->isoFormat('D MMMM YYYY') }})
                                                 </p>
                                             </div>
 
@@ -133,7 +132,7 @@
                                                                 </div>
                                                                 <p class="mb-0">{{ $feedback->komentar }}</p>
                                                                 <small class="text-muted">
-                                                                    {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->format('d M Y') }}
+                                                                    {{ \Carbon\Carbon::parse($feedback->tanggal_feedback)->locale('id')->isoFormat('D MMMM YYYY') }}
                                                                 </small>
                                                             </div>
                                                         </div>

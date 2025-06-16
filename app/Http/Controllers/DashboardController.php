@@ -11,6 +11,13 @@ use App\Models\Lamaran;
 use App\Models\Lowongan;
 use Illuminate\Support\Facades\Auth;
 use App\Services\RekomendasiService;
+use App\Exports\LamaranDiprosesExport;
+use App\Exports\MahasiswaMagangAktifExport;
+use App\Exports\MahasiswaSelesaiMagangExport;
+use App\Exports\RasioDosenMahasiswaExport;
+use App\Exports\StatusLamaranExport;
+use App\Exports\LamaranRekomendasiExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DashboardController extends Controller
 {
@@ -19,6 +26,82 @@ class DashboardController extends Controller
     public function __construct(RekomendasiService $rekomendasiService)
     {
         $this->rekomendasiService = $rekomendasiService;
+    }
+
+    public function exportLamaranDiproses()
+    {
+        return Excel::download(new LamaranDiprosesExport(), 'lamaran_diproses.xlsx');
+    }
+
+    public function exportMahasiswaMagangAktif()
+    {
+        return Excel::download(new MahasiswaMagangAktifExport(), 'mahasiswa_magang_aktif.xlsx');
+    }
+
+    public function exportMahasiswaSelesaiMagang()
+    {
+        return Excel::download(new MahasiswaSelesaiMagangExport(), 'mahasiswa_selesai_magang.xlsx');
+    }
+
+    public function exportRasioDosenMahasiswa()
+    {
+        return Excel::download(new RasioDosenMahasiswaExport(), 'rasio_dosen_mahasiswa.xlsx');
+    }
+
+    public function exportStatusLamaran(Request $request)
+    {
+        $status = $request->query('status');
+        
+        $query = Lamaran::with(['mahasiswa', 'lowongan']);
+        
+        if ($status) {
+            $query->where('status_lamaran', $status);
+        }
+        
+        $data = $query->get()->map(function($item) {
+            return [
+                'NIM' => $item->mahasiswa->nim,
+                'Nama Mahasiswa' => $item->mahasiswa->nama,
+                'Lowongan' => $item->lowongan->nama_posisi,
+                'Perusahaan' => $item->lowongan->perusahaan->nama_perusahaan,
+                'Tanggal Lamar' => $item->tanggal_lamaran,
+                'Status' => $this->getStatusText($item->status_lamaran),
+                'Rekomendasi' => $item->dari_rekomendasi ? 'Ya' : 'Tidak'
+            ];
+        });
+        
+        return Excel::download(new StatusLamaranExport($data), 'status_lamaran.xlsx');
+    }
+
+    public function exportLamaranRekomendasi()
+    {
+        $data = Lamaran::with(['mahasiswa', 'lowongan'])
+            ->where('dari_rekomendasi', 1)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'NIM' => $item->mahasiswa->nim,
+                    'Nama Mahasiswa' => $item->mahasiswa->nama,
+                    'Lowongan' => $item->lowongan->nama_posisi,
+                    'Perusahaan' => $item->lowongan->perusahaan->nama_perusahaan,
+                    'Tanggal Lamar' => $item->tanggal_lamaran,
+                    'Status' => $this->getStatusText($item->status_lamaran),
+                    'Rekomendasi' => 'Ya'
+                ];
+            });
+        
+        return Excel::download(new LamaranRekomendasiExport($data), 'lamaran_rekomendasi.xlsx');
+    }
+
+    private function getStatusText($status)
+    {
+        $statuses = [
+            'ditolak' => 'Ditolak',
+            'menunggu' => 'Diproses',
+            'diterima' => 'Diterima'
+        ];
+        
+        return $statuses[$status] ?? $status;
     }
 
     public function dashboard_admin()
@@ -163,7 +246,8 @@ class DashboardController extends Controller
         if ($lamaran) {
             // Jika ada lamaran, langkah 1 (Lamaran Dikirim) dan 2 (Diproses Admin) aktif
             $progressBarStatus['step1_active'] = true;
-            $progressBarStatus['step2_active'] = true;
+
+            $progressBarStatus['step2_active'] = ($lamaran->status_lamaran !== 'diprosesAdmin');
 
             // 2. Cek status lamaran
             if ($lamaran->status_lamaran === 'diterima') {

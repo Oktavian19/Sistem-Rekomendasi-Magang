@@ -36,12 +36,12 @@
                         </div>
 
                         <div class="col-sm-6 col-lg-3">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                                 <div>
                                     <h4 class="mb-0">{{ $statusMagang['selesai'] }}</h4>
                                     <p class="mb-0">Jumlah Mahasiswa <br>Selesai Magang</p>
                                 </div>
-                                <div class="avatar">
+                                <div class="avatar me-sm-4">
                                     <span class="avatar-initial rounded bg-label-success text-heading">
                                         <i class="bx bx-check-circle bx-md"></i>
                                     </span>
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="col-sm-6 col-lg-3">
-                            <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
+                            <div class="d-flex justify-content-between align-items-center pb-4 pb-sm-0">
                                 <div>
                                     <h4 class="mb-0">1 : {{ $rasioDosenMahasiswa }}</h4>
                                     <p class="mb-0">Rasio Dosen :<br> Mahasiswa Magang</p>
@@ -63,6 +63,19 @@
                             </div>
                             <hr class="d-none d-sm-block d-lg-none">
                         </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="btn-group ms-auto">
+                                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-export"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('admin.export.lamaran-diproses') }}">Lamaran Diproses</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.export.mahasiswa-magang-aktif') }}">Mahasiswa Magang Aktif</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.export.mahasiswa-selesai-magang') }}">Mahasiswa Selesai Magang</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.export.rasio-dosen-mahasiswa') }}">Rasio Dosen:Mahasiswa</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,8 +83,14 @@
     </div>
 
     <div class="bg-white p-4 rounded" style="height: 55vh">
-        <div class="row mt-4">
+        <div class="row">
             <div class="col-md-12">
+                <div class="chart-container position-relative pb-4">
+                    <button id="exportExcelBtn" class="btn btn-sm btn-outline-secondary position-absolute" style="top: 10px; right: 10px; z-index: 10;">
+                      <i class="bx bx-export"></i>
+                    </button>
+                    <div id="chart"></div>
+                </div>
                 <div id="bar"></div>
             </div>
         </div>
@@ -79,12 +98,19 @@
 
     <div class="row">
         <div class="col-md-7 mt-3">
-            <div class="box shadow bg-white rounded">
-                <div id="donutTop"></div>
+            <div class="box shadow bg-white rounded p-2 position-relative" style="height: 45vh">
+                <button id="exportDonutExcelBtn" class="btn btn-sm btn-outline-secondary position-absolute" style="top: 10px; right: 10px; z-index: 10;">
+                    <i class="bx bx-export"></i>
+                </button>
+                <div id="donutTop"></div> <!-- mt-4 biar donut-nya gak ketimpa tombol -->
             </div>
         </div>
+        
         <div class="col-md-5 mt-3">
-            <div class="box shadow bg-white rounded">
+            <div class="box shadow bg-white rounded p-2 position-relative" style="height: 45vh">
+                <button id="exportRadialExcelBtn" class="btn btn-sm btn-outline-secondary position-absolute" style="top: 10px; right: 10px; z-index: 10;">
+                    <i class="bx bx-export"></i>
+                </button>
                 <div id="radialBar1"></div>
             </div>
         </div>
@@ -112,6 +138,9 @@
             width: '100%',
             stacked: true,
             foreColor: '#999',
+            toolbar: {
+                show: false
+            }
         },
         plotOptions: {
             bar: {
@@ -122,7 +151,7 @@
                 borderRadius: 7
             }
         },
-        colors: ["#00C5A4", '#F3F2FC'],
+        colors: ["#00C5A4", '#E7E6EF'],
         series: [
             { name: "Terealisasi", data: dataTerealisasi },
             { name: "Peminat", data: dataPeminat }
@@ -199,7 +228,11 @@
         ],
         labels: ['Ditolak', 'Diproses', 'Diterima'],
         legend: {
-            show: true
+            show: true,
+            position: 'bottom',
+            formatter: function(seriesName, opts) {
+                return seriesName + ': ' + opts.w.globals.series[opts.seriesIndex];
+            }
         }
     };
 
@@ -213,6 +246,10 @@
         colors: ['#E91E63'],
         plotOptions: {
             radialBar: {
+                track: {
+                    background: '#E7E6EF', 
+                    strokeWidth: '100%',  
+                },
                 dataLabels: {
                     name: { show: false },
                     value: { offsetY: 0 }
@@ -233,5 +270,66 @@
     new ApexCharts(document.querySelector('#bar'), optionsBar).render();
     new ApexCharts(document.querySelector('#donutTop'), optionsDonutTop).render();
     new ApexCharts(document.querySelector('#radialBar1'), optionsCircle1).render();
+
+    document.getElementById('exportExcelBtn').addEventListener('click', function() {
+        // Prepare the data from your chart
+        const chartData = {
+            labels: optionsBar.labels,
+            series: optionsBar.series
+        };
+        
+        // Convert to worksheet
+        const wsData = [
+            ['Bidang', ...chartData.series.map(s => s.name)] // Header row
+        ];
+        
+        // Add data rows
+        chartData.labels.forEach((label, index) => {
+            const row = [label];
+            chartData.series.forEach(series => {
+                row.push(series.data[index]);
+            });
+            wsData.push(row);
+        });
+        
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Peminatan Bidang");
+        
+        // Export the file
+        XLSX.writeFile(wb, 'peminatan_bidang.xlsx');
+    });
+
+    document.getElementById('exportDonutExcelBtn').addEventListener('click', function() {
+        // Get the active segment in the chart (if any)
+        const activeSegment = document.querySelector('.apexcharts-pie-area.active');
+        let status = null;
+        
+        if (activeSegment) {
+            const segmentTitle = activeSegment.getAttribute('data:realIndex');
+            // Map the index to status value
+            const statusMap = {0: 'ditolak', 1: 'menunggu', 2: 'diterima'};
+            status = statusMap[segmentTitle];
+        }
+        
+        // Build the export URL
+        let exportUrl = '{{ route("dashboard.export.status") }}';
+        if (status) {
+            exportUrl += `?status=${status}`;
+        }
+        
+        // Trigger the download
+        window.location.href = exportUrl;
+    });
+
+    // For radial bar chart export (lamaran rekomendasi)
+    document.getElementById('exportRadialExcelBtn').addEventListener('click', function() {
+        window.location.href = '{{ route("dashboard.export.rekomendasi") }}';
+    });
+
+
+
 </script>
 @endpush

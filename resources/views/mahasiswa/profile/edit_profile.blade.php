@@ -327,8 +327,7 @@
                                     method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-icon btn-light-danger btn-sm"
-                                        onclick="deleteExperience(event)">
+                                    <button type="button" class="btn btn-icon btn-light-danger btn-sm delete-experience-btn">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -615,23 +614,27 @@
                 });
         }
 
-        function deleteExperience(event) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Anda ingin menghapus pengalaman ini?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    event.target.form.submit();
-                }
+        document.querySelectorAll('.delete-experience-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('form');
+                
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda ingin menghapus pengalaman ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed && form) {
+                        form.submit();
+                    }
+                });
             });
-        }
+        });
 
         function confirmDelete(event) {
             event.preventDefault();

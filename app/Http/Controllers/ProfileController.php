@@ -434,11 +434,6 @@ class ProfileController extends Controller
         return response()->download(storage_path('app/public/' . $dokumen->path_file));
     }
 
-    public function downloadCV()
-    {
-        return $this->downloadDokumen('CV');
-    }
-
     public function updateAdmin(Request $request)
     {
         $user = auth()->user();
