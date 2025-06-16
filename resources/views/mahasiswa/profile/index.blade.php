@@ -58,12 +58,7 @@
                                     <i class="bi bi-upload me-1"></i> Upload CV
                                 </button>
                             </form>
-
-                            <a href="{{ url('profile/dokumen/download-cv') }}" class="btn btn-sm btn-primary">
-                                <i class="bi bi-download me-1"></i> Download CV
-                            </a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -77,14 +72,10 @@
                 </h4>
             </div>
             <div class="card-body">
-                @php
-                    $dokumenLain = $mahasiswa->dokumen->filter(fn($d) => $d->jenis_dokumen !== 'Curriculum Vitae (CV)');
-                @endphp
-
-                @if ($dokumenLain->isEmpty())
+                @if ($mahasiswa->dokumen->isEmpty())
                     <p class="text-muted">Belum ada dokumen pendukung</p>
                 @else
-                    @foreach ($dokumenLain as $dokumen)
+                    @foreach ($mahasiswa->dokumen as $dokumen)
                         <div class="border rounded p-4 mb-3">
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-file-earmark-text-fill text-primary fs-1 me-3"></i>
