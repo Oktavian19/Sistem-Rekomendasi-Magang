@@ -209,6 +209,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('riwayat-magang', [MagangController::class, 'historyMagang']);
         Route::post('/lowongan/{id}/daftar', [LowonganController::class, 'daftarLamaran'])->name('lowongan.daftar');
+        Route::get('/feedback/modal/{id}', [LogMahasiswaController::class, 'modal'])->name('feedback.modal');
         Route::post('/feedback/store', [LogMahasiswaController::class, 'storeFeedbackMahasiswa'])->name('feedback.store');
 
         Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');

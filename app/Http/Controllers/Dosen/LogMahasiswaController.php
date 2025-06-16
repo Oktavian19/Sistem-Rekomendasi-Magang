@@ -85,12 +85,19 @@ class LogMahasiswaController extends Controller
             ->with('success', 'Feedback berhasil diberikan');
     }
 
+    public function modal($id)
+    {
+        $magang = Magang::with('lamaran.lowongan.perusahaan')->find($id);
+
+        return view('mahasiswa.magang.feedback_form', compact('magang'));
+    }
+
+
     public function storeFeedbackMahasiswa(Request $request)
     {
         // Validasi input
         $request->validate([
             'komentar' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5', // Kalau rating juga wajib
         ]);
 
         // Simpan feedback baru
@@ -98,7 +105,6 @@ class LogMahasiswaController extends Controller
             'id_user' => auth()->id(),
             'id_magang' => $request->id_magang,
             'komentar' => $request->komentar,
-            'rating' => $request->rating, // Kalau kamu ada kolom rating di tabel feedback
             'tanggal_feedback' => now(),
         ]);
 

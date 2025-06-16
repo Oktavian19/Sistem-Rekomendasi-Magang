@@ -178,14 +178,14 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
-            // Tambahkan user
+            // Buat user dan mahasiswa
             $user = Users::create([
                 'username' => $request->nim,
                 'password' => Hash::make($request->password),
                 'role' => 'mahasiswa'
             ]);
 
-            $mahasiswa = Mahasiswa::create([
+            Mahasiswa::create([
                 'id_mahasiswa' => $user->id_user,
                 'nim' => $request->nim,
                 'nama' => $request->nama,
@@ -195,29 +195,54 @@ class AuthController extends Controller
                 'id_program_studi' => $request->id_program_studi,
             ]);
 
-            // Ambil opsi preferensi dari kategori: jarak (1), durasi (2), perusahaan (4)
-            $preferensi_jarak = DB::table('opsi_preferensi')->where('id_kategori', 1)->limit(3)->get();
-            $preferensi_durasi = DB::table('opsi_preferensi')->where('id_kategori', 2)->limit(3)->get();
-            $preferensi_perusahaan = DB::table('opsi_preferensi')->where('id_kategori', 4)->limit(4)->get();
+            // Ambil preferensi dari database
+            $preferensi_jarak = DB::table('opsi_preferensi')->where('id_kategori', 1)->orderBy('id')->limit(3)->get();
+            $preferensi_durasi = DB::table('opsi_preferensi')->where('id_kategori', 2)->orderBy('id')->limit(2)->get();
+            $preferensi_perusahaan = DB::table('opsi_preferensi')->where('id_kategori', 4)->orderBy('id')->limit(5)->get();
 
-            // Gabungkan semua
-            $semua_preferensi = $preferensi_jarak->merge($preferensi_durasi)->merge($preferensi_perusahaan);
-
-            // Insert ke tabel preferensi_pengguna
             $insertData = [];
-            $ranking = 1;
-            foreach ($semua_preferensi as $opsi) {
+            $now = now();
+
+            // 1. Jarak: poin tetap 10, 5, 3
+            $opsiPoinJarak = [10, 5, 3];
+            foreach ($preferensi_jarak as $index => $opsi) {
                 $insertData[] = [
                     'id_mahasiswa' => $user->id_user,
                     'id_opsi' => $opsi->id,
-                    'ranking' => null,
-                    'poin' => null,
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'ranking' => $index + 1,
+                    'poin' => $opsiPoinJarak[$index] ?? 0,
+                    'created_at' => $now,
+                    'updated_at' => $now
                 ];
-                $ranking++;
             }
 
+            // 2. Durasi: poin tetap 7, 5
+            $opsiPoinDurasi = [7, 5];
+            foreach ($preferensi_durasi as $index => $opsi) {
+                $insertData[] = [
+                    'id_mahasiswa' => $user->id_user,
+                    'id_opsi' => $opsi->id,
+                    'ranking' => $index + 1,
+                    'poin' => $opsiPoinDurasi[$index] ?? 0,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ];
+            }
+
+            // 3. Jenis Perusahaan: poin = (jumlah - index) * 3
+            $countJenis = count($preferensi_perusahaan);
+            foreach ($preferensi_perusahaan as $index => $opsi) {
+                $insertData[] = [
+                    'id_mahasiswa' => $user->id_user,
+                    'id_opsi' => $opsi->id,
+                    'ranking' => $index + 1,
+                    'poin' => ($countJenis - $index) * 3,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ];
+            }
+
+            // Simpan preferensi
             DB::table('preferensi_pengguna')->insert($insertData);
 
             DB::commit();
@@ -229,14 +254,12 @@ class AuthController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-
             return response()->json([
                 'status' => false,
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
-
 
     /**
      * Redirect ke dashboard berdasarkan role user

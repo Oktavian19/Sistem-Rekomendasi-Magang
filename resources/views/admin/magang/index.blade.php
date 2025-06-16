@@ -176,22 +176,21 @@
                             <td>
                                 @if ($item['status_magang'] == 'aktif')
                                     @if ($item['dosen_pembimbing'])
-                                        <button class="btn btn-warning waves-effect waves-light" 
+                                        <button class="btn btn-sm btn-warning" 
                                             onclick="showUbahStatusModal({{ $item['id_magang'] }})">
-                                            <i class="bx bx-edit"></i> Ubah Status
+                                            <i class="bx bx-edit me-1"></i> Ubah Status
                                         </button>
                                     @else
                                         <button class="btn btn-sm btn-primary" 
                                             onclick="showPlotDosenModal({{ $item['id_magang'] }}, {{ $item['id_dosen_pembimbing'] ?? 'null' }})">
-                                        <i class="bx bx-user-plus"></i> Plot Dosen
-                                    </button>
+                                            <i class="bx bx-user-plus me-1"></i> Plot Dosen
+                                        </button>
                                     @endif
                                 @else
-                                    <button class="btn btn-primary waves-effect waves-light" 
+                                    <button class="btn btn-sm btn-success" 
                                         onclick="showDetailModal({{ $item['id_magang'] }}, 'feedback')">
-                                        <i class="bx bx-message-detail"></i>  Feedback
+                                        <i class="bx bx-message-detail me-1"></i> Feedback
                                     </button>
-                                    {{-- <span class="text-muted">-</span> --}}
                                 @endif
                             </td>
                         </tr>

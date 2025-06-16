@@ -134,7 +134,7 @@
 
       @if(auth()->user()->role === 'dosen_pembimbing')
         <!-- Dosen Menu Items -->
-        <li class="menu-item {{ request()->is('monitoring*') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->is('monitoring*', 'mahasiswa*') ? 'active' : '' }}">
           <a href="{{ url('monitoring') }}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-bar-chart"></i>
             <div>Monitoring & Statistik</div>

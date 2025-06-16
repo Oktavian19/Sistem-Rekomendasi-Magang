@@ -51,14 +51,14 @@ class DashboardController extends Controller
     public function exportStatusLamaran(Request $request)
     {
         $status = $request->query('status');
-        
+
         $query = Lamaran::with(['mahasiswa', 'lowongan']);
-        
+
         if ($status) {
             $query->where('status_lamaran', $status);
         }
-        
-        $data = $query->get()->map(function($item) {
+
+        $data = $query->get()->map(function ($item) {
             return [
                 'NIM' => $item->mahasiswa->nim,
                 'Nama Mahasiswa' => $item->mahasiswa->nama,
@@ -69,7 +69,7 @@ class DashboardController extends Controller
                 'Rekomendasi' => $item->dari_rekomendasi ? 'Ya' : 'Tidak'
             ];
         });
-        
+
         return Excel::download(new StatusLamaranExport($data), 'status_lamaran.xlsx');
     }
 
@@ -78,7 +78,7 @@ class DashboardController extends Controller
         $data = Lamaran::with(['mahasiswa', 'lowongan'])
             ->where('dari_rekomendasi', 1)
             ->get()
-            ->map(function($item) {
+            ->map(function ($item) {
                 return [
                     'NIM' => $item->mahasiswa->nim,
                     'Nama Mahasiswa' => $item->mahasiswa->nama,
@@ -89,7 +89,7 @@ class DashboardController extends Controller
                     'Rekomendasi' => 'Ya'
                 ];
             });
-        
+
         return Excel::download(new LamaranRekomendasiExport($data), 'lamaran_rekomendasi.xlsx');
     }
 
@@ -100,7 +100,7 @@ class DashboardController extends Controller
             'menunggu' => 'Diproses',
             'diterima' => 'Diterima'
         ];
-        
+
         return $statuses[$status] ?? $status;
     }
 
@@ -240,8 +240,9 @@ class DashboardController extends Controller
 
         // 1. Cek apakah ada lamaran untuk mahasiswa ini
         $lamaran = Lamaran::where('id_mahasiswa', $dataMahasiswa->id_mahasiswa)
-            ->latest('tanggal_lamaran') // Ambil lamaran terbaru jika ada banyak
+            ->orderBy('id_lamaran', 'desc') // 'desc' artinya descending, jadi terbaru dulu
             ->first();
+
 
         if ($lamaran) {
             // Jika ada lamaran, langkah 1 (Lamaran Dikirim) dan 2 (Diproses Admin) aktif
