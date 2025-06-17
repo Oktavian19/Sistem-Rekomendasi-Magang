@@ -27,7 +27,7 @@
                                 <a href="#" class="text-dark text-decoration-none h2 fw-bold mb-1">
                                     {{ $mahasiswa->nama }}
                                 </a>
-                                <span class="text-muted ms-1 mb-2" style="font-size: 1rem;">NIM: {{ $mahasiswa->nim }}</span>
+                                <span class="text-muted ms-1 mb-2" style="font-size: 1.3rem;">{{ $mahasiswa->nim }}</span>
                                 <div class="d-flex flex-wrap align-items-center mt-2">
                                     <span class="text-muted me-3">
                                         <i class="bi bi-envelope me-1"></i>{{ $mahasiswa->email }}
