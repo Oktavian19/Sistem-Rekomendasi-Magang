@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="#" class="app-brand-link d-flex align-items-center">
+    <a href="/" class="app-brand-link d-flex align-items-center">
       <span class="app-brand-logo demo">
         <img src="{{ asset('sneat/assets/img/logo.png') }}" alt="Logo Perusahaan" style="width: 40px">
       </span>

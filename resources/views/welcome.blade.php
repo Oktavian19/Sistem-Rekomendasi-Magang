@@ -127,7 +127,7 @@
           <div class="row g-4 mt-5">
               @foreach($bidangKeahlian as $bidang)
               <div class="col-lg-4">
-                  <a href="#" class="text-decoration-none text-dark">
+                  <a href="http://sistem-rekomendasi-magang.test/daftar-lowongan?keyword=&lokasi=&job_field_id={{ $bidang->id }}" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('{{ $bidangGambar[$bidang->id] }}');"></div>
                           <div class="category-title">{{ $bidang->label }}</div>
@@ -136,7 +136,7 @@
               </div>
               @endforeach
               <div class="col-lg-4">
-                  <a href="#" class="text-decoration-none text-dark">
+                  <a href="http://sistem-rekomendasi-magang.test/daftar-lowongan" class="text-decoration-none text-dark">
                       <div class="border rounded p-3 category-card h-100 d-flex align-items-center">
                           <div class="pxp-cover me-3" style="background-image: url('sneat/assets/img/1.png');"></div>
                           <div class="category-title">Bidang Keahlian Lainnya</div>
