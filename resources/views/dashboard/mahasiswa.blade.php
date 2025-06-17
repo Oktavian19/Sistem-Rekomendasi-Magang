@@ -209,10 +209,10 @@
     </div>
 
 
-    <div class="card d-flex justify-content-start align-items-start mt-4" style="padding: 5vh">
+    <div class="card d-flex justify-content-start align-items-center mt-4" style="padding: 5vh">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <h5 class="mb-0">Rekomendasi Lowongan Buat Kamu</h5>
-            <a href="{{ url('daftar-lowongan') }}" class="btn text-primary">Lihat Semua Lowongan</a>
+            <a href="{{ url('rekomendasi') }}" class="btn text-primary">Tampilkan Perhitungan Rekomendasi</a>
         </div>
         <div class="col-lg-12 col-xl-12">
             <div class="row">
@@ -256,7 +256,7 @@
                 @endforeach
             </div>
         </div>
-
+            <a href="{{ url('daftar-lowongan') }}" class="btn text-primary">Lihat Semua Lowongan</a>
     </div>
 @endsection
 
