@@ -9,7 +9,7 @@
                         <div class="col-sm-6 col-lg-3">
                             <div class="d-flex justify-content-between align-items-center border-end pb-4 pb-sm-0">
                                 <div>
-                                    <h4 class="mb-0">{{ $statusLamaran['menunggu'] }}</h4>
+                                    <h4 class="mb-0">{{ $statusLamaran['diprosesAdmin'] + $statusLamaran['diprosesPerusahaan'] }}</h4>
                                     <p class="mb-0">Jumlah Lamaran<br> Diproses</p>
                                 </div>
                                 <div class="avatar me-sm-4">
@@ -217,16 +217,17 @@
                 dataLabels: { enabled: false }
             }
         },
-        colors: ['#775DD0', '#00C8E1', '#FFB900'],
+        colors: ['#E91E63', '#775DD0', '#00C8E1', '#FFB900'],
         title: {
             text: 'Status Lamaran'
         },
         series: [
             <?php echo (int) $statusLamaran['ditolak']; ?>,
-            <?php echo (int) $statusLamaran['menunggu']; ?>,
+            <?php echo (int) $statusLamaran['diprosesAdmin']; ?>,
+            <?php echo (int) $statusLamaran['diprosesPerusahaan']; ?>,
             <?php echo (int) $statusLamaran['diterima']; ?>
         ],
-        labels: ['Ditolak', 'Diproses', 'Diterima'],
+        labels: ['Ditolak', 'Diproses Admin', 'Diproses Perusahaan', 'Diterima'],
         legend: {
             show: true,
             position: 'bottom',
