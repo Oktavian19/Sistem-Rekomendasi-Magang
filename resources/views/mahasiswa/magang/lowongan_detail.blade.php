@@ -133,10 +133,6 @@
                                 <div class="text-muted small">Industri</div>
                                 <div class="fw-bold">{{ $lowongan->perusahaan->bidang_industri ?? '-' }}</div>
                             </div>
-                            <div class="mb-3">
-                                <div class="text-muted small">Jml. Karyawan</div>
-                                <div class="fw-bold">{{ $lowongan->perusahaan->jumlah_karyawan ?? '-' }}</div>
-                            </div>
                         </div>
                     </div>
                 </div>
