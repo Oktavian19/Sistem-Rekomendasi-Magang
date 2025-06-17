@@ -120,10 +120,19 @@ class LowonganController extends Controller
             ->whereIn('status_lamaran', ['diprosesAdmin', 'diprosesPerusahaan'])
             ->exists();
 
+        $sedangMagang = Lamaran::where('id_mahasiswa', $mahasiswaId)
+            ->where('status_lamaran', 'diterima')
+                ->whereHas('magang', function ($magangQuery) {
+                    $magangQuery->where('status_magang', 'aktif');
+                })
+            ->exists();
+
         if ($sudahDaftar) {
             return back()->with('error', 'Anda sudah mendaftar pada lowongan ini.');
         } elseif ($sedangDaftar) {
             return back()->with('error', 'Tunggu Lamaran lainmu dulu, ya');
+        } elseif ($sedangMagang) {
+            return back()->with('error', 'Selesaikan Magangmu dulu, ya');
         }
 
         Lamaran::create([
