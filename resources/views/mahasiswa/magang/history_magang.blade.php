@@ -63,11 +63,18 @@
                                                             <i class="bi bi-send-x me-1"></i>Ditolak
                                                         </p>
                                                     </div>
-                                                @elseif($lamaran->status_lamaran == 'menunggu')
+                                                @elseif($lamaran->status_lamaran == 'diprosesAdmin')
                                                     <div class="d-flex justify-content-end">
                                                         <p
                                                             class="card-text small text-warning mb-0 badge rounded-pill bg-label-warning">
-                                                            <i class="bi bi-hourglass-split me-1"></i>Menunggu
+                                                            <i class="bi bi-hourglass-split me-1"></i>Diproses Admin
+                                                        </p>
+                                                    </div>
+                                                @elseif($lamaran->status_lamaran == 'diprosesPerusahaan')
+                                                    <div class="d-flex justify-content-end">
+                                                        <p
+                                                            class="card-text small text-warning mb-0 badge rounded-pill bg-label-warning">
+                                                            <i class="bi bi-hourglass-split me-1"></i>Diproses Perusahaan
                                                         </p>
                                                     </div>
                                                 @elseif($lamaran->status_lamaran == 'diterima')
