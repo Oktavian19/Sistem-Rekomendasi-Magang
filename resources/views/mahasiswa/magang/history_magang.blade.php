@@ -95,12 +95,13 @@
                                                         </div>
                                                     @elseif($lamaran->magang->status_magang == 'selesai')
                                                         <div class="d-flex justify-content-between align-items-center">
+                                                            @if($lamaran->magang->feedback->isEmpty())
                                                             <a href="javascript:void(0);"
                                                                 onclick="modalAction('{{ url('feedback/modal/' . ($lamaran->magang->id_magang ?? 0)) }}')"
                                                                 class="small text-warning mb-0 badge rounded-pill bg-label-warning">
                                                                 <i class="bi bi-star me-1"></i> Beri Feedback
                                                             </a>
-
+                                                            @endif
                                                             <p
                                                                 class="card-text small text-success mb-0 badge rounded-pill bg-label-success">
                                                                 <i class="bi bi-send-check me-1"></i>Diterima
