@@ -11,12 +11,7 @@
                         <div class="col-xl-8 col-xxl-6">
                             <img src="{{ asset($lowongan->perusahaan->path_logo ?? 'storage/logo_perusahaan/logo-default.jpg') }}"
                                 class="rounded" style="width:80px; height:80px" alt="Company Logo">
-
                             <h2 class="fw-bold">{{ $lowongan->nama_posisi }}</h2>
-                            <div class="mb-3">
-                                <a href="#"
-                                    class="text-decoration-none">{{ $lowongan->perusahaan->nama_perusahaan }}</a>
-                            </div>
                         </div>
                         <div class="col-auto">
                             <div class="d-flex align-items-center mt-3">
@@ -61,7 +56,12 @@
                     <div class="job-description mt-4">
                         <h4 class="mb-3">Deskripsi</h4>
                         <div class="text-muted">
+
                             {!! $lowongan->deskripsi !!}
+
+                            <br><br>
+
+                            <strong>Durasi Magang : </strong>{{ $lowongan->durasiMagang->label }}
 
                             <br><br>
 
@@ -88,7 +88,7 @@
                                     gratis...</strong>
                             </div>
                         </div>
-                        <a style="margin-top: 10vh" href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}" class="btn btn-outline-secondary">
+                        <a style="margin-top: 5vh" href="{{ url('/daftar-lowongan') . '?' . (request()->except('page') ? '?' . http_build_query(request()->except('page')) : '') }}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Lowongan
                         </a>
                     </div>
@@ -97,6 +97,10 @@
                 <div class="col-lg-4 ps-lg-6">
                     <div class="card border border-primary mb-4">
                         <div class="card-body">
+                            <div class="mb-3">
+                                <div class="text-muted small">Jenis Pelaksanaan</div>
+                                <div class="fw-bold">{{ $lowongan->jenisPelaksanaan->label ?? '-' }}</div>
+                            </div>
                             <div class="mb-3">
                                 <div class="text-muted small">Bidang Pekerjaan</div>
                                     <div class="fw-bold">
@@ -132,16 +136,18 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="mb-3">
                                 <h5 class="fw-bold">{{ $lowongan->perusahaan->nama_perusahaan }}</h5>
-                                <p class="text-muted small">{{ $lowongan->perusahaan->alamat ?? '-' }}</p>
+                                {{ $lowongan->perusahaan->jenisPerusahaan->label}}
                             </div>
-
                             <hr>
                             <div class="mb-3">
                                 <div class="text-muted small">Email</div>
                                 <div class="fw-bold">{{ $lowongan->perusahaan->email ?? '-' }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-muted small">Telepon</div>
+                                <div class="fw-bold">{{ $lowongan->perusahaan->telepon ?? '-' }}</div>
                             </div>
                             <div class="mb-3">
                                 <div class="text-muted small">Industri</div>
