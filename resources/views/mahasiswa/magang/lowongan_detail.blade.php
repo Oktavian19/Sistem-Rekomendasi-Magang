@@ -63,8 +63,22 @@
                         <div class="text-muted">
                             {!! $lowongan->deskripsi !!}
 
-                            <p><strong>Persyaratan:</strong></p>
-                            {!! $lowongan->persyaratan !!}
+                            <br><br>
+
+                            <strong>Persyaratan:</strong>
+                            <div>
+                                {!! $lowongan->persyaratan !!}
+                            </div>
+
+                            @if(!empty($lowongan->fasilitas) && count($lowongan->fasilitas))
+                                <br>
+                                <strong>Fasilitas:</strong>
+                                <ul>
+                                    @foreach ($lowongan->fasilitas as $fasilitas)
+                                        <li>{{ $fasilitas->label }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
 
                         <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
@@ -89,7 +103,7 @@
                                     @foreach ($lowongan->bidangKeahlian as $bidang)
                                         {{ $bidang->label ?? '-' }},
                                     @endforeach
-                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <div class="text-muted small">Lokasi</div>
