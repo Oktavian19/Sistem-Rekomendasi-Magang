@@ -212,6 +212,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/feedback/modal/{id}', [LogMahasiswaController::class, 'modal'])->name('feedback.modal');
         Route::post('/feedback/store', [LogMahasiswaController::class, 'storeFeedbackMahasiswa'])->name('feedback.store');
 
+        // Matriks SPK
         Route::get('/rekomendasi', [RekomendasiController::class, 'index'])->name('rekomendasi.index');
     });
 

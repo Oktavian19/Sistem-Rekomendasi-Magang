@@ -103,7 +103,7 @@
                     </div>
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Bidang Keahlian</label><br>
-                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
+                        <small class="text-muted">Seret dan Jatuhkan ( Drag & Drop ) Keahlian Yang Paling Anda Minati</small>
                         <select id="select-bidang-keahlian" name="select_bidang_keahlian" class="form-select form-select-sm" data-control="select2"
                             data-placeholder="Pilih Bidang Keahlian">
                             <option></option>
@@ -134,7 +134,7 @@
 
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Jenis Perusahaan</label><br>
-                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
+                        <small class="text-muted">Seret dan Jatuhkan ( Drag & Drop ) Perusahaan Yang Paling Anda Minati</small>
                         <ul id="sortable-perusahaan" class="list-group">
                             @foreach (old('jenis_perusahaan', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $jenisPerusahaan->firstWhere('id', $id); @endphp
@@ -154,7 +154,7 @@
                     {{-- ===== Lokasi Magang (Jarak) (Hanya Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Lokasi Magang</label><br>
-                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
+                        <small class="text-muted">Seret dan Jatuhkan ( Drag & Drop ) Lokasi Yang Paling Anda Minati</small>
                         <ul id="sortable-jarak" class="list-group">
                             @foreach (old('jarak', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $jarak->firstWhere('id', $id); @endphp
@@ -174,7 +174,7 @@
                     {{-- ===== Durasi Magang (Hanya Urutkan) ===== --}}
                     <div class="col-lg-6 mb-4">
                         <label class="required form-label">Preferensi Durasi Magang</label><br>
-                        <small class="text-muted">Urutkan Berdasarkan Preferensi Anda</small>
+                        <small class="text-muted">Seret dan Jatuhkan ( Drag & Drop ) Durasi Yang Paling Anda Minati</small>
                         <ul id="sortable-durasi" class="list-group">
                             @foreach (old('durasi_magang', optional($mahasiswa->opsiPreferensi)->pluck('id')->toArray() ?? []) as $id)
                                 @php $item = $durasi->firstWhere('id', $id); @endphp

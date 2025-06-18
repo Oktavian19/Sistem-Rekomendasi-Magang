@@ -18,7 +18,10 @@
       };
     @endphp
 
-    <span class="me-3">{{ $name }}</span>
+    <div class="text-end me-3">
+        <div class="fw-semibold">{{ $name }}</div>
+        <div class="text-muted small">{{ ucfirst(str_replace('_', ' ', $user->role)) }}</div>
+    </div>
 
     @php
         $fotoProfil = null;
