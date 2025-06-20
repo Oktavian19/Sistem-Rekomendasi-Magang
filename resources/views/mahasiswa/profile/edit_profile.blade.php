@@ -120,6 +120,7 @@
                                         data-id="{{ $item->id }}">
                                         <span class="rank me-2">#1</span>
                                         <span class="text-start flex-grow-1">{{ $item->label }}</span>
+                                        <span><i class="fa-solid fa-sort me-5"></i></span>
                                         <button type="button" class="btn btn-sm btn-danger remove-item">×</button>
                                         <input type="hidden" name="bidang_keahlian[]" value="{{ $item->id }}">
                                     </li>
@@ -144,6 +145,7 @@
                                             <span class="rank me-2">#1</span>
                                             <span>{{ $item->label }}</span>
                                         </div>
+                                        <div><i class="fa-solid fa-sort"></i></div>
                                         <input type="hidden" name="jenis_perusahaan[]" value="{{ $item->id }}">
                                     </li>
                                 @endif
@@ -164,6 +166,7 @@
                                             <span class="rank me-2">#1</span>
                                             <span>{{ $item->label }}</span>
                                         </div>
+                                        <div><i class="fa-solid fa-sort"></i></div>
                                         <input type="hidden" name="jarak[]" value="{{ $item->id }}">
                                     </li>
                                 @endif
@@ -184,6 +187,7 @@
                                             <span class="rank me-2">#1</span>
                                             <span>{{ $item->label }}</span>
                                         </div>
+                                        <div><i class="fa-solid fa-sort"></i></div>
                                         <input type="hidden" name="durasi[]" value="{{ $item->id }}">
                                     </li>
                                 @endif
